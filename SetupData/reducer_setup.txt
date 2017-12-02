@@ -1,0 +1,1 @@
+{"poniFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2017-10/AuNP2/AgBh_11keV.poni", "maskFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2017-10/Align/mask.msk"}

@@ -1,0 +1,8 @@
+#Informatoin regarding all the necessary PVs required for SAXS data
+Monitor@[pv=15IDD:vsc:c0.S8]
+Diode@[pv=15IDD:vsc:c0.S6]
+BSDiode@[pv=15IDD:vsc:c0.S4]
+count_time@[pv=15IDD:vsc:c0.TP]
+xcradle@[pv=None]
+sampleX@[pv=15IDD:m14]
+sampleY@[pv=15IDD:m15]

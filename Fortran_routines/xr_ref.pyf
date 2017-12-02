@@ -1,0 +1,44 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module xr_ref ! in 
+    interface  ! in :xr_ref
+        subroutine parratt_born(q,lambda,d,rho,beta,sigma,rgen,rgenr,m,n) ! in :xr_ref:xr_ref.f90
+            double precision dimension(m + 1), intent(in) :: q
+            double precision, intent(in) :: lambda
+            double precision dimension(n + 2), intent(in) :: d
+            double precision dimension(n + 2),depend(n), intent(in) :: rho
+            double precision dimension(n + 2),depend(n), intent(in) :: beta
+            double precision dimension(n + 2),depend(n), intent(in) :: sigma
+            double precision dimension(m + 1),depend(m), intent(out) :: rgen
+            double complex dimension(m + 1),depend(m), intent(out) :: rgenr
+            integer, optional,check((len(q)-1)>=m),depend(q) :: m=(len(q)-1)
+            integer, optional,check((len(d)-2)>=n),depend(d) :: n=(len(d)-2)
+        end subroutine parratt_born
+        subroutine parratt(q,lambda,d,rho,beta,rgen,rgenr,m,n) ! in :xr_ref:xr_ref.f90
+            double precision dimension(m + 1), intent(in) :: q
+            double precision, intent(in) :: lambda
+            double precision dimension(n + 2), intent(in) :: d
+            double precision dimension(n + 2),depend(n), intent(in) :: rho
+            double precision dimension(n + 2),depend(n), intent(in) :: beta
+            double precision dimension(m + 1),depend(m), intent(out) :: rgen
+            double complex dimension(m + 1),depend(m), intent(out) :: rgenr
+            integer, optional,check((len(q)-1)>=m),depend(q) :: m=(len(q)-1)
+            integer, optional,check((len(d)-2)>=n),depend(d) :: n=(len(d)-2)
+        end subroutine parratt
+        subroutine conv_parratt(q,delq,lambda,d,rho,beta,rgen,m,n) ! in :xr_ref:xr_ref.f90
+            double precision dimension(m + 1), intent(in) :: q
+            double precision, intent(in) :: delq
+            double precision, intent(in) :: lambda
+            double precision dimension(n + 2), intent(in) :: d
+            double precision dimension(n + 2),depend(n), intent(in) :: rho
+            double precision dimension(n + 2),depend(n), intent(in) :: beta
+            double precision dimension(m + 1),depend(m), intent(out) :: rgen
+            integer, optional,check((len(q)-1)>=m),depend(q) :: m=(len(q)-1)
+            integer, optional,check((len(d)-2)>=n),depend(d) :: n=(len(d)-2)
+        end subroutine conv_parratt
+    end interface 
+end python module xr_ref
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
