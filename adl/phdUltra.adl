@@ -1,19 +1,19 @@
 
 file {
-	name="C:\Users\Mrinal Bera\Documents\SAXS_Drive\adl\phdUltra.adl"
+	name="/mnt/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/phdUltra.adl"
 	version=030109
 }
 display {
 	object {
-		x=135
-		y=81
-		width=395
-		height=647
+		x=120
+		y=145
+		width=523
+		height=452
 	}
 	clr=14
 	bclr=4
 	cmap=""
-	gridSpacing=5
+	gridSpacing=10
 	gridOn=0
 	snapToGrid=0
 }
@@ -87,41 +87,25 @@ display {
 		1a7309,
 	}
 }
-"text update" {
-	object {
-		x=98
-		y=38
-		width=180
-		height=20
-	}
-	monitor {
-		chan="15IDD:PHDUltra:DateTime_RBV"
-		clr=14
-		bclr=4
-	}
-	align="horiz. centered"
-	limits {
-	}
-}
 text {
 	object {
-		x=96
-		y=10
-		width=201
-		height=20
+		x=91
+		y=15
+		width=323
+		height=27
 	}
 	"basic attribute" {
 		clr=14
 	}
-	textix="PHD Ultra Harvard Syring Pump"
+	textix="PHD Ultra Harvard Syringe Pump"
 	align="horiz. centered"
 }
 text {
 	object {
-		x=47
-		y=84
-		width=164
-		height=25
+		x=67
+		y=65
+		width=213
+		height=23
 	}
 	"basic attribute" {
 		clr=14
@@ -129,12 +113,25 @@ text {
 	textix="Syringe Volume (ml)"
 	align="horiz. right"
 }
+text {
+	object {
+		x=67
+		y=99
+		width=213
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Syringe Diameter (mm)"
+	align="horiz. right"
+}
 "text entry" {
 	object {
-		x=216
-		y=84
-		width=80
-		height=25
+		x=287
+		y=63
+		width=78
+		height=23
 	}
 	control {
 		chan="15IDD:PHDUltra:SyringeVolume"
@@ -144,17 +141,357 @@ text {
 	limits {
 	}
 }
+"text entry" {
+	object {
+		x=287
+		y=98
+		width=78
+		height=23
+	}
+	control {
+		chan="15IDD:PHDUltra:SyringeDiameter"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
 "text update" {
 	object {
-		x=304
-		y=87
-		width=80
-		height=20
+		x=380
+		y=65
+		width=66
+		height=23
 	}
 	monitor {
 		chan="15IDD:PHDUltra:SyringeVolume_RBV"
 		clr=14
 		bclr=4
+	}
+	limits {
+	}
+}
+"text update" {
+	object {
+		x=380
+		y=101
+		width=66
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:SyringeDiameter_RBV"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=11
+		y=136
+		width=270
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Infusion Rate (ul/min)"
+	align="horiz. right"
+}
+text {
+	object {
+		x=11
+		y=176
+		width=270
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Withdrawal Rate (ul/min)"
+	align="horiz. right"
+}
+"text entry" {
+	object {
+		x=287
+		y=133
+		width=78
+		height=23
+	}
+	control {
+		chan="15IDD:PHDUltra:InfuseRate"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+"text entry" {
+	object {
+		x=287
+		y=172
+		width=78
+		height=23
+	}
+	control {
+		chan="15IDD:PHDUltra:WithdrawRate"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+"text update" {
+	object {
+		x=380
+		y=136
+		width=66
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:InfuseRate_RBV"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+"text update" {
+	object {
+		x=380
+		y=174
+		width=66
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:WithdrawRate_RBV"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=11
+		y=212
+		width=270
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Target Volume (ul)"
+	align="horiz. right"
+}
+"text entry" {
+	object {
+		x=287
+		y=211
+		width=78
+		height=23
+	}
+	control {
+		chan="15IDD:PHDUltra:TargetVolume"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+"text update" {
+	object {
+		x=380
+		y=211
+		width=66
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:TargetVolume_RBV"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=11
+		y=248
+		width=270
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Infused Volume"
+	align="horiz. right"
+}
+text {
+	object {
+		x=11
+		y=285
+		width=270
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Withdrawn Volume"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=287
+		y=248
+		width=77
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:InfusedVolume"
+		clr=14
+		bclr=50
+	}
+	limits {
+	}
+}
+"text update" {
+	object {
+		x=287
+		y=285
+		width=77
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:WithdrawnVolume"
+		clr=14
+		bclr=35
+	}
+	limits {
+	}
+}
+"text update" {
+	object {
+		x=380
+		y=252
+		width=66
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:InfusedVolumeUnit"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+"text update" {
+	object {
+		x=380
+		y=286
+		width=66
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:WithdrawnVolumeUnit"
+		clr=14
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=11
+		y=317
+		width=270
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Pump State"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=287
+		y=317
+		width=210
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:PumpState"
+		clr=14
+		bclr=30
+	}
+	limits {
+	}
+}
+"choice button" {
+	object {
+		x=284
+		y=391
+		width=210
+		height=27
+	}
+	control {
+		chan="15IDD:PHDUltra:Infuse"
+		clr=14
+		bclr=50
+	}
+	stacking="column"
+}
+"choice button" {
+	object {
+		x=32
+		y=391
+		width=210
+		height=27
+	}
+	control {
+		chan="15IDD:PHDUltra:Withdraw"
+		clr=14
+		bclr=35
+	}
+	stacking="column"
+}
+text {
+	object {
+		x=202
+		y=332
+		width=2
+		height=1
+	}
+	"basic attribute" {
+		clr=14
+	}
+}
+text {
+	object {
+		x=11
+		y=353
+		width=270
+		height=23
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Pump Stalled State"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=287
+		y=353
+		width=210
+		height=23
+	}
+	monitor {
+		chan="15IDD:PHDUltra:StalledStatus"
+		clr=14
+		bclr=30
 	}
 	limits {
 	}
