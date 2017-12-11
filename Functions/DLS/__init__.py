@@ -1,1 +1,1 @@
-__all__=['AutoCorr']
+__all__=['AutoCorr', 'FirstCumulant']
