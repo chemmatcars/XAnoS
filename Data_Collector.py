@@ -38,8 +38,7 @@ class Data_Collector(QWidget):
         self.delay=0.1
         self.detPV='None'
         self.undulatorStatus='Idle'
-        self.monochromatorStatus='Idle'
-        
+        self.monochromatorStatus='Idle'       
         
         self.vblayout=QVBoxLayout(self)
         self.mainDock=DockArea(self,parent)
@@ -52,9 +51,7 @@ class Data_Collector(QWidget):
         self.mainDock.addDock(self.beamlineInfoDock)
         self.mainDock.addDock(self.dataColDock)
         self.mainDock.addDock(self.dataRedDock)
-        self.mainDock.moveDock(self.dataColDock,'above',self.dataRedDock)
-        
-        
+        self.mainDock.moveDock(self.dataColDock,'above',self.dataRedDock)       
         
         self.create_beamlineInfoDock()
         self.create_dataColDock()
@@ -93,12 +90,11 @@ class Data_Collector(QWidget):
         self.undulatorGap=caget(self.BLParams['Undulator_Gap']['PV'])
         self.energy=caget(self.BLParams['Energy']['PV']+'RdbkAO')
         self.wavelength= 6.62607e-34*2.9979e8/1.60217e-19/1e3/self.energy*1e10
-        
-        
+                
         undulatorEnergyLabel=QLabel('Undulator Energy')
         self.undulatorEnergyLabel=QLabel('%.5f keV'%(self.undulatorEnergy))
         undulatorGapLabel=QLabel('Undulator Gap')
-        self.undulatorGabLabel=QLabel('%.5f mm'%(self.undulatorGap))
+        self.undulatorGapLabel=QLabel('%.5f mm'%(self.undulatorGap))
         energyLabel=QLabel('Energy')
         undulatorStatusLabel=QLabel('Status')
         self.undulatorStatusLabel=QLabel(self.undulatorStatus)
@@ -108,11 +104,7 @@ class Data_Collector(QWidget):
         self.energyLabel=QLabel('%.5f keV'%self.energy)
         wavelengthLabel=QLabel('Wavelength')        
         self.wavelengthLabel=QLabel(u'%.5f \u212B'%self.wavelength)
-        
-        camonitor(self.BLParams['Energy']['PV']+'RdbkAO',callback=self.energyWavelengthChanged)
-        camonitor(self.BLParams['Monochromator_Status']['PV'],callback=self.monochromatorStatusCheck)
-        camonitor(self.BLParams['Undulator_IDStatus']['PV'],callback=self.undulatorIDStatusCheck)
-        
+               
         row=0
         col=0
         self.BLDockLayout.addWidget(undulatorEnergyLabel,row=row,col=col)
@@ -121,12 +113,13 @@ class Data_Collector(QWidget):
         col+=1
         self.BLDockLayout.addWidget(undulatorGapLabel,row=row,col=col)
         col+=1
-        self.BLDockLayout.addWidget(self.undulatorGabLabel,row=row,col=col)
+        self.BLDockLayout.addWidget(self.undulatorGapLabel,row=row,col=col)
         col+=1
         self.BLDockLayout.addWidget(undulatorStatusLabel,row=row,col=col)
         col+=1
         self.BLDockLayout.addWidget(self.undulatorStatusLabel,row=row,col=col)
-        
+        col+=1
+                
         row+=1
         col=0
         self.BLDockLayout.addWidget(energyLabel,row=row,col=col)
@@ -140,8 +133,7 @@ class Data_Collector(QWidget):
         self.BLDockLayout.addWidget(monochromatorStatusLabel,row=row,col=col)
         col+=1
         self.BLDockLayout.addWidget(self.monochromatorStatusLabel,row=row,col=col)
-        
-        
+                
         row+=1
         col=0
         JJCVLabel=QLabel('Beamsize V')
@@ -150,8 +142,7 @@ class Data_Collector(QWidget):
         self.beamsizeH=caget(self.BLParams['JJC_HSize']['PV'])
         self.JJCVLabel=QLabel('%.3f mm'%self.beamsizeV)
         self.JJCHLabel=QLabel('%.3f mm'%self.beamsizeH)
-        camonitor(self.BLParams['JJC_VSize']['PV'],callback=self.JJC_changed)
-        camonitor(self.BLParams['JJC_HSize']['PV'],callback=self.JJC_changed)
+        
         self.BLDockLayout.addWidget(JJCVLabel,row=row,col=col)
         col+=1
         self.BLDockLayout.addWidget(self.JJCVLabel,row=row,col=col)
@@ -168,8 +159,8 @@ class Data_Collector(QWidget):
         self.collsizeH=caget(self.BLParams['JJD_HSize']['PV'])
         self.JJDVLabel=QLabel('%.3f mm'%self.collsizeV)
         self.JJDHLabel=QLabel('%.3f mm'%self.collsizeH)
-        camonitor(self.BLParams['JJD_VSize']['PV'],callback=self.JJD_changed)
-        camonitor(self.BLParams['JJD_HSize']['PV'],callback=self.JJD_changed)
+        self.syncBLParamPushButton=QPushButton('Sync BL Info')
+        self.syncBLParamPushButton.clicked.connect(self.sync_BLInfo)
         self.BLDockLayout.addWidget(JJDVLabel,row=row,col=col)
         col+=1
         self.BLDockLayout.addWidget(self.JJDVLabel,row=row,col=col)
@@ -177,12 +168,44 @@ class Data_Collector(QWidget):
         self.BLDockLayout.addWidget(JJDHLabel,row=row,col=col)
         col+=1
         self.BLDockLayout.addWidget(self.JJDHLabel,row=row,col=col)
+        col+=2
+        self.BLDockLayout.addWidget(self.syncBLParamPushButton,row=row,col=col)
         
         self.beamlineInfoDock.addWidget(self.BLDockLayout)
+        
+        self.sync_BLInfo()
         
         #except:
         #    QMessageBox.warning(self, 'EPICS error','Please check if 15IDA soft-IOC is running or not.',QMessageBox.Ok)
         #    return
+        
+    def sync_BLInfo(self):
+        """
+        Sync all the beamline info
+        """
+        try:
+            camonitor_clear(self.BLParams['Energy']['PV']+'RdbkAO')
+            camonitor_clear(self.BLParams['Monochromator_Status']['PV'])
+            camonitor_clear(self.BLParams['Undulator_IDStatus']['PV'])
+            camonitor_clear(self.BLParams['Undulator_Energy']['PV'])
+            camonitor_clear(self.BLParams['Undulator_Gap']['PV'])
+            camonitor_clear(self.BLParams['JJC_VSize']['PV'],callback=self.JJC_changed)
+            camonitor_clear(self.BLParams['JJC_HSize']['PV'],callback=self.JJC_changed)
+            camonitor_clear(self.BLParams['JJD_VSize']['PV'],callback=self.JJD_changed)
+            camonitor_clear(self.BLParams['JJD_HSize']['PV'],callback=self.JJD_changed)
+        except:
+            pass
+        camonitor(self.BLParams['Energy']['PV']+'RdbkAO',callback=self.energyWavelengthChanged)
+        camonitor(self.BLParams['Monochromator_Status']['PV'],callback=self.monochromatorStatusCheck)
+        camonitor(self.BLParams['Undulator_IDStatus']['PV'],callback=self.undulatorIDStatusCheck)
+        camonitor(self.BLParams['Undulator_Energy']['PV'],callback=self.undulatorEnergyStatusCheck)
+        camonitor(self.BLParams['Undulator_Gap']['PV'],callback=self.undulatorGapStatusCheck)
+        camonitor(self.BLParams['JJC_VSize']['PV'],callback=self.JJC_changed)
+        camonitor(self.BLParams['JJC_HSize']['PV'],callback=self.JJC_changed)
+        camonitor(self.BLParams['JJD_VSize']['PV'],callback=self.JJD_changed)
+        camonitor(self.BLParams['JJD_HSize']['PV'],callback=self.JJD_changed)
+        
+        
         
     def monochromatorStatusCheck(self,**kwargs):
         """
@@ -194,6 +217,8 @@ class Data_Collector(QWidget):
         else:
             self.monochromatorStatus='Idle'
         self.monochromatorStatusLabel.setText(self.monochromatorStatus)
+        pg.QtGui.QApplication.processEvents()
+        
         
     def undulatorIDStatusCheck(self,**kwargs):
         """
@@ -205,9 +230,25 @@ class Data_Collector(QWidget):
         else:
             self.undulatorStatus='Idle'
         self.undulatorStatusLabel.setText(self.undulatorStatus)
+        pg.QtGui.QApplication.processEvents()
         
+    def undulatorEnergyStatusCheck(self,**kwargs):
+        """
+        Updates the energy of the undulator
+        """
+        self.undulatorEnergy=kwargs['value']
+        self.undulatorEnergyLabel.setText('%.5f keV'%self.undulatorEnergy)
+        pg.QtGui.QApplication.processEvents()
         
-    def JJC_changed(self):
+    def undulatorGapStatusCheck(self,**kwargs):
+        """
+        Updates the Gap of the undulator
+        """
+        self.undulatorGap=kwargs['value']
+        self.undulatorGapLabel.setText('%.5f mm'%self.undulatorGap)
+        pg.QtGui.QApplication.processEvents()
+        
+    def JJC_changed(self,**kwargs):
         """
         Updates the JJC slit sizes in the GUI by sensing the changes in the slit sizes
         """
@@ -220,9 +261,10 @@ class Data_Collector(QWidget):
             self.experimentLogHandle.write('#Beamsize-Vertical : %.3f mm\n'%self.beamsizeV)
         except:
             pass
+        pg.QtGui.QApplication.processEvents()
         
         
-    def JJD_changed(self):
+    def JJD_changed(self,**kwargs):
         """
         Updates the JJD slit sizes in the GUI by sensing the changes in the slit sizes
         """
@@ -235,6 +277,7 @@ class Data_Collector(QWidget):
             self.experimentLogHandle.write('#Collimator-Vertical : %.3f mm\n'%self.collsizeV)
         except:
             pass
+        pg.QtGui.QApplication.processEvents()
         
         
         
@@ -251,6 +294,24 @@ class Data_Collector(QWidget):
             self.experimentLogHandle.write('#X-ray Wavelength : %.5f Angs\n'%self.wavelength)
         except:
             pass
+        pg.QtGui.QApplication.processEvents()
+        
+    def change_Energy(self,energy):
+        """
+        Changes the energy in keV value supplied and optimizes the undulator and other optics
+        """
+        try:
+            #caput('15IDA:pid_mono_1.FBON',0) #Switching intensity feedback off
+            caput("15IDA:KohzuModeB0.VAL",1) #Putting the monochromator in Automode (1) from Manual mode (0)
+            caput(self.BLParams['Energy']['PV']+'AO.VAL',energy)
+            while self.monochromatorStatus=='Moving':
+                QtTest.QTest.qWait(10)
+            caput(self.BLParams['Undulator_Energy']['PV']+'Set.VAL',energy+0.17)
+            caput('15ID:Start.VAL',1)
+            QtTest.QTest.qWait(self.sleepTime*1000)
+            #caput('15IDA:pid_mono_1.FBON',1) #Switching intensity feedback on
+        except:
+            QMessageBox.warning(self,'Value error','The energy value should be floating point value.',QMessageBox.Ok)
             
         
     
@@ -327,15 +388,15 @@ class Data_Collector(QWidget):
         self.pdInPositionCheckBox=QCheckBox('PD Position')
         self.pdInPositionCheckBox.setTristate(False)
         self.pdInPositionCheckBox.stateChanged.connect(self.pdInPositionStateChanged)
-        self.pdInPositionLineEdit=QLineEdit('4.0')
+        self.pdInPositionLineEdit=QLineEdit('-41.5')
         self.beamInPositionCheckBox=QCheckBox('Beam position')
         self.beamInPositionCheckBox.setTristate(False)
         self.beamInPositionCheckBox.stateChanged.connect(self.beamInPositionStateChanged)
-        self.beamInPositionLineEdit=QLineEdit('-30.0')
+        self.beamInPositionLineEdit=QLineEdit('0.0')
         self.mirrorInPositionCheckBox=QCheckBox('Mirror position')
         self.mirrorInPositionCheckBox.setTristate(False)
         self.mirrorInPositionCheckBox.stateChanged.connect(self.mirrorInPositionStateChanged)
-        self.mirrorInPositionLineEdit=QLineEdit('1.25')
+        self.mirrorInPositionLineEdit=QLineEdit('-39.0')
         self.enableDisablePDPushButton=QPushButton('Enable')
         self.pdInPositionLineEdit.setDisabled(True)
         self.beamInPositionLineEdit.setDisabled(True)
@@ -388,6 +449,17 @@ class Data_Collector(QWidget):
         col=col+1
         self.shutterTimeLineEdit=QLineEdit('0.0')
         self.dataColLayout.addWidget(self.shutterTimeLineEdit,row=row,col=col)
+        col=col+3
+        absLabel=QLabel('Attenuator')
+        self.absSpinBox=QSpinBox()
+        self.absSpinBox.setRange(0,15)
+        self.absSpinBox.setValue(caget(self.motors['absorber']['PV']))
+        self.absSpinBox.valueChanged.connect(self.absorberChanged)
+        self.absSpinBox.setSingleStep(1)
+        self.dataColLayout.addWidget(absLabel,row=row,col=col)
+        col=col+1
+        self.dataColLayout.addWidget(self.absSpinBox,row=row,col=col) 
+        
                 
         row=row+1
         instrumentStatusLabel=QLabel('Instrument status')
@@ -408,18 +480,23 @@ class Data_Collector(QWidget):
         self.collectDarkCheckBox.setChecked(True)
         self.autoShutterCheckBox=QCheckBox('Auto Shutter')
         self.autoShutterCheckBox.setTristate(False)
-        self.autoShutterCheckBox.setChecked(False)   
-        absLabel=QLabel('Attenuator')
-        self.absSpinBox=QSpinBox()
-        self.absSpinBox.setRange(0,15)
-        self.absSpinBox.setValue(caget(self.motors['absorber']['PV']))
-        self.absSpinBox.valueChanged.connect(self.absorberChanged)
-        self.absSpinBox.setSingleStep(1)
+        self.autoShutterCheckBox.setChecked(True)
+        pumpVolLabel=QLabel('Pump Vol (uL)')
+        try:
+            self.pumpVolLineEdit=QLineEdit(str(caget('15IDD:PHDUltra:TargetVolume_RBV')))
+        except:
+            self.pumpVolLineEdit=QLineEdit('Pump not Connected')
+        self.pumpVolLineEdit.returnPressed.connect(self.targetVolumeChanged)
+        self.autoPumpCheckBox=QCheckBox('Auto Pump')
+        self.autoPumpCheckBox.setTristate(False)
+        self.autoPumpCheckBox.setChecked(False)
+        
         self.dataColLayout.addWidget(self.autoShutterCheckBox,row=row,col=0)
         self.dataColLayout.addWidget(self.collectTransmissionCheckBox,row=row,col=1)
         self.dataColLayout.addWidget(self.collectDarkCheckBox,row=row,col=2)
-        self.dataColLayout.addWidget(absLabel,row=row,col=4)
-        self.dataColLayout.addWidget(self.absSpinBox,row=row,col=5) 
+        self.dataColLayout.addWidget(pumpVolLabel,row=row,col=3)
+        self.dataColLayout.addWidget(self.pumpVolLineEdit,row=row,col=4)
+        self.dataColLayout.addWidget(self.autoPumpCheckBox,row=row,col=5)
         
         row=row+1
         pdTransLabel=QLabel('PD Transmission:')
@@ -486,6 +563,16 @@ class Data_Collector(QWidget):
         
         self.dataColDock.addWidget(self.dataColLayout)
         
+    def targetVolumeChanged(self):
+        try:
+            vol=float(self.pumpVolLineEdit.text())
+            try:
+                caput('15IDD:PHDUltra:TargetVolume',vol)
+            except:
+                QMessageBox.warning(self,'Pump error','Please check the pump in connected',QMessageBox.Ok)
+        except:
+            QMessageBox.warning(self,'Value error','Please provide numerical values only',QMessageBox.Ok)
+        
         
     def create_dataRedDock(self):
         """
@@ -505,6 +592,7 @@ class Data_Collector(QWidget):
             self.pdInPositionLineEdit.setDisabled(False)
         else:
             self.pdInPositionLineEdit.setDisabled(True)
+        pg.QtGui.QApplication.processEvents()
             
     def beamInPositionStateChanged(self):
         """
@@ -513,7 +601,7 @@ class Data_Collector(QWidget):
             self.beamInPositionLineEdit.setDisabled(False)
         else:
             self.beamInPositionLineEdit.setDisabled(True)
-            
+        pg.QtGui.QApplication.processEvents()    
             
     def mirrorInPositionStateChanged(self):
         """
@@ -522,7 +610,7 @@ class Data_Collector(QWidget):
             self.mirrorInPositionLineEdit.setDisabled(False)
         else:
             self.mirrorInPositionLineEdit.setDisabled(True)
-        
+        pg.QtGui.QApplication.processEvents()
     
     def openPositionerFile(self):
         """
@@ -931,6 +1019,7 @@ class Data_Collector(QWidget):
         self.palette.setColor(QPalette.Foreground,Qt.green)
         self.instrumentStatus.setPalette(self.palette)
         self.instrumentStatus.setText('Done')
+        pg.QtGui.QApplication.processEvents()
         
         
         
@@ -977,6 +1066,7 @@ class Data_Collector(QWidget):
                     #print(self.dataReducer.poniFile)
                     if self.dataReducer.poniFile is not None and self.autoReduceCheckBox.isChecked():
                         self.dataReducer.reduce_multiple()
+                    
                     if self.sleepTime>1e-3:
                         print(self.sleepTime)
                         self.palette.setColor(QPalette.Foreground,Qt.red)
@@ -994,6 +1084,7 @@ class Data_Collector(QWidget):
                     self.abort=True
         except:
             QMessageBox.warning(self,'Value Error','Please provide integer frame counts and floating point number sleep time',QMessageBox.Ok)
+        caput(self.scalers['scaler_mode']['PV'],1,wait=True) #Setting Scalar to Autocount mode
             
     def dynamic_collect(self):
         """
@@ -1096,6 +1187,7 @@ class Data_Collector(QWidget):
                     self.abort=True
         except:
             QMessageBox.warning(self,'Value Error','Please provide integer frame counts and floating point number sleep time',QMessageBox.Ok)
+        caput(self.scalers['scaler_mode']['PV'],1,wait=True) #Setting Scalar to Autocount mode
                 
         
     def checkMotorsMoving(self):
@@ -1115,6 +1207,7 @@ class Data_Collector(QWidget):
         else:
             result.append(1)
         return not all(result)
+        
         
     def bringPDIn(self):
         """
@@ -1174,12 +1267,16 @@ class Data_Collector(QWidget):
         camonitor(self.scalers['scaler_start']['PV'],callback=self.changeCountingState)
         self.palette.setColor(QPalette.Foreground,Qt.red)
         self.instrumentStatus.setPalette(self.palette)
+        try:
+            shutterTime=float(self.shutterTimeLineEdit.text())
+        except:
+            shutterTime=0.0
+            QMessageBox.warning(self,'Value error','Please check the shutter time. It should be a floating point number.',QMessageBox.Ok)
         self.instrumentStatus.setText('Counting...please wait')
         caput(self.scalers['scaler_mode']['PV'],0,wait=True) #Setting the counter to one-shot mode
-        caput(self.scalers['scaler_count_time']['PV'],self.expTime,wait=True)
+        caput(self.scalers['scaler_count_time']['PV'],self.expTime+2.0*shutterTime,wait=True)
         for detname in self.usedDetectors:
-            caput(self.detectors[detname]['PV']+'AcquireTime',self.expTime,wait=True)
-            
+            caput(self.detectors[detname]['PV']+'AcquireTime',self.expTime+2.0*shutterTime,wait=True)   
         if self.collectTransmissionCheckBox.isChecked() and not self.darkImage:
             self.bringPDIn()
             self.collect_transmission()
@@ -1206,9 +1303,10 @@ class Data_Collector(QWidget):
         """
         Triggers all the detectors and scalers for counting
         """
-        #pd={}
         if not self.darkImage:
             self.shutter_ON()
+            shutterTime=float(self.shutterTimeLineEdit.text())
+            QtTest.QTest.qWait(shutterTime*1000) #waiting for 0.3 seconds to open the shutter
         else:
             self.shutter_OFF()
         for detname in self.usedDetectors:
@@ -1310,6 +1408,24 @@ class Data_Collector(QWidget):
             self.sampleCounter+=1
             self.update_counter_record()        
             self.sampleImgCounterLabel.setText(str(self.sampleCounter))
+        if self.autoPumpCheckBox.isChecked() and not self.darkImage:
+            caput('15IDD:PHDUltra:TargetVolume',float(self.pumpVolLineEdit.text()))
+            caput('15IDD:PHDUltra:Infuse',1)
+            self.palette.setColor(QPalette.Foreground,Qt.red)
+            self.instrumentStatus.setPalette(self.palette)
+            t1=time.time()
+            QtTest.QTest.qWait(5*1000)
+            while caget('15IDD:PHDUltra:PumpState',as_string=True)!='Idle':
+                self.instrumentStatus.setText('Now pumping new solution for next frame')
+                QtTest.QTest.qWait(0.01*1000)
+            t2=time.time()
+            print(t2-t1)
+            caput("15IDD:PHDUltra:ClearVolume",0)
+            caput("15IDD:PHDUltra:Infuse",0)
+            self.palette.setColor(QPalette.Foreground,Qt.red)
+            self.instrumentStatus.setPalette(self.palette)
+            self.instrumentStatus.setText('Done')
+            
             
             
         

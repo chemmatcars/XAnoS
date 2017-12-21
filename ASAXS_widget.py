@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox
-from PyQt5.QtGui import QPalette
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QShortcut
+from PyQt5.QtGui import QPalette, QKeySequence
 from PyQt5.QtCore import Qt
 import os
 import sys
@@ -175,6 +175,8 @@ class ASAXS_Widget(QWidget):
         col=0
         self.removeDataPushButton=QPushButton('Remove selected Data')
         self.removeDataPushButton.clicked.connect(self.remove_data)
+        self.deleteShortCut=QShortcut(QKeySequence.Delete,self)
+        self.deleteShortCut.activated.connect(self.remove_data)
         self.dataDockLayout.addWidget(self.removeDataPushButton,row=row,col=col)
         col+=1
         self.saveDataPushButton=QPushButton('Save processed data')
@@ -1041,19 +1043,19 @@ class ASAXS_Widget(QWidget):
         self.AMatrix=np.array(self.AMatrix)
         
     def ASAXS_split(self):
-        try:
-            if str(self.ASAXSCalcTypeComboBox.currentText())=='np.linalg.lstsq':
-                if len(self.fnames)==3:
-                    self.ASAXS_split_0()
-                else:
-                    self.ASAXS_split_1()
+        #try:
+        if str(self.ASAXSCalcTypeComboBox.currentText())=='np.linalg.lstsq':
+            if len(self.fnames)==3:
+                self.ASAXS_split_0()
             else:
-                if len(self.fnames)==3:
-                    self.ASAXS_split_0()
-                else:
-                    self.ASAXS_split_2()
-        except:
-            QMessageBox(self,'Selection error','Please select atleast three data sets to calculate the components',QMessageBox.Ok)
+                self.ASAXS_split_1()
+        else:
+            if len(self.fnames)==3:
+                self.ASAXS_split_0()
+            else:
+                self.ASAXS_split_2()
+        #except:
+        #    QMessageBox.warning(self,'Selection error','Please select atleast three data sets to calculate the components',QMessageBox.Ok)
         
             
     def ASAXS_split_0(self):
@@ -1067,11 +1069,11 @@ class ASAXS_Widget(QWidget):
             self.XMatrix.append(x)
         self.XMatrix=np.array(self.XMatrix)
         self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,0],name='SAXS-term')
-        if np.all(self.XMatrix[:,1]>0):
-                self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
-        else:
-            QMessageBox.warning(self,'Negative Log error','Cross terms are all negative so plotting the -ve of cross terms',QMessageBox.Ok)
-            self.ASAXSPlotWidget.add_data(self.qintp,-self.XMatrix[:,1],name='neg Cross-term')
+        #if np.all(self.XMatrix[:,1]>0):
+        self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
+        #else:
+        #    QMessageBox.warning(self,'Negative Log error','Cross terms are all negative so plotting the -ve of cross terms',QMessageBox.Ok)
+        #    self.ASAXSPlotWidget.add_data(self.qintp,-self.XMatrix[:,1],name='neg Cross-term')
         self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,2],name='Resonant-term')
         self.ASAXSPlotWidget.add_data(self.qintp,np.sum(np.dot([self.AMatrix[0,:]],self.XMatrix.T),axis=0),name='Total')
         self.update_ASAXSPlot()
@@ -1090,11 +1092,11 @@ class ASAXS_Widget(QWidget):
                 self.XMatrix.append(x)
             self.XMatrix=np.array(self.XMatrix)
             self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,0],name='SAXS-term')
-            if np.all(self.XMatrix[:,1]>0):
-                self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
-            else:
-                QMessageBox.warning(self,'Negative Log error','Cross terms are all negative so plotting the -ve of cross terms',QMessageBox.Ok)
-                self.ASAXSPlotWidget.add_data(self.qintp,-self.XMatrix[:,1],name='neg Cross-term')
+            #if np.all(self.XMatrix[:,1]>0):
+            self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
+            #else:
+            #    QMessageBox.warning(self,'Negative Log error','Cross terms are all negative so plotting the -ve of cross terms',QMessageBox.Ok)
+            #    self.ASAXSPlotWidget.add_data(self.qintp,-self.XMatrix[:,1],name='neg Cross-term')
             self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,2],name='Resonant-term')
             self.ASAXSPlotWidget.add_data(self.qintp,np.sum(np.dot([self.AMatrix[0,:]],self.XMatrix.T),axis=0),name='Total')
             self.update_ASAXSPlot()
@@ -1124,11 +1126,11 @@ class ASAXS_Widget(QWidget):
                 self.XMatrix.append(res.x)
             self.XMatrix=np.array(self.XMatrix)
             self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,0],name='SAXS-term')
-            if np.all(self.XMatrix[:,1]>0):
-                self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
-            else:
-                QMessageBox.warning(self,'Negative Log error','Cross terms are all negative so plotting the -ve of cross terms',QMessageBox.Ok)
-                self.ASAXSPlotWidget.add_data(self.qintp,-self.XMatrix[:,1],name='neg Cross-term')
+            #if np.all(self.XMatrix[:,1]>0):
+            self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
+            #else:
+            #    QMessageBox.warning(self,'Negative Log error','Cross terms are all negative so plotting the -ve of cross terms',QMessageBox.Ok)
+            #    self.ASAXSPlotWidget.add_data(self.qintp,-self.XMatrix[:,1],name='neg Cross-term')
             self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,2],name='Resonant-term')
             self.ASAXSPlotWidget.add_data(self.qintp,np.sum(np.dot([self.AMatrix[0,:]],self.XMatrix.T),axis=0),name='Total')
             self.update_ASAXSPlot()
@@ -1153,10 +1155,10 @@ class ASAXS_Widget(QWidget):
         Updates the ASAXS plot
         """
         #datanames=[item.text().split(': ')[0] for item in self.dataListWidget.selectedItems()] 
-        if np.all(self.XMatrix[:,1]>0):
-            self.ASAXSPlotWidget.Plot(['Total','SAXS-term','Cross-term','Resonant-term'])
-        else:
-            self.ASAXSPlotWidget.Plot(['Total','SAXS-term','neg Cross-term','Resonant-term'])
+        #if np.all(self.XMatrix[:,1]>0):
+        self.ASAXSPlotWidget.Plot(['Total','SAXS-term','Cross-term','Resonant-term'])
+        #else:
+        #    self.ASAXSPlotWidget.Plot(['Total','SAXS-term','neg Cross-term','Resonant-term'])
         self.raiseDock(self.ASAXSPlotDock)
         #self.mainDock.moveDock(self.ASAXSPlotDock,'above',self.dataPlotDock)
         

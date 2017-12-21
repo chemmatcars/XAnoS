@@ -245,7 +245,7 @@ class Data_Reducer(QWidget):
         Opens a mask-widget to create mask file
         """
         fname=str(QFileDialog.getOpenFileName(self,'Select an image file', directory=self.curDir,filter='Image file (*.edf *.tif)')[0])
-        if fname is not None:
+        if fname is not None or fname!='':
             img=fb.open(fname).data
             self.maskWidget=MaskWidget(img)
             self.maskWidget.saveMaskPushButton.clicked.disconnect()
@@ -497,19 +497,22 @@ class Data_Reducer(QWidget):
                 try:
                     self.ai.set_wavelength(float(self.header['Wavelength'])*1e-10)
                 except:
-                    self.ai.set_wavelength(self.wavelength)                    
-                if self.darkFile is not None and self.darkFile!='' and self.darkCheckBox.isChecked():
+                    self.ai.set_wavelength(self.wavelength)
+                print(self.darkFile)
+                if os.path.exists(self.dataFile.split('.')[0]+'_dark.edf') and self.darkCheckBox.isChecked():
+                    self.darkFile=self.dataFile.split('.')[0]+'_dark.edf'
+                    dark=fb.open(self.darkFile)
+                    self.darkFileLineEdit.setText(self.darkFile)
+                    imageDark=dark.data                                     
+                    self.header['BSDiode_corr']=max([1.0,(float(imageData.header['BSDiode'])-float(dark.header['BSDiode']))])
+                    self.header['Monitor_corr']=max([1.0,(float(imageData.header['Monitor'])-float(dark.header['Monitor']))])
+                    print("Dark File read from existing dark files")                    
+                elif self.darkFile is not None and self.darkFile!='' and self.darkCheckBox.isChecked():
                     dark=fb.open(self.darkFile)
                     imageDark=dark.data                                     
                     self.header['BSDiode_corr']=max([1.0,(float(imageData.header['BSDiode'])-float(dark.header['BSDiode']))])
                     self.header['Monitor_corr']=max([1.0,(float(imageData.header['Monitor'])-float(dark.header['Monitor']))])
-                elif os.path.exists(self.dataFile.split('.')[0]+'_dark.edf') and self.darkCheckBox.isChecked():
-                    darkFile=self.dataFile.split('.')[0]+'_dark.edf'
-                    dark=fb.open(darkFile)
-                    self.darkFileLineEdit.setText(darkFile)
-                    imageDark=dark.data                                     
-                    self.header['BSDiode_corr']=max([1.0,(float(imageData.header['BSDiode'])-float(dark.header['BSDiode']))])
-                    self.header['Monitor_corr']=max([1.0,(float(imageData.header['Monitor'])-float(dark.header['Monitor']))])
+                    print("Dark File from memory subtracted")                
                 else:
                     imageDark=None
                     try:
@@ -517,6 +520,7 @@ class Data_Reducer(QWidget):
                         self.header['Monitor_corr']=float(imageData.header['Monitor'])
                     except:
                         self.transCorrCheckBox.setCheckState(Qt.Unchecked)
+                    print("No dark correction done")
                 if self.transCorrCheckBox.isChecked():
                     if str(self.normComboBox.currentText())=='BSDiode':
                         norm_factor=self.header['BSDiode_corr']#/float(self.header['count_time'])
