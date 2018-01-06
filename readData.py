@@ -65,8 +65,8 @@ def read1DSAXS(fname,data={},key=None,data_sort=True):
 
 def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,mt_num=None,Ntimes=1,xmin=0.0,xmax=1.0,Npt=1000,interpolation_type='linear', sample_thickness=0.148,bkg_fac=1.0):
     """
-    Reduce a set of SAXS data with background subtraction and normalizing the data for absolute 
-    scale using Glassy carbon
+    Reduce a set of SAXS data (kept in a same folder with a same name for data, backgrounds and standard sample) with background subtraction and normalizing the data for absolute 
+    scale using Glassy carbon 
     
     fname             : Filename initials other than the numbers. for instance for 'sample01_0001.edf' the filename would be 'sample01' where '0001' acts as the text corresponding to image number 1.
     sam_nums          : a list of image numbers considered to be samples
@@ -115,7 +115,6 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
         pfname=os.path.basename(gc_fname).split('.')[0]+'_bkg_sub_norm.txt'
         cfname=os.path.join(fdir,pfname)
         en,cf,x,y=calc_cf(cfname,xmin=xmin,xmax=xmax)
-        print(cf)
         data=read1DSAXS(sol_fname,data=data)
         data=read1DSAXS(mt_fname,data=data)
         for num in sam_nums:
@@ -241,14 +240,168 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
     for num in sam_nums:
         np.savetxt(os.path.join(meandir,'sam%04d_mean.txt'%num),np.vstack((sam_mean[num]['x'],sam_mean[num]['y'],sam_mean[num]['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
         
+def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_times=1,sol_name=None,sol_times=1,mt_name=None,mt_times=1,xmin=0.0,xmax=1.0,Npt=1000,interpolation_type='linear',sample_thickness=0.148,bkg_fac=1.0,data={}):
+    """
+    Reduce a set of SAXS data (with data, backgrounds and standard samples kept in different folders) with background subtraction and normalizing the data for absolute 
+    scale using Glassy carbon
+    
+    fname             : Filename initials other than the numbers. for instance for 'sample01_0001.edf' the filename would be 'sample01' where '0001' acts as the text corresponding to image number 1.
+    ftimes            : Number of times the measurement repeated
+    gc_name           : Filename initials other than the numbers for glassy carbon data
+    gc_times          : Number of times the glassy carbon data were measured
+    air_name          : Filename initials other than the numbers of air-data
+    air_times         : Number of times the air data were measured
+    sol_name          : Filename initials other than the numbers of solvent or background data
+    sol_times         : Number of times the air data were measured
+    mt_name           : Filename initials other than the numbers of empty capillary data
+    mt_times          : Number of times the empty capillary data were measured
+    xmin, xmax        : Minimum, Maximum Q-values for getting CF by comparing experimental Glassy Carbon data from standard NIST data
+    Npt               : Number of  points in which the data will be interpolated
+    interpolation_type: Choose between 'linear' (default), 'quadratic' and 'cubic'
+    sample_thickness  : Thickness of the samples in cm.'
+    bkg_fac           : Background multiplication factor just to scale the background if needed. Default value is 1.0 for automatic scaling. 0.0 or no background subtraction
+    """
+    if fname is None: 
+        return 'File error:: Please provide a filename'
+    if gc_name is None:
+        return 'File error:: Please provide glassy carbon filename'
+    if sol_name is None:
+        return 'File error:: Please provide solvent/bacground filename'
+    #if air_name is None:
+    #    return 'Please provide Air filename'
+    #if mt_name is None:
+    #    return 'Please provide empty capillary filename'
+    #Calculating average for all the files:
+    file_exists=True
+    num=1
+    ofnames=[]
+    while file_exists:
+        try:
+            fnum=range((num-1)*ftimes+1,num*ftimes+1)
+            data,ofname=average1DSAXS(fname,num=fnum,ofname=fname+'_%04d_proc.txt'%((num-1)*ftimes+1),data=data)
+            ofnames.append(ofname)
+        except:
+            del data[fname+'_%04d.txt'%((num-1)*ftimes+1)]
+            print(fname+'_%04d.txt'%((num-1)*ftimes+1)+ ' doesnot exist')
+            file_exists=False
+        num+=1
+    file_exists=True        
+    num=1
+    ogcnames=[]
+    while file_exists:
+        try:
+            fnum=range((num-1)*gc_times+1,num*gc_times+1)
+            data,ofname=average1DSAXS(gc_name,num=fnum,ofname=gc_name+'_%04d_proc.txt'%((num-1)*gc_times+1),data=data)
+            ogcnames.append(ofname)
+        except:
+            del data[gc_name+'_%04d.txt'%((num-1)*gc_times+1)]
+            print(gc_name+'_%04d.txt'%((num-1)*gc_times+1)+' doesnot exist')
+            file_exists=False
+        num+=1
+    if len(ofnames)!=len(ogcnames):
+        return "File number error: Number of data files not same as number of glassy carbon files"
+    file_exists=True        
+    num=1
+    osolnames=[]
+    while file_exists:
+        try:
+            fnum=range((num-1)*sol_times+1,num*sol_times+1)
+            data,ofname=average1DSAXS(sol_name,num=fnum,ofname=sol_name+'_%04d_proc.txt'%((num-1)*sol_times+1),data=data)
+            osolnames.append(ofname)
+        except:
+            del data[sol_name+'_%04d.txt'%((num-1)*sol_times+1)]
+            print(sol_name+'_%04d.txt'%((num-1)*sol_times+1)+' doesnot exist')
+            file_exists=False
+        num+=1
+            
+    if len(ofnames)!=len(osolnames):
+        return "File number error: Number of data files not same as number of solvent/background files"
+            
+    if air_name is not None:
+        file_exists=True        
+        num=1
+        oairnames=[]
+        while file_exists:
+            try:
+                fnum=range((num-1)*air_times+1,num*air_times+1)
+                data,ofname=average1DSAXS(air_name,num=fnum,ofname=air_name+'_%04d_proc.txt'%((num-1)*air_times+1),data=data)
+                oairnames.append(ofname)
+            except:
+                del data[air_name+'_%04d.txt'%((num-1)*air_times+1)]
+                print(air_name+'_%04d.txt'%((num-1)*air_times+1)+' doesnot exist')
+                file_exists=False
+            num+=1
+        if len(ofnames)!=len(oairnames):
+            return "File number error: Number of data files not same as number of air background files"
+    if mt_name is not None:
+        file_exists=True        
+        num=1
+        omtnames=[]
+        while file_exists:
+            try:
+                fnum=range((num-1)*mt_times+1,num*mt_times+1)
+                data,ofname=average1DSAXS(mt_name,num=fnum,ofname=mt_name+'_%04d_proc.txt'%((num-1)*mt_times+1),data=data)
+                omtnames.append(ofname)
+            except:
+                del data[mt_name+'_%04d.txt'%((num-1)*mt_times+1)]
+                print(mt_name+'_%04d.txt'%((num-1)*mt_times+1)+' doesnot exist')
+                file_exists=False
+            num+=1
+        if len(ofnames)!=len(ogcnames):
+            return "File number error: Number of data files not same as number of empty capillary files"
+    print("First stage completed: All files read successfully...")    
+    #performing interpolation of all the data sets
+    data=interpolate_data(data,Npt=Npt,kind=interpolation_type)
+    print("2nd stage completed: All data interpolated...")    
+    
+    #Performing background subtractions of the averaged data
+    for num in range(len(ofnames)):
+        print("Performing backgroud subtraction and normalization: %d, and %d more to do..."%(num,len(ofnames)-num))
+        data[ogcnames[num]]['x']=copy.copy(data[ogcnames[num]]['xintp'])
+        if air_name is not None:
+            data[ogcnames[num]]['y']=data[ogcnames[num]]['yintp']-data[oairnames[num]]['yintp']
+            data[ogcnames[num]]['yerr']=np.sqrt(data[ogcnames[num]]['yintperr']**2+data[oairnames[num]]['yintperr']**2)
+        else:
+            data[ogcnames[num]]['y']=data[ogcnames[num]]['yintp']
+            data[ogcnames[num]]['yerr']=data[ogcnames[num]]['yintperr']
+        
+        en,cf,x,y,z=calc_cf(ogcnames[num],xmin=xmin,xmax=xmax)
+        data[ogcnames[num]]['CF']=cf     
+        
+        data[ofnames[num]]['x']=copy.copy(data[ofnames[num]]['xintp'])
+        data[ofnames[num]]['y']=(data[ofnames[num]]['yintp']-data[osolnames[num]]['yintp'])
+        data[ofnames[num]]['yerr']=np.sqrt(data[ofnames[num]]['yintperr']**2+data[osolnames[num]]['yintperr']**2)
+        data[ofnames[num]]['CF']=cf
+        
+        
+        data[osolnames[num]]['x']=copy.copy(data[osolnames[num]]['xintp'])
+        if mt_name is not None:
+            data[osolnames[num]]['y']=(data[osolnames[num]]['yintp']-data[omtnames[num]]['yintp'])
+            data[osolnames[num]]['yerr']=np.sqrt(data[osolnames[num]]['yintperr']**2+data[omtnames[num]]['yintperr']**2)
+        else:
+            data[osolnames[num]]['y']=data[osolnames[num]]['yintp']
+            data[osolnames[num]]['yerr']=data[osolnames[num]]['yintperr']
+        data[osolnames[num]]['CF']=cf
+             
+        
+        if mt_name is not None and air_name is not None:
+            data[omtnames[num]]['x']=copy.copy(data[omtnames[num]]['xintp'])
+            data[omtnames[num]]['y']=data[omtnames[num]]['yintp']-data[oairnames[num]]['yintp']
+            data[omtnames[num]]['yerr']=np.sqrt(data[omtnames[num]]['yintperr']**2+data[oairnames[num]]['yintperr']**2)
+            data[omtnames[num]]['CF']=cf
+    print('Saving all the data now,,,')    
+    write1DSAXS(data)
+    print('Data processing completed successfully.')
+    return data
+        
 
-def average1DSAXS(fname,num=None,ofname=None,delete_prev=False):
+def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={}):
     """
     Averages over the 1D-SAXS patterns recorded in files with the names in the format like 'fname_0001.txt' where the last four numbers of the filename with path will be given as a list of numbers in 'num'.
     delete_prev=True will delete the directory containing output files if it exists
+    ofname=Output filename
     """
     if num is not None:
-        data={}
         fnames=[]
         for i in num:
             fnames.append(fname+'_%04d.txt'%i)
@@ -310,7 +463,7 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False):
             if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr':
                 header=header+key+'='+str(data[ofname][key])+'\n'
         np.savetxt(ofname,finaldata,header=header,comments='#')
-        print('Averaged data save in a file named %s'%ofname)
+        print('Averaged data saved in a file named %s'%ofname)
         return data,ofname
     
 def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg_sub',norm=1.0):
@@ -357,7 +510,7 @@ def interpolate_data(data,Npt=1000,kind='linear'):
     #for item in self.dataListWidget.selectedItems():
     for fname in data.keys():
         #dataname, fname=item.text().split(': ')
-        tmin=np.min(data[fname]['x'])
+        tmin=np.min(data[fname]['x']    )
         tmax=np.max(data[fname]['x'])
         if tmin>qmin:
             qmin=copy.copy(tmin)
@@ -394,72 +547,29 @@ def write1DSAXS(data):
         
         
 if __name__=='__main__':
-#    fname='Np_11_85keV'
-#    pfname='/home/epics/CARS5/Data/chemmat/Data/saxs/2017-08/Mar_CCD/'+fname+'/mar_ccd/extracted_diode_normalized/'+fname
-#    offset=60
-#    sam_nums=[offset+3,offset+4]#,offset+5,offset+6]
-#    gc_num=offset+1
-#    sol_num=offset+2
-#    mt_num=offset+5
-#    air_num=offset+6
-#    reduce1DSAXS(pfname,sam_nums=sam_nums,gc_num=gc_num,sol_num=sol_num,mt_num=mt_num,air_num=air_num,Ntimes=10,xmin=0.08,xmax=0.12,bkg_fac=1.0)
     try:
         fname=sys.argv[1]
     except:
-        print('Please provide the basefile name without numbers at the end.')
-#    try:
-#        start=int(sys.argv[2])
-#    except:
-#        print('Please provide starting file number.')
-#    try:
-#        end=int(sys.argv[3])
-#    except:
-#        print('Please provide starting file number.')
-#    try:
-#        ofname=sys.argv[4]
-#    except:
-#        ofname=None
-#    num=range(start,end+1)
+        print('Please provide the basefile name without numbers at the end as argument 2')
     try:
-        start=int(sys.argv[2])
+        fnum=int(sys.argv[2])
     except:
-        start=0
-    num=np.arange(1,31)+start
-    gcdata,gcname=average1DSAXS(fname,num=num,ofname='GC_mean.txt',delete_prev=False)
-    num=np.arange(31,61)+start
-    watdata,watname=average1DSAXS(fname,num=num,ofname='Water_mean.txt')
-    num=np.arange(61,91)+start
-    SiOSr1data,SiOSr1name=average1DSAXS(fname,num=num,ofname='AuSiOc_mean.txt')
-    num=np.arange(91,121)+start
-    SiOSr2data,SiOSr2name=average1DSAXS(fname,num=num,ofname='AuNp_mean.txt')
-    num=np.arange(121,151)+start
-    Srdata,Srname=average1DSAXS(fname,num=num,ofname='AuSiOd_mean.txt')
-    num=np.arange(151,181)+start
-    MTdata,MTname=average1DSAXS(fname,num=num,ofname='MT_mean.txt')
-    num=np.arange(181,211)+start
-    Airdata,Airname=average1DSAXS(fname,num=num,ofname='Air_mean.txt')
-    
-    print('Performing background subtraction for GC')
-    folder='Bkg_sub_wCF'
-    thickness=0.1055
-    norm=Airdata[Airname]['BSDiode_corr']/Airdata[Airname]['Monitor_corr']
-    fname=bkgSub1DSAXS(gcdata,gcname,Airdata,Airname,'G11C_norm.txt',folder='Bkg_sub',norm=norm)
-    energy,cf,qoff,x,istdf=calc_cf(fname,standard='GC',xmin=0.01,xmax=0.03,thickness=thickness)
-    #cf=1.0
-    fname=bkgSub1DSAXS(gcdata,gcname,Airdata,Airname,'GC_norm.txt',cf=cf,thickness=thickness,folder=folder,norm=norm)
-    thickness=0.148
-    print('Performing background subtraction for Water')
-    bkgSub1DSAXS(watdata,watname,MTdata,MTname,'Water_norm.txt',cf=cf,thickness=thickness,folder=folder,norm=norm)
-    #thickness=0.14
-    print('Performing background subtraction for AuSiOc')
-    bkgSub1DSAXS(SiOSr1data,SiOSr1name,watdata,watname,'AuSiOc_norm.txt',cf=cf,thickness=thickness,folder=folder,norm=norm)
-    #thickness=0.143
-    print('Performing background subtraction for AuNp')
-    bkgSub1DSAXS(SiOSr2data,SiOSr2name,watdata,watname,'AuNp_norm.txt',cf=cf,thickness=thickness,folder=folder,norm=norm)
-    #thickness=0.169
-    print('Performing background subtraction for AuSiOd')
-    bkgSub1DSAXS(Srdata,Srname,watdata,watname,'AuSiOd_norm.txt',cf=cf,thickness=thickness,folder=folder,norm=norm)
-    #thickness=0.158
-    print('Performing background subtraction for MT')
-    bkgSub1DSAXS(MTdata,MTname,Airdata,Airname,'MT_norm.txt',cf=cf,thickness=thickness,folder=folder,norm=norm)
+        print('Please provide the number of repeated measurements of data as argument 3')
+    try:
+        sol_name=sys.argv[3]
+    except:
+        print('Please provide the solvent/background file name without numbers at the end as argument 4')
+    try:
+        sol_num=int(sys.argv[4])
+    except:
+        print('Please provide the number of repeated measurements of solvent/background data as argument 5')
+    try:
+        gc_name=sys.argv[5]
+    except:
+        print('Please provide Glassy Carbon file name without numbers at the end as argument 6')
+    try:
+        gc_num=int(sys.argv[6])
+    except:
+        print('Please provide the number of repated measurements of Glassy carbon as argument 7')
+    reduce1DSAXS2(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,sample_thickness=0.1)
     

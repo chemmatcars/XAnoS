@@ -328,7 +328,7 @@ class Detector_Widget(QWidget):
         elif str(self.detectorComboBox.currentText())=='Pilatus_1M':
             QProcess.startDetached('medm -x -macro "P=15PIL3:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/pilatusDetector.adl"')
         elif str(self.detectorComboBox.currentText())=='Pilatus_100K':
-            QProcess.startDetached('medm -x -macro "P=dp_pilatusASD:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/pilatusDetector.adl"')
+            QProcess.startDetached('medm -x -macro "P=S33-pilatus1:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/pilatusDetector.adl"')
         elif str(self.detectorComboBox.currentText())=='PhotonII':
             QProcess.startDetached('medm -x -macro "P=13PII_1:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/PhotonII.adl"')
         else:

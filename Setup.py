@@ -12,7 +12,7 @@ class Setup(QObject):
         self.motorSetup()
         self.scalerSetup()
         self.beamlineSetup()
-        
+        self.slitSetup()
         
     def detectorSetup(self):
         """
@@ -56,7 +56,7 @@ class Setup(QObject):
                 
     def beamlineSetup(self):
         """
-        Loads the information about 
+        Loads the information about overall beamline related parameters
         """
         f=open(os.path.join(self.setupDir,'beamline_params.txt'),'r')
         lines=f.readlines()
@@ -66,3 +66,16 @@ class Setup(QObject):
                 name,info=line.split('@')
                 pv=info.strip()[1:-1]
                 self.BLParams[name]={'PV':pv.split('=')[1]}
+                
+    def slitSetup(self):
+        """
+        Loads the information about most of the slit related parameters
+        """
+        f=open(os.path.join(self.setupDir,'slit_params.txt'),'r')
+        lines=f.readlines()
+        self.slitParams={}
+        for line in lines:
+            if line[0]!='#' and line[0]!='\n':
+                name,info=line.split('@')
+                pv,rbk,mov1,mov2=info.strip()[1:-1].split(',')
+                self.slitParams[name]={'PV':pv.split('=')[1],'RBK':rbk.split('='),'MOV1':mov1.split('='),'MOV2':mov2.split('=')}

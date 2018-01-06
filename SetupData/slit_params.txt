@@ -1,0 +1,18 @@
+# Information regarding all slit parameters
+#JJD parameters
+JJD_HGap@[pv=15IDD:Slit1Hsize,rbk=15IDD:Slit1Ht2.C,mov1=15IDD:m23,mov2=15IDD:m24]
+JJD_HCenter@[pv=15IDD:Slit1Hcenter,rbk=15IDD:Slit1Ht2.D,mov1=15IDD:m23,mov2=15IDD:m24]
+JJD_VGap@[pv=15IDD:Slit1Vsize,rbk=15IDD:Slit1Vt2.C,mov1=15IDD:m21,mov2=15IDD:m22]
+JJD_VCenter@[pv=15IDD:Slit1Vcenter,rbk=15IDD:Slit1Vt2.D,mov1=15IDD:m21,mov2=15IDD:m22]
+#
+#JJC parameters
+JJC_HGap@[pv=15IDC:Slit4HDsize,rbk=15IDC:Slit4HDt2.C,mov1=15IDC:m49,mov2=15IDC:m50]
+JJC_HCenter@[pv=15IDC:Slit4HDcenter,rbk=15IDC:Slit4HDt2.D,mov1=15IDC:m49,mov2=15IDC:m50]
+JJC_VGap@[pv=15IDC:Slit4VDsize,rbk=15IDC:Slit4VDt2.C,mov1=15IDC:m39,mov2=15IDC:m40]
+JJC_VCenter@[pv=15IDC:Slit4VDcenter,rbk=15IDC:Slit4VDt2.D,mov1=15IDC:m39,mov2=15IDC:m40]
+#
+#JJD parameters
+JJB_HGap@[pv=15IDB:Slit2Hsize,rbk=15IDB:Slit2Ht2.C,mov1=15IDB:m7,mov2=15IDB:m8]
+JJB_HCenter@[pv=15IDB:Slit2Hcenter,rbk=15IDB:Slit2Ht2.D,mov1=15IDB:m7,mov2=15IDB:m8]
+JJB_VGap@[pv=15IDG:Slit2Vsize,rbk=15IDB:Slit2Vt2.C,mov1=15IDB:m13,mov2=15IDB:m14]
+JJB_VCenter@[pv=15IDB:Slit2Vcenter,rbk=15IDB:Slit2Vt2.D,mov1=15IDB:m13,mov2=15IDB:m14]

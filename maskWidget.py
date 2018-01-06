@@ -18,8 +18,10 @@ class MaskWidget(QWidget):
         self.tmp_data=copy.copy(self.imageData)
         
         self.mask={}
+        self.mask_type={}
         self.mask_val={}
         self.mask_data={}
+        self.threshold={}
         self.mask_number=0
         
         self.vblayout=QVBoxLayout(self)
@@ -102,7 +104,7 @@ class MaskWidget(QWidget):
         self.maskControlLayout.addWidget(maskShapeLabel,row=row,col=col)
         col=1
         self.maskShapeComboBox=QComboBox()
-        self.maskShapeComboBox.addItems(['rectangle','inverted-Rectangle','ellipse','inverted-ellipse','polyline','inverted-polyline'])
+        self.maskShapeComboBox.addItems(['upper-threshold','lower-threshold','rectangle','inverted-rectangle','ellipse','inverted-ellipse','polyline','inverted-polyline'])
         self.maskControlLayout.addWidget(self.maskShapeComboBox,row=row,col=col)
         row=3
         col=0
@@ -138,7 +140,18 @@ class MaskWidget(QWidget):
         self.roiPS=int(self.roiPSLineEdit.text())
         self.roiLW=int(self.roiLWLineEdit.text())
         self.roiPen=pg.mkPen(color=self.roiColorButton.color(),width=self.roiLW)
-        if str(self.maskShapeComboBox.currentText())=='rectangle':
+        if str(self.maskShapeComboBox.currentText())=='upper-threshold':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
+            self.mask_val[self.mask_number]=1
+            self.threshold[self.mask_number],_=QInputDialog.getDouble(self,'Upper-threshold','Upper-threshld value:',value=1e6)
+            self.shape_ListWidget.addItem(str(self.mask_number)+':upper-threshold: val=%.e'%(self.threshold[self.mask_number]))
+        elif str(self.maskShapeComboBox.currentText())=='lower-threshold':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
+            self.mask_val[self.mask_number]=1
+            self.threshold[self.mask_number],_=QInputDialog.getDouble(self,'Lower-threshold value','Lower-threshld value:',value=0)
+            self.shape_ListWidget.addItem(str(self.mask_number)+':lower-threshold: val=%.e'%(self.threshold[self.mask_number]))
+        elif str(self.maskShapeComboBox.currentText())=='rectangle':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx-0.1*lenx/2.0,centery-0.1*leny/2.0]
             size=[0.1*lenx,0.1*leny]
             self.mask[self.mask_number]=pg.ROI(pos,size,pen=self.roiPen)
@@ -147,6 +160,7 @@ class MaskWidget(QWidget):
             self.mask[self.mask_number].addScaleHandle((1,1),(0.0,0.0))
             self.shape_ListWidget.addItem(str(self.mask_number)+':rectangle: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
         elif str(self.maskShapeComboBox.currentText())=='inverted-rectangle':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx-0.1*lenx/2.0,centery-0.1*leny/2.0]
             size=[0.1*lenx,0.1*leny]
             self.mask[self.mask_number]=pg.ROI(pos,size,pen=self.roiPen)
@@ -155,18 +169,21 @@ class MaskWidget(QWidget):
             self.mask[self.mask_number].addScaleHandle((1,1),(0.0,0.0))
             self.shape_ListWidget.addItem(str(self.mask_number)+':inverted-rectangle: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
         elif self.maskShapeComboBox.currentText()=='ellipse':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx,centery]
             size=[0.1*lenx,0.1*leny]
             self.mask[self.mask_number]=pg.EllipseROI(pos,size,pen=self.roiPen)
             self.mask_val[self.mask_number]=1
             self.shape_ListWidget.addItem(str(self.mask_number)+':ellipse: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
         elif self.maskShapeComboBox.currentText()=='inverted-ellipse':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx,centery]
             size=[0.1*lenx,0.1*leny]
             self.mask[self.mask_number]=pg.EllipseROI(pos,size,pen=self.roiPen)
             self.mask_val[self.mask_number]=-1
             self.shape_ListWidget.addItem(str(self.mask_number)+':inverted-ellipse: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
         elif self.maskShapeComboBox.currentText()=='polyline':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             self.pg_axis.scene().sigMouseClicked.connect(self.draw_polyline)
             self.roi_finished=False
             self.new_pos=[]
@@ -178,6 +195,7 @@ class MaskWidget(QWidget):
             self.pg_axis.addItem(self.tmpLine)
             return
         elif self.maskShapeComboBox.currentText()=='inverted-polyline':
+            self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             self.pg_axis.scene().sigMouseClicked.connect(self.draw_polyline)
             self.roi_finished=False
             self.new_pos=[]
@@ -186,9 +204,10 @@ class MaskWidget(QWidget):
             self.pg_axis.addItem(self.mask[self.mask_number])
             self.pg_axis.addItem(self.tmpLine)
             return
-        self.pg_axis.addItem(self.mask[self.mask_number])
-        self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
-        self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
+        if str(self.maskShapeComboBox.currentText())!='lower-threshold' and str(self.maskShapeComboBox.currentText())!='upper-threshold':
+            self.pg_axis.addItem(self.mask[self.mask_number])
+            self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
+            self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
         self.mask_number=self.mask_number+1
         
     def updateROI(self):
@@ -255,7 +274,8 @@ class MaskWidget(QWidget):
         """
         for item in self.shape_ListWidget.selectedItems():
             mask_number=int(str(item.text()).split(':')[0])
-            self.pg_axis.removeItem(self.mask[mask_number])
+            if self.mask_type[mask_number]!='upper-threshold' and self.mask_type[mask_number]!='lower-threshold':
+                self.pg_axis.removeItem(self.mask[mask_number])
             row=self.shape_ListWidget.row(item)
             self.shape_ListWidget.takeItem(row)
             if mask_number in self.mask_data:
@@ -264,6 +284,7 @@ class MaskWidget(QWidget):
                 del self.mask_val[mask_number]
             if mask_number in self.mask:
                 del self.mask[mask_number]
+            del self.mask_type[mask_number]
         if self.shape_ListWidget.count()>0:           
             self.create_all_masks()
         else:
@@ -276,20 +297,26 @@ class MaskWidget(QWidget):
         """
         self.masking=1
         self.mask_data[mask_number]=np.zeros_like(self.imageData)
-        cols,rows=self.imageData.shape
-        m=np.mgrid[:cols,:rows]
-        possx=m[0,:,:]
-        possy=m[1,:,:]
-        possx.shape=cols,rows
-        possy.shape=cols,rows
-        mpossx=self.mask[mask_number].getArrayRegion(possx,self.pg_image)
-        mpossx=mpossx[np.nonzero(mpossx)].astype('int')
-        mpossy=self.mask[mask_number].getArrayRegion(possy,self.pg_image)
-        mpossy=mpossy[np.nonzero(mpossy)].astype('int')
-        self.mask_data[mask_number][mpossx,mpossy]=self.mask_val[mask_number]
-        #print(np.sum(self.mask_data[mask_number]))
-        if self.mask_val[mask_number]<0:
-            self.mask_data[mask_number]=1+self.mask_data[mask_number]
+        if self.mask_type[mask_number]=='upper-threshold':
+            self.mask_data[mask_number]=np.where(self.imageData>self.threshold[mask_number],self.mask_val[mask_number],0)
+        elif self.mask_type[mask_number]=='lower-threshold':
+            self.mask_data[mask_number]=np.where(self.imageData<self.threshold[mask_number],self.mask_val[mask_number],0)
+            print('I m here')
+        else:
+            cols,rows=self.imageData.shape
+            m=np.mgrid[:cols,:rows]
+            possx=m[0,:,:]
+            possy=m[1,:,:]
+            possx.shape=cols,rows
+            possy.shape=cols,rows
+            mpossx=self.mask[mask_number].getArrayRegion(possx,self.pg_image)
+            mpossx=mpossx[np.nonzero(mpossx)].astype('int')
+            mpossy=self.mask[mask_number].getArrayRegion(possy,self.pg_image)
+            mpossy=mpossy[np.nonzero(mpossy)].astype('int')
+            self.mask_data[mask_number][mpossx,mpossy]=self.mask_val[mask_number]
+            #print(np.sum(self.mask_data[mask_number]))
+            if self.mask_val[mask_number]<0:
+                self.mask_data[mask_number]=1+self.mask_data[mask_number]
   
     def create_all_masks(self):
         """
@@ -304,7 +331,7 @@ class MaskWidget(QWidget):
             self.full_mask_data[-1,:]=1
             self.full_mask_data[:,0]=1
             self.full_mask_data[:,-1]=1
-        for key in self.mask.keys():
+        for key in self.mask_type.keys():
             self.create_mask(key)
             self.full_mask_data=np.logical_or(self.full_mask_data,self.mask_data[key])
         self.full_mask_data=-1*self.full_mask_data
@@ -390,34 +417,52 @@ class MaskWidget(QWidget):
             self.shape_ListWidget.addItem(line.strip())
             s_line=line.strip().split(':')
             self.mask_number=int(s_line[0])
-            mask_shape=s_line[1]
-            if (mask_shape=='rectangle') or (mask_shape=='inverted-rectangle'):
+            mask_type=s_line[1]
+            self.mask_type[self.mask_number]=mask_type
+            if mask_type=='upper-threshold':
+                val=eval(s_line[2].split('=')[1])
+                self.mask_val[self.mask_number]=1
+                self.threshold[self.mask_number]=val
+                self.mask_number+=1
+            elif mask_type=='lower-threshold':
+                val=eval(s_line[2].split('=')[1])
+                self.mask_val[self.mask_number]=1
+                self.threshold[self.mask_number]=val
+                self.mask_number+=1
+            elif (mask_type=='rectangle') or (mask_type=='inverted-rectangle'):
                 size_pos=s_line[2].split(';')
                 pos=eval(size_pos[0].split('=')[1])
                 size=eval(size_pos[1].split('=')[1])
                 val=eval(size_pos[2].split('=')[1])
                 self.mask[self.mask_number]=pg.ROI(pos,size)
                 self.mask_val[self.mask_number]=val
-                self.mask[self.mask_number].addRotateFreeHandle((0,0),(0.5,0.5))
+                #self.mask[self.mask_number].addRotateFreeHandle((0,0),(0.5,0.5))
                 self.mask[self.mask_number].addScaleHandle((1,1),(0,0))
-            elif (mask_shape=='ellipse') or (mask_shape=='inverted-ellipse'):
+                self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
+                self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
+                self.pg_axis.addItem(self.mask[self.mask_number])
+            elif (mask_type=='ellipse') or (mask_type=='inverted-ellipse'):
                 size_pos=s_line[2].split(';')
                 pos=eval(size_pos[0].split('=')[1])
                 size=eval(size_pos[1].split('=')[1])
                 val=eval(size_pos[2].split('=')[1])
                 self.mask[self.mask_number]=pg.EllipseROI(pos,size)
                 self.mask_val[self.mask_number]=val
+                self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
+                self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
+                self.pg_axis.addItem(self.mask[self.mask_number])
             else:
                 pos_val=s_line[2].split(';')
                 pos=eval(pos_val[0].split('=')[1])
                 val=eval(pos_val[1].split('=')[1])
                 self.mask[self.mask_number]=PolyLineROI_new(pos,closed=True)
                 self.mask_val[self.mask_number]=val
-            self.mask[self.mask_number].sigRegionChangeStarted.connect(self.move_shape)
-            self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
-            self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
-            self.pg_axis.addItem(self.mask[self.mask_number])
+                self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
+                self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
+                self.pg_axis.addItem(self.mask[self.mask_number])
+            #self.mask[self.mask_number].sigRegionChangeStarted.connect(self.move_shape)
         self.mask_number=self.mask_number+1
+        
         #self.create_all_masks()
         
         
@@ -428,10 +473,12 @@ class MaskWidget(QWidget):
         self.masking=1
         if self.hide_shapes_CheckBox.checkState()>0:
             for mask_number in self.mask.keys():
-                self.mask[mask_number].hide()
+                if self.mask_type!='upper_threshold' and self.mask_type!='lower_threshold':
+                    self.mask[mask_number].hide()
         else:
             for mask_number in self.mask.keys():
-                self.mask[mask_number].show()
+                if self.mask_type!='upper_threshold' and self.mask_type!='lower_threshold':
+                    self.mask[mask_number].show()
                 
     def save_mask(self):
         """
