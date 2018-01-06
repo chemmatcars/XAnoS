@@ -1,0 +1,180 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Collection of Widgets &#8212; SAXS_Drive 0.11 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to SAXS_Drive’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to SAXS_Drive’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SAXS_Drive 0.11 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to SAXS_Drive’s documentation!</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="collection-of-widgets">
+<h1>Collection of Widgets<a class="headerlink" href="#collection-of-widgets" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="data-collection-widget">
+<h2>Data Collection Widget<a class="headerlink" href="#data-collection-widget" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="calibration-widget">
+<h2>Calibration Widget<a class="headerlink" href="#calibration-widget" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mask-widget">
+<h2>Mask Widget<a class="headerlink" href="#mask-widget" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="asaxs-widget">
+<h2>ASAXS Widget<a class="headerlink" href="#asaxs-widget" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-Fit_widget">
+<span id="fit-widget"></span><h2>Fit Widget<a class="headerlink" href="#module-Fit_widget" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Fit_widget.Fit_Widget">
+<em class="property">class </em><code class="descclassname">Fit_widget.</code><code class="descname">Fit_Widget</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>This widget class is developed to provide an end-user a <em>Graphical User Interface</em> by which either they can develop their own fitting functions in python or use the existing fitting functions under different categories to analyze different kinds of one-dimensional data sets. ‘LMFIT’:<a class="reference external" href="https://lmfit.github.io/lmfit-py/">https://lmfit.github.io/lmfit-py/</a> is extensively used within this widget.</p>
+<p><strong>Features</strong></p>
+<ol class="arabic simple">
+<li>Read and fit multiple data files</li>
+<li>Already available functions are categorized as per the function types and techniques</li>
+<li>Easy to add more catergories and user-defined functions</li>
+<li>Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.</li>
+<li>An in-built Function editor with a function template is provided.</li>
+<li>The function editor is enabled with python syntax highlighting.</li>
+</ol>
+<p><strong>Usage</strong></p>
+<p><a class="reference internal" href="#Fit_widget.Fit_Widget" title="Fit_widget.Fit_Widget"><code class="xref py py-class docutils literal"><span class="pre">Fit_Widget</span></code></a> can be used as stand-alone python fitting package by running it in terminal as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$python Fit_widget.py
+</pre></div>
+</div>
+<p>Also it can be used as a widget with any other python application.</p>
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.addData">
+<code class="descname">addData</code><span class="sig-paren">(</span><em>fnames=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.addData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.addData" title="Permalink to this definition">¶</a></dt>
+<dd><p>fnames        :List of filenames</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.loadParameters">
+<code class="descname">loadParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.loadParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.loadParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads parameters from a parameter file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.plot_extra_param">
+<code class="descname">plot_extra_param</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.plot_extra_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.plot_extra_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.removeData">
+<code class="descname">removeData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.removeData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.removeData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.saveParameters">
+<code class="descname">saveParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.saveParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.saveParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves all the fixed and fitted parameteres in a file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.update_catagories">
+<code class="descname">update_catagories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.update_catagories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.update_catagories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads all the modules in the the Functions directory and populates the funcListWidget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.update_functions">
+<code class="descname">update_functions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.update_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.update_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depending upon the selected category this populates the funcListWidget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Fit_widget.Fit_Widget.update_parameters">
+<code class="descname">update_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.update_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.update_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depending upon the selection of the function this updates the reloads the parameters required for the function</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to SAXS_Drive’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SAXS_Drive 0.11 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mrinal Kanti Bera.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+    </div>
+  </body>
+</html>

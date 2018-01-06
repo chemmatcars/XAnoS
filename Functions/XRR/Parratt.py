@@ -61,7 +61,7 @@ class Parratt: #Please put the class name same as the function name
         self.__z__=np.linspace(-5*maxsig,np.sum(d[:-1])+5*maxsig,self.Nlayers)
         zlayer=self.__z__[1]-self.__z__[0]
         #Condition imposed on sig for rougness less than the thicknesses of the sublayers
-        sig=np.where(sig<zlayer,0.1*zlayer,sig)
+        #sig=np.where(sig<zlayer,0.1*zlayer,sig)
         drho=np.zeros(self.Nlayers)
         dbeta=np.zeros(self.Nlayers)
         self.__d__=np.diff(self.__z__)
