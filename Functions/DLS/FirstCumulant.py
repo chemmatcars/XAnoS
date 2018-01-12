@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 
 
 class FirstCumulant: #Please put the class name same as the function name
-    def __init__(self,x=0,tfac=1e-6,lam=6370,n=1.33,theta=90,T=295,D=1.0,norm=1.0,bkg=0.0,__mpar__={}):
+    def __init__(self,x=0,tfac=1e-6,lam=6370,n=1.33,theta=90,T=295,D=1.0,norm=1.0,bkg=0.0,mpar={}):
         """
         Calculates auto-correlation function for DLS measurements in water as a solvent
         x         : scalar or array of time intervals in microseconds
@@ -36,7 +36,7 @@ class FirstCumulant: #Please put the class name same as the function name
         self.D=D
         self.norm=norm
         self.bkg=bkg
-        self.__mpar__={} #If there is any multivalued parameter
+        self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
         self.output_params={}
 

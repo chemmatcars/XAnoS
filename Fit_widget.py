@@ -429,9 +429,11 @@ class Fit_Widget(QWidget):
         self.dataLayoutWidget.nextRow()
         self.autoCICheckBox=QCheckBox()
         self.autoCICheckBox.setTristate(False)
-        self.autoCICheckBox.setCheckState(Qt.Checked)
+        self.autoCICheckBox.setCheckState(Qt.Unchecked)
+        self.autoCICheckBox.setDisabled(True)
         self.calcConfInterButton=QPushButton('Calculate Confidence Interval')
         self.calcConfInterButton.clicked.connect(self.calcConfInterval)
+        self.calcConfInterButton.setDisabled(True)
         self.dataLayoutWidget.addWidget(self.autoCICheckBox)
         self.dataLayoutWidget.addWidget(self.calcConfInterButton,col=1)      
         
@@ -784,33 +786,43 @@ class Fit_Widget(QWidget):
                 item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
                 item.setCheckState(Qt.Unchecked)
             self.update_plot()
+            self.remove_mpar_button.setEnabled(True)
         except:
             QMessageBox.warning(self,'Warning','Please select a row at which you would like to add a set of parameters',QMessageBox.Ok)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
             
     def remove_mpar(self):
-        self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         selrows=list(set([item.row() for item in self.mfitParamTableWidget.selectedItems()]))
-        if 0 in selrows or self.mfitParamTableWidget.rowCount()-1 in selrows:
-            QMessageBox.warning(self,'Selection error','Cannot remove the first and last parameters',QMessageBox.Ok)
-        elif selrows!=[]:
+        num=self.mfitParamTableWidget.rowCount()-len(selrows)
+        if num<self.mpar_N:
+            QMessageBox.warning(self,'Selection error','The minimum number of rows required for this function to work is %d. You can only remove %d rows'%(self.mpar_N,num),QMessageBox.Ok)
+            return
+        self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+        if selrows!=[]:
             selrows.sort(reverse=True)
             for row in selrows:
                 maxrow=self.mfitParamTableWidget.rowCount()
                 for trow in range(row,maxrow-1):
                     for col in range(self.mfitParamTableWidget.columnCount()):
                         parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
-                        key1='__%s__%03d'%(parkey,trow)
-                        key2='__%s__%03d'%(parkey,trow+1)
-                        self.fit.fit_params[key1]=copy.copy(self.fit.fit_params[key2])
-                        del self.fit.params['__mpar__'][parkey][row]
-                del self.fit.fit_params[key2]
+                        if trow<maxrow-1:
+                            key1='__%s__%03d'%(parkey,trow)
+                            key2='__%s__%03d'%(parkey,trow+1)
+                            self.fit.fit_params[key1]=copy.copy(self.fit.fit_params[key2])
+                            del self.fit.params['__mpar__'][parkey][row]
+                            del self.fit.fit_params[key2]
+                        else:
+                            key1='__%s__%03d'%(parkey,trow)
+                            del self.fit.params['__mpar__'][parkey][row]
+                            del self.fit.fit_params[key1]
                 self.mfitParamTableWidget.removeRow(row)
                 self.mfitParamData=np.delete(self.mfitParamData,row)
         else:
             QMessageBox.warning(self,'Nothing selected','No item is selected for removal',QMessageBox.Ok)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
         self.update_plot()
+        if self.mfitParamTableWidget.rowCount()==self.mpar_N:
+            self.remove_mpar_button.setDisabled(True)
             
         
     def saveGenParameters(self):
@@ -1098,7 +1110,7 @@ class Fit_Widget(QWidget):
             self.mfitParamData=np.array(tpdata,dtype=[(key,object) for key in self.mpar_keys])
             self.mfitParamTableWidget.setData(self.mfitParamData)
             self.add_mpar_button.setEnabled(True)
-            self.remove_mpar_button.setEnabled(True)
+            #self.remove_mpar_button.setEnabled(True)
             for row in range(self.mfitParamTableWidget.rowCount()):
                 for col in range(self.mfitParamTableWidget.columnCount()):
                     item=self.mfitParamTableWidget.item(row,col)

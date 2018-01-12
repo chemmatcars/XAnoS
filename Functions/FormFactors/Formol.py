@@ -16,7 +16,7 @@ from itertools import combinations
 import os
 
 class Formol: #Please put the class name same as the function name
-    def __init__(self,x=0,E=12.0,fname1='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P8W48.xyz',eta1=1.0,fname2='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P2W12.xyz',eta2=0.0,qoff=0.0,sol=18.0,sig=0.0,norm=1,bkg=0.0,__mpar__={}):
+    def __init__(self,x=0,E=12.0,fname1='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P8W48.xyz',eta1=1.0,fname2='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P2W12.xyz',eta2=0.0,qoff=0.0,sol=18.0,sig=0.0,norm=1,bkg=0.0,mpar={}):
         """
         Calculates the form factor for two different kinds of  molecules for which the XYZ coordinates of the all the atoms composing the molecules are known
 
@@ -54,7 +54,7 @@ class Formol: #Please put the class name same as the function name
         self.sol=sol
         self.qoff=qoff
         self.sig=sig
-        self.__mpar__={} #If there is any multivalued parameter
+        self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
         self.output_params={}
         self.__fnames__=[self.fname1,self.fname2]

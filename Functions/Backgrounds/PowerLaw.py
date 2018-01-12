@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 
 
 class PowerLaw: #Please put the class name same as the function name
-    def __init__(self,x=0,A=1,n=0,__mpar__={}):
+    def __init__(self,x=0,A=1,n=0,mpar={}):
         """
         The power law function is y=Ax^n
         x           : independent variable in ter form of a scalar or an array
