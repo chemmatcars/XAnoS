@@ -51,11 +51,21 @@ class PlotWidget(QWidget):
         self.plotWidget.getPlotItem().vb.scene().sigMouseMoved.connect(self.mouseMoved)
         self.legendItem=pg.LegendItem(offset=(0.0,1.0))
         self.legendItem.setParentItem(self.plotWidget.getPlotItem())
-        self.plotLayout.addWidget(self.plotWidget,row=row,col=col,colspan=5)                                  
-        self.crosshairLabel=QLabel(u'X=%+0.5f , y=%+0.5f'%(0.0,0.0))
+        self.plotLayout.addWidget(self.plotWidget,row=row,col=col,colspan=5)
         row+=1
-        col=0
-        self.plotLayout.addWidget(self.crosshairLabel,row=row,col=col)
+        col=0                                  
+        self.crosshairLabel=QLabel(u'X={: .5f} , y={: .5f}'.format(0.0,0.0))
+        self.xLogCheckBox=QCheckBox('LogX')
+        self.xLogCheckBox.setTristate(False)
+        self.xLogCheckBox.stateChanged.connect(self.updatePlot)
+        self.yLogCheckBox=QCheckBox('LogY')
+        self.yLogCheckBox.setTristate(False)
+        self.yLogCheckBox.stateChanged.connect(self.updatePlot)
+        self.plotLayout.addWidget(self.crosshairLabel,row=row,col=col,colspan=3)
+        self.plotLayout.addWidget(self.xLogCheckBox,row=row,col=3)
+        self.plotLayout.addWidget(self.yLogCheckBox,row=row,col=4)
+        
+        
         
         
         
@@ -66,7 +76,16 @@ class PlotWidget(QWidget):
             x=10**x
         if self.plotWidget.getPlotItem().ctrl.logYCheck.isChecked():
             y=10**y
-        self.crosshairLabel.setText(u'X=%+0.5f, Y=%+0.5e'%(x,y))
+        if x>1e-3 and y>1e-3:
+            self.crosshairLabel.setText(u'X={: .5f} , y={: .5f}'.format(x,y))
+        if x<1e-3 and y>1e-3:
+            self.crosshairLabel.setText(u'X={: .3e} , y={: .5f}'.format(x,y))
+        if x>1e-3 and y<1e-3:
+            self.crosshairLabel.setText(u'X={: .5f} , y={: .3e}'.format(x,y))
+        if x<1e-3 and y<1e-3:
+            self.crosshairLabel.setText(u'X={: .3e} , y={: .3e}'.format(x,y))
+                
+        #self.crosshairLabel.setText(u'X=%+0.5f, Y=%+0.5e'%(x,y))
         
         
     def add_data(self,x,y,yerr=None,name=None):
@@ -145,6 +164,14 @@ class PlotWidget(QWidget):
                 self.plotWidget.addItem(self.dataErr[dname])
                 self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
             self.legendItem.addItem(self.data[dname],dname)
+        if self.xLogCheckBox.isChecked():
+            self.plotWidget.plotItem.setLogMode(x=True)
+        else:
+            self.plotWidget.plotItem.setLogMode(x=False)
+        if self.yLogCheckBox.isChecked():
+            self.plotWidget.plotItem.setLogMode(y=True)
+        else:
+            self.plotWidget.plotItem.setLogMode(y=False)
             
     def updatePlot(self):
         for dname in self.selDataNames:

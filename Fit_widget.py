@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QSplitter, QSizePolicy, QAbstractScrollArea, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QSplitter, QSizePolicy, QAbstractScrollArea, QHBoxLayout, QTextEdit
 from PyQt5.QtGui import QPalette
 from PyQt5.QtCore import Qt, QThread
 import os
@@ -80,6 +80,7 @@ class minMaxDialog(QDialog):
         self.okButton=QPushButton('OK')
         self.okButton.clicked.connect(self.okandClose)
         self.layoutWidget.addWidget(self.okButton)
+        self.okButton.setDefault(True)
         
     def okandClose(self):
         try:
@@ -97,6 +98,50 @@ class minMaxDialog(QDialog):
 
     def cancelandClose(self):
         self.reject()
+
+class FitResultDialog(QDialog):
+    def __init__(self,fit_report,fit_info,parent=None):
+        QDialog.__init__(self,parent)
+        self.fit_report=fit_report
+        self.fit_info=fit_info
+        self.createUI()
+        self.resize(600,400)
+        
+    def createUI(self):
+        self.vblayout=QVBoxLayout(self)
+        self.layoutWidget=pg.LayoutWidget()
+        self.vblayout.addWidget(self.layoutWidget)
+        
+        fitReportLabel=QLabel('Fit Report')
+        self.layoutWidget.addWidget(fitReportLabel,colspan=2)
+        self.layoutWidget.nextRow()
+        self.fitReportTextEdit=QTextEdit()
+        self.fitReportTextEdit.setText(self.fit_report)
+        self.layoutWidget.addWidget(self.fitReportTextEdit,colspan=2)
+        
+        self.layoutWidget.nextRow()
+        fitInfoLabel=QLabel('Fit Info')
+        self.layoutWidget.addWidget(fitInfoLabel,colspan=2)
+        self.layoutWidget.nextRow()
+        self.fitInfoTextEdit=QTextEdit()
+        self.fitInfoTextEdit.setText(self.fit_info)
+        self.layoutWidget.addWidget(self.fitInfoTextEdit,colspan=2)
+        
+        self.layoutWidget.nextRow()
+        self.cancelButton=QPushButton('Reject')
+        self.cancelButton.clicked.connect(self.cancelandClose)
+        self.layoutWidget.addWidget(self.cancelButton,col=0)
+        self.okButton=QPushButton('Accept')
+        self.okButton.clicked.connect(self.okandClose)
+        self.layoutWidget.addWidget(self.okButton,col=1)
+        self.okButton.setDefault(True)
+        
+    def okandClose(self):
+        self.accept()
+        
+    def cancelandClose(self):
+        self.reject()
+
 
 class Fit_Widget(QWidget):
     """
@@ -136,7 +181,7 @@ class Fit_Widget(QWidget):
         self.funcDock=Dock('Functions',size=(1,8))
         self.dataDock=Dock('Data',size=(1,8))
         self.paramDock=Dock('Parameters',size=(2,8))
-        self.plotDock=Dock('Plot',size=(5,8))
+        self.plotDock=Dock('Data and Fit',size=(5,8))
         self.mainDock.addDock(self.dataDock)
         self.mainDock.addDock(self.paramDock,'right')
         self.mainDock.addDock(self.plotDock,'right')
@@ -412,7 +457,6 @@ class Fit_Widget(QWidget):
         self.fit_method=self.fitMethods[self.fitMethodComboBox.currentText()]
         self.fit_scale=self.fitScaleComboBox.currentText()
         self.fit.functionCalled.connect(self.fitCallback)
-        
         for fname in self.sfnames:
             self.fit.x=self.data[fname]['x']
             self.fit.y=self.data[fname]['y']
@@ -425,7 +469,7 @@ class Fit_Widget(QWidget):
             self.runFit()
             #self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,fit_method=self.fit_method,callback=self.fitCallback)
             
-            self.fit_report+='\nFit Message: %s\n'%self.fit_message
+            self.fit_info='Fit Message: %s\n'%self.fit_message
             
 #            if self.autoCICheckBox.isChecked():
 #                self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
@@ -446,8 +490,9 @@ class Fit_Widget(QWidget):
             self.mfitParamTableWidget.resizeColumnsToContents()
            
             self.update_plot()
-            ans=QMessageBox.question(self,'Accept fit results?',self.fit_report,QMessageBox.Yes, QMessageBox.No)                
-            if ans==QMessageBox.Yes:
+            fitResultDlg=FitResultDialog(fit_report=self.fit_report,fit_info=self.fit_info)
+            #ans=QMessageBox.question(self,'Accept fit results?',self.fit_report,QMessageBox.Yes, QMessageBox.No)                
+            if fitResultDlg.exec_():
                 for row in range(self.sfitParamTableWidget.rowCount()):
                     key=self.sfitParamTableWidget.item(row,0).text()
                     try:
@@ -460,7 +505,7 @@ class Fit_Widget(QWidget):
                                 parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                                 key='__%s__%03d'%(parkey,row)
                                 self.mfitParamTableWidget.item(row,col).setToolTip('%.3e \u00B1 %0.3e'%(self.fit.result.params[key].value,self.fit.result.params[key].stderr))  
-                                self.mfitParamData[parkey][col]=self.fit.result.params[key].value
+                                self.mfitParamData[parkey][row]=self.fit.result.params[key].value
                 ofname=os.path.splitext(fname)[0]
                 header='Data fitted with model: %s on %s\n'%(self.funcListWidget.currentItem().text(),time.asctime())
                 header+='Fixed Parameters\n'
@@ -699,40 +744,45 @@ class Fit_Widget(QWidget):
         maximum=self.fit.fit_params[key].max
         expr=self.fit.fit_params[key].expr
         brute_step=self.fit.fit_params[key].brute_step
-        dlg=minMaxDialog(value,minimum=minimum,maximum=maximum,expr=expr)
+        dlg=minMaxDialog(value,minimum=minimum,maximum=maximum,expr=expr,brute_step=brute_step)
         if dlg.exec_():
-            value,minimum,maximum,expr,brute_step=(dlg.value,dlg.maximum,dlg.minimum,dlg.expr,dlg.brute_step)
+            value,maximum,minimum,expr,brute_step=(dlg.value,dlg.maximum,dlg.minimum,dlg.expr,dlg.brute_step)
+        self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         self.mfitParamTableWidget.item(row,col).setText(str(value))
+        self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
         self.mfitParamData[parkey][row]=value
-        self.fit.fit_params[key].value=value
         self.fit.fit_params[key].min=minimum
         self.fit.fit_params[key].max=maximum
-        self.fit.fit_params[key].expr=expr
+        if expr!='None':
+            self.fit.fit_params[key].expr=expr
         self.fit.fit_params[key].brute_step=brute_step
+        self.fit.fit_params[key].value=value
+        self.update_plot()
+
         
         
     def add_mpar(self):
         self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         try:
             curRow=self.mfitParamTableWidget.currentRow()
-            if curRow!=0:
-                self.mfitParamTableWidget.insertRow(curRow)
-                self.mfitParamTableWidget.setRow(curRow,self.mfitParamData[curRow])
-                self.mfitParamData=np.insert(self.mfitParamData,curRow,self.mfitParamData[curRow],0)
-                    
-                for col in range(self.mfitParamTableWidget.columnCount()):
-                    parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
-                    for row in range(curRow+1,self.mfitParamTableWidget.rowCount()):
-                        key='__%s__%03d'%(parkey,row)
-                        if key in self.fit.fit_params.keys():
-                            self.fit.fit_params[key].value=self.mfitParamData[row][col]
-                        else:
-                            self.fit.fit_params.add(key,value=self.mfitParamData[row][col],vary=0)
-                    self.fit.params['__mpar__'][parkey].insert(curRow,self.mfitParamData[curRow][col])
-                    #This is to make the newly inserted row chekable
-                    item=self.mfitParamTableWidget.item(curRow,col)
-                    item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
-                    item.setCheckState(Qt.Unchecked)
+            #if curRow!=0:
+            self.mfitParamTableWidget.insertRow(curRow)
+            self.mfitParamTableWidget.setRow(curRow,self.mfitParamData[curRow])
+            self.mfitParamData=np.insert(self.mfitParamData,curRow,self.mfitParamData[curRow],0)
+                
+            for col in range(self.mfitParamTableWidget.columnCount()):
+                parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
+                for row in range(curRow+1,self.mfitParamTableWidget.rowCount()):
+                    key='__%s__%03d'%(parkey,row)
+                    if key in self.fit.fit_params.keys():
+                        self.fit.fit_params[key].value=self.mfitParamData[row][col]
+                    else:
+                        self.fit.fit_params.add(key,value=self.mfitParamData[row][col],vary=0)
+                self.fit.params['__mpar__'][parkey].insert(curRow,self.mfitParamData[curRow][col])
+                #This is to make the newly inserted row chekable
+                item=self.mfitParamTableWidget.item(curRow,col)
+                item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
+                item.setCheckState(Qt.Unchecked)
             self.update_plot()
         except:
             QMessageBox.warning(self,'Warning','Please select a row at which you would like to add a set of parameters',QMessageBox.Ok)
@@ -1110,7 +1160,7 @@ class Fit_Widget(QWidget):
             if col==4:
                 self.fit.fit_params[txt].expr=val
         else:
-            QMessageBox.warning(self,'Value Error','Please input numbers only 1',QMessageBox.Ok)
+            QMessageBox.warning(self,'Value Error','Please input numbers only',QMessageBox.Ok)
             self.sfitParamTableWidget.item(row,col).setText(str(oldVal))
         if self.sfitParamTableWidget.item(row,1).checkState()==Qt.Checked:
             self.fit.fit_params[txt].vary=1
@@ -1133,7 +1183,7 @@ class Fit_Widget(QWidget):
             self.mfitParamData[row][col]=float(txt)
             self.update_plot()
         except:
-            QMessageBox.warning(self,'Value Error','Please input numbers only 2',QMessageBox.Ok)
+            QMessageBox.warning(self,'Value Error','Please input numbers only',QMessageBox.Ok)
             self.mfitParamTableWidget.item(row,col).setText(str(oldval))
         self.mfitParamTableWidget.resizeRowsToContents()
         self.mfitParamTableWidget.resizeColumnsToContents() 
@@ -1177,11 +1227,11 @@ class Fit_Widget(QWidget):
         except:
             pfnames=[]
         if len(self.funcListWidget.selectedItems())>0:
-            try:
-                self.fit.evaluate()
-            except:
-                QMessageBox.warning(self,'Value error','Something wrong with the value of the parameters which you just entered',QMessageBox.Ok)
-                return
+            #try:
+            self.fit.evaluate()
+            #except:
+            #    QMessageBox.warning(self,'Value error','Something wrong with the value of the parameters which you just entered',QMessageBox.Ok)
+            #    return
             self.genParamListWidget.clear()
             if len(self.fit.params['output_params'])>0:
                 for key in self.fit.params['output_params'].keys():

@@ -71,8 +71,8 @@ class Parratt: #Please put the class name same as the function name
             drho=drho+(rho[i+1]-rho[i])*np.exp(-(self.__z__-z)**2/2.0/sig[i+1]**2)/2.50663/sig[i+1]
             dbeta=dbeta+(beta[i+1]-beta[i])*np.exp(-(self.__z__-z)**2/2.0/sig[i+1]**2)/2.50663/sig[i+1]
             z=z+d[i+1]
-        self.__rho__=np.cumsum(drho)*self.__d__[0]
-        self.__beta__=np.cumsum(dbeta)*self.__d__[0]
+        self.__rho__=np.cumsum(drho)*self.__d__[0]+rho[0]
+        self.__beta__=np.cumsum(dbeta)*self.__d__[0]+beta[0]
         self.output_params['Electro density profile']={'x':self.__z__,'y':self.__rho__}
         self.output_params['Absorption density profile']={'x':self.__z__,'y':self.__beta__}
         return n
