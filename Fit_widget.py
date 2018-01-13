@@ -765,30 +765,30 @@ class Fit_Widget(QWidget):
         
     def add_mpar(self):
         self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
-        try:
-            curRow=self.mfitParamTableWidget.currentRow()
-            #if curRow!=0:
-            self.mfitParamTableWidget.insertRow(curRow)
-            self.mfitParamTableWidget.setRow(curRow,self.mfitParamData[curRow])
-            self.mfitParamData=np.insert(self.mfitParamData,curRow,self.mfitParamData[curRow],0)
-                
-            for col in range(self.mfitParamTableWidget.columnCount()):
-                parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
-                for row in range(curRow+1,self.mfitParamTableWidget.rowCount()):
-                    key='__%s__%03d'%(parkey,row)
-                    if key in self.fit.fit_params.keys():
-                        self.fit.fit_params[key].value=self.mfitParamData[row][col]
-                    else:
-                        self.fit.fit_params.add(key,value=self.mfitParamData[row][col],vary=0)
-                self.fit.params['__mpar__'][parkey].insert(curRow,self.mfitParamData[curRow][col])
-                #This is to make the newly inserted row chekable
-                item=self.mfitParamTableWidget.item(curRow,col)
-                item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
-                item.setCheckState(Qt.Unchecked)
-            self.update_plot()
-            self.remove_mpar_button.setEnabled(True)
-        except:
-            QMessageBox.warning(self,'Warning','Please select a row at which you would like to add a set of parameters',QMessageBox.Ok)
+        #try:
+        curRow=self.mfitParamTableWidget.currentRow()
+        #if curRow!=0:
+        self.mfitParamTableWidget.insertRow(curRow)
+        self.mfitParamTableWidget.setRow(curRow,self.mfitParamData[curRow])
+        self.mfitParamData=np.insert(self.mfitParamData,curRow,self.mfitParamData[curRow],0)
+            
+        for col in range(self.mfitParamTableWidget.columnCount()):
+            parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
+            for row in range(curRow+1,self.mfitParamTableWidget.rowCount()):
+                key='__%s__%03d'%(parkey,row)
+                if key in self.fit.fit_params.keys():
+                    self.fit.fit_params[key].value=self.mfitParamData[row][col]
+                else:
+                    self.fit.fit_params.add(key,value=self.mfitParamData[row][col],vary=0)
+            self.fit.params['__mpar__'][parkey].insert(curRow,self.mfitParamData[curRow][col])
+            #This is to make the newly inserted row chekable
+            item=self.mfitParamTableWidget.item(curRow,col)
+            item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
+            item.setCheckState(Qt.Unchecked)
+        self.update_plot()
+        self.remove_mpar_button.setEnabled(True)
+        #except:
+        #    QMessageBox.warning(self,'Warning','Please select a row at which you would like to add a set of parameters',QMessageBox.Ok)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
             
     def remove_mpar(self):
@@ -1262,11 +1262,21 @@ class Fit_Widget(QWidget):
         txt,axes=item.text().split(':')
         axes=eval(axes)
         if len(axes)==2:
-            pg.plot(self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]],title=txt,left=axes[1],bottom=axes[0])
-        else:
-            X,Y=self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]]
-            scale=np.abs(X[0,1]-X[0,0]),np.abs(Y[1,0]-Y[0,0])
-            pg.image(self.fit.params['output_params'][txt][axes[-1]],scale=scale)
+            try:
+                self.extra_param_1DplotWidget.add_data(x=self.fit.params['output_params'][txt][axes[0]],y=self.fit.params['output_params'][txt][axes[1]],name=txt)
+            except:
+                self.plotLayoutWidget.nextRow()
+                self.extra_param_1DplotWidget=PlotWidget()
+                self.extra_param_1DplotWidget.setXLabel('X',fontsize=5)
+                self.extra_param_1DplotWidget.setYLabel('Y',fontsize=5)
+                self.plotLayoutWidget.addWidget(self.extra_param_1DplotWidget)
+                self.extra_param_1DplotWidget.add_data(x=self.fit.params['output_params'][txt][axes[0]],y=self.fit.params['output_params'][txt][axes[1]],name=txt)
+            self.extra_param_1DplotWidget.Plot([txt])
+#            pg.plot(self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]],title=txt,left=axes[1],bottom=axes[0])
+#        else:
+#            X,Y=self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]]
+#            scale=np.abs(X[0,1]-X[0,0]),np.abs(Y[1,0]-Y[0,0])
+#            pg.image(self.fit.params['output_params'][txt][axes[-1]],scale=scale)
         
 
         

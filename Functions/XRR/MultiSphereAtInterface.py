@@ -57,7 +57,6 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         self.rrf=rrf
         self.qoff=qoff
         self.choices={'rrf':[1,0]}
-        self.output_params={}
         self.init_params()
 
 
@@ -139,6 +138,7 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         """
         Define the function in terms of x to return some value
         """
+        self.output_params={}
         self.calcProfile()
         x=self.x+self.qoff
         lam=6.62607004e-34*2.99792458e8*1e10/self.E/1e3/1.60217662e-19
