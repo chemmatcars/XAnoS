@@ -56,7 +56,6 @@ class Formol: #Please put the class name same as the function name
         self.sig=sig
         self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
-        self.output_params={}
         self.__fnames__=[self.fname1,self.fname2]
         self.__E__=E
         self.__xdb__=XrayDB()
@@ -101,6 +100,7 @@ class Formol: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
+        self.output_params={}
         form1=0.0
         form2=0.0
 
@@ -131,6 +131,14 @@ class Formol: #Please put the class name same as the function name
             self.output_params[self.fname2]={'x':self.x,'y':self.norm*self.eta2*form2}
             self.output_params['bkg']={'x':self.x,'y':self.bkg*np.ones_like(self.x)}
             return (self.eta1*form1+self.eta2*form2)*self.norm*np.exp(-self.x**2*self.sig**2)+self.bkg
+        elif self.__fnames__[1]==None:
+            self.output_params[self.fname1]={'x':self.x,'y':self.norm*self.eta1*form1}
+            self.output_params['bkg']={'x':self.x,'y':self.bkg*np.ones_like(self.x)}
+            return self.eta1*form1*self.norm*np.exp(-self.x**2*self.sig**2)+self.bkg
+        elif self.__fnames__[0]==None:
+            self.output_params[self.fname2]={'x':self.x,'y':self.norm*self.eta2*form2}
+            self.output_params['bkg']={'x':self.x,'y':self.bkg*np.ones_like(self.x)}
+            return self.eta2*form2*self.norm*np.exp(-self.x**2*self.sig**2)+self.bkg
         else:
             return np.ones_like(self.x)
 

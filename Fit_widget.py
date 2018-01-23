@@ -579,12 +579,16 @@ class Fit_Widget(QWidget):
         vblayout=QVBoxLayout(self.fitInfoDlg)
         self.fitIterLabel=QLabel('Iteration: 0,\t Chi-sqr: Not Available',self.fitInfoDlg)
         vblayout.addWidget(self.fitIterLabel)
-        #self.stopFitPushButton=QPushButton('Stop')
-        #vblayout.addWidget(self.stopFitPushButton)
-        #self.stopFitPushButton.clicked.connect(self.stopFit)
+        self.stopFitPushButton=QPushButton('Stop')
+        vblayout.addWidget(self.stopFitPushButton)
+        self.stopFitPushButton.clicked.connect(self.stopFit)
         self.fitInfoDlg.setWindowTitle('Please wait for the fitting to be completed')
         self.fitInfoDlg.setModal(True)
         self.fitInfoDlg.show()
+        
+    def stopFit(self):
+        self.fit.fit_abort=True
+        self.closeFitInfoDlg()
         
     def closeFitInfoDlg(self):
         self.fitInfoDlg.done(0)
@@ -1247,7 +1251,7 @@ class Fit_Widget(QWidget):
             self.genParamListWidget.clear()
             if len(self.fit.params['output_params'])>0:
                 for key in self.fit.params['output_params'].keys():
-                    self.genParamListWidget.addItem(key+':'+str(list(self.fit.params['output_params'][key].keys())))
+                    self.genParamListWidget.addItem(str(key)+':'+str(list(self.fit.params['output_params'][key].keys())))
             self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text())
             pfnames=pfnames+[self.funcListWidget.currentItem().text()]
         #except:

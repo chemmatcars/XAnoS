@@ -48,11 +48,14 @@ class Fit(QObject):
         """
         """
         self.functionCalled.emit(params,iterations,residual,fit_scale)
+        if self.fit_abort:
+            return True
     
     
     def perform_fit(self,xmin,xmax,fit_scale='Linear',fit_method='leastsq',maxiter=1):
         #self.sync_param()
-        self.imin,self.imax=np.where(self.x>xmin)[0][0],np.where(self.x<xmax)[0][-1]
+        self.fit_abort=False
+        self.imin,self.imax=np.where(self.x>=xmin)[0][0],np.where(self.x<=xmax)[0][-1]
         if fit_method=='leastsq':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit',maxfev=maxiter)
         else:
