@@ -15,7 +15,6 @@ from scipy.optimize import minimize
 from numpy.linalg import lstsq, solve
 import time
 from calc_cf import calc_cf
-import periodictable as pdt
 from utils import calc_prm
 from readData import read1DSAXS
 
@@ -71,6 +70,7 @@ class ASAXS_Widget(QWidget):
         self.EmaxLineEdit.setText('%.4f'%(1.1*self.edgeEnergy))
         self.update_edgePlot()
         self.initialize_metaDataPlotDock()
+        
         
         
     def create_dataDock(self):

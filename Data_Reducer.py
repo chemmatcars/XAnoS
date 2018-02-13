@@ -371,7 +371,7 @@ class Data_Reducer(QWidget):
         """
         Select and imports one data file
         """
-        dataFile=QFileDialog.getOpenFileName(self,'Select data file',directory=self.curDir,filter='Data file (*.edf)')[0]
+        dataFile=QFileDialog.getOpenFileName(self,'Select data file',directory=self.curDir,filter='Data file (*.edf *.tif)')[0]
         if dataFile!='':
             self.dataFile=dataFile
             self.curDir=os.path.dirname(self.dataFile)
@@ -392,7 +392,7 @@ class Data_Reducer(QWidget):
         """
         Selects and imports multiple data files
         """
-        self.dataFiles=QFileDialog.getOpenFileNames(self,'Select data files', directory=self.curDir,filter='Data files (*.edf)')[0]
+        self.dataFiles=QFileDialog.getOpenFileNames(self,'Select data files', directory=self.curDir,filter='Data files (*.edf *.tif)')[0]
         if len(self.dataFiles)!=0:
             self.imgNumberSpinBox.valueChanged.connect(self.imageChanged)
             self.imgNumberSpinBox.setMinimum(0)

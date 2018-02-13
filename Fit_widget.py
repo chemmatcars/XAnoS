@@ -194,6 +194,7 @@ class Fit_Widget(QWidget):
         self.curDir=os.getcwd()
         self.fileNumber=0
         self.fileNames={}
+        self.fchanged=True
 
         self.fitMethods={'Levenberg-Marquardt':'leastsq',
                          'Trust-Region-Reflection': 'least_sq',
@@ -729,7 +730,8 @@ class Fit_Widget(QWidget):
         
         self.genparamLayoutWidget.nextRow()
         self.genParamListWidget=QListWidget()
-        self.genParamListWidget.itemDoubleClicked.connect(self.plot_extra_param)
+        self.genParamListWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
         #self.genParamListWidget.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         self.genparamLayoutWidget.addWidget(self.genParamListWidget,colspan=2)
         
@@ -769,30 +771,30 @@ class Fit_Widget(QWidget):
         
     def add_mpar(self):
         self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
-        #try:
-        curRow=self.mfitParamTableWidget.currentRow()
-        #if curRow!=0:
-        self.mfitParamTableWidget.insertRow(curRow)
-        self.mfitParamTableWidget.setRow(curRow,self.mfitParamData[curRow])
-        self.mfitParamData=np.insert(self.mfitParamData,curRow,self.mfitParamData[curRow],0)
-            
-        for col in range(self.mfitParamTableWidget.columnCount()):
-            parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
-            for row in range(curRow+1,self.mfitParamTableWidget.rowCount()):
-                key='__%s__%03d'%(parkey,row)
-                if key in self.fit.fit_params.keys():
-                    self.fit.fit_params[key].value=self.mfitParamData[row][col]
-                else:
-                    self.fit.fit_params.add(key,value=self.mfitParamData[row][col],vary=0)
-            self.fit.params['__mpar__'][parkey].insert(curRow,self.mfitParamData[curRow][col])
-            #This is to make the newly inserted row chekable
-            item=self.mfitParamTableWidget.item(curRow,col)
-            item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
-            item.setCheckState(Qt.Unchecked)
-        self.update_plot()
-        self.remove_mpar_button.setEnabled(True)
-        #except:
-        #    QMessageBox.warning(self,'Warning','Please select a row at which you would like to add a set of parameters',QMessageBox.Ok)
+        try:
+            curRow=self.mfitParamTableWidget.currentRow()
+            #if curRow!=0:
+            self.mfitParamTableWidget.insertRow(curRow)
+            self.mfitParamTableWidget.setRow(curRow,self.mfitParamData[curRow])
+            self.mfitParamData=np.insert(self.mfitParamData,curRow,self.mfitParamData[curRow],0)
+                
+            for col in range(self.mfitParamTableWidget.columnCount()):
+                parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
+                for row in range(curRow+1,self.mfitParamTableWidget.rowCount()):
+                    key='__%s__%03d'%(parkey,row)
+                    if key in self.fit.fit_params.keys():
+                        self.fit.fit_params[key].value=self.mfitParamData[row][col]
+                    else:
+                        self.fit.fit_params.add(key,value=self.mfitParamData[row][col],vary=0)
+                self.fit.params['__mpar__'][parkey].insert(curRow,self.mfitParamData[curRow][col])
+                #This is to make the newly inserted row chekable
+                item=self.mfitParamTableWidget.item(curRow,col)
+                item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
+                item.setCheckState(Qt.Unchecked)
+            self.update_plot()
+            self.remove_mpar_button.setEnabled(True)
+        except:
+            QMessageBox.warning(self,'Warning','Please select a row at which you would like to add a set of parameters',QMessageBox.Ok)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
             
     def remove_mpar(self):
@@ -830,10 +832,10 @@ class Fit_Widget(QWidget):
             
         
     def saveGenParameters(self):
-        if len(self.genParamListWidget.selectedItems())>0:
-            text=self.genParamListWidget.currentItem().text()
+        if len(self.genParamListWidget.selectedItems())==1:
+            text=self.genParamListWidget.selectedItems()[0].text()
             name,var=text.split(':')
-            fname=QFileDialog.getSaveFileName(self,'Save files as',self.curDir,'Text files (*.txt)')[0]
+            fname=QFileDialog.getSaveFileName(self,'Save generated data as',self.curDir,'Text files (*.txt)')[0]
             if fname!='':
                 if fname[-4:]!='.txt':
                     fname=fname+'.txt'
@@ -851,7 +853,9 @@ class Fit_Widget(QWidget):
                     res=np.array(res)
                     np.savetxt(fname,res,header=header,comments='#')
                 else:
-                    QMessageBox.warning(self,'Format error','The data is in some different format and couldnot be saved',QMessageBox.Ok)          
+                    QMessageBox.warning(self,'Format error','The data is in some different format and couldnot be saved.',QMessageBox.Ok)
+        else:
+            QMessageBox.warning(self,'Selection Error','Please select a single generated data to be saved.',QMessageBox.Ok)
         
         
     def saveParameters(self):
@@ -994,12 +998,19 @@ class Fit_Widget(QWidget):
                 QMessageBox.warning(self,'File error','This parameter file doesnot belong to function: %s'% func,QMessageBox.Ok)
         
     def create_plotDock(self):
-        self.plotLayoutWidget=pg.LayoutWidget(self)
+        self.plotSplitter=QSplitter(Qt.Vertical)
+        #self.plotLayoutWidget=pg.LayoutWidget(self)
         self.plotWidget=PlotWidget()
         self.plotWidget.setXLabel('X',fontsize=5)
         self.plotWidget.setYLabel('Y',fontsize=5)
-        self.plotLayoutWidget.addWidget(self.plotWidget)
-        self.plotDock.addWidget(self.plotLayoutWidget)
+        self.plotSplitter.addWidget(self.plotWidget)        
+        
+        self.extra_param_1DplotWidget=PlotWidget()
+        self.extra_param_1DplotWidget.setXLabel('X',fontsize=5)
+        self.extra_param_1DplotWidget.setYLabel('Y',fontsize=5)
+        self.plotSplitter.addWidget(self.extra_param_1DplotWidget)
+        
+        self.plotDock.addWidget(self.plotSplitter)
         
     def update_catagories(self):
         """
@@ -1035,14 +1046,15 @@ class Fit_Widget(QWidget):
     def functionChanged(self):
         self.curr_module=self.funcListWidget.currentItem().text()
         module='Functions.%s.%s'%(self.curr_category,self.curr_module)
-#        try:
+        #try:
         if module not in sys.modules:
             self.curr_funcClass[module]=import_module(module)
         else:
             self.curr_funcClass[module]=reload(self.curr_funcClass[module])
         self.update_parameters()
-#        except:
-#            QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
+        #except:
+        #    QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
+        self.fchanged=True
         
     def update_parameters(self):
         """
@@ -1060,7 +1072,6 @@ class Fit_Widget(QWidget):
         self.fit=Fit(getattr(self.curr_funcClass[module],self.funcListWidget.currentItem().text()),self.x)
         self.update_fixed_parameters()
         self.update_fit_parameters()
-        
         self.update_plot()
         self.xLineEdit.returnPressed.connect(self.xChanged)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
@@ -1136,6 +1147,7 @@ class Fit_Widget(QWidget):
         try:
             oldVal=self.fit.params[txt]
             self.fit.params[txt]=val
+            self.fchanged=False
             self.update_plot()
         except:
             QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
@@ -1165,6 +1177,7 @@ class Fit_Widget(QWidget):
         if isinstance(val,numbers.Number):
             if col==1:
                 self.fit.params[txt]=val
+                self.fchanged=False
                 self.update_plot()
             elif col==2:
                 self.fit.fit_params[txt].min=val
@@ -1197,6 +1210,7 @@ class Fit_Widget(QWidget):
             else:
                 self.fit.fit_params[key].vary=0
             self.mfitParamData[row][col]=float(txt)
+            self.fchanged=False
             self.update_plot()
         except:
             QMessageBox.warning(self,'Value Error','Please input numbers only',QMessageBox.Ok)
@@ -1215,6 +1229,7 @@ class Fit_Widget(QWidget):
                 self.fit.imax=len(self.fit.x)
             except:
                 pass
+            self.fchanged=False
             self.update_plot()
         except:
             QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
@@ -1248,10 +1263,17 @@ class Fit_Widget(QWidget):
             #except:
             #    QMessageBox.warning(self,'Value error','Something wrong with the value of the parameters which you just entered',QMessageBox.Ok)
             #    return
+            self.gen_rows=[self.genParamListWidget.row(item) for item in self.genParamListWidget.selectedItems()]
+            self.genParamListWidget.itemSelectionChanged.disconnect(self.plot_extra_param)
             self.genParamListWidget.clear()
             if len(self.fit.params['output_params'])>0:
                 for key in self.fit.params['output_params'].keys():
                     self.genParamListWidget.addItem(str(key)+':'+str(list(self.fit.params['output_params'][key].keys())))
+            if not self.fchanged:
+                for row in self.gen_rows:
+                    self.genParamListWidget.item(row).setSelected(True)
+                self.plot_extra_param()
+            self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
             self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text())
             pfnames=pfnames+[self.funcListWidget.currentItem().text()]
         #except:
@@ -1260,28 +1282,26 @@ class Fit_Widget(QWidget):
         pg.QtGui.QApplication.processEvents()
         
         
-    def plot_extra_param(self,item):
+    def plot_extra_param(self):
         """
         """
-        txt,axes=item.text().split(':')
-        axes=eval(axes)
-        if len(axes)==2:
-            try:
-                self.extra_param_1DplotWidget.add_data(x=self.fit.params['output_params'][txt][axes[0]],y=self.fit.params['output_params'][txt][axes[1]],name=txt)
-            except:
-                self.plotLayoutWidget.nextRow()
-                self.extra_param_1DplotWidget=PlotWidget()
-                self.extra_param_1DplotWidget.setXLabel('X',fontsize=5)
-                self.extra_param_1DplotWidget.setYLabel('Y',fontsize=5)
-                self.plotLayoutWidget.addWidget(self.extra_param_1DplotWidget)
-                self.extra_param_1DplotWidget.add_data(x=self.fit.params['output_params'][txt][axes[0]],y=self.fit.params['output_params'][txt][axes[1]],name=txt)
-            self.extra_param_1DplotWidget.Plot([txt])
-#            pg.plot(self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]],title=txt,left=axes[1],bottom=axes[0])
-#        else:
-#            X,Y=self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]]
-#            scale=np.abs(X[0,1]-X[0,0]),np.abs(Y[1,0]-Y[0,0])
-#            pg.image(self.fit.params['output_params'][txt][axes[-1]],scale=scale)
-        
+        fdata=[]
+        for item in self.genParamListWidget.selectedItems():
+            txt,axes=item.text().split(':')
+            axes=eval(axes)
+            if len(axes)==2:
+                x=self.fit.params['output_params'][txt][axes[0]]
+                y=self.fit.params['output_params'][txt][axes[1]]
+                self.extra_param_1DplotWidget.add_data(x=x,y=y,name=txt)
+                fdata.append(txt)
+    #            pg.plot(self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]],title=txt,left=axes[1],bottom=axes[0])
+            #else:
+            #    QMessageBox.information(self,'Info','Plotting 3d data is not available now!',QMessageBox.Ok)
+                #X,Y=self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]]
+                #scale=np.abs(X[0,1]-X[0,0]),np.abs(Y[1,0]-Y[0,0])
+                #pg.image(self.fit.params['output_params'][txt][axes[-1]],scale=scale)
+        self.extra_param_1DplotWidget.Plot(fdata)
+        pg.QtGui.QApplication.processEvents()
 
         
         

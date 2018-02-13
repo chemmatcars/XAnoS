@@ -1,1 +1,1 @@
-__all__=['Gaussian', 'LogNormal', 'Gaussian', 'LogNormal', 'LogNormal', 'LogNormal', 'Gaussian']
+__all__=['Gaussian', 'LogNormal', 'MultiPeaks']

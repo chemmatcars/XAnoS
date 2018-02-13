@@ -22,9 +22,9 @@ class <*>: #Please put the class name same as the function name
             self.x=np.array(x)
         else:
             self.x=x
-        self.mpar={} #If there is any multivalued parameter
+        self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
-        
+        self.init_params()
         
     def init_params(self):
         """

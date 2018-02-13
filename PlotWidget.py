@@ -1,5 +1,6 @@
 import pyqtgraph as pg
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QMessageBox, QLineEdit, QColorDialog, QCheckBox
+from PyQt5.QtCore import Qt
 import numpy as np
 
 class PlotWidget(QWidget):
@@ -156,7 +157,23 @@ class PlotWidget(QWidget):
         self.plotWidget.clear()
         for names in self.data.keys():
             self.legendItem.removeItem(names)
+        xlog_res=True
+        ylog_res=True
         for dname in self.selDataNames:
+            if np.all(self.data[dname].yData==0) and self.yLogCheckBox.isChecked():
+                QMessageBox.warning(self,'Zero error','All the yData are zeros. So Cannot plot Logarithm of yData for %s'%dname,QMessageBox.Ok)
+                ylog_res=ylog_res and False
+                if not ylog_res:
+                    self.yLogCheckBox.stateChanged.disconnect(self.updatePlot)
+                    self.yLogCheckBox.setCheckState(Qt.Unchecked)
+                    self.yLogCheckBox.stateChanged.connect(self.updatePlot)
+            if np.all(self.data[dname].xData==0) and self.xLogCheckBox.isChecked():
+                QMessageBox.warning(self,'Zero error','All the xData are zeros. So Cannot plot Logarithm of xData for %s'%dname,QMessageBox.Ok)
+                xlog_res=xlog_res and False
+                if not xlog_res:
+                    self.xLogCheckBox.stateChanged.disconnect(self.updatePlot)
+                    self.xLogCheckBox.setCheckState(Qt.Unchecked)
+                    self.xLogCheckBox.stateChanged.connect(self.updatePlot)
             self.plotWidget.addItem(self.data[dname])
             if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
                 self.plotWidget.addItem(self.dataErrPos[dname])
@@ -164,11 +181,11 @@ class PlotWidget(QWidget):
                 self.plotWidget.addItem(self.dataErr[dname])
                 self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
             self.legendItem.addItem(self.data[dname],dname)
-        if self.xLogCheckBox.isChecked():
+        if self.xLogCheckBox.checkState()==Qt.Checked:
             self.plotWidget.plotItem.setLogMode(x=True)
         else:
             self.plotWidget.plotItem.setLogMode(x=False)
-        if self.yLogCheckBox.isChecked():
+        if self.yLogCheckBox.checkState()==Qt.Checked:
             self.plotWidget.plotItem.setLogMode(y=True)
         else:
             self.plotWidget.plotItem.setLogMode(y=False)

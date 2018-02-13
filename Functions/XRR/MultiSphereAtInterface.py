@@ -28,7 +28,7 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         rhoup       Electron density of the upper bulk phase
         rhodown     Electron density of the lower bulk phase
         sig         Roughness of the interface
-        mpar        The layer parameters where, d: thickness of each layer, rho:Electron ensity of each layer, beta: Absorption coefficient of each layer, sig: roughness of interface separating each layer. The upper and lower thickness should be always  fixed. The roughness of the topmost layer should be always kept 0.
+        mpar        The layer parameters where, Z0: position of the layer, cov: coverage of the nanoparticles in the layer, Z0sig: Width of distribution of the nanoparticles in the layer
         Nlayers     The number of layers in which the layers will be subdivided for applying Parratt formalism
         rrf         1 for Frensnel normalized refelctivity and 0 for just reflectivity
         qoff        q-offset to correct the zero q of the instrument

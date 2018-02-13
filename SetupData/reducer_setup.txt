@@ -1,1 +1,1 @@
-{"poniFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2017-12/AgBH_Pil100K_11_917keV.poni", "maskFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2017-12/pilatus_100K_mask.msk"}
+{"poniFile": "/media/sf_Mrinal_Bera/Desktop/AgBh/mar_ccd/agbh_cal.poni", "maskFile": "C:/Users/Mrinal Bera/Desktop/AgBh/mar_ccd/mask.msk"}
