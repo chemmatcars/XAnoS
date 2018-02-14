@@ -175,7 +175,7 @@ class PlotWidget(QWidget):
             datanames is the list of datanames
         """
         self.selDataNames=datanames
-        if self.matplotlib:
+        if self.matplotlib: #Plotting with matplotlib
             self.subplot.axes.cla()
             for dname in self.selDataNames:                
                 if self.errorbarCheckBox.checkState()==Qt.Checked:
@@ -184,20 +184,21 @@ class PlotWidget(QWidget):
                     self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData)
                 self.plotWidget.draw()
         else:
+            self.plotWidget.plotItem.setLogMode(x=False,y=False) #This step is necessary for checking the zero values
             self.plotWidget.clear()
             for names in self.data.keys():
                 self.legendItem.removeItem(names)
             xlog_res=True
             ylog_res=True
             for dname in self.selDataNames:
-                if np.all(self.data[dname].yData==0) and self.yLogCheckBox.isChecked():
+                if np.all(self.data[dname].yData==0) and self.yLogCheckBox.checkState()==Qt.Checked:
                     QMessageBox.warning(self,'Zero error','All the yData are zeros. So Cannot plot Logarithm of yData for %s'%dname,QMessageBox.Ok)
                     ylog_res=ylog_res and False
                     if not ylog_res:
                         self.yLogCheckBox.stateChanged.disconnect(self.updatePlot)
                         self.yLogCheckBox.setCheckState(Qt.Unchecked)
                         self.yLogCheckBox.stateChanged.connect(self.updatePlot)
-                if np.all(self.data[dname].xData==0) and self.xLogCheckBox.isChecked():
+                if np.all(self.data[dname].xData==0) and self.xLogCheckBox.checkState()==Qt.Checked:
                     QMessageBox.warning(self,'Zero error','All the xData are zeros. So Cannot plot Logarithm of xData for %s'%dname,QMessageBox.Ok)
                     xlog_res=xlog_res and False
                     if not xlog_res:

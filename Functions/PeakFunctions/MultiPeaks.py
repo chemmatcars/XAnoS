@@ -13,15 +13,17 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 
 
 class MultiPeaks: #Please put the class name same as the function name
-    def __init__(self,x=0,power=1,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cexp=0.0,lexp=1.0,mpar={'type':[0],'pos':[1.0],'wid':[1.0],'norm':[1.0]}):
+    def __init__(self,x=0,power=1,N=0.0,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cN=0.0,cexp=0.0,lexp=1.0,mpar={'type':[0],'pos':[0.5],'wid':[0.1],'norm':[1.0]}):
         """
         Documentation
         x          : independent variable in ter form of a scalar or an array
-        power      : 1 for c0+c1*x+c2x**2+c3*x**3, -1 for c0+c1/x+c2/x**2+c3/x**3
+        power      : 1 for c0+c1*x+c2x**2+c3*x**3+cN*x**N, -1 for c0+c1/x+c2/x**2+c3/x**3+cN/x**N
+        N          : exponent of arbitrary degree polynomial i.e x**N or 1/x**N
         c0         : constant background
         c1         : coeffcient of the linear(x) or inverse(1/x) background
         c2         : coefficient of the quadratic(x**2) or inverse quadratic(1/x**2) background
         c3         : coefficient of the cubic bacground
+        cN         : coefficient of the x**N or inverse 1/x**N background
         cexp       : coefficient of the exponential background
         lexp       : decay length of the exponential background
         mpar       : The peak parameters where 'type': (0: Gaussian, 1: lorentzian, 2: step)
@@ -31,10 +33,12 @@ class MultiPeaks: #Please put the class name same as the function name
         else:
             self.x=x
         self.power=power
+        self.N=N
         self.c0=c0
         self.c1=c1
         self.c2=c2
         self.c3=c3
+        self.cN=cN
         self.cexp=cexp
         self.lexp=lexp
         self.__mpar__=mpar #If there is any multivalued parameter
@@ -52,6 +56,7 @@ class MultiPeaks: #Please put the class name same as the function name
         self.params.add('c1',value=self.c1,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('c2',value=self.c2,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('c3',value=self.c3,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('cN',value=self.cN,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('cexp',value=self.cexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('lexp',value=self.lexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         for key in self.__mpar__.keys():
@@ -92,7 +97,8 @@ class MultiPeaks: #Please put the class name same as the function name
             res=res+fun
             self.output_params['peak_%03d'%(i+1)]={'x':self.x,'y':fun}
         c=[self.params['c%d'%i].value for i in range(4)]
-        bkg=c[0]+c[1]*self.x**self.power+c[2]*self.x**(self.power*2)+c[3]*self.x**(self.power*3)+self.params['cexp'].value*np.exp(-self.x/self.params['lexp'].value)
+        cN=self.params['cN'].value
+        bkg=c[0]+c[1]*self.x**self.power+c[2]*self.x**(self.power*2)+c[3]*self.x**(self.power*3)+cN*self.x**(self.power*self.N)+self.params['cexp'].value*np.exp(-self.x/self.params['lexp'].value)
         res=res+bkg
         self.output_params['bkg']={'x':self.x,'y':bkg}
         return res
