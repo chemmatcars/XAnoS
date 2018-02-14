@@ -13,12 +13,12 @@ from xr_ref import parratt
 
 
 class SphereAtInterface: #Please put the class name same as the function name
-    def __init__(self,x=0.1,lam=1.0,R=10,Rsig=0.0,rhoc=1.0,D=60.0, cov=100,Zo=20.0,decay=3.0,rho_up=0.333,rho_down=0.38,zmin=-50,zmax=100,Nlayers=151,Nc=20, roughness=3.0,rrf=1,mpar={},qoff=0):
+    def __init__(self,x=0.1,lam=1.0,Rc=10,Rsig=0.0,rhoc=4.68,D=60.0, cov=100,Zo=20.0,decay=3.0,rho_up=0.333,rho_down=0.38,zmin=-50,zmax=100,Nlayers=151,Nc=20, roughness=3.0,rrf=1,mpar={},qoff=0):
         """
         Calculates X-ray reflectivity from a system of nanoparticle at an interface between two media
         x           : array of wave-vector transfer along z-direction
         lam         : wavelength of x-rays in invers units of x
-        R           : Radius of nanoparticles in inverse units of x
+        Rc          : Radius of nanoparticles in inverse units of x
         rhoc        : Electron density of the nanoparticles
         cov         : Coverate of the nanoparticles in %
         D           : The lattice constant of the two dimensional hcp structure formed by the particles
@@ -38,7 +38,7 @@ class SphereAtInterface: #Please put the class name same as the function name
             self.x=np.array(x)
         else:
             self.x=x
-        self.R=R
+        self.Rc=Rc
         self.lam=lam
         self.rhoc=rhoc
         self.Zo=Zo
@@ -65,7 +65,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
-        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('Rc',value=self.Rc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('rhoc',value=self.rhoc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('Zo',value=self.Zo,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('D',value=self.D,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
@@ -111,7 +111,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        Rc=self.params['R'].value
+        Rc=self.params['Rc'].value
         D=self.params['D'].value
         Zo=self.params['Zo'].value
         cov=self.params['cov'].value
