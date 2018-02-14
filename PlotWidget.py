@@ -1,16 +1,19 @@
 import pyqtgraph as pg
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QMessageBox, QLineEdit, QColorDialog, QCheckBox
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QMessageBox, QLineEdit, QColorDialog, QCheckBox, QApplication
 from PyQt5.QtCore import Qt
 import numpy as np
+import sys
+from pyqtgraph.widgets.MatplotlibWidget import MatplotlibWidget
 
 class PlotWidget(QWidget):
     """
-    This class inherited from pyqtgraphs Plotwidget and adds additional compononets like:
+    This class inherited from pyqtgraphs Plotwidget and MatplotlibWidget and adds additional compononets like:
         1) Cross-hair to view X, Y coordinates
         2) Changing plot-styles interactively
     """
-    def __init__(self,parent=None):
-        QWidget.__init__(self,parent)       
+    def __init__(self,parent=None,matplotlib=False):
+        QWidget.__init__(self,parent)
+        self.matplotlib=matplotlib            
         self.createPlotWidget()
         self.data={}
         self.dataErrPos={}
@@ -18,6 +21,7 @@ class PlotWidget(QWidget):
         self.dataErr={}
         self.data_num=0
         self.yerr={}
+        
         
     def createPlotWidget(self):
         """
@@ -48,21 +52,28 @@ class PlotWidget(QWidget):
         self.plotLayout.addWidget(self.errorbarCheckBox,row=row,col=col)
         col=0
         row+=1
-        self.plotWidget=pg.PlotWidget(background='k')
-        self.plotWidget.getPlotItem().vb.scene().sigMouseMoved.connect(self.mouseMoved)
-        self.legendItem=pg.LegendItem(offset=(0.0,1.0))
-        self.legendItem.setParentItem(self.plotWidget.getPlotItem())
+        if self.matplotlib:
+            self.plotWidget=MatplotlibWidget()
+            self.subplot=self.plotWidget.getFigure().add_subplot(111)
+            #self.plotWidget.draw()
+        else:
+            self.plotWidget=pg.PlotWidget(background='k')
+            self.plotWidget.getPlotItem().vb.scene().sigMouseMoved.connect(self.mouseMoved)
+            self.legendItem=pg.LegendItem(offset=(0.0,1.0))
+            self.legendItem.setParentItem(self.plotWidget.getPlotItem())
+            
         self.plotLayout.addWidget(self.plotWidget,row=row,col=col,colspan=5)
         row+=1
-        col=0                                  
-        self.crosshairLabel=QLabel(u'X={: .5f} , y={: .5f}'.format(0.0,0.0))
+        col=0 
+        self.crosshairLabel=QLabel(u'X={: .5f} , y={: .5f}'.format(0.0,0.0))                                 
         self.xLogCheckBox=QCheckBox('LogX')
         self.xLogCheckBox.setTristate(False)
         self.xLogCheckBox.stateChanged.connect(self.updatePlot)
         self.yLogCheckBox=QCheckBox('LogY')
         self.yLogCheckBox.setTristate(False)
         self.yLogCheckBox.stateChanged.connect(self.updatePlot)
-        self.plotLayout.addWidget(self.crosshairLabel,row=row,col=col,colspan=3)
+        if not self.matplotlib:
+            self.plotLayout.addWidget(self.crosshairLabel,row=row,col=col,colspan=3)
         self.plotLayout.addWidget(self.xLogCheckBox,row=row,col=3)
         self.plotLayout.addWidget(self.yLogCheckBox,row=row,col=4)
         
@@ -89,13 +100,14 @@ class PlotWidget(QWidget):
         #self.crosshairLabel.setText(u'X=%+0.5f, Y=%+0.5e'%(x,y))
         
         
-    def add_data(self,x,y,yerr=None,name=None):
+    def add_data(self,x,y,yerr=None,name=None,fit=False):
         """
         Adds data into the plot where:
             x=Array of x-values
             y=Array of y-values
             yerr=Array of yerr-values. If None yerr will be set to sqrt(y)
             name=any string to be used for the key to put the data
+            fit= True if the data corresponds to a fit
         """
         if yerr is None:
             yerr=np.ones_like(y)
@@ -110,21 +122,30 @@ class PlotWidget(QWidget):
                 self.yerr[dname]=True
             if dname in self.data.keys():
                 color=self.data[dname].opts['pen'].color()
-                self.data[dname].setData(x,y,pen=pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text())),symbol='o',symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
+                pen=pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text()))
+                symbol='o'
+                if fit:
+                    symbol=None
+                self.data[dname].setData(x,y,pen=pen,symbol=symbol,symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
                 #self.data[dname].setPen(pg.mkPen(color=pg.intColor(np.random.choice(range(0,210),1)[0]),width=int(self.lineWidthLineEdit.text())))
                 #if self.errorbarCheckBox.isChecked():
-                self.dataErrPos[dname].setData(x,y+yerr)
-                self.dataErrNeg[dname].setData(x,y-yerr)
+                self.dataErrPos[dname].setData(x,y+yerr/2.0)
+                self.dataErrNeg[dname].setData(x,y-yerr/2.0)
                 self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
             else: 
                 color=pg.intColor(np.random.choice(range(0,210),1)[0])
-                self.data[dname]=pg.PlotDataItem(x,y,pen=pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text())),symbol='o',symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
+                #color=self.data[dname].opts['pen'].color()
+                pen=pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text()))
+                symbol='o'
+                if fit:
+                    symbol=None
+                self.data[dname]=pg.PlotDataItem(x,y,pen=pen,symbol=symbol,symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
                 
                 self.data[dname].curve.setClickable(True,width=10)
                 self.data[dname].sigClicked.connect(self.colorChanged)
                 #if self.errorbarCheckBox.isChecked():
-                self.dataErrPos[dname]=pg.PlotDataItem(x,y+yerr)
-                self.dataErrNeg[dname]=pg.PlotDataItem(x,y-yerr)
+                self.dataErrPos[dname]=pg.PlotDataItem(x,y+yerr/2.0)
+                self.dataErrNeg[dname]=pg.PlotDataItem(x,y-yerr/2.0)
                 self.dataErr[dname]=pg.FillBetweenItem(curve1=self.dataErrPos[dname],curve2=self.dataErrNeg[dname],brush=pg.mkBrush(color=pg.hsvColor(1.0,sat=0.0,alpha=0.2)))
                 self.data_num+=1
                 #if len(x)>1:
@@ -154,41 +175,50 @@ class PlotWidget(QWidget):
             datanames is the list of datanames
         """
         self.selDataNames=datanames
-        self.plotWidget.clear()
-        for names in self.data.keys():
-            self.legendItem.removeItem(names)
-        xlog_res=True
-        ylog_res=True
-        for dname in self.selDataNames:
-            if np.all(self.data[dname].yData==0) and self.yLogCheckBox.isChecked():
-                QMessageBox.warning(self,'Zero error','All the yData are zeros. So Cannot plot Logarithm of yData for %s'%dname,QMessageBox.Ok)
-                ylog_res=ylog_res and False
-                if not ylog_res:
-                    self.yLogCheckBox.stateChanged.disconnect(self.updatePlot)
-                    self.yLogCheckBox.setCheckState(Qt.Unchecked)
-                    self.yLogCheckBox.stateChanged.connect(self.updatePlot)
-            if np.all(self.data[dname].xData==0) and self.xLogCheckBox.isChecked():
-                QMessageBox.warning(self,'Zero error','All the xData are zeros. So Cannot plot Logarithm of xData for %s'%dname,QMessageBox.Ok)
-                xlog_res=xlog_res and False
-                if not xlog_res:
-                    self.xLogCheckBox.stateChanged.disconnect(self.updatePlot)
-                    self.xLogCheckBox.setCheckState(Qt.Unchecked)
-                    self.xLogCheckBox.stateChanged.connect(self.updatePlot)
-            self.plotWidget.addItem(self.data[dname])
-            if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
-                self.plotWidget.addItem(self.dataErrPos[dname])
-                self.plotWidget.addItem(self.dataErrNeg[dname])
-                self.plotWidget.addItem(self.dataErr[dname])
-                self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
-            self.legendItem.addItem(self.data[dname],dname)
-        if self.xLogCheckBox.checkState()==Qt.Checked:
-            self.plotWidget.plotItem.setLogMode(x=True)
+        if self.matplotlib:
+            self.subplot.axes.cla()
+            for dname in self.selDataNames:                
+                if self.errorbarCheckBox.checkState()==Qt.Checked:
+                    self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData,self.dataErrPos[dname].yData-self.dataErrNeg[dname].yData)
+                else:
+                    self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData)
+                self.plotWidget.draw()
         else:
-            self.plotWidget.plotItem.setLogMode(x=False)
-        if self.yLogCheckBox.checkState()==Qt.Checked:
-            self.plotWidget.plotItem.setLogMode(y=True)
-        else:
-            self.plotWidget.plotItem.setLogMode(y=False)
+            self.plotWidget.clear()
+            for names in self.data.keys():
+                self.legendItem.removeItem(names)
+            xlog_res=True
+            ylog_res=True
+            for dname in self.selDataNames:
+                if np.all(self.data[dname].yData==0) and self.yLogCheckBox.isChecked():
+                    QMessageBox.warning(self,'Zero error','All the yData are zeros. So Cannot plot Logarithm of yData for %s'%dname,QMessageBox.Ok)
+                    ylog_res=ylog_res and False
+                    if not ylog_res:
+                        self.yLogCheckBox.stateChanged.disconnect(self.updatePlot)
+                        self.yLogCheckBox.setCheckState(Qt.Unchecked)
+                        self.yLogCheckBox.stateChanged.connect(self.updatePlot)
+                if np.all(self.data[dname].xData==0) and self.xLogCheckBox.isChecked():
+                    QMessageBox.warning(self,'Zero error','All the xData are zeros. So Cannot plot Logarithm of xData for %s'%dname,QMessageBox.Ok)
+                    xlog_res=xlog_res and False
+                    if not xlog_res:
+                        self.xLogCheckBox.stateChanged.disconnect(self.updatePlot)
+                        self.xLogCheckBox.setCheckState(Qt.Unchecked)
+                        self.xLogCheckBox.stateChanged.connect(self.updatePlot)
+                self.plotWidget.addItem(self.data[dname])
+                if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
+                    self.plotWidget.addItem(self.dataErrPos[dname])
+                    self.plotWidget.addItem(self.dataErrNeg[dname])
+                    self.plotWidget.addItem(self.dataErr[dname])
+                    self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
+                self.legendItem.addItem(self.data[dname],dname)
+            if self.xLogCheckBox.checkState()==Qt.Checked:
+                self.plotWidget.plotItem.setLogMode(x=True)
+            else:
+                self.plotWidget.plotItem.setLogMode(x=False)
+            if self.yLogCheckBox.checkState()==Qt.Checked:
+                self.plotWidget.plotItem.setLogMode(y=True)
+            else:
+                self.plotWidget.plotItem.setLogMode(y=False)
             
     def updatePlot(self):
         for dname in self.selDataNames:
@@ -215,4 +245,16 @@ class PlotWidget(QWidget):
         Sets the y-label of the plot
         """
         self.plotWidget.getPlotItem().setTitle(title='<font size='+str(fontsize)+'>'+title+'</font>')
+ 
     
+if __name__=='__main__':
+    app=QApplication(sys.argv)
+    w=PlotWidget(matplotlib=True)
+    x=np.arange(0,np.pi,0.01)
+    y=np.sin(x)
+    w.add_data(x,y,name='sin')
+    w.setWindowTitle('Plot Widget')
+    w.setGeometry(100,100,1000,800)
+    
+    w.show()
+    sys.exit(app.exec_())

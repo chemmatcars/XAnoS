@@ -1274,7 +1274,7 @@ class Fit_Widget(QWidget):
                     self.genParamListWidget.item(row).setSelected(True)
                 self.plot_extra_param()
             self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
-            self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text())
+            self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text(),fit=True)
             pfnames=pfnames+[self.funcListWidget.currentItem().text()]
         #except:
         #    pass
@@ -1292,7 +1292,7 @@ class Fit_Widget(QWidget):
             if len(axes)==2:
                 x=self.fit.params['output_params'][txt][axes[0]]
                 y=self.fit.params['output_params'][txt][axes[1]]
-                self.extra_param_1DplotWidget.add_data(x=x,y=y,name=txt)
+                self.extra_param_1DplotWidget.add_data(x=x,y=y,name=txt,fit=True)
                 fdata.append(txt)
     #            pg.plot(self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]],title=txt,left=axes[1],bottom=axes[0])
             #else:
