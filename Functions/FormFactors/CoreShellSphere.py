@@ -41,6 +41,7 @@ class CoreShellSphere:
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']}
         self.output_params={}
+        self.init_params()
 
     def init_params(self):
         self.params=Parameters()
@@ -71,8 +72,8 @@ class CoreShellSphere:
             return self.norm*res+self.bkg
         elif self.Rsig>1e-3 and self.shsig<1e-3:
             if self.dist=='Gaussian':
-                gau=Gaussian.Gaussian(x=0.001,mu=self.R,sig=self.Rsig)
-                rmin,rmax=find_minmax(gau,self.R,self.Rsig)
+                gau=Gaussian.Gaussian(x=0.001,pos=self.R,wid=self.Rsig)
+                rmin,rmax=find_minmax(gau,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
                 gau.x=r
                 dist=gau.y()
@@ -89,8 +90,8 @@ class CoreShellSphere:
                     amp,res=self.coreShell(self.x,r,self.rhoc,self.sh,self.rhosh,self.rhosol)
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
-                lgn=LogNormal.LogNormal(x=0.001,mu=self.R,sig=self.Rsig)
-                rmin,rmax=find_minmax(lgn,self.R,self.Rsig)
+                lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
+                rmin,rmax=find_minmax(lgn,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
                 lgn.x=r
                 dist=lgn.y()
@@ -111,8 +112,8 @@ class CoreShellSphere:
                 return np.ones_like(self.x)
         elif self.Rsig<1e-3 and self.shsig>1e-3:
             if self.dist=='Gaussian':
-                gau=Gaussian.Gaussian(x=0.001,mu=self.sh,sig=self.shsig)
-                shmin,shmax=find_minmax(gau,self.sh,self.shsig)
+                gau=Gaussian.Gaussian(x=0.001,pos=self.sh,wid=self.shsig)
+                shmin,shmax=find_minmax(gau,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 gau.x=sh
                 dist=gau.y()
@@ -129,8 +130,8 @@ class CoreShellSphere:
                     amp,res=self.coreShell(self.x,self.R,self.rhoc,sh,self.rhosh,self.rhosol)
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
-                lgn=LogNormal.LogNormal(x=0.001,mu=self.sh,sig=self.shsig)
-                shmin,shmax=find_minmax(lgn,self.sh,self.shsig)
+                lgn=LogNormal.LogNormal(x=0.001,pos=self.sh,wid=self.shsig)
+                shmin,shmax=find_minmax(lgn,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 lgn.x=sh
                 dist=lgn.y()
@@ -151,14 +152,15 @@ class CoreShellSphere:
                 return np.ones_like(self.x)
         else:
             if self.dist=='Gaussian':
-                gau=Gaussian.Gaussian(x=0.001,mu=self.R,sig=self.Rsig)
-                rmin,rmax=find_minmax(gau,self.R,self.Rsig)
+                gau=Gaussian.Gaussian(x=0.001,pos=self.R,wid=self.Rsig)
+                rmin,rmax=find_minmax(gau,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
-                shmin,shmax=find_minmax(gau,self.sh,self.shsig)
+                shmin,shmax=find_minmax(gau,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 R,Sh=np.meshgrid(r,sh)
-                dist=np.exp(-(R-self.R)**2/2.0/self.Rsig**2)*np.exp(-(Sh-self.sh)**2/2.0/self.shsig**2)
+                dist=np.exp(-(R-self.R)**2/2.0/self.Rsig**2-(Sh-self.sh)**2/2.0/self.shsig**2)
                 sumdist=np.sum(dist)
+                print(sumdist)
                 self.output_params['Distribution']={'x':R,'y':Sh,'z':dist/sumdist}
                 if type(self.x)==np.ndarray:
                     ffactor=[]
@@ -171,10 +173,10 @@ class CoreShellSphere:
                     amp,res=self.coreShell(self.x,R,self.rhoc,Sh,self.rhosh,self.rhosol)
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
-                lgn=LogNormal.LogNormal(x=0.001,mu=self.R,sig=self.Rsig)
-                rmin,rmax=find_minmax(lgn,self.R,self.Rsig)
+                lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
+                rmin,rmax=find_minmax(lgn,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
-                shmin,shmax=find_minmax(lgn,self.sh,self.shsig)
+                shmin,shmax=find_minmax(lgn,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 R,Sh=np.meshgrid(r,sh)
                 dist=np.exp(-(np.log(R)-np.log(self.R))**2/2.0/self.Rsig**2)*np.exp(-(np.log(Sh)-np.log(self.sh))**2/2.0/self.shsig**2)/R/Sh

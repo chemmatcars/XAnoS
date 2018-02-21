@@ -5,32 +5,33 @@ class LogNormal:
     """
     Provides log-normal function
     """
-    def __init__(self,x=0.0,mu=0.5,sig=0.1,norm=1.0,bkg=0.0,mpar={}):
+    def __init__(self,x=0.0,pos=0.5,wid=0.1,norm=1.0,bkg=0.0,mpar={}):
         """
-        Provides log-normal function y=norm*exp(-(log(x)-log(mu))**2/2/sig**2)/sqrt(2*pi)/sig/x+bkg
+        Provides log-normal function y=norm*exp(-(log(x)-log(pos))**2/2/wid**2)/sqrt(2*pi)/wid/x+bkg
         x: scalar or array of values
-        mu: Peak of the Gaussian part of the distribution
-        sig: Width of the Gaussian part of the distribution
+        pos: Peak of the Gaussian part of the distribution
+        wid: Width of the Gaussian part of the distribution
         norm: Normalization constant
         bkg: Constant background
         """
         self.x=x
-        self.mu=mu
-        self.sig=sig
+        self.pos=pos
+        self.wid=wid
         self.norm=norm
         self.bkg=bkg
         self.__mpar__=mpar
         self.choices=None
         self.output_params={}
+        self.init_params()
 
     def init_params(self):
         self.params=Parameters()
-        self.params.add('mu',value=self.mu,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('sig',value=self.sig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('pos',value=self.pos,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('wid',value=self.wid,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
 
 
     def y(self):
-        return self.norm*np.exp(-(np.log(self.x)-np.log(self.mu))**2/2.0/self.sig**2)/self.x/self.sig/2.5066+self.bkg
+        return self.norm*np.exp(-(np.log(self.x)-np.log(self.pos))**2/2.0/self.wid**2)/self.x/self.wid/2.5066+self.bkg
 

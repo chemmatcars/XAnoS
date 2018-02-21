@@ -35,6 +35,7 @@ class ContinuousSphere:
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']}
         self.output_params={}
+        self.init_params()
 
     def init_params(self):
         self.params=Parameters()
@@ -60,8 +61,8 @@ class ContinuousSphere:
             return self.norm*self.csphere(R,rho)+self.bkg
         else:
             if self.dist=='Gaussian':
-                gau=Gaussian.Gaussian(x=0.0,mu=R[0],sig=self.Rsig)
-                rmin,rmax=find_minmax(gau,mu=R[0],sig=self.Rsig)
+                gau=Gaussian.Gaussian(x=0.0,pos=R[0],wid=self.Rsig)
+                rmin,rmax=find_minmax(gau,pos=R[0],wid=self.Rsig)
                 dr=np.linspace(rmin,rmax,self.N)
                 gau.x=dr
                 dist=gau.y()
@@ -74,8 +75,8 @@ class ContinuousSphere:
                 return self.norm*res/sumdist+self.bkg
 
             elif self.dist=='LogNormal':
-                lgn=LogNormal.LogNormal(x=0.0,mu=R[0],sig=self.Rsig)
-                rmin,rmax=find_minmax(lgn,mu=R[0],sig=self.Rsig)
+                lgn=LogNormal.LogNormal(x=0.0,pos=R[0],wid=self.Rsig)
+                rmin,rmax=find_minmax(lgn,pos=R[0],wid=self.Rsig)
                 dr=np.linspace(rmin,rmax,self.N)
                 lgn.x=dr
                 dist=lgn.y()

@@ -20,6 +20,7 @@ class Gaussian:
         self.__mpar__=mpar
         self.choices={}
         self.output_params={}
+        self.init_params()
     
     def gau(self,x,pos,wid,norm):
         """

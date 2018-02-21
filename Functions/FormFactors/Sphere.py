@@ -34,6 +34,7 @@ class Sphere:
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']}
         self.output_params={}
+        self.init_params()
 
     def init_params(self):
         self.params=Parameters()
@@ -50,7 +51,7 @@ class Sphere:
             return self.norm*rho**2*(np.sin(self.x*self.R)-self.x*self.R*np.cos(self.x*self.R))**2/self.x**6+self.bkg
         else:
             if self.dist=='Gaussian':
-                gau=Gaussian.Gaussian(x=0.001,mu=self.R,sig=self.Rsig)
+                gau=Gaussian.Gaussian(x=0.001,pos=self.R,wid=self.Rsig)
                 rmin,rmax=find_minmax(gau,self.R,self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
                 gau.x=r
@@ -66,7 +67,7 @@ class Sphere:
                 else:
                     return self.norm*rho**2*np.sum((np.sin(self.x*r)-self.x*r*np.cos(self.x*r))**2*dist/self.x**6)/sumdist+self.bkg
             elif self.dist=='LogNormal':
-                lgn=LogNormal.LogNormal(x=0.001,mu=self.R,sig=self.Rsig)
+                lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
                 rmin,rmax=find_minmax(lgn,self.R,self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
                 lgn.x=r
