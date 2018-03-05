@@ -546,30 +546,42 @@ def write1DSAXS(data):
             
         
         
+#if __name__=='__main__':
+#    try:
+#        fname=sys.argv[1]
+#    except:
+#        print('Please provide the basefile name without numbers at the end as argument 2')
+#    try:
+#        fnum=int(sys.argv[2])
+#    except:
+#        print('Please provide the number of repeated measurements of data as argument 3')
+#    try:
+#        sol_name=sys.argv[3]
+#    except:
+#        print('Please provide the solvent/background file name without numbers at the end as argument 4')
+#    try:
+#        sol_num=int(sys.argv[4])
+#    except:
+#        print('Please provide the number of repeated measurements of solvent/background data as argument 5')
+#    try:
+#        gc_name=sys.argv[5]
+#    except:
+#        print('Please provide Glassy Carbon file name without numbers at the end as argument 6')
+#    try:
+#        gc_num=int(sys.argv[6])
+#    except:
+#        print('Please provide the number of repated measurements of Glassy carbon as argument 7')
+#    reduce1DSAXS2(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,sample_thickness=0.1)
+
 if __name__=='__main__':
-    try:
-        fname=sys.argv[1]
-    except:
-        print('Please provide the basefile name without numbers at the end as argument 2')
-    try:
-        fnum=int(sys.argv[2])
-    except:
-        print('Please provide the number of repeated measurements of data as argument 3')
-    try:
-        sol_name=sys.argv[3]
-    except:
-        print('Please provide the solvent/background file name without numbers at the end as argument 4')
-    try:
-        sol_num=int(sys.argv[4])
-    except:
-        print('Please provide the number of repeated measurements of solvent/background data as argument 5')
-    try:
-        gc_name=sys.argv[5]
-    except:
-        print('Please provide Glassy Carbon file name without numbers at the end as argument 6')
-    try:
-        gc_num=int(sys.argv[6])
-    except:
-        print('Please provide the number of repated measurements of Glassy carbon as argument 7')
-    reduce1DSAXS2(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,sample_thickness=0.1)
+    fname=sys.argv[1]
+    startnums=eval(sys.argv[2])
+    repeat=eval(sys.argv[3])
+    ofname=sys.argv[4]
+    
+    num=[]
+    for snum in startnums:
+        num=num+[snum+i for i in range(repeat)]
+    print(num)
+    average1DSAXS(fname,num=num,ofname=ofname,delete_prev=False,data={})
     

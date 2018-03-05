@@ -94,8 +94,10 @@ class Data_Reducer(QWidget):
         #self.layout.addWidget(ai)
         self.azimuthRange=azimuthRange
         self.create_UI()
-        self.openPoniFile(file=self.poniFile)
-        self.openMaskFile(file=self.maskFile)
+        if os.path.exists(self.poniFile):
+            self.openPoniFile(file=self.poniFile)
+        if os.path.exists(self.maskFile):
+            self.openMaskFile(file=self.maskFile)
         
         
         
@@ -547,10 +549,10 @@ class Data_Reducer(QWidget):
                 self.saveData()
                 self.tabWidget.setCurrentWidget(self.plotWidget)
             else:
-                QMessageBox.warning(self,'Calibration file error','Data reduction failed because either no calibration file provided or the provided file or path do not exists',QMessageBox.Ok)
+                QMessageBox.warning(self,'Calibration File Error','Data reduction failed because either no calibration file provided or the provided file or path do not exists',QMessageBox.Ok)
                 
         else:
-            QMessageBox.warning(self,'Data file error','No data file provided', QMessageBox.Ok)
+            QMessageBox.warning(self,'Data File Error','No data file provided', QMessageBox.Ok)
             
     def reduce_multiple(self):
         """

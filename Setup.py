@@ -78,4 +78,4 @@ class Setup(QObject):
             if line[0]!='#' and line[0]!='\n':
                 name,info=line.split('@')
                 pv,rbk,mov1,mov2=info.strip()[1:-1].split(',')
-                self.slitParams[name]={'PV':pv.split('=')[1],'RBK':rbk.split('='),'MOV1':mov1.split('='),'MOV2':mov2.split('=')}
+                self.slitParams[name]={'PV':pv.split('=')[1],'RBK':rbk.split('=')[1],'MOV1':mov1.split('=')[1],'MOV2':mov2.split('=')[1]}

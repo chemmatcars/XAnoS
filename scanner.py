@@ -223,14 +223,16 @@ class Scanner(QWidget):
         self.scanMotorComboBox.clear()
         if self.scanName=='MotorScan':
             self.scanMotorComboBox.addItems(list(self.motors.keys()))
+            self.scanMotorPositionLabel.setText('%.4f'%caget(self.motors[str(self.scanMotorComboBox.currentText())]['PV']+'.RBV'))
         elif self.scanName=='TimeScan':
             self.scanMotorComboBox.addItem('time')
             self.scanMotorPositionLabel.setText('0.0')
         elif self.scanName=='EnergyScan':
             self.scanMotorComboBox.addItem('Energy')
-            self.scanMotorPositionLabel.setText('%0.4f'%(caget('15IDA:BraggERdbkA0')))
+            self.scanMotorPositionLabel.setText('%0.4f'%(caget('15IDA:BraggERdbkAO')))
         elif self.scanName=='SlitScan':
             self.scanMotorComboBox.addItems(list(self.slitParams.keys()))
+            self.scanMotorPositionLabel.setText('%0.4f'%(caget(self.slitParams[str(self.scanMotorComboBox.currentText())]['RBK'])))
         self.scanMotorComboBox.currentIndexChanged.connect(self.scanMotorChanged)
         
         
@@ -250,13 +252,27 @@ class Scanner(QWidget):
             camonitor(self.motors[str(self.scanMotorComboBox.currentText())]['PV']+'.DMOV',callback=self.motorStatus)
             self.oldMotorName=copy.copy(self.scanMotorName)
         elif self.scanName=='SlitScan':
-            pass
+            self.scanMotorName=str(self.scanMotorComboBox.currentText())
+            self.scanMotorPos=caget(self.slitParams[str(self.scanMotorComboBox.currentText())]['RBK'])
+            self.scanMotorPositionLabel.setText('%0.4f'%self.scanMotorPos)
+
         
     def motorMoved(self,**kwargs):
         value=kwargs['value']
-        self.scanMotorPositionLabel.setText('%3.5f'%value)
+        self.scanMotorPositionLabel.setText('%0.4f'%value)
         
     def motorStatus(self,**kwargs):
+        value=kwargs['value']
+        if value!=1:
+            self.scanStatus.setText('Moving')
+        else:
+            self.scanStatus.setText('Done')
+            
+    def slitMoved(self,**kwargs):
+        value=kwargs['value']
+        self.scanMotorPositionLabel.setText('%0.4f'%value)
+        
+    def slitStatus(self,**kwargs):
         value=kwargs['value']
         if value!=1:
             self.scanStatus.setText('Moving')

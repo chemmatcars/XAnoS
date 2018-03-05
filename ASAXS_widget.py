@@ -402,7 +402,7 @@ class ASAXS_Widget(QWidget):
         """
         if self.dataListWidget.count()==0:
             self.fCounter=0
-        self.dataFiles=QFileDialog.getOpenFileNames(self,caption='Import data',directory=self.dataDir,filter='Data files (*.dat *.txt *.chi *)')[0]
+        self.dataFiles=QFileDialog.getOpenFileNames(self,caption='Import data',directory=self.dataDir,filter='Data files (*.dat *.txt *.chi)')[0]
         if len(self.dataFiles)>0:
             self.dataDir=os.path.dirname(self.dataFiles[0])
             for file in self.dataFiles:

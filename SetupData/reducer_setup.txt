@@ -1,1 +1,1 @@
-{"poniFile": "/media/sf_Mrinal_Bera/Desktop/AgBh/mar_ccd/agbh_cal.poni", "maskFile": "C:/Users/Mrinal Bera/Desktop/AgBh/mar_ccd/mask.msk"}
+{"poniFile": "/mnt/ChemData/Data/Asax/HoffmanEstates/AgBh_30keV.poni", "maskFile": "/mnt/ChemData/Data/Asax/HoffmanEstates/Mask.msk"}

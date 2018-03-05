@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Shutter.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3358"
+       inkscape:collect="always">
+      <stop
+         id="stop3360"
+         offset="0"
+         style="stop-color:#e5ffd5;stop-opacity:1" />
+      <stop
+         id="stop3362"
+         offset="1"
+         style="stop-color:#00ff00;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3338">
+      <stop
+         style="stop-color:#ffd5d5;stop-opacity:1"
+         offset="0"
+         id="stop3340" />
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1"
+         offset="1"
+         id="stop3342" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3338"
+       id="radialGradient3344"
+       cx="188.0182"
+       cy="362.30258"
+       fx="188.0182"
+       fy="362.30258"
+       r="113.35714"
+       gradientTransform="matrix(1.2198683,0.97082883,-1.0337908,1.2989814,336.61622,-283.65273)"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3358"
+       id="radialGradient3356"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.2198683,0.97082883,-1.0337908,1.2989814,336.61622,70.34727)"
+       cx="188.0182"
+       cy="362.30258"
+       fx="188.0182"
+       fy="362.30258"
+       r="113.35714" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-127.85714"
+     inkscape:cy="520"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="979"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3369"
+       inkscape:export-xdpi="10"
+       inkscape:export-ydpi="10">
+      <ellipse
+         ry="115.71429"
+         rx="112.85714"
+         cy="368.07648"
+         cx="190"
+         id="path3336"
+         style="fill:url(#radialGradient3344);fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3346"
+         y="435.18097"
+         x="340"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:180px;fill:#ff0000"
+           y="435.18097"
+           x="340"
+           id="tspan3348"
+           sodipodi:role="line">Shutter ON</tspan></text>
+    </g>
+    <g
+       id="g3364"
+       inkscape:export-xdpi="10"
+       inkscape:export-ydpi="10">
+      <ellipse
+         style="fill:url(#radialGradient3356);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="ellipse3350"
+         cx="190"
+         cy="722.07648"
+         rx="112.85714"
+         ry="115.71429" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="340"
+         y="789.18097"
+         id="text3352"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan3354"
+           x="340"
+           y="789.18097"
+           style="font-size:180px;fill:#00ff00">Shutter OFF</tspan></text>
+    </g>
+  </g>
+</svg>
