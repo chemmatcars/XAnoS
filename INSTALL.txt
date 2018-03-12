@@ -1,9 +1,10 @@
 1) Install Anaconda python (Python 3.6) for your operating system from: 'https://www.anaconda.com/download/'
 
-Open a Anaconda terminal
-1) conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
+2) Open a Anaconda terminal the first two commands
+	
+	a) conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
 
-2) pip install lmfit pyfai
+	b) pip install lmfit pyfai
 
 3) Go to the website: https://github.com/scikit-beam/XrayDB
 
