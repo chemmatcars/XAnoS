@@ -1,0 +1,57 @@
+1) Install Anaconda python (Python 3.6) for your operating system from: 'https://www.anaconda.com/download/'
+
+Open a Anaconda terminal
+1) conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
+
+2) Go to the website: https://github.com/scikit-beam/XrayDB
+
+	a) Click the green button named "Clone or download"
+
+	b) Download the zip file
+
+	c) Extract the zip file into a folder
+
+	d) In the Anconda terminal go the the extracted folder:
+   		cd "/home/mrinal/Download/XrayDB-master"
+
+	e) Go inside the python folder
+   		cd python
+   	
+   	d) Run the command:
+   		python setup.py install
+3) Download SAXS_Drive from the Github page: 
+	
+	a) Click the green button named "Clone or download"
+	
+	b) Download the zip file
+   	
+   	c) Extract the zip file into a folder
+   	
+   	d) In the Anconda terminal go the the extracted folder:
+   		cd "/home/mrinal/Download/SAXS_Drive-master"
+   	
+   	e) Run the following commands to run different packages:
+   	
+   		i) Data Collection package: (Do not run this when not in the beamline!)
+   			python Data_Collector.py 
+   	
+   		ii) Data Reduction package: 
+   			python Data_Reducer.py
+   			
+   			You may get this error:
+	   			Traceback (most recent call last):
+				  File "Data_Reducer.py", line 18, in <module>
+					from calibrationWidget import CalibrationWidget
+				  File "/media/sf_Mrinal_Bera/Documents/SAXS_Drive/calibrationWidget.py", line 14, in <module>
+					from matplotlib import _cntr as cntr
+				ImportError: cannot import name '_cntr'
+			
+			In that case you may have to downgrade the matplotlib by running this command:
+				conda install matplotlib=2.0.2			
+   				
+   		iii) Data viewer/Analysis package: 
+   			python ASAXS_widget.py
+   	
+   		iv) Data fitting packageL: 
+   			python Fit_widget.py
+   

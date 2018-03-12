@@ -5,7 +5,7 @@ import os
 import sys
 import pyqtgraph as pg
 from pyqtgraph.dockarea import DockArea, Dock
-from epics import caput, caget, camonitor
+#from epics import caput, caget, camonitor
 from Setup import Setup
 from multiprocessing import Process
 from PlotWidget import PlotWidget
