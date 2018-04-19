@@ -269,6 +269,15 @@ class ASAXS_Widget(QWidget):
         
         row+=1
         col=0
+        self.elementCheckBox=QCheckBox('Elements')
+        self.dataDockLayout.addWidget(self.elementCheckBox,row=row,col=col)
+        col+=1
+        self.elementsLineEdit=QLineEdit('x, Rb')
+        self.dataDockLayout.addWidget(self.elementsLineEdit,row=row,col=col,colspan=2)
+        
+        
+        row+=1
+        col=0
         self.ASAXSCalcTypeComboBox=QComboBox()
         self.ASAXSCalcTypeComboBox.addItems(['np.linalg.lstsq','sp.opt.minimize'])
         self.dataDockLayout.addWidget(self.ASAXSCalcTypeComboBox,row=row,col=col)
@@ -277,11 +286,11 @@ class ASAXS_Widget(QWidget):
         self.calcASAXSPushButton.clicked.connect(self.ASAXS_split)
         self.dataDockLayout.addWidget(self.calcASAXSPushButton,row=row,col=col,colspan=2)
         
-        row+=1
-        col=0
-        self.checkComponentsPushButton=QPushButton('Check component ratios')
-        self.checkComponentsPushButton.clicked.connect(self.check_components)
-        self.dataDockLayout.addWidget(self.checkComponentsPushButton,row=row,col=col,colspan=3)
+        #row+=1
+        #col=0
+        #self.checkComponentsPushButton=QPushButton('Check component ratios')
+        #self.checkComponentsPushButton.clicked.connect(self.check_components)
+        #self.dataDockLayout.addWidget(self.checkComponentsPushButton,row=row,col=col,colspan=3)
         
         row+=1
         col=0
@@ -1138,6 +1147,107 @@ class ASAXS_Widget(QWidget):
         else:
             #self.saveASAXSPushButton.setEnabled(True)
             QMessageBox.warning(self,'Data error','Please select more than three data sets to do the calculation',QMessageBox.Ok)
+            
+    def prepareNewData(self):
+        """
+        Prepares the selected data for new ASAXS splitting provided by ASAXS_split_3 i.e.
+        1) Interpolate the all data sets with same q values. SAXS data collection at different energies can bring different q-values
+        2) Calculates the scattering factors f1 and f2 for energies at which the data were collected
+        """
+        self.interpolate_data()
+        #element=str(self.elementComboBox.currentText().split(': ')[1])
+        self.AMatrix=[]
+        self.BMatrix=None
+        self.EOff=float(self.EOffLineEdit.text())
+        #self.calc_XRF_baseline()
+        self.minEnergy=np.min([self.data[key]['Energy'] for key in self.data.keys()])
+        elements=self.elementsLineEdit.text().replace(' ','').split(',')
+        for item in self.dataListWidget.selectedItems():
+            dataname, fname=item.text().split(': ')
+            self.data[fname]['f1'], self.data[fname]['f2']=self.get_f1_f2(element,(self.data[fname]['Energy']-self.EOff))
+            #self.data[fname]['f1']=self.data[fname]['f1']*(1.0+float(self.linearOffsetLineEdit.text())*(self.data[fname]['Energy']-self.minEnergy))
+            
+            #self.data[fname]['f1']=self.xrdb.f1_chantler(element=element,energy=(self.data[fname]['Energy']-self.EOff)*1000)
+            #self.data[fname]['f2']=self.xrdb.f2_chantler(element=element,energy=(self.data[fname]['Energy']-self.EOff)*1000)
+            for ele in elements
+            self.AMatrix.append([1.0, 2*self.data[fname]['f1'], self.data[fname]['f1']**2+self.data[fname]['f2']**2])
+            if self.BMatrix is not None:
+                self.BMatrix=np.vstack((self.BMatrix, self.data[fname]['yintp']))
+            else:
+                self.BMatrix=self.data[fname]['yintp']
+        self.AMatrix=np.array(self.AMatrix)
+            
+    def ASAXS_split_3(self):
+        """
+        Splits the energy dependent SAXS data into partial scattering factors i.e. contribution of scattering intensity 
+        from different elements mentioned in Elements List Widget
+        Please use x if you do not wish to put the element information of the elements other than the edge elements
+        """
+        comp_ind={}
+        comp={}
+        comp['q']=self.data[fnames[0]]['xintp']
+        comp['S_tot']=[]
+        for qn in range(len(data[fnames[0]]['xintp'])):
+            B=[]
+            Berr=[]
+            A=pl.zeros((Ne,Np+int(sp.misc.comb(Np,2))))
+            for k in range(Ne):
+                ind=0
+                B.append(data[fnames[k]]['CF']*data[fnames[k]]['yintp'][qn])
+                Berr.append(data[fnames[k]]['CF']*data[fnames[k]]['yintperr'][qn])
+                for i in range(Np):
+                    if elements[i]=='x':
+                        f0i=1.0
+                        f1i=0.0
+                        f2i=0.0
+                    else:
+                        f0i=xrdb.f0(elements[i],0.0)
+                        f1i=xrdb.f1_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
+                        f2i=xrdb.f2_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
+                    fi=complex(f0i+f1i,f2i)
+                    A[k,ind]=pl.absolute(fi)**2#f1i**2+f2i**2+f0i**2+2*f0i*f1i
+                    comp_ind['S_%s-%s'%(elements[i],elements[i])]=ind
+                    ind+=1
+                for i in range(Np-1):
+                    if elements[i]=='x':
+                        f0i=1.0
+                        f1i=0.0
+                        f2i=0.0
+                    else:
+                        f0i=xrdb.f0(elements[i],0.0)
+                        f1i=xrdb.f1_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
+                        f2i=xrdb.f2_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
+                    fi=complex(f0i+f1i,f2i)
+                    for j in range(i+1,Np):
+                        if elements[j]=='x':
+                            f0j=1.0
+                            f1j=0.0
+                            f2j=0.0
+                        else:
+                            f0j=xrdb.f0(elements[j],0.0)
+                            f1j=xrdb.f1_chantler(element=elements[j],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
+                            f2j=xrdb.f2_chantler(element=elements[j],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
+                        fj=complex(f0j+f1j,f2j)
+                        A[k,ind]=2*pl.real(fi*pl.conjugate(fj))#2*f0i*f0j+2*(f1i*f1j+f2i*f2j+f0i*f1j+f1i*f0j)
+                        comp_ind['ReS_%s-%s'%(elements[i],elements[j])]=ind
+                        ind+=1
+                        #A[k,ind]=-2*pl.imag(fi*pl.conjugate(fj))#-2*(f2i*f1j-f1i*f2j+f2i*f0j-f0i*f2j)
+                        #comp_ind['ImS_%s-%s'%(elements[i],elements[j])]=ind
+                        #ind+=1
+            X=sp.linalg.lstsq(A,B,lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0]
+            tot=[]
+            f1=[]
+            for k in range(Ne):
+                tot.append(pl.sum(pl.dot(A[k,:],X),axis=0))
+                f1.append(xrdb.f1_chantler(element=elements[j],energy=data[fnames[k]]['Energy']*1e3,smoothing=0))
+            for key in comp_ind.keys():
+                try:
+                    comp[key].append(X[comp_ind[key]]) 
+                except:
+                    comp[key]=[X[comp_ind[key]]]
+            comp['S_tot'].append(tot[0])
+        return comp,comp_ind        
+        
             
     def raiseDock(self,dock):
         """

@@ -24,7 +24,7 @@ def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None):
     """
     if os.path.exists(fname):
         if standard=='GC':
-            std_dat=np.loadtxt('/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/SetupData/glassy_carbon_saxs_std.txt')
+            std_dat=np.loadtxt('./SetupData/glassy_carbon_saxs_std.txt')
         elif standard=='Water':
             qst=np.linspace(0.003,1.0,1000)
             std_dat=np.vstack((qst,np.ones_like(qst)*1.68e-2)).T

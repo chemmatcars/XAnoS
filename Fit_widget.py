@@ -477,16 +477,17 @@ class Fit_Widget(QWidget):
 #            if self.autoCICheckBox.isChecked():
 #                self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
             self.closeFitInfoDlg()
+            print(self.fit.result.params)
             for row in range(self.sfitParamTableWidget.rowCount()):
                 key=self.sfitParamTableWidget.item(row,0).text()
-                self.sfitParamTableWidget.item(row,1).setText('%.3e'%(self.fit.result.params[key].value))
+                self.sfitParamTableWidget.item(row,1).setText('%.6e'%(self.fit.result.params[key].value))
             self.sfitParamTableWidget.resizeRowsToContents()
             self.sfitParamTableWidget.resizeColumnsToContents()
             for row in range(self.mfitParamTableWidget.rowCount()):
                 for col in range(self.mfitParamTableWidget.columnCount()):
                     parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                     key='__%s__%03d'%(parkey,row)
-                    self.mfitParamTableWidget.item(row,col).setText('%.3e'%(self.fit.result.params[key].value))                    
+                    self.mfitParamTableWidget.item(row,col).setText('%.6e'%(self.fit.result.params[key].value))                    
             self.sfitParamTableWidget.resizeRowsToContents()
             self.sfitParamTableWidget.resizeColumnsToContents()
             self.mfitParamTableWidget.resizeRowsToContents()
@@ -605,13 +606,13 @@ class Fit_Widget(QWidget):
     def undoFit(self):
         for row in range(self.sfitParamTableWidget.rowCount()):
             key=self.sfitParamTableWidget.item(row,0).text()
-            self.sfitParamTableWidget.item(row,1).setText('%.3e'%(self.oldParams[key]))
+            self.sfitParamTableWidget.item(row,1).setText('%.6e'%(self.oldParams[key]))
         if self.fit.params['__mpar__']!={}:
             for row in range(self.mfitParamTableWidget.rowCount()):
                 for col in range(self.mfitParamTableWidget.columnCount()):
                     parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                     key='__%s__%03d'%(parkey,row)
-                    self.mfitParamTableWidget.item(row,col).setText('%.3e'%(self.oldmpar[parkey][row]))
+                    self.mfitParamTableWidget.item(row,col).setText('%.6e'%(self.oldmpar[parkey][row]))
             self.mfitParamData=copy.copy(self.oldmpar)
         self.update_plot()                    
 
