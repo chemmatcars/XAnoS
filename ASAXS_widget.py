@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QShortcut
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QShortcut, QSplitter
 from PyQt5.QtGui import QPalette, QKeySequence
 from PyQt5.QtCore import Qt
 import os
@@ -9,6 +9,7 @@ from xraydb import XrayDB
 from PlotWidget import PlotWidget
 import copy
 import numpy as np
+import scipy as sp
 from scipy.signal import fftconvolve, savgol_filter
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize
@@ -873,14 +874,55 @@ class ASAXS_Widget(QWidget):
         """
         This dock holds the plots of different scattering contributions.
         """
+        splitter=QSplitter(Qt.Horizontal)
+        self.ASAXSCompLayout=pg.LayoutWidget(self)
         self.ASAXSPlotLayout=pg.LayoutWidget(self)
+        splitter.addWidget(self.ASAXSCompLayout)
+        splitter.addWidget(self.ASAXSPlotLayout)
         row=0
         col=0
-        self.ASAXSPlotWidget=PlotWidget(self)
-        self.ASAXSPlotWidget.setXLabel('Q',fontsize=1)
-        self.ASAXSPlotWidget.setYLabel('Intensity',fontsize=1)
-        self.ASAXSPlotLayout.addWidget(self.ASAXSPlotWidget,row=row,col=col)        
-        self.ASAXSPlotDock.addWidget(self.ASAXSPlotLayout)
+        directComponentLabel=QLabel('Direct components')
+        self.ASAXSCompLayout.addWidget(directComponentLabel,row=row,col=col)
+        
+        row=1
+        col=0
+        self.directComponentListWidget=QListWidget(self)
+        self.directComponentListWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.ASAXSCompLayout.addWidget(self.directComponentListWidget,row=row,col=col)
+        
+        row=2
+        crossComponentLabel=QLabel('Cross components')
+        self.ASAXSCompLayout.addWidget(crossComponentLabel,row=row,col=col)
+        
+        row=3
+        self.crossComponentListWidget=QListWidget(self)
+        self.crossComponentListWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.ASAXSCompLayout.addWidget(self.crossComponentListWidget,row=row,col=col)
+        
+        row=0
+        col=1
+        self.directComponentPlotWidget=PlotWidget(self)
+        self.directComponentPlotWidget.setXLabel('Q',fontsize=5)
+        self.directComponentPlotWidget.setYLabel('Intensity',fontsize=5)
+        self.ASAXSPlotLayout.addWidget(self.directComponentPlotWidget,row=row,col=col,rowspan=2)
+        
+        row=2
+        col=1
+        self.crossComponentPlotWidget=PlotWidget(self)
+        self.crossComponentPlotWidget.setXLabel('Q',fontsize=5)
+        self.crossComponentPlotWidget.setYLabel('Intensity',fontsize=5)
+        self.ASAXSPlotLayout.addWidget(self.crossComponentPlotWidget,row=row,col=col,rowspan=2)
+        
+        self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
+        self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
+        
+        
+        
+        #self.ASAXSPlotWidget=PlotWidget(self)
+        #self.ASAXSPlotWidget.setXLabel('Q',fontsize=5)
+        #self.ASAXSPlotWidget.setYLabel('Intensity',fontsize=5)
+        #self.ASAXSPlotLayout.addWidget(self.ASAXSPlotWidget,row=row,col=col)        
+        self.ASAXSPlotDock.addWidget(splitter)
         
         
         
@@ -942,7 +984,7 @@ class ASAXS_Widget(QWidget):
                 qmin=copy.copy(tmin)
             if tmax<qmax:
                 qmax=copy.copy(tmax)                
-        self.qintp=np.linspace(qmin,qmax,len(self.data[fname]['x']))
+        self.qintp=np.linspace(qmin,qmax,len(self.data[self.fnames[0]]['x']))
         for item in self.dataListWidget.selectedItems():
             dataname, fname=item.text().split(': ')
             self.data[fname]['xintp']=self.qintp
@@ -1053,17 +1095,19 @@ class ASAXS_Widget(QWidget):
         
     def ASAXS_split(self):
         #try:
-        if str(self.ASAXSCalcTypeComboBox.currentText())=='np.linalg.lstsq':
-            if len(self.fnames)==3:
-                self.ASAXS_split_0()
-            else:
-                self.ASAXS_split_1()
-        else:
-            if len(self.fnames)==3:
-                self.ASAXS_split_0()
-            else:
-                self.ASAXS_split_2()
-        #except:
+        self.ASAXS_split_3()
+#        if str(self.ASAXSCalcTypeComboBox.currentText())=='np.linalg.lstsq':
+#            if len(self.fnames)==3:
+#                self.ASAXS_split_0()
+#            else:
+#                #self.ASAXS_split_1()
+#                self.ASAXS_split_3()
+#        else:
+#            if len(self.fnames)==3:
+#                self.ASAXS_split_0()
+#            else:
+#                self.ASAXS_split_2()
+#        #except:
         #    QMessageBox.warning(self,'Selection error','Please select atleast three data sets to calculate the components',QMessageBox.Ok)
         
             
@@ -1156,26 +1200,50 @@ class ASAXS_Widget(QWidget):
         """
         self.interpolate_data()
         #element=str(self.elementComboBox.currentText().split(': ')[1])
-        self.AMatrix=[]
-        self.BMatrix=None
         self.EOff=float(self.EOffLineEdit.text())
         #self.calc_XRF_baseline()
         self.minEnergy=np.min([self.data[key]['Energy'] for key in self.data.keys()])
-        elements=self.elementsLineEdit.text().replace(' ','').split(',')
-        for item in self.dataListWidget.selectedItems():
-            dataname, fname=item.text().split(': ')
-            self.data[fname]['f1'], self.data[fname]['f2']=self.get_f1_f2(element,(self.data[fname]['Energy']-self.EOff))
-            #self.data[fname]['f1']=self.data[fname]['f1']*(1.0+float(self.linearOffsetLineEdit.text())*(self.data[fname]['Energy']-self.minEnergy))
-            
-            #self.data[fname]['f1']=self.xrdb.f1_chantler(element=element,energy=(self.data[fname]['Energy']-self.EOff)*1000)
-            #self.data[fname]['f2']=self.xrdb.f2_chantler(element=element,energy=(self.data[fname]['Energy']-self.EOff)*1000)
-            for ele in elements
-            self.AMatrix.append([1.0, 2*self.data[fname]['f1'], self.data[fname]['f1']**2+self.data[fname]['f2']**2])
+        self.elements=self.elementsLineEdit.text().replace(' ','').split(',')
+        fe={}
+        Ne=len(self.fnames)
+        Np=len(self.elements)
+        self.AIndex={}
+        self.AMatrix=np.zeros((Ne,Np+int(sp.misc.comb(Np,2))))
+        self.BMatrix=None
+        for k in range(Ne):
+            ind=0
+            for i in range(Np):
+                if self.elements[i]=='x':
+                    fe[self.elements[i]]=np.complex(1.0,0.0)
+                else:
+                    f0=self.xrdb.f0(self.elements[i],0.0)
+                    f1,f2=self.get_f1_f2(self.elements[i],(self.data[self.fnames[k]]['Energy']-self.EOff))
+                    fe[self.elements[i]]=np.complex(f0+f1,f2)
+                self.AMatrix[k,ind]=np.absolute(fe[self.elements[i]])**2
+                self.AIndex['S_%s-%s'%(self.elements[i],self.elements[i])]=ind
+                ind+=1
+            for i in range(Np-1):
+                for j in range(i+1,Np):
+                    self.AMatrix[k,ind]=2*np.real(fe[self.elements[i]]*np.conjugate(fe[self.elements[j]]))
+                    self.AIndex['S_%s-%s'%(self.elements[i],self.elements[j])]=ind
+                    ind+=1
+
             if self.BMatrix is not None:
-                self.BMatrix=np.vstack((self.BMatrix, self.data[fname]['yintp']))
+                self.BMatrix=np.vstack((self.BMatrix, self.data[self.fnames[k]]['yintp']))
             else:
-                self.BMatrix=self.data[fname]['yintp']
-        self.AMatrix=np.array(self.AMatrix)
+                self.BMatrix=self.data[self.fnames[k]]['yintp']
+        self.directComponentListWidget.itemSelectionChanged.disconnect(self.directComponentSelectionChanged)
+        self.crossComponentListWidget.itemSelectionChanged.disconnect(self.crossComponentSelectionChanged)
+        self.directComponentListWidget.clear()
+        self.crossComponentListWidget.clear()
+        for i in range(Np):
+            self.directComponentListWidget.addItem('S_%s-%s'%(self.elements[i],self.elements[i]))
+        for i in range(Np-1):
+            for j in range(i+1,Np):
+                self.crossComponentListWidget.addItem('S_%s-%s'%(self.elements[i],self.elements[j]))
+        self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
+        self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
+        return Ne,Np
             
     def ASAXS_split_3(self):
         """
@@ -1183,71 +1251,65 @@ class ASAXS_Widget(QWidget):
         from different elements mentioned in Elements List Widget
         Please use x if you do not wish to put the element information of the elements other than the edge elements
         """
-        comp_ind={}
-        comp={}
-        comp['q']=self.data[fnames[0]]['xintp']
-        comp['S_tot']=[]
-        for qn in range(len(data[fnames[0]]['xintp'])):
-            B=[]
-            Berr=[]
-            A=pl.zeros((Ne,Np+int(sp.misc.comb(Np,2))))
-            for k in range(Ne):
-                ind=0
-                B.append(data[fnames[k]]['CF']*data[fnames[k]]['yintp'][qn])
-                Berr.append(data[fnames[k]]['CF']*data[fnames[k]]['yintperr'][qn])
-                for i in range(Np):
-                    if elements[i]=='x':
-                        f0i=1.0
-                        f1i=0.0
-                        f2i=0.0
-                    else:
-                        f0i=xrdb.f0(elements[i],0.0)
-                        f1i=xrdb.f1_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
-                        f2i=xrdb.f2_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
-                    fi=complex(f0i+f1i,f2i)
-                    A[k,ind]=pl.absolute(fi)**2#f1i**2+f2i**2+f0i**2+2*f0i*f1i
-                    comp_ind['S_%s-%s'%(elements[i],elements[i])]=ind
-                    ind+=1
-                for i in range(Np-1):
-                    if elements[i]=='x':
-                        f0i=1.0
-                        f1i=0.0
-                        f2i=0.0
-                    else:
-                        f0i=xrdb.f0(elements[i],0.0)
-                        f1i=xrdb.f1_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
-                        f2i=xrdb.f2_chantler(element=elements[i],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
-                    fi=complex(f0i+f1i,f2i)
-                    for j in range(i+1,Np):
-                        if elements[j]=='x':
-                            f0j=1.0
-                            f1j=0.0
-                            f2j=0.0
-                        else:
-                            f0j=xrdb.f0(elements[j],0.0)
-                            f1j=xrdb.f1_chantler(element=elements[j],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
-                            f2j=xrdb.f2_chantler(element=elements[j],energy=data[fnames[k]]['Energy']*1e3,smoothing=0)
-                        fj=complex(f0j+f1j,f2j)
-                        A[k,ind]=2*pl.real(fi*pl.conjugate(fj))#2*f0i*f0j+2*(f1i*f1j+f2i*f2j+f0i*f1j+f1i*f0j)
-                        comp_ind['ReS_%s-%s'%(elements[i],elements[j])]=ind
-                        ind+=1
-                        #A[k,ind]=-2*pl.imag(fi*pl.conjugate(fj))#-2*(f2i*f1j-f1i*f2j+f2i*f0j-f0i*f2j)
-                        #comp_ind['ImS_%s-%s'%(elements[i],elements[j])]=ind
-                        #ind+=1
-            X=sp.linalg.lstsq(A,B,lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0]
+        if len(self.fnames)>3:
+            Ne,Np=self.prepareNewData()
+            X=[]
             tot=[]
-            f1=[]
-            for k in range(Ne):
-                tot.append(pl.sum(pl.dot(A[k,:],X),axis=0))
-                f1.append(xrdb.f1_chantler(element=elements[j],energy=data[fnames[k]]['Energy']*1e3,smoothing=0))
-            for key in comp_ind.keys():
-                try:
-                    comp[key].append(X[comp_ind[key]]) 
-                except:
-                    comp[key]=[X[comp_ind[key]]]
-            comp['S_tot'].append(tot[0])
-        return comp,comp_ind        
+            self.components={}
+            ans=QMessageBox.Yes
+            f1=[self.xrdb.f1_chantler(element=self.elements[Np-1],energy=self.data[self.fnames[k]]['Energy']*1e3,smoothing=0) for k in range(Ne)]
+            ans=QMessageBox.question(self,'Question','Do you like to look at each individual Q for this analysis?',QMessageBox.Yes, QMessageBox.No)        
+            for i in range(self.BMatrix.shape[1]):
+                X.append(sp.linalg.lstsq(self.AMatrix,self.BMatrix[:,i],lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0])
+                tot.append(np.dot(self.AMatrix,X[-1]))            
+                if ans==QMessageBox.Yes:                
+                    try:
+                        sdata.setData(f1,self.BMatrix[:,i],pen=None,symbol='o')
+                        sline.setData(f1,tot[-1],connect='all')
+                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])
+                    except:
+                        fplot=pg.plot(labels={'left':'Intensity','bottom':self.elements[Np-1]+'_f1'})
+                        sdata=pg.PlotDataItem(f1,self.BMatrix[:,i],pen=None,symbol='o')
+                        sline=pg.PlotDataItem(f1,tot[-1],connect='all')
+                        fplot.addItem(sdata)
+                        fplot.addItem(sline)
+                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])   
+                    ans=QMessageBox.question(self,'Question','Do you like to see the next Q?',QMessageBox.Yes, QMessageBox.No)                         
+                for key in self.AIndex.keys():
+                    try:
+                        self.components[key].append(X[-1][self.AIndex[key]]) 
+                    except:
+                        self.components[key]=[X[-1][self.AIndex[key]]]
+            #try:
+            #    fplot.close()
+            #except:
+            #    pass
+            for i in range(Np):
+                key='S_%s-%s'%(self.elements[i],self.elements[i])
+                self.components[key]=np.array(self.components[key])
+                self.directComponentPlotWidget.add_data(self.qintp,self.components[key],name=key)
+            for i in range(Np-1):
+                for j in range(i+1,Np):
+                    key='S_%s-%s'%(self.elements[i],self.elements[j])
+                    self.components[key]=np.array(self.components[key])
+                    self.crossComponentPlotWidget.add_data(self.qintp,self.components[key],name=key)
+            self.update_ASAXSPlot()
+            self.directComponentListWidget.item(0).setSelected(True)
+            self.crossComponentListWidget.item(0).setSelected(True)
+            self.saveASAXSPushButton.setEnabled(True)
+        else:
+            QMessageBox.information(self,"ASAXS Info","Please select more than three data sets to get ASAXS components",QMessageBox.Ok)
         
+        
+    def directComponentSelectionChanged(self):
+        items=[item.text() for item in self.directComponentListWidget.selectedItems()]
+        self.directComponentPlotWidget.Plot(items)
+        self.update_ASAXSPlot()
+        
+    def crossComponentSelectionChanged(self):
+        items=[item.text() for item in self.crossComponentListWidget.selectedItems()]
+        self.crossComponentPlotWidget.Plot(items)
+        self.update_ASAXSPlot()
             
     def raiseDock(self,dock):
         """
@@ -1266,7 +1328,7 @@ class ASAXS_Widget(QWidget):
         """
         #datanames=[item.text().split(': ')[0] for item in self.dataListWidget.selectedItems()] 
         #if np.all(self.XMatrix[:,1]>0):
-        self.ASAXSPlotWidget.Plot(['Total','SAXS-term','Cross-term','Resonant-term'])
+        #self.ASAXSPlotWidget.Plot(['Total','SAXS-term','Cross-term','Resonant-term'])
         #else:
         #    self.ASAXSPlotWidget.Plot(['Total','SAXS-term','neg Cross-term','Resonant-term'])
         self.raiseDock(self.ASAXSPlotDock)
@@ -1286,16 +1348,37 @@ class ASAXS_Widget(QWidget):
         fname=QFileDialog.getSaveFileName(self,caption='Save as',directory=self.dataDir,filter='Text files (*.txt)')[0]
         if os.path.splitext(fname)[1]=='':
             fname=fname+'.txt'
-        fh=open(fname,'w')
-        fh.write('# Scattering components extracted on '+time.asctime()+'\n')
-        fh.write('# Data files used for the the scattering components calculations are:\n')
-        datafiles=[item.text().split(': ')[1] for item in self.dataListWidget.selectedItems()]
-        for file in datafiles:
-            fh.write('# '+file+'\n')
-        fh.write('# Q \t SAXS \t Cross \t Resonant\n')
-        for i in range(len(self.qintp)):
-            fh.write('%.6e \t %.6e \t %.6e \t %.6e\n'%(self.qintp[i],self.XMatrix[i,0],self.XMatrix[i,1],self.XMatrix[i,2]))
-        fh.close()
+        #fh=open(fname,'w')
+        header='Scattering components extracted on '+time.asctime()+'\n'
+        header=header+'Data files used for the the scattering components calculations are:\n'
+        for file in self.fnames:
+            header=header+file+'\n'
+        header=header+'Q(inv Angs)\t'
+        data=self.qintp
+        for key in self.components.keys():
+            header=header+key+'\t'
+            data=np.vstack((data,self.components[key]))
+        np.savetxt(fname,data.T,header=header)
+        
+    def open_ASAXS(self):
+        fname=QFileDialog.getOpenFileName(self,caption='Save as',directory=self.dataDir,filter='Text files (*.txt)')[0]
+        fh=open(fname,'r')
+        lines=fh.readlines()
+        data=[]
+        for line in lines:
+            if line[0]=='#':
+                comment=line
+            else:
+               data.append(list(map(float, line.split())))
+        data=np.array(data)
+        keys=comment.split()
+        self.components=={}
+        i=0
+        self.qintp=data[:,0]
+        for key in keys[1:]:
+            self.comoponents[key]=data[:,i]
+            i+=1
+        
         
         
         

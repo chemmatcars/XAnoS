@@ -6,5 +6,6 @@ Apex2@[pv=15IDBIS:cam1:,det_folder=t:\chemmat\Data\saxs,cars_folder=/home/epics/
 Pilatus_1M@[pv=15PIL3:cam1:,det_folder=/ramdisk/Asax/,cars_folder=/mnt/ChemData/Data/Asax/]
 PhotonII@[pv=13PII_1:cam1:,det_folder=/cars5/Data/chemmat/Data/saxs/,cars_folder=/home/epics/CARS5/Data/chemmat/Data/saxs/]
 #Pilatus_100K@[pv=S33-pilatus1:cam1:,det_folder=/home/det/15idd,cars_folder=/home/epics/CARS5/Data/chemmat/Data/saxs]
-Pilatus_100K@[pv=usaxs_pilatus1:cam1:,det_folder=/home/det/15idd,cars_folder=/home/epics/CARS5/Data/chemmat/Data/saxs]
+#Pilatus_100K@[pv=usaxs_pilatus1:cam1:,det_folder=/home/det/15idd,cars_folder=/home/epics/CARS5/Data/chemmat/Data/saxs]
+Pilatus_100K@[pv=dp_pilatus4:cam1:,det_folder=/home/det/15idd,cars_folder=/home/epics/CARS5/Data/chemmat/Data/saxs]
 

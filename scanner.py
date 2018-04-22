@@ -30,6 +30,8 @@ class Scanner(QWidget):
         self.BLParams=self.setup.BLParams
         self.slitParams=self.setup.slitParams
         
+        self.slit1=False
+        self.slit2=False
         
         self.vblayout=QVBoxLayout(self)
         self.mainDock=DockArea(self,parent)
@@ -234,7 +236,7 @@ class Scanner(QWidget):
             self.scanMotorComboBox.addItems(list(self.slitParams.keys()))
             self.scanMotorPositionLabel.setText('%0.4f'%(caget(self.slitParams[str(self.scanMotorComboBox.currentText())]['RBK'])))
         self.scanMotorComboBox.currentIndexChanged.connect(self.scanMotorChanged)
-        
+        self.scanMotorChanged()
         
     def scanMotorChanged(self):
         """
@@ -254,6 +256,9 @@ class Scanner(QWidget):
         elif self.scanName=='SlitScan':
             self.scanMotorName=str(self.scanMotorComboBox.currentText())
             self.scanMotorPos=caget(self.slitParams[str(self.scanMotorComboBox.currentText())]['RBK'])
+            camonitor(self.slitParams[str(self.scanMotorComboBox.currentText())]['PV'],callback=self.slitMoved)
+            camonitor(self.slitParams[str(self.scanMotorComboBox.currentText())]['MOV1']+'.MOVN',callback=self.slit1Status)
+            camonitor(self.slitParams[str(self.scanMotorComboBox.currentText())]['MOV2']+'.MOVN',callback=self.slit2Status)            
             self.scanMotorPositionLabel.setText('%0.4f'%self.scanMotorPos)
 
         
@@ -272,9 +277,28 @@ class Scanner(QWidget):
         value=kwargs['value']
         self.scanMotorPositionLabel.setText('%0.4f'%value)
         
-    def slitStatus(self,**kwargs):
+        
+    def slit1Status(self,**kwargs):
         value=kwargs['value']
         if value!=1:
+            self.slit1=False
+        else:
+            self.slit1=True
+        self.slitStatus=self.slit1 or self.slit2
+        
+        if self.slitStatus:            
+            self.scanStatus.setText('Moving')
+        else:
+            self.scanStatus.setText('Done')
+            
+    def slit2Status(self,**kwargs):
+        value=kwargs['value']
+        if value!=1:
+            self.slit2=False
+        else:
+            self.slit2=True        
+        self.slitStatus=self.slit1 or self.slit2
+        if self.slitStatus:            
             self.scanStatus.setText('Moving')
         else:
             self.scanStatus.setText('Done')
@@ -442,7 +466,13 @@ class Scanner(QWidget):
             pointer=self.plotWidget.plotWidget.getPlotItem().vb.mapSceneToView(evt.scenePos())
             ans=QMessageBox.question(self,'Ask to move','Move '+self.scanMotorName+' to %.5f?'%pointer.x(),QMessageBox.No,QMessageBox.Yes)
             if ans==QMessageBox.Yes:
-                caput(self.motors[self.scanMotorName]['PV']+'.VAL',pointer.x())
+                if self.scanName=='MotorScan':
+                    caput(self.motors[self.scanMotorName]['PV']+'.VAL',pointer.x())
+                elif self.scanName=='SlitScan':
+                    caput(self.slitParams[self.scanMotorName]['PV']+'.VAL',pointer.x())
+                else:
+                    QMessageBox.warning(self,'Error','Cannot move to this value',QMessageBox.Ok)
+                    
         
     def shutter_ON(self):
         """
@@ -545,19 +575,24 @@ class Scanner(QWidget):
         self.data_num=0
         for pos in positions:
             if not self.abort:
-                caput(self.slitParams[motorname]['PV']+'.VAL',pos,wait=False)
-                QtTest.QTest.qWait(10)
-                while caget(self.slitParams[motorname]['MOV1']+'.MOVN')==1 or caget(self.slitParams[motorname]['MOV2']+'.MOVN')==1:
-                    pg.QtGui.QApplication.processEvents()
-                    QtTest.QTest.qWait(10)
+                self.slit1=True
+                self.slit2=True
+                caput(self.slitParams[motorname]['PV']+'.VAL',pos,wait=True)
+                #QtTest.QTest.qWait(10)
+                #while str(self.scanStatus.text())=='Moving':
+                #while caget(self.slitParams[motorname]['MOV1']+'.MOVN')==1 or caget(self.slitParams[motorname]['MOV2']+'.MOVN')==1:
+                    #pg.QtGui.QApplication.processEvents()
+                #    QtTest.QTest.qWait(10)
+                #QtTest.QTest.qWait(10)
                 if self.shutterModeCheckBox.isChecked():
                     self.shutter_ON()
                 self.scanStatus.setText('Counting')
                 caput(self.scalers['scaler_start']['PV'],1,wait=False)
                 QtTest.QTest.qWait(10)
                 while str(self.scanStatus.text())=='Counting':
-                    pg.QtGui.QApplication.processEvents()
+                    #pg.QtGui.QApplication.processEvents()
                     QtTest.QTest.qWait(10)
+                QtTest.QTest.qWait(10)
                 if self.shutterModeCheckBox.isChecked():
                     self.shutter_OFF()                    
                 self.count_time=caget(self.scalers['scaler_count_time']['PV'])
@@ -717,7 +752,7 @@ class Scanner(QWidget):
                 self.scanfh.write(text+'\n')
                 #self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
                 print(text)
-                self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'])
+                self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'],fontsize=5)
                 self.preScanOK=True
             else:
                 QMessageBox.warning(self,'Motor Limits','Scanning range is ouside the soft limit! Please review your scan range.',QMessageBox.Ok)
@@ -739,12 +774,12 @@ class Scanner(QWidget):
             self.scanfh.write(text+'\n')
             #self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
             print(text)
-            self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'])
+            self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'],fontsize=5)
             self.preScanOK=True
-        elif self.scaneName=='SlitScan':
+        elif self.scanName=='SlitScan':
             self.scanMotorName=self.scanMotorComboBox.currentText()
-            high=caget(self.motors[motorname]['PV']+'.DRVH')
-            low=caget(self.motors[motorname]['PV']+'.DRVL')
+            high=caget(self.slitParams[motorname]['PV']+'.DRVH')
+            low=caget(self.slitParams[motorname]['PV']+'.DRVL')
             self.plotWidget.setXLabel(self.scanMotorName)
             self.plotWidget.setYLabel('Counts')
             if low<start<high and low<finish<high:
@@ -762,9 +797,9 @@ class Scanner(QWidget):
                 text='#%s %s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','bs-diode','diode','monitor')
                 self.scans[self.scanNum]['scanVariables']=text.split()[1:]
                 self.scanfh.write(text+'\n')
-                self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
+                #self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
                 print(text)
-                self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'])
+                self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'],fontsize=5)
                 self.preScanOK=True
             else:
                 QMessageBox.warning(self,'Motor Limits','Scanning range is ouside the soft limit! Please review your scan range.',QMessageBox.Ok)

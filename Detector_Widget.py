@@ -323,17 +323,12 @@ class Detector_Widget(QWidget):
         """
         Shows the DetectorMEDM screen
         """
-        if str(self.detectorComboBox.currentText())=='Mar_CCD':
-            QProcess.startDetached('medm -x -macro "P=dp_mar165_xrd70:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/marCCD.adl"')
-        elif str(self.detectorComboBox.currentText())=='Pilatus_1M':
-            QProcess.startDetached('medm -x -macro "P=15PIL3:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/pilatusDetector.adl"')
-        elif str(self.detectorComboBox.currentText())=='Pilatus_100K':
-            det_name=self.detectors['Pilatus_100K']['PV']
-            print(det_name)
-            QProcess.startDetached('medm -x -macro "P=usaxs_pilatus1:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/pilatusDetector.adl"')
-        elif str(self.detectorComboBox.currentText())=='PhotonII':
-            QProcess.startDetached('medm -x -macro "P=13PII_1:,R=cam1:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/PhotonII.adl"')
-        else:
+        try:
+            det_txt=str(self.detectorComboBox.currentText())
+            det_name=self.detectors[det_txt]['PV']
+            P,R,_=det_name.split(':')
+            QProcess.startDetached('medm -x -macro "P=%s:,R=%s:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/pilatusDetector.adl"'%(P,R))
+        except:
             QMessageBox.warning(self,'Detector Error','Please select a valid detector first.',QMessageBox.Ok)
             
             

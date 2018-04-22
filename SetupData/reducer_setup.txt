@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/HoffmanEstates/AgBh_30keV.poni", "maskFile": "/mnt/ChemData/Data/Asax/HoffmanEstates/Mask.msk"}
+{"poniFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2018-04/AgBh_17_038keV.poni", "maskFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2018-04/mask.msk"}

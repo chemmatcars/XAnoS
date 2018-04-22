@@ -39,7 +39,9 @@ class Data_Collector(QWidget):
         self.detPV='None'
         self.palette.setColor(QPalette.Foreground,Qt.green)
         self.undulatorStatus='Idle'
-        self.monochromatorStatus='Idle' 
+        self.monochromatorStatus='Idle'
+        self.pixmapON=QPixmap('./Images/ShutterON.png')
+        self.pixmapOFF=QPixmap('./Images/ShutterOFF.png')
         
         self.experimentFolder=None
         
@@ -93,15 +95,14 @@ class Data_Collector(QWidget):
         """
         value=kwargs['value']
         if value==0:
-            pixmap=QPixmap('./Images/ShutterON.png')
+            self.shutterStatusLabel.setPixmap(self.pixmapON)
             #self.palette.setColor(QPalette.Foreground,Qt.red)
             #self.shutterStatusLabel.setText('Shutter ON')
         else:
-            pixmap=QPixmap('./Images/ShutterOFF.png')
+            self.shutterStatusLabel.setPixmap(self.pixmapOFF)
             #self.palette.setColor(QPalette.Foreground,Qt.green)
             #self.shutterStatusLabel.setText('Shutter OFF')
         #self.shutterStatusLabel.setPalette(self.palette)
-        self.shutterStatusLabel.setPixmap(pixmap)
   
     def create_beamlineInfoDock(self):
         """
@@ -212,10 +213,10 @@ class Data_Collector(QWidget):
             camonitor_clear(self.BLParams['Undulator_IDStatus']['PV'])
             camonitor_clear(self.BLParams['Undulator_Energy']['PV'])
             camonitor_clear(self.BLParams['Undulator_Gap']['PV'])
-            camonitor_clear(self.BLParams['JJC_VSize']['PV'],callback=self.JJC_changed)
-            camonitor_clear(self.BLParams['JJC_HSize']['PV'],callback=self.JJC_changed)
-            camonitor_clear(self.BLParams['JJD_VSize']['PV'],callback=self.JJD_changed)
-            camonitor_clear(self.BLParams['JJD_HSize']['PV'],callback=self.JJD_changed)
+            camonitor_clear(self.BLParams['JJC_VSize']['PV'],callback=self.JJCV_changed)
+            camonitor_clear(self.BLParams['JJC_HSize']['PV'],callback=self.JJCH_changed)
+            camonitor_clear(self.BLParams['JJD_VSize']['PV'],callback=self.JJDV_changed)
+            camonitor_clear(self.BLParams['JJD_HSize']['PV'],callback=self.JJDH_changed)
         except:
             pass
         camonitor(self.BLParams['Energy']['PV']+'RdbkAO',callback=self.energyWavelengthChanged)
@@ -223,10 +224,10 @@ class Data_Collector(QWidget):
         camonitor(self.BLParams['Undulator_IDStatus']['PV'],callback=self.undulatorIDStatusCheck)
         camonitor(self.BLParams['Undulator_Energy']['PV'],callback=self.undulatorEnergyStatusCheck)
         camonitor(self.BLParams['Undulator_Gap']['PV'],callback=self.undulatorGapStatusCheck)
-        camonitor(self.BLParams['JJC_VSize']['PV'],callback=self.JJC_changed)
-        camonitor(self.BLParams['JJC_HSize']['PV'],callback=self.JJC_changed)
-        camonitor(self.BLParams['JJD_VSize']['PV'],callback=self.JJD_changed)
-        camonitor(self.BLParams['JJD_HSize']['PV'],callback=self.JJD_changed)
+        camonitor(self.BLParams['JJC_VSize']['PV'],callback=self.JJCV_changed)
+        camonitor(self.BLParams['JJC_HSize']['PV'],callback=self.JJCH_changed)
+        camonitor(self.BLParams['JJD_VSize']['PV'],callback=self.JJDV_changed)
+        camonitor(self.BLParams['JJD_HSize']['PV'],callback=self.JJDH_changed)
         
         
         
@@ -259,7 +260,7 @@ class Data_Collector(QWidget):
             self.undulatorStatus='Idle'
         self.undulatorStatusLabel.setText(self.undulatorStatus)
         self.undulatorStatusLabel.setPalette(self.palette)
-        pg.QtGui.QApplication.processEvents()
+
         
     def undulatorEnergyStatusCheck(self,**kwargs):
         """
@@ -267,7 +268,7 @@ class Data_Collector(QWidget):
         """
         self.undulatorEnergy=kwargs['value']
         self.undulatorEnergyLabel.setText('%.5f keV'%self.undulatorEnergy)
-        pg.QtGui.QApplication.processEvents()
+        #pg.QtGui.QApplication.processEvents()
         
     def undulatorGapStatusCheck(self,**kwargs):
         """
@@ -275,38 +276,53 @@ class Data_Collector(QWidget):
         """
         self.undulatorGap=kwargs['value']
         self.undulatorGapLabel.setText('%.5f mm'%self.undulatorGap)
-        pg.QtGui.QApplication.processEvents()
+
         
-    def JJC_changed(self,**kwargs):
+    def JJCV_changed(self, value=None, **kwargs):
         """
-        Updates the JJC slit sizes in the GUI by sensing the changes in the slit sizes
+        Updates the JJC Vertical slit sizes in the GUI by sensing the changes in the slit sizes
         """
-        self.beamsizeV=caget(self.BLParams['JJC_VSize']['PV'])
-        self.beamsizeH=caget(self.BLParams['JJC_HSize']['PV'])
-        self.JJCVLabel.setText('%.3f mm'%self.beamsizeV)
-        self.JJCHLabel.setText('%.3f mm'%self.beamsizeH)
         try:
-            self.experimentLogHandle.write('#Beamsize-Horizontal : %.3f mm\n'%self.beamsizeH)
+            self.beamsizeV= value # caget(self.BLParams['JJC_VSize']['PV'])
+            self.JJCVLabel.setText('%.3f mm'%self.beamsizeV)
             self.experimentLogHandle.write('#Beamsize-Vertical : %.3f mm\n'%self.beamsizeV)
         except:
             pass
-        pg.QtGui.QApplication.processEvents()
         
         
-    def JJD_changed(self,**kwargs):
+    def JJCH_changed(self, value=None,**kwargs):
         """
-        Updates the JJD slit sizes in the GUI by sensing the changes in the slit sizes
-        """
-        self.collsizeV=caget(self.BLParams['JJD_VSize']['PV'])
-        self.collsizeH=caget(self.BLParams['JJD_HSize']['PV'])
-        self.JJDVLabel.setText('%.3f mm'%self.collsizeV)
-        self.JJDHLabel.setText('%.3f mm'%self.collsizeH)
+        Updates the JJC Horizontal slit sizes in the GUI by sensing the changes in the slit sizes
+        """        
         try:
-            self.experimentLogHandle.write('#Collimator-Horizontal : %.3f mm\n'%self.collsizeH)
+            self.beamsizeH=value#caget(self.BLParams['JJC_HSize']['PV'])
+            self.JJCHLabel.setText('%.3f mm'%self.beamsizeH)
+            self.experimentLogHandle.write('#Beamsize-Horizontal : %.3f mm\n'%self.beamsizeH)
+        except:
+            pass
+
+        
+    def JJDV_changed(self, value=None,**kwargs):
+        """
+        Updates the JJD Vertical slit sizes in the GUI by sensing the changes in the slit sizes
+        """
+        try:
+            self.collsizeV=value#caget(self.BLParams['JJD_VSize']['PV'])
+            self.JJDVLabel.setText('%.3f mm'%self.collsizeV)
             self.experimentLogHandle.write('#Collimator-Vertical : %.3f mm\n'%self.collsizeV)
         except:
             pass
-        pg.QtGui.QApplication.processEvents()
+        
+    def JJDH_changed(self, value=None,**kwargs):
+        """
+        Updates the JJD Horizontal slit sizes in the GUI by sensing the changes in the slit sizes
+        """
+        try:
+            self.experimentLogHandle.write('#Collimator-Horizontal : %.3f mm\n'%self.collsizeH)
+            self.collsizeH=value#caget(self.BLParams['JJD_HSize']['PV'])
+            self.JJDHLabel.setText('%.3f mm'%self.collsizeH)
+        except:
+            pass
         
         
         
@@ -323,7 +339,7 @@ class Data_Collector(QWidget):
             self.experimentLogHandle.write('#X-ray Wavelength : %.5f Angs\n'%self.wavelength)
         except:
             pass
-        pg.QtGui.QApplication.processEvents()
+        #pg.QtGui.QApplication.processEvents()
         
     def change_Energy(self,energy):
         """
@@ -867,8 +883,10 @@ class Data_Collector(QWidget):
             self.experimentLogHandle=open(self.experimentLogFile,'a')
             self.experimentLogHandle.write('##Experiment started on: '+time.asctime()+'\n')
             self.energyWavelengthChanged(value=self.energy)
-            self.JJC_changed()
-            self.JJD_changed()
+            self.JJCH_changed()
+            self.JJCV_changed()
+            self.JJDV_changed()
+            self.JJDH_changed()
             self.experimentLogHandle.close()
             self.experimentLogHandle=open(self.experimentLogFile,'a')
         self.experimentIsSet=True
@@ -890,14 +908,20 @@ class Data_Collector(QWidget):
         self.experimentLogFile=os.path.join(self.experimentFolder,'experiment.log')
         
         #This is to read the required details from the old file like detector information used in the experiment
-        self.experimentLogHandle=open(self.experimentLogFile,'r')
+        try:
+            self.experimentLogHandle=open(self.experimentLogFile,'r')
+        except:
+            QMessageBox.warning(self,'File Error','It looks like you are doing a new experiment. Please use New Experiment.',QMessageBox.Ok)
+            return
         lines=self.experimentLogHandle.readlines()
         self.experimentLogHandle.close()
         self.experimentLogHandle=open(self.experimentLogFile,'a')
         self.experimentLogHandle.write('##Experiment folder accessed on: '+time.asctime()+'\n')
         self.energyWavelengthChanged(value=self.energy)
-        self.JJC_changed()
-        self.JJD_changed()
+        self.JJCH_changed()
+        self.JJCV_changed()
+        self.JJDH_changed()
+        self.JJDV_changed()
         self.experimentLogHandle.close()
         self.experimentLogHandle=open(self.experimentLogFile,'a')
         for line in lines:
