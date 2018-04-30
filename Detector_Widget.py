@@ -404,13 +404,16 @@ class Detector_Widget(QWidget):
         """
         Updates the status of the detector
         """
-        self.detStatus=kwargs['char_value']
-        if self.detStatus=='Done':            
+        self.detStatus=kwargs['value']
+        if self.detStatus==0:            
             self.palette.setColor(QPalette.Foreground,Qt.green)
+            txt='Done'
         else:
             self.palette.setColor(QPalette.Foreground,Qt.red)
+            txt='Collecting'
+            
         self.detStatusLabel.setPalette(self.palette)
-        self.detStatusLabel.setText(self.detStatus)  
+        self.detStatusLabel.setText(txt)  
         
         
     def getDetectorState(self,**kwargs):

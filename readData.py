@@ -298,11 +298,15 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
             print(gc_name+'_%04d.txt'%((num-1)*gc_times+1)+' doesnot exist')
             file_exists=False
         num+=1
+
     if len(ofnames)!=len(ogcnames):
-        return "File number error: Number of data files not same as number of glassy carbon files"
+        print("File number error: Number of data files not same as number of glassy carbon files")
+        return 
+    
     file_exists=True        
     num=1
     osolnames=[]
+ 
     while file_exists:
         try:
             fnum=range((num-1)*sol_times+1,num*sol_times+1)
@@ -313,10 +317,11 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
             print(sol_name+'_%04d.txt'%((num-1)*sol_times+1)+' doesnot exist')
             file_exists=False
         num+=1
-            
+        
     if len(ofnames)!=len(osolnames):
-        return "File number error: Number of data files not same as number of solvent/background files"
-            
+        print("File number error: Number of data files not same as number of solvent/background files")
+        return 
+           
     if air_name is not None:
         file_exists=True        
         num=1
@@ -332,7 +337,8 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
                 file_exists=False
             num+=1
         if len(ofnames)!=len(oairnames):
-            return "File number error: Number of data files not same as number of air background files"
+            print("File number error: Number of data files not same as number of air background files")
+            return 
     if mt_name is not None:
         file_exists=True        
         num=1
@@ -348,7 +354,9 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
                 file_exists=False
             num+=1
         if len(ofnames)!=len(ogcnames):
-            return "File number error: Number of data files not same as number of empty capillary files"
+            print("File number error: Number of data files not same as number of empty capillary files")
+            return 
+
     print("First stage completed: All files read successfully...")    
     #performing interpolation of all the data sets
     data=interpolate_data(data,Npt=Npt,kind=interpolation_type)
@@ -546,42 +554,46 @@ def write1DSAXS(data):
             
         
         
-#if __name__=='__main__':
-#    try:
-#        fname=sys.argv[1]
-#    except:
-#        print('Please provide the basefile name without numbers at the end as argument 2')
-#    try:
-#        fnum=int(sys.argv[2])
-#    except:
-#        print('Please provide the number of repeated measurements of data as argument 3')
-#    try:
-#        sol_name=sys.argv[3]
-#    except:
-#        print('Please provide the solvent/background file name without numbers at the end as argument 4')
-#    try:
-#        sol_num=int(sys.argv[4])
-#    except:
-#        print('Please provide the number of repeated measurements of solvent/background data as argument 5')
-#    try:
-#        gc_name=sys.argv[5]
-#    except:
-#        print('Please provide Glassy Carbon file name without numbers at the end as argument 6')
-#    try:
-#        gc_num=int(sys.argv[6])
-#    except:
-#        print('Please provide the number of repated measurements of Glassy carbon as argument 7')
-#    reduce1DSAXS2(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,sample_thickness=0.1)
-
 if __name__=='__main__':
-    fname=sys.argv[1]
-    startnums=eval(sys.argv[2])
-    repeat=eval(sys.argv[3])
-    ofname=sys.argv[4]
-    
-    num=[]
-    for snum in startnums:
-        num=num+[snum+i for i in range(repeat)]
-    print(num)
-    average1DSAXS(fname,num=num,ofname=ofname,delete_prev=False,data={})
-    
+    try:
+        fname=sys.argv[1]
+        run=True
+    except:
+        print('Please provide the basefile name without numbers at the end as argument 2')
+        run=False
+    try:
+        fnum=int(sys.argv[2])
+        run=run and True
+    except:
+        print('Please provide the number of repeated measurements of data as argument 3')
+        run= False
+    try:
+        sol_name=sys.argv[3]
+    except:
+        print('Please provide the solvent/background file name without numbers at the end as argument 4')
+    try:
+        sol_num=int(sys.argv[4])
+    except:
+        print('Please provide the number of repeated measurements of solvent/background data as argument 5')
+    try:
+        gc_name=sys.argv[5]
+    except:
+        print('Please provide Glassy Carbon file name without numbers at the end as argument 6')
+    try:
+        gc_num=int(sys.argv[6])
+    except:
+        print('Please provide the number of repeated measurements of Glassy carbon as argument 7')
+    reduce1DSAXS2(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,sample_thickness=0.15,xmin=0.04,xmax=0.07)
+
+#if __name__=='__main__':
+#    fname=sys.argv[1]
+#    startnums=eval(sys.argv[2])
+#    repeat=eval(sys.argv[3])
+#    ofname=sys.argv[4]
+#    
+#    num=[]
+#    for snum in startnums:
+#        num=num+[snum+i for i in range(repeat)]
+#    print(num)
+#    average1DSAXS(fname,num=num,ofname=ofname,delete_prev=False,data={})
+#    

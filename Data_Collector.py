@@ -1129,7 +1129,6 @@ class Data_Collector(QWidget):
                         self.dataReducer.reduce_multiple()
                     
                     if self.sleepTime>1e-3:
-                        print(self.sleepTime)
                         self.palette.setColor(QPalette.Foreground,Qt.red)
                         self.instrumentStatus.setPalette(self.palette)
                         self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
@@ -1168,12 +1167,11 @@ class Data_Collector(QWidget):
                 firstPosition={}
                 for motorname in self.measurementList.keys():
                     if motorname=='Energy':
-                        firstPosition[motorname]=caget(self.motors[motorname]['PV'])
+                        firstPosition[motorname]=caget(self.motors[motorname]['PV']+'RdbkAO')
                     elif motorname=='Undulator_ID15Energy':
                         firstPosition[motorname]=caget(self.motors['Undulator_Energy']['PV'])
                     else:
                         firstPosition[motorname]=caget(self.motors[motorname]['PV']+'.RBV')
-                    print(firstPosition[motorname])
                 for loop in range(self.NLoops):
                     if self.abort:
                         break
@@ -1188,7 +1186,7 @@ class Data_Collector(QWidget):
                             break
                         for motorname in self.measurementList.keys():
                             if motorname=='Energy':
-                                caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
+                                caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][i],wait=False)
                             elif motorname=='Undulator_ID15Energy':
                                 caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
                             else:
@@ -1222,7 +1220,7 @@ class Data_Collector(QWidget):
                 
                 for motorname in self.measurementList.keys():
                     if motorname=='Energy':
-                        caput(self.motors[motorname]['PV'],firstPosition[motorname],wait=False)
+                        caput(self.motors[motorname]['PV']+'AO.VAL',firstPosition[motorname],wait=False)
                     elif motorname=='Undulator_ID15Energy':
                         caput(self.motors[motorname]['PV'],firstPosition[motorname],wait=False)
                     else:
