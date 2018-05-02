@@ -150,8 +150,10 @@ class PlotWidget(QWidget):
                 self.data_num+=1
                 #if len(x)>1:
                 self.Plot([dname])
+                return True
         else:
             QMessageBox.warning(self,'Data error','The dimensions of x, y or yerr are not matching',QMessageBox.Ok)
+            return False
             
     def colorChanged(self,item):
         """

@@ -20,7 +20,7 @@ def Bint(n,s,d):
     """
     return np.pi*n*d*(-1)**(n+1)*np.sin(2*np.pi*d*s)/((np.pi*n)**2-(2*np.pi*d*s)**2)
 
-def calc_prm(q1,Iq1,dIq1=None,dmax=100.0):
+def calc_prm(q1,Iq1,dIq1=None,Nr=101,dmax=100.0):
     """
     Calculates autocorrelation by Moore's method (J Appl. Cryst. 13, 168 (1980))
     """
@@ -41,12 +41,14 @@ def calc_prm(q1,Iq1,dIq1=None,dmax=100.0):
     ymat=np.array([np.sum(Bint(n,s,dmax)*U/s**2/dIq**2) for n in range(nmin,nmax+1)])
     InvCmat=inv(Cmat)
     a=np.dot(ymat,InvCmat)/4.0
-    r=np.linspace(0.0,dmax,1001)
+    r=np.linspace(0.001,dmax,Nr)
     pr=8*np.pi*r*np.array([np.sum(a*np.sin(np.pi*ri*np.array(range(nmin,nmax+1))/dmax)) for ri in r])
+    N,M=np.meshgrid(np.arange(1,InvCmat.shape[0]+1),np.arange(1,InvCmat.shape[0]+1))
+    dpr=2*np.pi*r*np.sqrt(np.array([np.sum(np.sin(np.pi*N*ri/dmax)*np.sin(np.pi*M*ri/dmax)*InvCmat) for ri in r]))
     Iqc=4*np.array([np.sum(a*Bint(np.array(range(nmin,nmax+1)),s1,dmax)) for s1 in s])/s
     #chi=np.sum((Iq-Iqc)**2/dIq**2)
     #chi_r=chi/(len(q)-len(a))
-    return r,pr,q,Iqc
+    return r,pr,dpr,q,Iqc
 
 def find_minmax(fun,pos=1.0,wid=1.0,accuracy=1e-3):
     """

@@ -743,13 +743,20 @@ class ASAXS_Widget(QWidget):
         self.mooreACSmoothingCheckBox.setTristate(False)
         self.mooreACSmoothingCheckBox.stateChanged.connect(self.applyMooresAC)
         self.dataPlotLayout.addWidget(self.mooreACSmoothingCheckBox,row=row,col=col)
-        col+=2
+        col+=1
         DmaxLabel=QLabel('Dmax (Angs)')
         self.dataPlotLayout.addWidget(DmaxLabel,row=row,col=col)
         col+=1
         self.DmaxLineEdit=QLineEdit('100.0')
         self.DmaxLineEdit.returnPressed.connect(self.applyMooresAC)
         self.dataPlotLayout.addWidget(self.DmaxLineEdit,row=row,col=col)
+        col+=1
+        NrLabel=QLabel('Nr')
+        self.dataPlotLayout.addWidget(NrLabel,row=row,col=col)
+        col+=1
+        self.NrLineEdit=QLineEdit('101')
+        self.dataPlotLayout.addWidget(self.NrLineEdit,row=row,col=col)
+        self.NrLineEdit.returnPressed.connect(self.applyMooresAC)
         col+=1
         self.plotPDDFPushButton=QPushButton('Plot PDDF')
         self.plotPDDFPushButton.clicked.connect(self.plotPDDF)
@@ -818,14 +825,16 @@ class ASAXS_Widget(QWidget):
         if self.mooreACSmoothingCheckBox.isChecked():
             self.smoothCheckBox.setChecked(False)
             dmax=float(self.DmaxLineEdit.text())
+            Nr=int(self.NrLineEdit.text())
             for fname in self.fnames:
-                r,pr,q,iqc=calc_prm(self.data[fname]['x'],self.data[fname]['yraw'],self.data[fname]['yerr'],dmax=dmax)
+                r,pr,dpr,q,iqc=calc_prm(self.data[fname]['x'],self.data[fname]['yraw'],self.data[fname]['yerr'],dmax=dmax,Nr=Nr)
                 self.data[fname]['r']=r
                 self.data[fname]['pr']=pr
+                self.data[fname]['pr_err']=dpr
                 self.data[fname]['y']=iqc
-                self.dataPlotWidget.add_data(self.data[fname]
-                ['x'],self.data[fname]['y'],name='Moores')
-                self.dataPlotWidget.Plot(self.datanames+['Moores'])
+                res=self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],name='Moores',fit=True)
+                if res:
+                    self.dataPlotWidget.Plot(self.datanames+['Moores'])
         else:
             for fname in self.fnames:
                 self.data[fname]['r']=None
@@ -837,10 +846,13 @@ class ASAXS_Widget(QWidget):
         """
         Plots the moore's autocorrelation function of the selected data
         """
-        try:
-            pg.plot(self.data[self.fnames[0]]['r'],self.data[self.fnames[0]]['pr'],pen=pg.mkPen('r',width=2))
-        except:
-            QMessageBox.warning(self,'Data error','Please select Moore\'s autocorrelation first',QMessageBox.Ok)
+        #try:
+        plt=pg.plot()
+        for fname in self.fnames:
+            plt.plot(self.data[fname]['r'],self.data[fname]['pr'],pen='r')
+        #pg.plot(self.data[self.fnames[0]]['r'],self.data[self.fnames[0]]['pr'],pen=pg.mkPen('r',width=2))
+        #except:
+        #    QMessageBox.warning(self,'Data error','Please select Moore\'s autocorrelation first',QMessageBox.Ok)
         
     def smoothData(self):
         """
