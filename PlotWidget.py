@@ -5,6 +5,8 @@ import numpy as np
 import sys
 from pyqtgraph.widgets.MatplotlibWidget import MatplotlibWidget
 
+
+
 class PlotWidget(QWidget):
     """
     This class inherited from pyqtgraphs Plotwidget and MatplotlibWidget and adds additional compononets like:
@@ -13,7 +15,13 @@ class PlotWidget(QWidget):
     """
     def __init__(self,parent=None,matplotlib=False):
         QWidget.__init__(self,parent)
-        self.matplotlib=matplotlib            
+        self.matplotlib=matplotlib
+        self.xLabelFontSize=10
+        self.yLabelFontSize=10
+        self.titleFontSize=12
+        self.xLabel='x'
+        self.yLabel='y'
+        self.title='Plot'            
         self.createPlotWidget()
         self.data={}
         self.dataErrPos={}
@@ -178,12 +186,28 @@ class PlotWidget(QWidget):
         """
         self.selDataNames=datanames
         if self.matplotlib: #Plotting with matplotlib
+            self.xLabel=self.subplot.get_xlabel()
+            self.yLabel=self.subplot.get_ylabel()
+            self.title=self.subplot.get_title()
             self.subplot.axes.cla()
             for dname in self.selDataNames:                
                 if self.errorbarCheckBox.checkState()==Qt.Checked:
-                    self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData,self.dataErrPos[dname].yData-self.dataErrNeg[dname].yData)
+                    self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData,self.dataErrPos[dname].yData-self.dataErrNeg[dname].yData,fmt='.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)
                 else:
-                    self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData)
+                    self.subplot.plot(self.data[dname].xData,self.data[dname].yData,'.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)
+                if self.xLogCheckBox.checkState()==Qt.Checked:
+                    self.subplot.set_xscale('log')
+                else:
+                    self.subplot.set_xscale('linear')
+                if self.yLogCheckBox.checkState()==Qt.Checked:
+                    self.subplot.set_yscale('log')
+                else:
+                    self.subplot.set_yscale('linear')
+                self.subplot.set_xlabel(self.xLabel,fontsize=self.yLabelFontSize)
+                self.subplot.set_ylabel(self.yLabel,fontsize=self.yLabelFontSize)
+                self.subplot.set_title(self.title,fontsize=self.titleFontSize)
+                leg=self.subplot.legend()
+                leg.draggable()
                 self.plotWidget.draw()
         else:
             self.plotWidget.plotItem.setLogMode(x=False,y=False) #This step is necessary for checking the zero values
@@ -234,20 +258,38 @@ class PlotWidget(QWidget):
         """
         sets the X-label of the plot
         """
-        self.plotWidget.getPlotItem().setLabel('bottom','<font size='+str(fontsize)+'>'+label+'</font>')
+        self.xLabel=label
+        self.xLabelFontSize=fontsize
+        if self.matplotlib:
+            self.subplot.set_xlabel(label,fontsize=fontsize)
+            self.plotWidget.draw()
+        else:
+            self.plotWidget.getPlotItem().setLabel('bottom','<font size='+str(fontsize)+'>'+label+'</font>')
             
     def setYLabel(self,label,fontsize=4):
         """
         sets the y-label of the plot
         """
-        self.plotWidget.getPlotItem().setLabel('left','<font size='+str(fontsize)+'>'+label+'</font>')        
+        self.yLabel=label
+        self.yLabelFontSize=fontsize
+        if self.matplotlib:
+            self.subplot.set_ylabel(label,fontsize=fontsize)
+            self.plotWidget.draw()
+        else:
+            self.plotWidget.getPlotItem().setLabel('left','<font size='+str(fontsize)+'>'+label+'</font>')        
             
             
     def setTitle(self,title,fontsize=6):
         """
         Sets the y-label of the plot
         """
-        self.plotWidget.getPlotItem().setTitle(title='<font size='+str(fontsize)+'>'+title+'</font>')
+        self.title=title
+        self.titleFontSize=fontsize
+        if self.matplotlib:
+            self.subplot.set_title(title,fontsize=fontsize)
+            self.plotWidget.draw()
+        else:
+            self.plotWidget.getPlotItem().setTitle(title='<font size='+str(fontsize)+'>'+title+'</font>')
  
     
 if __name__=='__main__':
@@ -256,6 +298,9 @@ if __name__=='__main__':
     x=np.arange(0,np.pi,0.01)
     y=np.sin(x)
     w.add_data(x,y,name='sin')
+    w.setXLabel('x',fontsize=15)
+    w.setYLabel('y',fontsize=15)
+    w.setTitle('My Plot',fontsize=15)
     w.setWindowTitle('Plot Widget')
     w.setGeometry(100,100,1000,800)
     

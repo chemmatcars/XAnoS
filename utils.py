@@ -20,13 +20,19 @@ def Bint(n,s,d):
     """
     return np.pi*n*d*(-1)**(n+1)*np.sin(2*np.pi*d*s)/((np.pi*n)**2-(2*np.pi*d*s)**2)
 
-def calc_prm(q1,Iq1,dIq1=None,Nr=101,dmax=100.0):
+def calc_prm(q1,Iq1,dIq1=None,qmin=None,qmax=None,Nq=None,Nr=101,dmax=100.0):
     """
     Calculates autocorrelation by Moore's method (J Appl. Cryst. 13, 168 (1980))
     """
     f1=interp1d(q1,Iq1)
     f2=interp1d(q1,dIq1)
-    q=np.linspace(q1[0],q1[-1],len(q1))
+    if qmin is None:
+        qmin=q1[0]
+    if qmax is None:
+        qmax=q1[-1]
+    if Nq is None:
+        Nq=len(q1)
+    q=np.linspace(qmin,qmax,Nq)
     Iq=f1(q)
     dIq=f2(q)
     s=q/2.0/np.pi
