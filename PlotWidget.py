@@ -22,7 +22,7 @@ class PlotWidget(QWidget):
         self.data_num=0
         self.yerr={}
         
-        
+       
     def createPlotWidget(self):
         """
         Creates the plotWidget
