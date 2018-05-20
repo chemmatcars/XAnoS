@@ -8,6 +8,7 @@ from pyqtgraph.dockarea import DockArea, Dock
 from PlotWidget import PlotWidget
 import copy
 import numpy as np
+from Data_Dialog import Data_Dialog
 from readData import read1DSAXS
 from importlib import import_module, reload
 from Fit_Routines import Fit

@@ -32,7 +32,7 @@ class InsertCol_Dialog(QDialog):
         
         
 
-class Data_Widget(QDialog):
+class Data_Dialog(QDialog):
     def __init__(self,fname=None,data=None,comment='#',skiprows=0,delimiter=' ',autoupdate=False,parent=None,matplotlib=False):
         QWidget.__init__(self,parent=parent)
         loadUi('UI_Forms/Data_Dialog.ui',self)
@@ -44,8 +44,8 @@ class Data_Widget(QDialog):
         self.fileWatcher.fileChanged.connect(self.fileUpdated)
         self.cwd=None
         self.plotNum=0
-        self.xlabel=''
-        self.ylabel=''
+        self.xlabel=[]
+        self.ylabel=[]
         self.oldPlotIndex={}
         self.dataAltered=False
         if data is not None:
@@ -378,8 +378,8 @@ class Data_Widget(QDialog):
         except:
             pass
         columns=self.data['data'].columns.tolist()
-        self.xlabel=''
-        self.ylabel=''
+        self.xlabel=[]
+        self.ylabel=[]
         for row in range(self.plotSetupTableWidget.rowCount()):
             for i in range(1,3):
                 self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.disconnect()
@@ -387,8 +387,8 @@ class Data_Widget(QDialog):
                 self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
                 self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
                 self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updatePlotData)
-            self.xlabel=self.xlabel+'[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText()
-            self.ylabel=self.ylabel+'[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText()
+            self.xlabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText())
+            self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
             self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.disconnect()
             self.plotSetupTableWidget.cellWidget(row,3).clear()
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
@@ -417,8 +417,8 @@ class Data_Widget(QDialog):
                 self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
                 self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
                 self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updatePlotData)
-            self.xlabel=self.xlabel+'[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText()
-            self.ylabel=self.ylabel+'[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText()
+            self.xlabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText())
+            self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
             self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
             self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
@@ -452,6 +452,8 @@ class Data_Widget(QDialog):
                 self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,name=name,fit=True)
             else:
                 self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,name=name,fit=False)
+        self.xlabel[row]='[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText()
+        self.ylabel[row]='[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText()
         self.updatePlot()
         self.oldPlotIndex[name]=[self.plotSetupTableWidget.cellWidget(row,i).currentIndex() for i in range(1,4)]
         
@@ -459,8 +461,8 @@ class Data_Widget(QDialog):
     def updatePlot(self):
         names=[self.plotSetupTableWidget.item(i,0).text() for i in range(self.plotSetupTableWidget.rowCount())]
         self.plotWidget.Plot(names)
-        self.plotWidget.setXLabel(self.xlabel)
-        self.plotWidget.setYLabel(self.ylabel)
+        self.plotWidget.setXLabel(' '.join(self.xlabel))
+        self.plotWidget.setYLabel(' '.join(self.ylabel))
         
         
 if __name__=='__main__':
@@ -468,9 +470,9 @@ if __name__=='__main__':
     #fname=r'C:\Users\Mrinal Bera\Desktop\India_collab\Fe50A_SW\SAXS\extracted_pyFAI\Fe50A_SW_SAXS_0000.txt'
     data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':np.arange(1000),'y':np.arange(1000),'y_err':np.arange(1000)})}
     try:
-        w=Data_Widget(fname=fname,matplotlib=False)
+        w=Data_Dialog(fname=fname,matplotlib=False)
     except:
-        w=Data_Widget(data=data,matplotlib=False)
+        w=Data_Dialog(data=data,matplotlib=False)
     w.resize(600,400)
 #    w.showFullScreen()
     sys.exit(app.exec_())
