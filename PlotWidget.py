@@ -16,6 +16,8 @@ class PlotWidget(QWidget):
     def __init__(self,parent=None,matplotlib=False):
         QWidget.__init__(self,parent)
         self.matplotlib=matplotlib
+        self.mplPlotData={}
+        self.mplErrorData={}
         self.xLabelFontSize=10
         self.yLabelFontSize=10
         self.titleFontSize=12
@@ -63,7 +65,8 @@ class PlotWidget(QWidget):
         if self.matplotlib:
             self.plotWidget=MatplotlibWidget()
             self.subplot=self.plotWidget.getFigure().add_subplot(111)
-            #self.plotWidget.draw()
+            self.plotWidget.fig.set_tight_layout(True)
+            self.plotWidget.draw()
         else:
             self.plotWidget=pg.PlotWidget(background='k')
             self.plotWidget.getPlotItem().vb.scene().sigMouseMoved.connect(self.mouseMoved)
@@ -90,20 +93,23 @@ class PlotWidget(QWidget):
         
         
     def mouseMoved(self,pos):
-        pointer=self.plotWidget.getPlotItem().vb.mapSceneToView(pos)
-        x,y=pointer.x(),pointer.y()
-        if self.plotWidget.getPlotItem().ctrl.logXCheck.isChecked():
-            x=10**x
-        if self.plotWidget.getPlotItem().ctrl.logYCheck.isChecked():
-            y=10**y
-        if x>1e-3 and y>1e-3:
-            self.crosshairLabel.setText(u'X={: .5f} , y={: .5f}'.format(x,y))
-        if x<1e-3 and y>1e-3:
-            self.crosshairLabel.setText(u'X={: .3e} , y={: .5f}'.format(x,y))
-        if x>1e-3 and y<1e-3:
-            self.crosshairLabel.setText(u'X={: .5f} , y={: .3e}'.format(x,y))
-        if x<1e-3 and y<1e-3:
-            self.crosshairLabel.setText(u'X={: .3e} , y={: .3e}'.format(x,y))
+        try:
+            pointer=self.plotWidget.getPlotItem().vb.mapSceneToView(pos)
+            x,y=pointer.x(),pointer.y()
+            if self.plotWidget.getPlotItem().ctrl.logXCheck.isChecked():
+                x=10**x
+            if self.plotWidget.getPlotItem().ctrl.logYCheck.isChecked():
+                y=10**y
+            if x>1e-3 and y>1e-3:
+                self.crosshairLabel.setText(u'X={: .5f} , y={: .5f}'.format(x,y))
+            if x<1e-3 and y>1e-3:
+                self.crosshairLabel.setText(u'X={: .3e} , y={: .5f}'.format(x,y))
+            if x>1e-3 and y<1e-3:
+                self.crosshairLabel.setText(u'X={: .5f} , y={: .3e}'.format(x,y))
+            if x<1e-3 and y<1e-3:
+                self.crosshairLabel.setText(u'X={: .3e} , y={: .3e}'.format(x,y))
+        except:
+            pass
                 
         #self.crosshairLabel.setText(u'X=%+0.5f, Y=%+0.5e'%(x,y))
         
@@ -137,9 +143,9 @@ class PlotWidget(QWidget):
                 self.data[dname].setData(x,y,pen=pen,symbol=symbol,symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
                 #self.data[dname].setPen(pg.mkPen(color=pg.intColor(np.random.choice(range(0,210),1)[0]),width=int(self.lineWidthLineEdit.text())))
                 #if self.errorbarCheckBox.isChecked():
-                self.dataErrPos[dname].setData(x,y+yerr/2.0)
-                self.dataErrNeg[dname].setData(x,y-yerr/2.0)
-                self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
+                self.dataErrPos[dname].setData(x,np.where(y+yerr/2.0>0,y+yerr/2.0,y))
+                self.dataErrNeg[dname].setData(x,np.where(y-yerr/2.0>0,y-yerr/2.0,y))
+                #self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
             else: 
                 color=pg.intColor(np.random.choice(range(0,210),1)[0])
                 #color=self.data[dname].opts['pen'].color()
@@ -152,9 +158,9 @@ class PlotWidget(QWidget):
                 self.data[dname].curve.setClickable(True,width=10)
                 self.data[dname].sigClicked.connect(self.colorChanged)
                 #if self.errorbarCheckBox.isChecked():
-                self.dataErrPos[dname]=pg.PlotDataItem(x,y+yerr/2.0)
-                self.dataErrNeg[dname]=pg.PlotDataItem(x,y-yerr/2.0)
-                self.dataErr[dname]=pg.FillBetweenItem(curve1=self.dataErrPos[dname],curve2=self.dataErrNeg[dname],brush=pg.mkBrush(color=pg.hsvColor(1.0,sat=0.0,alpha=0.2)))
+                self.dataErrPos[dname]=pg.PlotDataItem(x,np.where(y+yerr/2.0>0,y+yerr/2.0,y))
+                self.dataErrNeg[dname]=pg.PlotDataItem(x,np.where(y-yerr/2.0>0,y-yerr/2.0,y))
+                #self.dataErr[dname]=pg.FillBetweenItem(curve1=self.dataErrPos[dname],curve2=self.dataErrNeg[dname],brush=pg.mkBrush(color=pg.hsvColor(1.0,sat=0.0,alpha=0.2)))
                 self.data_num+=1
                 #if len(x)>1:
                 self.Plot([dname])
@@ -168,9 +174,11 @@ class PlotWidget(QWidget):
         Color of the item changed
         """
         color=QColorDialog.getColor()
-        item.setPen(pg.mkPen(color=color,width=int(self.lineWidthLineEdit.text())))
-        item.setSymbolBrush(pg.mkBrush(color=color))
-        item.setSymbolPen(pg.mkPen(color=color))
+        if self.lineWidthLineEdit.text()!='0':
+            item.setPen(pg.mkPen(color=color,width=int(self.lineWidthLineEdit.text())))
+        if self.pointSizeLineEdit.text()!='0':
+            item.setSymbolBrush(pg.mkBrush(color=color))
+            item.setSymbolPen(pg.mkPen(color=color))
     
     def errorbarChanged(self):
         """
@@ -189,26 +197,53 @@ class PlotWidget(QWidget):
             self.xLabel=self.subplot.get_xlabel()
             self.yLabel=self.subplot.get_ylabel()
             self.title=self.subplot.get_title()
-            self.subplot.axes.cla()
+            #self.subplot.axes.cla()
             for dname in self.selDataNames:                
                 if self.errorbarCheckBox.checkState()==Qt.Checked:
-                    self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData,self.dataErrPos[dname].yData-self.dataErrNeg[dname].yData,fmt='.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)
+                    try:
+                        self.mplPlotData[dname].set_xdata(self.data[dname].xData)
+                        self.mplPlotData[dname].set_ydata(self.data[dname].yData)
+                        self.mplPlotData[dname].set_markersize(int(self.pointSizeLineEdit.text()))
+                        self.mplPlotData[dname].set_linewidth(int(self.lineWidthLineEdit.text()))
+                        
+                        self.mplErrorData[dname].set_segments(np.array([[x,yt],[x,yb]]) for x,yt,yb in zip(self.data[dname].xData,self.dataErrPos[dname].yData,self.dataErrNeg[dname].yData))
+                        self.mplErrorData[dname].set_linewidth(2)
+                    except:
+                        try:
+                            self.mplPlotData[dname].remove()
+                            del self.mplPlotData[dname]
+                        except:
+                            pass
+                        ln,err,bar =self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData,xerr=None,yerr=self.dataErrPos[dname].yData-self.dataErrNeg[dname].yData,fmt='.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)                   
+                        self.mplPlotData[dname]=ln
+                        self.mplErrorData[dname],=bar
                 else:
-                    self.subplot.plot(self.data[dname].xData,self.data[dname].yData,'.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)
-                if self.xLogCheckBox.checkState()==Qt.Checked:
-                    self.subplot.set_xscale('log')
-                else:
-                    self.subplot.set_xscale('linear')
-                if self.yLogCheckBox.checkState()==Qt.Checked:
-                    self.subplot.set_yscale('log')
-                else:
-                    self.subplot.set_yscale('linear')
-                self.subplot.set_xlabel(self.xLabel,fontsize=self.yLabelFontSize)
-                self.subplot.set_ylabel(self.yLabel,fontsize=self.yLabelFontSize)
-                self.subplot.set_title(self.title,fontsize=self.titleFontSize)
-                leg=self.subplot.legend()
-                leg.draggable()
-                self.plotWidget.draw()
+                    try:
+                        self.mplPlotData[dname].set_xdata(self.data[dname].xData)
+                        self.mplPlotData[dname].set_ydata(self.data[dname].yData)
+                        self.mplPlotData[dname].set_markersize(int(self.pointSizeLineEdit.text()))
+                        self.mplPlotData[dname].set_linewidth(int(self.lineWidthLineEdit.text()))
+                    except:
+                        self.mplPlotData[dname], =self.subplot.plot(self.data[dname].xData,self.data[dname].yData,'.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)
+            if self.xLogCheckBox.checkState()==Qt.Checked:
+                self.subplot.set_xscale('log')
+            else:
+                self.subplot.set_xscale('linear')
+            if self.yLogCheckBox.checkState()==Qt.Checked:
+                self.subplot.set_yscale('log')
+            else:
+                self.subplot.set_yscale('linear')
+            self.subplot.set_xlabel(self.xLabel,fontsize=self.yLabelFontSize)
+            self.subplot.set_ylabel(self.yLabel,fontsize=self.yLabelFontSize)
+            self.subplot.set_title(self.title,fontsize=self.titleFontSize)
+#            try:
+#                self.leg.draggable()
+#            except:
+            self.leg=self.subplot.legend()
+            self.leg.draggable()
+            self.plotWidget.fig.set_tight_layout(True)
+            self.plotWidget.draw()
+                
         else:
             self.plotWidget.plotItem.setLogMode(x=False,y=False) #This step is necessary for checking the zero values
             self.plotWidget.clear()
@@ -235,8 +270,8 @@ class PlotWidget(QWidget):
                 if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
                     self.plotWidget.addItem(self.dataErrPos[dname])
                     self.plotWidget.addItem(self.dataErrNeg[dname])
-                    self.plotWidget.addItem(self.dataErr[dname])
-                    self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
+                    #self.plotWidget.addItem(self.dataErr[dname])
+                    #self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
                 self.legendItem.addItem(self.data[dname],dname)
             if self.xLogCheckBox.checkState()==Qt.Checked:
                 self.plotWidget.plotItem.setLogMode(x=True)
@@ -249,9 +284,22 @@ class PlotWidget(QWidget):
             
     def updatePlot(self):
         for dname in self.selDataNames:
-            color=self.data[dname].opts['pen'].color()
-            self.data[dname].setPen(pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text())))
-            self.data[dname].setSymbolSize(float(self.pointSizeLineEdit.text()))
+            if self.lineWidthLineEdit.text()=='0':
+                self.data[dname].opts['pen']=None
+                self.data[dname].updateItems()
+            else:
+                #try:
+                self.data[dname].setPen(self.data[dname].opts['symbolPen']) #setting the same color as the symbol
+                color=self.data[dname].opts['pen'].color()
+                self.data[dname].setPen(pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text())))
+                #except:
+                #    self.data[dname].setPen(pg.mkPen(color='b',width=float(self.lineWidthLineEdit.text())))
+            if self.pointSizeLineEdit.text()=='0':
+                self.data[dname].opts['symbol']=None
+                self.data[dname].updateItems()
+            else:
+                self.data[dname].opts['symbol']='o'
+                self.data[dname].setSymbolSize(float(self.pointSizeLineEdit.text()))
         self.Plot(self.selDataNames)
             
     def setXLabel(self,label,fontsize=4):
@@ -294,7 +342,7 @@ class PlotWidget(QWidget):
     
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    w=PlotWidget(matplotlib=True)
+    w=PlotWidget(matplotlib=False)
     x=np.arange(0,np.pi,0.01)
     y=np.sin(x)
     w.add_data(x,y,name='sin')

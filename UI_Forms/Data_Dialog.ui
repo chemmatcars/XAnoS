@@ -47,7 +47,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="dataTab">
         <attribute name="title">
@@ -84,7 +84,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="addMetaDataPushButton_2">
+                <widget class="QPushButton" name="removeMetaDataPushButton">
                  <property name="text">
                   <string>Remove</string>
                  </property>
@@ -232,6 +232,19 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="okPushButton">
+         <property name="text">
+          <string>OK</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+         <property name="default">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="closePushButton">
