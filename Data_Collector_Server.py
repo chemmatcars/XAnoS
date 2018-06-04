@@ -817,12 +817,18 @@ class Data_Collector(QWidget):
             detname=str(self.detectorComboBox.currentText())
         if detname not in self.usedDetectors:
             self.detectorWidgets[detname]=Detector_Widget(imgFName='img_'+detname)
-            self.detectorWidgets[detname].detectorComboBox.setCurrentIndex(self.detectorWidgets[detname].detectorComboBox.findText(detname))
             if self.experimentFolder is not None:
-                self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
+                self.detectorWidgets[detname].carsImgFolder=self.experimentFolder
             else:
                 QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
                 return
+            
+            self.detectorWidgets[detname].detectorComboBox.setCurrentIndex(self.detectorWidgets[detname].detectorComboBox.findText(detname))
+#            if self.experimentFolder is not None:
+#                self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
+#            else:
+#                QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
+#                return
             self.detectorComboBox.setCurrentIndex(self.detectorComboBox.findText(detname))
             if self.detectorWidgets[detname].connection:
                 self.detectorDialogs[detname]=QDialog(self)
@@ -1129,9 +1135,7 @@ class Data_Collector(QWidget):
                     if self.abort:
                         break
                     self.collect_data()
-                    #print(self.dataReducer.poniFile)
-                    if self.dataReducer.poniFile is not None and self.autoReduceCheckBox.isChecked():
-#                        self.dataReducer.reduce_multiple()
+                    if self.autoReduceCheckBox.isChecked():
                         self.redServerSocket.send_string(self.serverFileOut)
                     
                     if self.sleepTime>1e-3:
@@ -1158,102 +1162,96 @@ class Data_Collector(QWidget):
         """
         self.shutter_OFF()
         self.NLoops=self.loopSpinBox.value()
-        #try:
-        self.frameCount=int(self.frameCountLineEdit.text())
-        self.sleepTime=float(self.sleepTimeLineEdit.text())
-        if str(self.dynamicCollectButton.text())!='Abort':
-            self.abort=False
-            self.create_measurementList()
-            limitsOK=self.check_motorLimits()
-            if limitsOK:
-                self.dynamicCollectButton.setText('Abort')
-                self.measurementProgressDialog.setMinimum(0)
-                self.measurementProgressDialog.setMaximum(self.measurementCount*self.NLoops*self.frameCount)
-                self.measurementProgressDialog.setValue(0)
-                firstPosition={}
-                for motorname in self.measurementList.keys():
-                    if motorname=='Energy':
-                        firstPosition[motorname]=caget(self.motors[motorname]['PV']+'RdbkAO')
-                    elif motorname=='Undulator_ID15Energy':
-                        firstPosition[motorname]=caget(self.motors['Undulator_Energy']['PV'])
-                    else:
-                        firstPosition[motorname]=caget(self.motors[motorname]['PV']+'.RBV')
-                for loop in range(self.NLoops):
-                    if self.abort:
-                        break
-                    #Recording the intial starting positions of all the motors involved in the Dynamic scan
-                    
-                    #Starting the Dynamic Scan
-#                        self.measurementProgressDialog.setMinimum(0)
-#                        self.measurementProgressDialog.setMaximum(self.measurementCount)
-#                        self.measurementProgressDialog.setValue(0)
-                    for i in range(self.measurementCount):
+        try:
+            self.frameCount=int(self.frameCountLineEdit.text())
+            self.sleepTime=float(self.sleepTimeLineEdit.text())
+            if str(self.dynamicCollectButton.text())!='Abort':
+                self.abort=False
+                self.create_measurementList()
+                limitsOK=self.check_motorLimits()
+                if limitsOK:
+                    self.dynamicCollectButton.setText('Abort')
+                    self.measurementProgressDialog.setMinimum(0)
+                    self.measurementProgressDialog.setMaximum(self.measurementCount*self.NLoops*self.frameCount)
+                    self.measurementProgressDialog.setValue(0)
+                    firstPosition={}
+                    for motorname in self.measurementList.keys():
+                        if motorname=='Energy':
+                            firstPosition[motorname]=caget(self.motors[motorname]['PV']+'RdbkAO')
+                        elif motorname=='Undulator_ID15Energy':
+                            firstPosition[motorname]=caget(self.motors['Undulator_Energy']['PV'])
+                        else:
+                            firstPosition[motorname]=caget(self.motors[motorname]['PV']+'.RBV')
+                    for loop in range(self.NLoops):
                         if self.abort:
                             break
-                        for motorname in self.measurementList.keys():
-                            if motorname=='Energy':
-                                caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][i],wait=False)
-                            elif motorname=='Undulator_ID15Energy':
-                                caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
-                            else:
-                                caput(self.motors[motorname]['PV']+'.VAL',self.measurementList[motorname][i],wait=False)
-                        moving=self.checkMotorsMoving()
-                        #Checking the movement of all the motors
-                        while moving:
+                        #Recording the intial starting positions of all the motors involved in the Dynamic scan
+                        for i in range(self.measurementCount):
                             if self.abort:
                                 break
-                            self.palette.setColor(QPalette.Foreground,Qt.red)
-                            self.instrumentStatus.setPalette(self.palette)
-                            self.instrumentStatus.setText('Motors are moving for the next position. Please wait')
-                            pg.QtGui.QApplication.processEvents()
+                            for motorname in self.measurementList.keys():
+                                if motorname=='Energy':
+                                    caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][i],wait=False)
+                                elif motorname=='Undulator_ID15Energy':
+                                    caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
+                                else:
+                                    caput(self.motors[motorname]['PV']+'.VAL',self.measurementList[motorname][i],wait=False)
                             moving=self.checkMotorsMoving()
-                            QtTest.QTest.qWait(0.1*1000)
-                        #Counting starts
-                        if self.collectDarkCheckBox.isChecked():
-                            self.collect_dark()
-                        for j in range(self.frameCount):
-                            if self.abort:
-                                break
-                            self.collect_data()
-                            if self.dataReducer.poniFile is not None and self.autoReduceCheckBox.isChecked():
-                                self.redServerSocket.send_string(self.serverFileOut)
-#                                self.dataReducer.reduce_multiple()
-                            if self.sleepTime>1e-3:
-                                self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
-                                QtTest.QTest.qWait(self.sleepTime*1000)
-                            self.measurementProgressDialog.setValue(loop*self.measurementCount*self.frameCount+self.frameCount*i+j+1)
-                        
-                #Moving back the motors to the staring position
-                
-                for motorname in self.measurementList.keys():
-                    if motorname=='Energy':
-                        caput(self.motors[motorname]['PV']+'AO.VAL',firstPosition[motorname],wait=False)
-                    elif motorname=='Undulator_ID15Energy':
-                        caput(self.motors[motorname]['PV'],firstPosition[motorname],wait=False)
-                    else:
-                        caput(self.motors[motorname]['PV']+'.VAL',firstPosition[motorname],wait=False)
-                moving=self.checkMotorsMoving()
-                while moving:
-                    self.palette.setColor(QPalette.Foreground,Qt.red)
-                    self.instrumentStatus.setPalette(self.palette)
-                    self.instrumentStatus.setText('Motors are moving back to the starting position. Please wait')
-                    pg.QtGui.QApplication.processEvents()
+                            #Checking the movement of all the motors
+                            while moving:
+                                if self.abort:
+                                    break
+                                self.palette.setColor(QPalette.Foreground,Qt.red)
+                                self.instrumentStatus.setPalette(self.palette)
+                                self.instrumentStatus.setText('Motors are moving for the next position. Please wait')
+                                pg.QtGui.QApplication.processEvents()
+                                moving=self.checkMotorsMoving()
+                                QtTest.QTest.qWait(0.1*1000)
+                            #Counting starts
+                            if self.collectDarkCheckBox.isChecked():
+                                self.collect_dark()
+                            for j in range(self.frameCount):
+                                if self.abort:
+                                    break
+                                self.collect_data()
+                                if self.autoReduceCheckBox.isChecked():
+                                    self.redServerSocket.send_string(self.serverFileOut)
+                                if self.sleepTime>1e-3:
+                                    self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
+                                    QtTest.QTest.qWait(self.sleepTime*1000)
+                                self.measurementProgressDialog.setValue(loop*self.measurementCount*self.frameCount+self.frameCount*i+j+1)
+                            
+                    #Moving back the motors to the staring position
+                    
+                    for motorname in self.measurementList.keys():
+                        if motorname=='Energy':
+                            caput(self.motors[motorname]['PV']+'AO.VAL',firstPosition[motorname],wait=False)
+                        elif motorname=='Undulator_ID15Energy':
+                            caput(self.motors[motorname]['PV'],firstPosition[motorname],wait=False)
+                        else:
+                            caput(self.motors[motorname]['PV']+'.VAL',firstPosition[motorname],wait=False)
                     moving=self.checkMotorsMoving()
-                    QtTest.QTest.qWait(0.1*1000)
-                self.palette.setColor(QPalette.Foreground,Qt.green)
-                self.instrumentStatus.setPalette(self.palette)
-                self.measurementProgressDialog.setValue(self.measurementCount*self.NLoops*self.frameCount)
-                self.instrumentStatus.setText('Done')
-                self.dynamicCollectButton.setText('Collect Dynamic')                    
+                    while moving:
+                        self.palette.setColor(QPalette.Foreground,Qt.red)
+                        self.instrumentStatus.setPalette(self.palette)
+                        self.instrumentStatus.setText('Motors are moving back to the starting position. Please wait')
+                        pg.QtGui.QApplication.processEvents()
+                        moving=self.checkMotorsMoving()
+                        QtTest.QTest.qWait(0.1*1000)
+                    self.palette.setColor(QPalette.Foreground,Qt.green)
+                    self.instrumentStatus.setPalette(self.palette)
+                    self.measurementProgressDialog.setValue(self.measurementCount*self.NLoops*self.frameCount)
+                    self.instrumentStatus.setText('Done')
+                    self.dynamicCollectButton.setText('Collect Dynamic')                    
+                else:
+                    QMessageBox.warning(self,'Limit error', 'The motor positions supplied for measurements are beyond the limits. Please review your positioner values.',QMessageBox.Ok)
             else:
-                QMessageBox.warning(self,'Limit error', 'The motor positions supplied for measurements are beyond the limits. Please review your positioner values.',QMessageBox.Ok)
-        else:
-            ans=QMessageBox.question(self,'Abort','Do you really like to abort the measurement',QMessageBox.Yes,QMessageBox.No)
-            if ans==QMessageBox.Yes:
-                self.abort=True
-        #except:
-        #    QMessageBox.warning(self,'Value Error','Please provide integer frame counts and floating point number sleep time',QMessageBox.Ok)
-        #caput(self.scalers['scaler_mode']['PV'],1,wait=True) #Setting Scalar to Autocount mode
+                ans=QMessageBox.question(self,'Abort','Do you really like to abort the measurement',QMessageBox.Yes,QMessageBox.No)
+                if ans==QMessageBox.Yes:
+                    self.abort=True
+        except:
+            QMessageBox.warning(self,'Value Error','Please provide integer frame counts and floating point number sleep time',QMessageBox.Ok)
+        caput(self.scalers['scaler_mode']['PV'],1,wait=True) #Setting Scalar to Autocount mode
                 
         
     def checkMotorsMoving(self):
@@ -1465,7 +1463,7 @@ class Data_Collector(QWidget):
                     file.header[key]=caget(self.motors[key]['PV']+'.RBV')
             file.header['Wavelength']=self.wavelength
             file.header['Energy']=self.energy
-            file.write(fileout)
+            file.write(self.serverFileOut)
             self.BSTransmissionLabel.setText('%.5f'%(self.BSdiode_counts/self.monitor_counts))
         self.palette.setColor(QPalette.Foreground,Qt.green)
         self.instrumentStatus.setPalette(self.palette)

@@ -529,11 +529,13 @@ class Detector_Widget(QWidget):
                 self.detStatusLabel.setPalette(self.palette)
                 camonitor(self.detPV+'Acquire',callback=self.getDetectorStatus)
                 camonitor(self.detPV+'DetectorState_RBV',callback=self.getDetectorState)
-                self.detImgFolder=caget(self.detPV+'FilePath_RBV',as_string=True)
-                self.detImgFolderLineEdit.setText(self.detImgFolder)
-                self.carsImgFolder=self.detImgFolder.replace(self.detectors[self.currentDetector]['det_folder'],self.detectors[self.currentDetector]['cars_folder'])
-                self.carsImgFolder=self.carsImgFolder.replace('\\','/')
+                #self.detImgFolder=caget(self.detPV+'FilePath_RBV',as_string=True)
+                #self.detImgFolderLineEdit.setText(self.detImgFolder)
+                #self.carsImgFolder=self.detImgFolder.replace(self.detectors[self.currentDetector]['det_folder'],self.detectors[self.currentDetector]['cars_folder'])
+                #self.carsImgFolder=self.carsImgFolder.replace('\\','/')
                 self.carsImgFolderLineEdit.setText(self.carsImgFolder)
+                self.detImgFolder=self.carsImgFolder.replace(self.detectors[self.currentDetector]['cars_folder'],self.detectors[self.currentDetector]['det_folder'])
+                caput(self.detPV+'FilePath',self.detImgFolder)
                 if self.detectors[self.currentDetector]=='Apex2':
                     caput(self.detPV+'FileTemplate','%s%s_%04d.sfrm')
                 elif self.detectors[self.currentDetector]=='PhotonII':
@@ -549,11 +551,13 @@ class Detector_Widget(QWidget):
                 #print('File watcher started with: '+os.path.join(os.getcwd(),'img_0001.tif'))
                 #imsave(os.path.join(self.carsImgFolder,'img_0001.tif'),np.random.random((10,10)))
                 if self.currentDetector=='Apex2':
-                    imsave(os.path.join(self.carsImgFolder,self.imgFName+'_0001.sfrm'),np.random.random((10,10)))
-                    self.fileWatcher.addPath(os.path.join(self.carsImgFolder,self.imgFName+'_0001.sfrm'))
+                    fname=os.path.join(self.carsImgFolder,self.imgFName+'_0001.sfrm')
+                    imsave(fname,np.random.random((10,10)))
+                    self.fileWatcher.addPath(fname)
                 else:
-                    imsave(os.path.join(self.carsImgFolder,self.imgFName+'_0001.tif'),np.random.random((10,10)))
-                    self.fileWatcher.addPath(os.path.join(self.carsImgFolder,self.imgFName+'_0001.tif'))
+                    fname=os.path.join(self.carsImgFolder,self.imgFName+'_0001.tif')
+                    imsave(fname,np.random.random((10,10)))
+                    self.fileWatcher.addPath(fname)
                 if not self.fileWatcher.isRunning:
                     self.fileWatcher.run()
                 #self.measurementStatus.setText('Ready')

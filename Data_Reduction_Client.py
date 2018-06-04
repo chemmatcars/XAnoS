@@ -195,7 +195,7 @@ class Data_Reduction_Client(QWidget):
                 self.dataFileLineEdit.setText(str(self.dataFiles))
                 self.extractedFolder=os.path.join(os.path.dirname(message),'extracted_pyFAI')
                 if not os.path.exists(self.extractedFolder):
-                    os.makedirs(self.dataReducer.extractedFolder)
+                    os.makedirs(self.extractedFolder)
                 self.extractedFolderLineEdit.setText(self.extractedFolder)
                 self.set_externally=True
                 self.reduce_multiple()
