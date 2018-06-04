@@ -30,8 +30,15 @@ class LogNormal:
         self.params.add('wid',value=self.wid,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        
+    def update_params(self):
+        self.params['pos'].value=self.pos
+        self.params['wid'].value=self.wid
+        self.params['norm'].value=self.norm
+        self.params['bkg'].value=self.bkg
 
 
     def y(self):
+        self.update_params()
         return self.norm*np.exp(-(np.log(self.x)-np.log(self.pos))**2/2.0/self.wid**2)/self.x/self.wid/2.5066+self.bkg
 

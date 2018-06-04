@@ -65,6 +65,7 @@ class CoreShellSphere:
 
 
     def y(self):
+        self.output_params={}
         if self.Rsig<1e-3 and self.shsig<1e-3:
             amp,res= self.coreshell(self.x,self.R,self.rhoc,self.sh,self.rhosh,self.rhosol)
             self.rdist=None
@@ -87,7 +88,7 @@ class CoreShellSphere:
                         ffactor.append(f/sumdist)
                     return self.norm*np.array(ffactor)+self.bkg
                 else:
-                    amp,res=self.coreShell(self.x,r,self.rhoc,self.sh,self.rhosh,self.rhosol)
+                    amp,res=self.coreshell(self.x,r,self.rhoc,self.sh,self.rhosh,self.rhosol)
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
                 lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
@@ -158,10 +159,11 @@ class CoreShellSphere:
                 shmin,shmax=find_minmax(gau,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 R,Sh=np.meshgrid(r,sh)
-                dist=np.exp(-(R-self.R)**2/2.0/self.Rsig**2-(Sh-self.sh)**2/2.0/self.shsig**2)
+                dist=np.exp(-(R-self.R)**2/2.0/self.Rsig**2)*np.exp(-(Sh-self.sh)**2/2.0/self.shsig**2)
                 sumdist=np.sum(dist)
-                print(sumdist)
-                self.output_params['Distribution']={'x':R,'y':Sh,'z':dist/sumdist}
+                self.output_params['Distribution2D']={'x':R,'y':Sh,'z':dist/sumdist}
+                self.output_params['Distribution1D_R']={'x':r,'y':np.exp(-(r-self.R)**2/2.0/self.Rsig**2)/sumdist}
+                self.output_params['Distribution1D_sh']={'x':sh,'y':np.exp(-(sh-self.sh)**2/2.0/self.shsig**2)/sumdist}
                 if type(self.x)==np.ndarray:
                     ffactor=[]
                     for x in self.x:
@@ -181,6 +183,9 @@ class CoreShellSphere:
                 R,Sh=np.meshgrid(r,sh)
                 dist=np.exp(-(np.log(R)-np.log(self.R))**2/2.0/self.Rsig**2)*np.exp(-(np.log(Sh)-np.log(self.sh))**2/2.0/self.shsig**2)/R/Sh
                 sumdist=np.sum(dist)
+                self.output_params['Distribution2D']={'x':R,'y':Sh,'z':dist/sumdist}
+                self.output_params['Distribution1D_R']={'x':r,'y':np.exp(-(np.log(r)-np.log(self.R))**2/2.0/self.Rsig**2)/r/sumdist}
+                self.output_params['Distribution1D_sh']={'x':sh,'y':np.exp(-(np.log(sh)-np.log(self.sh))**2/2.0/self.shsig**2)/sh/sumdist}
                 self.rdist,self.shdist=R,Sh
                 self.srshdist=dist/sumdist
                 if type(self.x)==np.ndarray:

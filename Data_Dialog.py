@@ -1,6 +1,6 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QApplication, QWidget,QDialog,QMessageBox,QTableWidgetItem,QFileDialog,QComboBox,QDialogButtonBox
-from PyQt5.QtCore import QFileSystemWatcher
+from PyQt5.QtWidgets import QApplication,QDialog,QMessageBox,QTableWidgetItem,QFileDialog,QComboBox
+from PyQt5.QtCore import QFileSystemWatcher, Qt
 from PyQt5.QtTest import QTest
 import sys
 import pandas as pd
@@ -8,6 +8,20 @@ import os
 import numpy as np
 import time
 from PlotWidget import PlotWidget
+import copy
+
+class QCustomTableWidgetItem (QTableWidgetItem):
+    def __init__ (self, value):
+        super(QCustomTableWidgetItem, self).__init__('%s' % value)
+
+    def __lt__ (self, other):
+        if (isinstance(other, QCustomTableWidgetItem)):
+            selfDataValue  = float(self.data(Qt.EditRole))
+            otherDataValue = float(other.data(Qt.EditRole))
+            return selfDataValue < otherDataValue
+        else:
+            return QTableWidgetItem.__lt__(self, other)
+
 
 class MetaData_Dialog(QDialog):
     def __init__(self,name='para',value=0.0, parent=None):
@@ -33,8 +47,8 @@ class InsertCol_Dialog(QDialog):
         
 
 class Data_Dialog(QDialog):
-    def __init__(self,fname=None,data=None,comment='#',skiprows=0,delimiter=' ',autoupdate=False,parent=None,matplotlib=False):
-        QWidget.__init__(self,parent=parent)
+    def __init__(self,fname=None,data=None,comment='#',skiprows=0,delimiter=' ',autoupdate=False,parent=None,matplotlib=False,plotIndex=None):
+        QDialog.__init__(self,parent=parent)
         loadUi('UI_Forms/Data_Dialog.ui',self)
         self.plotWidget=PlotWidget(parent=self,matplotlib=matplotlib)
         self.plotTab=self.tabWidget.addTab(self.plotWidget,'Plots')
@@ -55,7 +69,7 @@ class Data_Dialog(QDialog):
         if self.data is not None:
             self.setMeta2Table()
             self.setData2Table()
-            self.addPlots()
+            self.addPlots(plotIndex=plotIndex)
         self.init_signals()
         self.okPushButton.setAutoDefault(False)
         self.closePushButton.setAutoDefault(False)
@@ -64,6 +78,7 @@ class Data_Dialog(QDialog):
         self.closePushButton.setDefault(False)
         self.openDataFilePushButton.setDefault(False)
         self.setWindowTitle('Data Dialog')
+        #self.setWindowSize((600,400))
             
     def init_signals(self):
         self.closePushButton.clicked.connect(self.closeWidget)
@@ -74,6 +89,7 @@ class Data_Dialog(QDialog):
         self.saveDataPushButton.clicked.connect(self.saveData)
         self.addPlotPushButton.clicked.connect(self.addPlots)
         self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)
+        self.removePlotPushButton.clicked.connect(self.removePlots)
         
         self.addMetaDataPushButton.clicked.connect(self.addMetaData)
         self.metaDataTableWidget.itemChanged.connect(self.metaDataChanged)
@@ -84,6 +100,10 @@ class Data_Dialog(QDialog):
         self.dataTableWidget.itemChanged.connect(self.dataChanged)
         self.addColumnPushButton.clicked.connect(lambda x: self.addDataColumn(colName='colX'))
         self.removeColumnPushButton.clicked.connect(self.removeDataColumn)
+        self.removeRowsPushButton.clicked.connect(self.removeDataRows)
+        self.dataTableWidget.horizontalHeader().sortIndicatorChanged.connect(self.dataSorted)
+        self.addRowPushButton.clicked.connect(self.addDataRow)
+        
            
                    
     def closeWidget(self):
@@ -180,6 +200,33 @@ class Data_Dialog(QDialog):
         self.resetPlotSetup()
         self.dataAltered=False
         
+    def dataSorted(self):
+        """
+        Updates the data after sorting the DataTableWidget
+        """
+        self.getDataFromTable()
+        self.dataAltered=True
+        self.resetPlotSetup()
+        self.dataAltered=False
+        
+    def addDataRow(self):
+        try:
+            self.dataTableWidget.itemChanged.disconnect()
+        except:
+            pass
+        row=self.dataTableWidget.currentRow()
+        self.dataTableWidget.insertRow(row+1)
+        for col in range(self.dataTableWidget.columnCount()):
+            self.dataTableWidget.setItem(row+1,col,QCustomTableWidgetItem(float(self.dataTableWidget.item(row,col).text())))
+        self.getDataFromTable()
+        self.dataAltered=True
+        self.resetPlotSetup()
+        self.dataAltered=False
+        self.dataTableWidget.itemChanged.connect(self.dataChanged)
+        
+        
+        
+        
     def addDataColumn(self,colName='colx',expr=None):
         row,col=self.data['data'].shape
         self.insertColDialog=InsertCol_Dialog(colName=colName,minCounter=1,maxCounter=row,expr=expr)
@@ -192,9 +239,13 @@ class Data_Dialog(QDialog):
                 try:
                     self.data['data'][colname]=eval(expr)
                 except:
-                    expr=self.insertColDialog.colExprTextEdit.toPlainText()
-                    expr=expr.replace('col.','self.data[\'data\'].')
-                    self.data['data'][colname]=eval(expr)
+                    try:
+                        expr=self.insertColDialog.colExprTextEdit.toPlainText()
+                        expr=expr.replace('col.','self.data[\'data\'].')
+                        self.data['data'][colname]=eval(expr)
+                    except:
+                        QMessageBox.warning(self,'Column Error','Please check the expression',QMessageBox.Ok)
+                        self.addDataColumn(colName='colx',minCounter=imin,maxCounter=imax,expr=expr)
                 self.setData2Table()
                 self.dataAltered=True
                 self.resetPlotSetup()
@@ -218,7 +269,19 @@ class Data_Dialog(QDialog):
         else:
             QMessageBox.warning(self,'Remove Error','Cannot these many column because Datawidget needs to have atleast two columns',QMessageBox.Ok)
                 
-                
+    def removeDataRows(self):
+        rowIndexes=[index.row() for index in self.dataTableWidget.selectionModel().selectedRows()]
+        rowIndexes.sort(reverse=True)
+        if len(rowIndexes)>0:
+            ans=QMessageBox.question(self,'Confirmation','Are you sure of removing the selected rows?',QMessageBox.Yes,QMessageBox.No)
+            if ans==QMessageBox.Yes:
+                for i in rowIndexes:
+                    self.dataTableWidget.removeRow(i)
+                self.getDataFromTable()
+                self.dataAltered=True
+                self.resetPlotSetup()
+                self.dataAltered=False
+                        
             
             
     def setMeta2Table(self):
@@ -227,6 +290,7 @@ class Data_Dialog(QDialog):
         """
         try:
             self.metaDataTableWidget.itemChanged.disconnect()
+            self.metaDataTableWidget.itemSelectionChanged.disconnect()
         except:
             pass
         self.metaDataTableWidget.clear()
@@ -242,6 +306,7 @@ class Data_Dialog(QDialog):
             self.metaDataTableWidget.setItem(num+1,1,QTableWidgetItem(str(self.data['meta']['col_names'])))
         self.metaDataTableWidget.setHorizontalHeaderLabels(['Parameter','Value'])
         self.metaDataTableWidget.itemChanged.connect(self.metaDataChanged)
+        self.metaDataTableWidget.itemSelectionChanged.connect(self.metaDataSelectionChanged)
         
             
     def getMetaFromTable(self):
@@ -265,7 +330,8 @@ class Data_Dialog(QDialog):
         self.dataTableWidget.setRowCount(len(self.data['data'].index))
         for j,colname in enumerate(self.data['data'].columns):
             for i in range(len(self.data['data'].index)):
-                self.dataTableWidget.setItem(i,j,QTableWidgetItem(str(self.data['data'][colname][i])))
+                #self.dataTableWidget.setItem(i,j,QTableWidgetItem(str(self.data['data'][colname][i])))
+                self.dataTableWidget.setItem(i,j,QCustomTableWidgetItem(self.data['data'][colname][i]))
         self.dataTableWidget.setHorizontalHeaderLabels(self.data['data'].columns.values.tolist())
         self.dataTableWidget.itemChanged.connect(self.dataChanged)
             
@@ -304,6 +370,10 @@ class Data_Dialog(QDialog):
                     except:
                         pass
                 else:
+                    if '\t' in line:
+                        delimiter='\t'
+                    elif ',' in line:
+                        delimiter=','                            
                     break
             if 'col_names' in self.data['meta'].keys():
                 self.data['data']=pd.read_csv(self.fname,comment=comment,names=self.data['meta']['col_names'],header=None,delimiter=delimiter)
@@ -311,6 +381,7 @@ class Data_Dialog(QDialog):
                 self.data['data']=pd.read_csv(self.fname,comment=comment,header=None,delimiter=delimiter)
                 self.data['data'].columns=['Col_%d'%i for i in self.data['data'].columns.values.tolist()]
                 self.data['meta']['col_names']=self.data['data'].columns.values.tolist()
+            #print(self.data['data'])
             self.autoUpdate_ON_OFF()
             return self.data                
         else:
@@ -401,7 +472,7 @@ class Data_Dialog(QDialog):
         
             
             
-    def addPlots(self):
+    def addPlots(self,plotIndex=None):
         #self.plotSetupTableWidget.clear()
         try:
             self.plotSetupTableWidget.cellChanged.disconnect()
@@ -415,20 +486,49 @@ class Data_Dialog(QDialog):
             for i in range(1,3):
                 self.plotSetupTableWidget.setCellWidget(row,i,QComboBox())
                 self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
-                self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
+                if plotIndex is not None:
+                    self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
+                else:
+                    self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
                 self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updatePlotData)
             self.xlabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText())
             self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
             self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
+            if plotIndex is not None:
+                self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(plotIndex[-1])
+            else:
+                try:
+                    self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(3)
+                except:
+                    self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
+            self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
             self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
             self.plotSetupTableWidget.setCurrentCell(row,3)
             self.updatePlotData()
             self.plotNum+=1
-            return True
         else:
-            return False
+            QMessageBox.warning(self,'Data file error','The data file do not have two or more columns to be plotted.',QMessageBox.Ok)
         self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)
+        
+    def removePlots(self):
+        """
+        Removes data for PlotSetup
+        """
+        try:
+            self.plotSetupTableWidget.cellChanged.disconnect()
+        except:
+            pass
+        rowIndexes=self.plotSetupTableWidget.selectionModel().selectedRows()
+        if self.plotSetupTableWidget.rowCount()-len(rowIndexes)>=1:
+            for index in rowIndexes:
+                row=index.row()
+                name=self.plotSetupTableWidget.item(row,0).text()
+                self.plotWidget.remove_data([name])
+                self.dataTableWidget.removeRow(index.row())            
+        self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)
+            
+        
         
     def updatePlotData(self):
         row=self.plotSetupTableWidget.currentRow()
@@ -460,15 +560,22 @@ class Data_Dialog(QDialog):
             
     def updatePlot(self):
         names=[self.plotSetupTableWidget.item(i,0).text() for i in range(self.plotSetupTableWidget.rowCount())]
+        self.plotColIndex=[self.plotSetupTableWidget.cellWidget(0,i).currentIndex() for i in range(1,4)]
+        self.externalData=copy.copy(self.data['meta'])
+        self.externalData['x']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(0,1).currentText()].values)
+        self.externalData['y']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(0,2).currentText()].values)
+        if self.plotSetupTableWidget.cellWidget(0,3).currentText()=='None':
+            self.externalData['yerr']=np.ones_like(self.externalData['x'])
+        else:
+            self.externalData['yerr']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(0,3).currentText()].values)
         self.plotWidget.Plot(names)
         self.plotWidget.setXLabel(' '.join(self.xlabel))
         self.plotWidget.setYLabel(' '.join(self.ylabel))
         
-        
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    #fname=r'C:\Users\Mrinal Bera\Desktop\India_collab\Fe50A_SW\SAXS\extracted_pyFAI\Fe50A_SW_SAXS_0000.txt'
-    data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':np.arange(1000),'y':np.arange(1000),'y_err':np.arange(1000)})}
+    fname=r'X:/2018-04/Y_corrected_energy_flu.txt'
+    #data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':np.arange(1000),'y':np.arange(1000),'y_err':np.arange(1000)})}
     try:
         w=Data_Dialog(fname=fname,matplotlib=False)
     except:

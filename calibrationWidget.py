@@ -1,4 +1,5 @@
 from pyFAI.geometry import Geometry
+from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
 #from pyFAI.detectors import Detector
 #from pyFAI.calibrant import Calibrant
 from PyQt5.QtCore import *
@@ -11,7 +12,8 @@ import fabio as fb
 import numpy as np
 import os
 from lmfit import Parameters, minimize, report_fit
-from matplotlib import _cntr as cntr
+#from matplotlib import _cntr as cntr
+import legacycontour._cntr as cntr 
 from Image_Widget import Image_Widget
 CWD=os.getcwd()
 #CWD=sys.path[0]
@@ -89,25 +91,27 @@ class CalibrationWidget(QWidget):
         self.calibrantDock=Dock('Calibrant Info')
         self.rawImageDock=Dock('Raw image')
         self.SAImageDock=Dock('Solid Angle')
-
-        #self.binSize=1
+        self.cakedImageDock=Dock('Caked Image')
+        
         self.mainDock.addDock(self.expGeomDock,'left')
         self.mainDock.addDock(self.calibrationDock,'left')
         self.mainDock.addDock(self.calibrantDock,'left')
         self.mainDock.addDock(self.rawImageDock,'right')
         self.mainDock.addDock(self.SAImageDock,'right')
+        self.mainDock.addDock(self.cakedImageDock,'right')
         self.mainDock.moveDock(self.expGeomDock,'top',self.calibrantDock)
         self.mainDock.moveDock(self.calibrationDock,'bottom',self.calibrantDock)
+        self.mainDock.moveDock(self.SAImageDock,'above',self.cakedImageDock)
         self.mainDock.moveDock(self.rawImageDock,'above',self.SAImageDock)
-        
         
         self.create_expGeomDock()        
         self.create_rawImageDock()
         self.create_SAImageDock()
         self.create_calibrantDock()
         self.create_calibrationDock()
+        self.create_cakedImageDock()
 
-        self.solid_angle_plot()
+#        self.solid_angle_plot()
     
 
     def read_data(self,img,pixel1,pixel2,mask=None):
@@ -122,18 +126,19 @@ class CalibrationWidget(QWidget):
         self.pixel2=pixel2*1e-6
         if mask is not None:
             if img.shape==mask.shape:
-                self.maskData=mask.T
+                self.maskData=mask
                 self.imgData=np.where(self.maskData<0,0.0,self.imgData)
             else:
+                self.maskData=None
                 QMessageBox.warning(self,'Mask error','The mask shape doesnot match the image shape',QMessageBox.Ok)
         else:
             self.maskData=np.ones_like(self.imgData)
         #self.cimgData=self.imgData.T
-        self.SA_imgData=np.ones_like(self.imgData)
+        self.SA_imgData=np.ones(self.imgData.shape)
         try:
             self.calibrant_changed()
             self.rawImageWidget.setImage(self.imgData,transpose=True)#imageLogLinear()
-            self.SAImageWidget.setImage(self.SA_imgData, transpose=True)
+            self.SAImageWidget.setImage(self.SA_imgData,transpose=True)
         except:
             pass
         self.X, self.Y= np.meshgrid(np.arange(self.imgData.shape[1]),np.arange(self.imgData.shape[0]))
@@ -176,6 +181,7 @@ class CalibrationWidget(QWidget):
         #bins=self.binSize
         c=cntr.Cntr(self.X,self.Y,self.q)
         nlist=c.trace(self.cal_qvals[ring_num])
+        pen=pg.mkPen(color=self.calRingColorButton.color(),width=int(self.calRingWidthLineEdit.text()))
         if nlist!=[]:
             tlist=np.vstack(nlist[:len(nlist)//2])
             x=tlist[:,0]-self.beamPosX
@@ -187,7 +193,7 @@ class CalibrationWidget(QWidget):
             try:
                 self.rings[ring_num].setData(tlist)
             except:
-                self.rings[ring_num]=pg.PlotDataItem(tlist,pen=pg.mkPen(color=self.calRingColorButton.color(),width=int(self.calRingWidthLineEdit.text())),connect='pairs')
+                self.rings[ring_num]=pg.PlotDataItem(tlist,pen=pen,connect='pairs')
                 #self.rawImageWidget.imageView.getView().addItem(self.rings[ring_num])
                 self.rawImageWidget.imageView.getView().addItem(self.rings[ring_num])
 
@@ -411,25 +417,8 @@ class CalibrationWidget(QWidget):
         """
         self.rawImageWidget=Image_Widget(self.imgData,transpose=True)
         self.rawImageDock.addWidget(self.rawImageWidget)
-        #self.rawImageLayout=pg.LayoutWidget()
-        #self.rawImageWidget.imageView=pg.ImageView(view=pg.PlotItem(labels={'left':('Vertical scale'),'bottom':'Horizontal scale'}))
-        #self.create_colorMap(self.rawImageWidget.imageView,np.amin(self.imgData),np.amax(self.imgData),scale='linear')
-        #self.rawImageWidget.imageView.setImage(self.imgData)
-        #self.rawImageWidget.imageView.view.invertY(True)
-        #self.rawImageLayout.addWidget(self.rawImageWidget.imageView,row=0,col=0,colspan=6)
-        #self.rawImageLogCheckBox=QCheckBox('Log Intensity')
-        #self.rawImageLogCheckBox.setTristate(on=False)
-        #self.rawImageLogCheckBox.setCheckState(Qt.Checked)
-        #self.rawImageLayout.addWidget(self.rawImageLogCheckBox,row=1,col=0,colspan=1)
-        #self.rawImageCrossHair=QLabel()
-        #self.rawImageCrossHair.setAlignment(Qt.AlignRight|Qt.AlignVCenter)
-        #self.rawImageLayout.addWidget(self.rawImageCrossHair,row=1,col=1,colspan=5)
-        #self.rawImageDock.addWidget(self.rawImageLayout)
-        #self.rawImageWidget.imageView.getView().vb.scene().sigMouseMoved.connect(self.rawImage_mouseMoved) 
         self.directBeam=pg.PlotDataItem([self.beamPosX],[self.beamPosY],symbol='+',symbolPen=pg.mkPen(color=self.DBColorButton.color()),symbolBrush=pg.mkBrush(color=self.DBColorButton.color()),symbolSize=10)
         self.rawImageWidget.imageView.getView().addItem(self.directBeam)
-        #self.rawImageWidget.imageLogLinear()
-        #self.rawImageWidget.logScaleCheckBox.stateChanged.connect(self.rawImageLogLinear)
         
     def create_SAImageDock(self):
         """
@@ -437,27 +426,17 @@ class CalibrationWidget(QWidget):
         """
         self.SAImageWidget=Image_Widget(self.SA_imgData,transpose=True)
         self.SAImageDock.addWidget(self.SAImageWidget)
-        #self.SAImageLayout=pg.LayoutWidget()
-        #self.SAImageView=pg.ImageView(view=pg.PlotItem(labels={'left':('Vertical scale'),'bottom':'Horizontal scale'}))
-        #self.create_colorMap(self.SAImageView,np.amin(self.imgData),np.amax(self.imgData),scale='linear')
-        #self.SAImageWidget.setImage(self.SA_imgData)
-        #self.SAImageView.view.invertY(True)
-        #self.SAImageLayout.addWidget(self.SAImageView,row=0,col=0,colspan=6)
-        #self.SAImageLogCheckBox=QCheckBox('Log Intensity')
-        #self.SAImageLogCheckBox.setTristate(on=False)
-        ##self.SAImageLogCheckBox.setCheckState(Qt.Checked)
-        #self.SAImageLayout.addWidget(self.SAImageLogCheckBox,row=1,col=0,colspan=1)
-        #self.SAImageCrossHair=QLabel()
-        #self.SAImageCrossHair.setAlignment(Qt.AlignRight|Qt.AlignVCenter)
-        #self.SAImageLayout.addWidget(self.SAImageCrossHair,row=1,col=1,colspan=5)
-        #self.SAImageDock.addWidget(self.SAImageLayout)
-        #self.SAImageView.getView().vb.scene().sigMouseMoved.connect(self.SAImage_mouseMoved) 
         self.SAdirectBeam=pg.PlotDataItem([self.beamPosX],[self.beamPosY],symbol='+',symbolPen=pg.mkPen(color=self.DBColorButton.color()),symbolBrush=pg.mkBrush(color=self.DBColorButton.color()),symbolSize=10)
         self.SAImageWidget.imageView.getView().addItem(self.SAdirectBeam)
-        #self.SAImageWidget.imageLogLinear()
-        #self.SAImageLogCheckBox.stateChanged.connect(self.SAImageLogLinear)
         
-
+        
+    def create_cakedImageDock(self):
+        """
+        Creates the image dock
+        """
+        self.cakedImageWidget=Image_Widget(self.SA_imgData,transpose=True)
+        self.cakedImageDock.addWidget(self.cakedImageWidget)
+        
         
     def create_calibrantDock(self):
         """
@@ -605,6 +584,7 @@ class CalibrationWidget(QWidget):
         self.showSolidAnglePushButton=QPushButton('Solid-Angle')
         self.showSolidAnglePushButton.clicked.connect(self.show_solid_angle)
         self.checkCalibrationPushButton=QPushButton('Check Calibration')
+        self.checkCalibrationPushButton.clicked.connect(self.checkCalibration)
         self.saveCalibrationPushButton=QPushButton('Save Calibration')
         self.saveCalibrationPushButton.clicked.connect(self.save_calibration)
         self.calibrationLayout.addWidget(peakNumberLabel,row=0,col=0)
@@ -626,6 +606,27 @@ class CalibrationWidget(QWidget):
         self.points={}
         self.pointsPlotItems={}
         self.pointColorWidget={}
+        
+    def checkCalibration(self):
+        """
+        After calibration is done performs caking of the calibrant image to check the goodness of calibration
+        """
+        ai=AzimuthalIntegrator(dist=self.dist,poni1=self.poni1,poni2=self.poni2,rot1=self.rot1,rot2=self.rot2,rot3=self.rot3,pixel1=self.pixel1,pixel2=self.pixel2,wavelength=self.wavelength*1e-10,splineFile=self.splineFile)
+        cakedArray,qr,phir=ai.integrate2d(self.imgData,1000,error_model='poisson',mask=self.maskData,dark=None,unit='q_A^-1')
+        xmin=qr[0]
+        xmax=qr[-1]
+        ymin=phir[0]
+        ymax=phir[-1]
+        self.cakedImageWidget.setImage(cakedArray,xmin=xmin,xmax=xmax,ymin=ymin,ymax=ymax,transpose=True)
+        self.cakedImageWidget.imageView.view.setAspectLocked(False)
+        i=0
+        pen=pg.mkPen(color=self.calRingColorButton.color(),width=int(self.calRingWidthLineEdit.text()))
+        line={}
+        while self.cal_qvals[i]<xmax:
+            line[i]=pg.InfiniteLine(pos=self.cal_qvals[i],angle=90,movable=False,pen=pen)
+            self.cakedImageWidget.imageView.getView().addItem(line[i])
+            i+=1
+        self.mainDock.moveDock(self.cakedImageDock,'above',self.rawImageDock)
         
         
     def pick_points(self):
@@ -849,7 +850,7 @@ class CalibrationWidget(QWidget):
         self.wavelength=wavelength
         self.geo.set_wavelength(self.wavelength*1e-10)
         self.wavelengthLineEdit.setText(self.floatFmt%self.wavelength)
-        self.energy=6.625e-34*3e8/self.wavelength/1e-10/1.602e-19/1e3
+        self.energy=6.62607004e-34*2.99792458e8/self.wavelength/1e-10/1.60217662e-19/1e3
         self.energyLineEdit.setText(self.floatFmt%self.energy)
         self.pixel2QMap()
         self.show_cal_ring(0)
@@ -863,12 +864,12 @@ class CalibrationWidget(QWidget):
             energy=float(self.energyLineEdit.text())
         except:
             QMessageBox.warning(self,'Value error','Please input decimal numbers only',QMessageBox.Ok)
-            energy=6.625e-34*3e8/self.wavelength/1e-10/1.602e-19/1e3
+            energy=6.62607004e-34*2.99792458e8/self.wavelength/1e-10/1.60217662e-19/1e3
             self.energyLineEdit.setText(self.floatFmt%energy)            
             return
         self.energy=energy
         self.energyLineEdit.setText(self.floatFmt%self.energy)
-        self.wavelength=6.625e-34*3e8/self.energy/1e-10/1.602e-19/1e3
+        self.wavelength=6.62607004e-34*2.99792458e8/self.energy/1e-10/1.60217662e-19/1e3
         self.geo.set_wavelength(self.wavelength*1e-10)
         self.wavelengthLineEdit.setText(self.floatFmt%self.wavelength)
         self.pixel2QMap()

@@ -5,6 +5,7 @@ import fabio as fb
 import numpy as np
 import sys
 import copy
+from ImageCutWidget import ImageCutWidget
 
 class Image_Widget(QWidget):
     def __init__(self,img,min=None,max=None,xmin=None,xmax=None,ymin=None,ymax=None,logScale=False,transpose=False,parent=None):
@@ -93,7 +94,13 @@ class Image_Widget(QWidget):
         self.imageLayout.addWidget(self.maxLineEdit,row=0,col=4)
         self.imageLayout.addWidget(self.applyDefaultCMapPushButton,row=0,col=5)
         
-        self.imageView=pg.ImageView(view=pg.PlotItem(labels={'left':('Vertical scale'),'bottom':('Horizontal scale')}))
+        self.ylabel='Vertical'
+        self.xlabel='Horizontal'
+        self.unit=['pixels','pixels']
+        self.imageView=pg.ImageView(view=pg.PlotItem(labels={'left':(self.ylabel,self.unit[1]),'bottom':(self.xlabel,self.unit[0])}))
+        #self.imageView.ui.roiBtn.deleteLater()
+        #self.imageView.ui.menuBtn.deleteLater()
+        #self.imageView.view.removeItem(self.normRoi)
         self.create_default_colorMap(self.image_min,self.image_max)
         self.color_map=self.default_color_map
         self.imageLogLinear()
@@ -105,9 +112,21 @@ class Image_Widget(QWidget):
         self.imageCrossHair=QLabel()
         self.imageCrossHair.setAlignment(Qt.AlignRight|Qt.AlignVCenter)
         self.imageLayout.addWidget(self.imageCrossHair,row=2,col=3)
+        self.imageCutButton=QPushButton('Image Cuts')
+        self.imageCutButton.clicked.connect(self.openImageCutWidget)
+        self.imageLayout.addWidget(self.imageCutButton,row=2,col=5)
         self.imageHistogram=self.imageView.getHistogramWidget()
         self.imageHistogram.sigLevelsChanged.connect(self.scaleMoved)
         self.imageView.getView().vb.scene().sigMouseMoved.connect(self.image_mouseMoved)
+        
+    def openImageCutWidget(self):
+        self.imageCutWidget=ImageCutWidget()
+        self.imageCutWidget.addCakedImage(self.imageData,self.imageData*0.01,hor_val=np.linspace(self.xmin,self.xmax,self.imageData.shape[0]),ver_val=np.linspace(self.ymin,self.ymax,self.imageData.shape[1]),unit=self.unit)
+        self.imageCutWidget.set_image_labels(xlabel=self.xlabel,ylabel=self.ylabel,title='')
+        self.imageCutWidget.set_horCut_labels(xlabel=self.xlabel)
+        self.imageCutWidget.set_verCut_labels(xlabel=self.ylabel)
+        self.imageCutWidget.setWindowTitle('Cut Widget')
+        self.imageCutWidget.showMaximized()
         
         
     def scaleMoved(self):
@@ -157,7 +176,7 @@ class Image_Widget(QWidget):
             self.minLineEdit.setText(str(self.image_min))
             self.maxLineEdit.setText(str(self.image_max))
                 
-    def setImage(self,img,min=None,max=None,xmin=None,xmax=None,ymin=None,ymax=None,transpose=False):
+    def setImage(self,img,min=None,max=None,xmin=None,xmax=None,ymin=None,ymax=None,transpose=False,xlabel='Horizontal',ylabel='Vertical',unit=['pixels','pixels']):
 
         if transpose:
             self.imageData=img.T
@@ -180,7 +199,10 @@ class Image_Widget(QWidget):
         else:
             self.ymax=ymax
         if self.logScaleCheckBox.isChecked():
-            self.logScale=True        
+            self.logScale=True
+        self.xlabel=xlabel
+        self.ylabel=ylabel
+        self.unit=unit
         self.imageLogLinear()
         if self.autoMinMaxCheckBox.isChecked():
             self.autoScale()
@@ -237,10 +259,16 @@ class Image_Widget(QWidget):
         """
         pointer=self.imageView.getView().vb.mapSceneToView(pos)
         x,y=pointer.x(),pointer.y()
+        #if int(self.xmax-self.xmin)<self.imageData.shape[1] or int(self.ymax-self.ymin)<self.imageData.shape[0]:
         if (x>self.xmin) and (x<self.xmax) and (y>self.ymin) and (y<self.ymax):
-            self.imageCrossHair.setText('X=%04d, Y=%04d, I=%.5e'%(x,y,self.imageData[int((x-self.xmin)*self.hor_Npt/(self.xmax-self.xmin)),int((y-self.ymin)*self.ver_Npt/(self.ymax-self.ymin))]))
+            self.imageCrossHair.setText('X=%0.4f, Y=%0.4f, I=%.5e'%(x,y,self.imageData[int((x-self.xmin)*self.hor_Npt/(self.xmax-self.xmin)),int((y-self.ymin)*self.ver_Npt/(self.ymax-self.ymin))]))
         else:
-            self.imageCrossHair.setText('X=%04d, Y=%04d, I=%.5e'%(x,y,0))
+            self.imageCrossHair.setText('X=%0.4f, Y=%0.4f, I=%.5e'%(x,y,0)) 
+#        else:
+#            if (x>self.xmin) and (x<self.xmax) and (y>self.ymin) and (y<self.ymax):
+#                self.imageCrossHair.setText('X=%04d, Y=%04d, I=%.5e'%(x,y,self.imageData[int((x-self.xmin)*self.hor_Npt/(self.xmax-self.xmin)),int((y-self.ymin)*self.ver_Npt/(self.ymax-self.ymin))]))
+#            else:
+#                self.imageCrossHair.setText('X=%04d, Y=%04d, I=%.5e'%(x,y,0))
             
         
     def imageLogLinear(self):
@@ -254,14 +282,15 @@ class Image_Widget(QWidget):
                 self.image_min=0.1*np.mean(np.abs(self.imageData))
                 self.minLineEdit.setText(str(self.image_min))
             tmpData=np.where(self.imageData<=0,1,self.imageData)
-            self.imageView.setImage(np.log10(tmpData),levels=(np.log10(self.image_min),np.log10(self.image_max)),pos=pos,scale=scale)
+            self.imageView.setImage(np.log10(tmpData),levels=(np.log10(self.image_min),np.log10(self.image_max)),pos=pos,scale=scale,autoRange=True)
         else:
-            self.imageView.setImage(self.imageData,levels=(self.image_min,self.image_max),pos=pos,scale=scale)
+            self.imageView.setImage(self.imageData,levels=(self.image_min,self.image_max),pos=pos,scale=scale,autoRange=True)
         #self.get_color_map()
         self.update_color_map()
+        self.imageView.ui.histogram.autoHistogramRange()
+        self.imageView.getView().setLabels(bottom=(self.xlabel,self.unit[0]),left=(self.ylabel,self.unit[1]))
         #self.imageView.view.setRange(xRange=(self.xmin,self.xmax),yRange=(self.ymin,self.ymax))
         #pg.QtGui.QApplication.processEvents() 
-        
         
 if __name__=='__main__':
     # create application

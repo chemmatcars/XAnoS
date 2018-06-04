@@ -192,6 +192,8 @@ class Fit_Widget(QWidget):
         
         
         self.data={}
+        self.dlg_data={}
+        self.plotColIndex={}
         self.curDir=os.getcwd()
         self.fileNumber=0
         self.fileNames={}
@@ -391,6 +393,7 @@ class Fit_Widget(QWidget):
         self.dataListWidget=QListWidget()
         self.dataListWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
+        self.dataListWidget.itemDoubleClicked.connect(self.openDataDialog)
         self.dataLayoutWidget.addWidget(self.dataListWidget,colspan=2)
         
         self.dataLayoutWidget.nextRow()
@@ -417,7 +420,7 @@ class Fit_Widget(QWidget):
         self.dataLayoutWidget.nextRow()
         fitIterationLabel=QLabel('Fit Iterations')
         self.dataLayoutWidget.addWidget(fitIterationLabel)
-        self.fitIterationLineEdit=QLineEdit('1')
+        self.fitIterationLineEdit=QLineEdit('1000')
         self.dataLayoutWidget.addWidget(self.fitIterationLineEdit,col=1)
         
         self.dataLayoutWidget.nextRow()
@@ -445,11 +448,24 @@ class Fit_Widget(QWidget):
         self.sfnames=[item.text().split('<>')[1] for item in self.dataListWidget.selectedItems()]
         self.pfnames=[item.text().split('<>')[0] for item in self.dataListWidget.selectedItems()]
         if len(self.sfnames)>0:
-            self.xminmaxLineEdit.setText('%0.3f:%0.3f'%(np.min(self.data[self.sfnames[-1]]['x']),np.max(self.data[self.sfnames[-1]]['x'])))
+            xmin=np.min([np.min(self.data[fname]['x']) for fname in self.sfnames])
+            xmax=np.max([np.max(self.data[fname]['x']) for fname in self.sfnames])
+            self.xminmaxLineEdit.setText('%0.3f:%0.3f'%(xmin,xmax))
             self.xminmaxChanged()
-            text='np.linspace(%.3f,%.3f,100)'%(np.min(self.data[self.sfnames[-1]]['x']),np.max(self.data[self.sfnames[-1]]['x']))
+            text='np.linspace(%.3f,%.3f,100)'%(xmin,xmax)
             self.xLineEdit.setText(text)
             self.xChanged()
+            
+    def openDataDialog(self,item):
+        fnum,fname=item.text().split('<>')
+        data_dlg=Data_Dialog(data=self.dlg_data[fname],parent=self,plotIndex=self.plotColIndex[fname])
+        if data_dlg.exec_():
+            self.plotColIndex[fname]=data_dlg.plotColIndex
+            self.dlg_data[fname]=copy.copy(data_dlg.data)
+            self.data[fname]=copy.copy(data_dlg.externalData)
+            self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fnum)
+            self.update_plot()
+            
     
     def xminmaxChanged(self):
         self.xmin=float(self.xminmaxLineEdit.text().split(':')[0])
@@ -478,7 +494,6 @@ class Fit_Widget(QWidget):
 #            if self.autoCICheckBox.isChecked():
 #                self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
             self.closeFitInfoDlg()
-            print(self.fit.result.params)
             for row in range(self.sfitParamTableWidget.rowCount()):
                 key=self.sfitParamTableWidget.item(row,0).text()
                 self.sfitParamTableWidget.item(row,1).setText('%.6e'%(self.fit.result.params[key].value))
@@ -597,9 +612,9 @@ class Fit_Widget(QWidget):
         self.fitInfoDlg.done(0)
         
     def fitCallback(self,params,iterations,residual,fit_scale):
-        self.fitIterLabel.setText('Iteration=%d,\t Chi-sqr=%.5f'%(iterations,np.sum(residual**2)))
+        self.fitIterLabel.setText('Iteration=%d,\t Chi-sqr=%.5e'%(iterations,np.sum(residual**2)))
         #self.fit.evaluate()
-        self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text())
+        self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text(),fit=True)
         QApplication.processEvents()
         pg.QtGui.QApplication.processEvents()
         
@@ -626,21 +641,26 @@ class Fit_Widget(QWidget):
         if self.dataListWidget.count()==0:
             self.fileNumber=0
         self.dataListWidget.itemSelectionChanged.disconnect(self.dataFileSelectionChanged)
-        try:
-            if fnames is None:
-                fnames,_=QFileDialog.getOpenFileNames(self,caption='Open data files',directory=self.curDir,filter='Data files (*.txt *.dat *.chi *.rrf)')
+        #try:
+        if fnames is None:
+            fnames,_=QFileDialog.getOpenFileNames(self,caption='Open data files',directory=self.curDir,filter='Data files (*.txt *.dat *.chi *.rrf)')
+        if len(fnames)!=0:
             self.curDir=os.path.dirname(fnames[0])
             for fname in fnames:
                 if fname not in self.data.keys():
-                    self.data=read1DSAXS(fname,data=self.data)
-                    self.plotWidget.add_data(x=self.data[fname]['x'],y=self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=str(self.fileNumber))
+                    data_dlg=Data_Dialog(fname=fname,parent=self)
+                    data_dlg.accept()
+                    self.dlg_data[fname]=data_dlg.data
+                    self.plotColIndex[fname]=data_dlg.plotColIndex
+                    self.data[fname]=data_dlg.externalData
+                    self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name='%d'%self.fileNumber)
                     self.dataListWidget.addItem(str(self.fileNumber)+'<>'+fname)
                     self.fileNames[self.fileNumber]=fname
                     self.fileNumber+=1
                 else:
                     QMessageBox.warning(self,'Import Error','Data file has been imported before. Please remove the data file before importing again')
-        except:
-            QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
+            #except:
+            #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
                 
                 
@@ -650,9 +670,13 @@ class Fit_Widget(QWidget):
         """
         self.dataListWidget.itemSelectionChanged.disconnect(self.dataFileSelectionChanged)
         for item in self.dataListWidget.selectedItems():
-            fname=item.text().split('<>')[1]
+            fnum,fname=item.text().split('<>')
             self.dataListWidget.takeItem(self.dataListWidget.row(item))
+            self.plotWidget.remove_data([fnum])
             del self.data[fname]
+            del self.plotColIndex[fname]
+            del self.dlg_data[fname]
+            
         self.dataFileSelectionChanged()
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
             
@@ -927,14 +951,21 @@ class Fit_Widget(QWidget):
                 mfline=None
                 for line in lines[3:]:
                     if line=='#Fixed Parameters:\n':
-                        fline=lnum+2
-                        
+                        fline=lnum+2                        
                     elif line=='#Single fitting parameters:\n':
                         sfline=lnum+2
                     elif line=='#Multiple fitting parameters:\n':
                         mfline=lnum+2
                     lnum+=1
-                for line in lines[fline:sfline-2]:
+                if sfline is None:
+                    sendnum=lnum
+                else:
+                    sendnum=sfline-2
+                if mfline is None:
+                    mendnum=lnum
+                else:
+                    mendnum=mfline-2
+                for line in lines[fline:sendnum]:
                     key,val=line.strip().split('\t')
                     try:
                         val=eval(val.strip())
@@ -942,7 +973,7 @@ class Fit_Widget(QWidget):
                         val=val.strip()
                     self.fit.params[key]=val
                 if sfline is not None:
-                    for line in lines[sfline:mfline-2]:
+                    for line in lines[sfline:mendnum]:
                         parname,parval,parfit,parmin,parmax,parexpr,parbrute=line.strip().split('\t')
                         self.fit.params[parname]=float(parval)
                         self.fit.fit_params[parname].value=float(parval)
@@ -1222,7 +1253,7 @@ class Fit_Widget(QWidget):
         
             
     def xChanged(self):
-        try:
+        #try:
             x=eval(self.xLineEdit.text())
             try:
                 self.fit.params['x']=x
@@ -1233,9 +1264,9 @@ class Fit_Widget(QWidget):
                 pass
             self.fchanged=False
             self.update_plot()
-        except:
-            QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
-            self.xLineEdit.setText('np.linspace(0.001,0.1,100)')
+        #except:
+        #    QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
+        #    self.xLineEdit.setText('np.linspace(0.001,0.1,100)')
             
         
     def update_plot(self):

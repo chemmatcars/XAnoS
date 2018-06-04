@@ -7,6 +7,8 @@ from scipy.interpolate import interp1d
 import sys
 import shutil
 from calc_cf import calc_cf
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QTextCursor
 
 
 def read1DSAXS(fname,data={},key=None,data_sort=True):
@@ -240,7 +242,7 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
     for num in sam_nums:
         np.savetxt(os.path.join(meandir,'sam%04d_mean.txt'%num),np.vstack((sam_mean[num]['x'],sam_mean[num]['y'],sam_mean[num]['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
         
-def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_times=1,sol_name=None,sol_times=1,mt_name=None,mt_times=1,xmin=0.0,xmax=1.0,Npt=1000,interpolation_type='linear',sample_thickness=0.148,bkg_fac=1.0,data={}):
+def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_times=1,sol_name=None,sol_times=1,mt_name=None,mt_times=1,standard='GC', xmin=0.0,xmax=1.0,Npt=1000,interpolation_type='linear',sample_thickness=1.0,sol_thickness=1.0, mt_thickness=1e-4, gc_thickness=0.1055, bkg_fac=1.0,data={},textEdit=None):
     """
     Reduce a set of SAXS data (with data, backgrounds and standard samples kept in different folders) with background subtraction and normalizing the data for absolute 
     scale using Glassy carbon
@@ -255,17 +257,31 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
     sol_times         : Number of times the air data were measured
     mt_name           : Filename initials other than the numbers of empty capillary data
     mt_times          : Number of times the empty capillary data were measured
+    standard          : 'GC' or 'Water'
     xmin, xmax        : Minimum, Maximum Q-values for getting CF by comparing experimental Glassy Carbon data from standard NIST data
     Npt               : Number of  points in which the data will be interpolated
     interpolation_type: Choose between 'linear' (default), 'quadratic' and 'cubic'
-    sample_thickness  : Thickness of the samples in cm.'
+    sample_thickness  : Thickness of the samples in cm.
+    sol_thickness     : Thickness of the solvent in cm.
+    gc_thickness      : Thickness of the standard sample in cm.
+    mt_thickness      : Thickness of the container (1e-4 cm for empty capillary)
     bkg_fac           : Background multiplication factor just to scale the background if needed. Default value is 1.0 for automatic scaling. 0.0 or no background subtraction
+    textEdit          : If working with a GUI, provide the textEdit object where the print output will be appended from this routine
     """
     if fname is None: 
+        if textEdit is not None:
+            textEdit.append('File error:: Please provide a filename')
+            return None
         return 'File error:: Please provide a filename'
     if gc_name is None:
+        if textEdit is not None:
+            textEdit.append('File error:: Please provide glassy carbon filename')
+            return None
         return 'File error:: Please provide glassy carbon filename'
     if sol_name is None:
+        if textEdit is not None:
+            textEdit.append('File error:: Please provide solvent/bacground filename')
+            return None
         return 'File error:: Please provide solvent/bacground filename'
     #if air_name is None:
     #    return 'Please provide Air filename'
@@ -278,11 +294,13 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
     while file_exists:
         try:
             fnum=range((num-1)*ftimes+1,num*ftimes+1)
-            data,ofname=average1DSAXS(fname,num=fnum,ofname=fname+'_%04d_proc.txt'%((num-1)*ftimes+1),data=data)
+            data,ofname=average1DSAXS(fname,num=fnum,ofname=fname+'_%04d_avg.txt'%((num-1)*ftimes+1),data=data,textEdit=textEdit)
             ofnames.append(ofname)
         except:
             del data[fname+'_%04d.txt'%((num-1)*ftimes+1)]
             print(fname+'_%04d.txt'%((num-1)*ftimes+1)+ ' doesnot exist')
+            if textEdit is not None:
+                textEdit.append(fname+'_%04d.txt'%((num-1)*ftimes+1)+ ' doesnot exist')
             file_exists=False
         num+=1
     file_exists=True        
@@ -291,16 +309,21 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
     while file_exists:
         try:
             fnum=range((num-1)*gc_times+1,num*gc_times+1)
-            data,ofname=average1DSAXS(gc_name,num=fnum,ofname=gc_name+'_%04d_proc.txt'%((num-1)*gc_times+1),data=data)
+            data,ofname=average1DSAXS(gc_name,num=fnum,ofname=gc_name+'_%04d_avg.txt'%((num-1)*gc_times+1),data=data,textEdit=textEdit)
             ogcnames.append(ofname)
         except:
             del data[gc_name+'_%04d.txt'%((num-1)*gc_times+1)]
             print(gc_name+'_%04d.txt'%((num-1)*gc_times+1)+' doesnot exist')
+            if textEdit is not None:
+                textEdit.append(gc_name+'_%04d.txt'%((num-1)*gc_times+1)+' doesnot exist')
             file_exists=False
         num+=1
 
     if len(ofnames)!=len(ogcnames):
         print("File number error: Number of data files not same as number of glassy carbon files")
+        if textEdit is not None:
+            textEdit.append("File number error: Number of data files not same as number of glassy carbon files")
+            return None
         return 
     
     file_exists=True        
@@ -310,16 +333,21 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
     while file_exists:
         try:
             fnum=range((num-1)*sol_times+1,num*sol_times+1)
-            data,ofname=average1DSAXS(sol_name,num=fnum,ofname=sol_name+'_%04d_proc.txt'%((num-1)*sol_times+1),data=data)
+            data,ofname=average1DSAXS(sol_name,num=fnum,ofname=sol_name+'_%04d_avg.txt'%((num-1)*sol_times+1),data=data,textEdit=textEdit)
             osolnames.append(ofname)
         except:
             del data[sol_name+'_%04d.txt'%((num-1)*sol_times+1)]
             print(sol_name+'_%04d.txt'%((num-1)*sol_times+1)+' doesnot exist')
+            if textEdit is not None:
+                textEdit.append(sol_name+'_%04d.txt'%((num-1)*sol_times+1)+' doesnot exist')
             file_exists=False
         num+=1
         
     if len(ofnames)!=len(osolnames):
         print("File number error: Number of data files not same as number of solvent/background files")
+        if textEdit is not None:
+            textEdit.append("File number error: Number of data files not same as number of solvent/background files")
+            return None
         return 
            
     if air_name is not None:
@@ -329,15 +357,20 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
         while file_exists:
             try:
                 fnum=range((num-1)*air_times+1,num*air_times+1)
-                data,ofname=average1DSAXS(air_name,num=fnum,ofname=air_name+'_%04d_proc.txt'%((num-1)*air_times+1),data=data)
+                data,ofname=average1DSAXS(air_name,num=fnum,ofname=air_name+'_%04d_avg.txt'%((num-1)*air_times+1),data=data,textEdit=textEdit)
                 oairnames.append(ofname)
             except:
                 del data[air_name+'_%04d.txt'%((num-1)*air_times+1)]
                 print(air_name+'_%04d.txt'%((num-1)*air_times+1)+' doesnot exist')
+                if textEdit is not None:
+                    textEdit.append(air_name+'_%04d.txt'%((num-1)*air_times+1)+' doesnot exist')
                 file_exists=False
             num+=1
         if len(ofnames)!=len(oairnames):
             print("File number error: Number of data files not same as number of air background files")
+            if textEdit is not None:
+                textEdit.append("File number error: Number of data files not same as number of air background files")
+                return None
             return 
     if mt_name is not None:
         file_exists=True        
@@ -346,25 +379,36 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
         while file_exists:
             try:
                 fnum=range((num-1)*mt_times+1,num*mt_times+1)
-                data,ofname=average1DSAXS(mt_name,num=fnum,ofname=mt_name+'_%04d_proc.txt'%((num-1)*mt_times+1),data=data)
+                data,ofname=average1DSAXS(mt_name,num=fnum,ofname=mt_name+'_%04d_avg.txt'%((num-1)*mt_times+1),data=data,textEdit=textEdit)
                 omtnames.append(ofname)
             except:
                 del data[mt_name+'_%04d.txt'%((num-1)*mt_times+1)]
                 print(mt_name+'_%04d.txt'%((num-1)*mt_times+1)+' doesnot exist')
+                if textEdit is not None:
+                    textEdit.append(mt_name+'_%04d.txt'%((num-1)*mt_times+1)+' doesnot exist')
                 file_exists=False
             num+=1
         if len(ofnames)!=len(ogcnames):
             print("File number error: Number of data files not same as number of empty capillary files")
+            if textEdit is not None:
+                textEdit.append("File number error: Number of data files not same as number of empty capillary files")
+                return None
             return 
 
     print("First stage completed: All files read successfully...")    
+    if textEdit is not None:
+        textEdit.append("First stage completed: All files read successfully...")
     #performing interpolation of all the data sets
     data=interpolate_data(data,Npt=Npt,kind=interpolation_type)
-    print("2nd stage completed: All data interpolated...")    
+    print("2nd stage completed: All data interpolated...")
+    if textEdit is not None:
+        textEdit.append("2nd stage completed: All data interpolated...")
     
     #Performing background subtractions of the averaged data
     for num in range(len(ofnames)):
         print("Performing backgroud subtraction and normalization: %d, and %d more to do..."%(num,len(ofnames)-num))
+        if textEdit is not None:
+            textEdit.append("Performing backgroud subtraction and normalization: %d, and %d more to do..."%(num,len(ofnames)-num))
         data[ogcnames[num]]['x']=copy.copy(data[ogcnames[num]]['xintp'])
         if air_name is not None:
             data[ogcnames[num]]['y']=data[ogcnames[num]]['yintp']-data[oairnames[num]]['yintp']
@@ -373,13 +417,16 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
             data[ogcnames[num]]['y']=data[ogcnames[num]]['yintp']
             data[ogcnames[num]]['yerr']=data[ogcnames[num]]['yintperr']
         
-        en,cf,x,y,z=calc_cf(ogcnames[num],xmin=xmin,xmax=xmax)
-        data[ogcnames[num]]['CF']=cf     
+        en,cf,x,y=calc_cf(ogcnames[num],standard=standard,xmin=xmin,xmax=xmax,thickness=gc_thickness,interpolation_type=interpolation_type)
+        data[ogcnames[num]]['CF']=cf    
+        data[ogcnames[num]]['Thickness']=gc_thickness
         
         data[ofnames[num]]['x']=copy.copy(data[ofnames[num]]['xintp'])
         data[ofnames[num]]['y']=(data[ofnames[num]]['yintp']-data[osolnames[num]]['yintp'])
         data[ofnames[num]]['yerr']=np.sqrt(data[ofnames[num]]['yintperr']**2+data[osolnames[num]]['yintperr']**2)
         data[ofnames[num]]['CF']=cf
+        data[ofnames[num]]['Thickness']=sample_thickness
+        
         
         
         data[osolnames[num]]['x']=copy.copy(data[osolnames[num]]['xintp'])
@@ -390,6 +437,7 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
             data[osolnames[num]]['y']=data[osolnames[num]]['yintp']
             data[osolnames[num]]['yerr']=data[osolnames[num]]['yintperr']
         data[osolnames[num]]['CF']=cf
+        data[osolnames[num]]['Thickness']=sol_thickness
              
         
         if mt_name is not None and air_name is not None:
@@ -397,13 +445,18 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
             data[omtnames[num]]['y']=data[omtnames[num]]['yintp']-data[oairnames[num]]['yintp']
             data[omtnames[num]]['yerr']=np.sqrt(data[omtnames[num]]['yintperr']**2+data[oairnames[num]]['yintperr']**2)
             data[omtnames[num]]['CF']=cf
-    print('Saving all the data now,,,')    
-    write1DSAXS(data)
+            data[omtnames[num]]['Thickness']=mt_thickness
+    print('Saving all the data now...')
+    if textEdit is not None:
+        textEdit.append('Saving all the data now...')    
+    write1DSAXS(data,textEdit=textEdit)
     print('Data processing completed successfully.')
+    if textEdit is not None:
+        textEdit.append('Data processing completed successfully.')
     return data
         
 
-def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={}):
+def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=None):
     """
     Averages over the 1D-SAXS patterns recorded in files with the names in the format like 'fname_0001.txt' where the last four numbers of the filename with path will be given as a list of numbers in 'num'.
     delete_prev=True will delete the directory containing output files if it exists
@@ -468,10 +521,14 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={}):
         for fnam in fnames:
             header=header+fnam+'\n'
         for key in data[ofname].keys():
-            if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr':
+            if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='yraw':
                 header=header+key+'='+str(data[ofname][key])+'\n'
+        header=header+'col_name=["Q (A^-1)", "Int", "Int_err"]\n'
+        header=header+'Q (A^-1)\tInt\tInt_err\n'
         np.savetxt(ofname,finaldata,header=header,comments='#')
         print('Averaged data saved in a file named %s'%ofname)
+        if textEdit is not None:
+            textEdit.append('Averaged data saved in a file named %s'%ofname)
         return data,ofname
     
 def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg_sub',norm=1.0):
@@ -498,8 +555,10 @@ def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg
     header=header+'Signal file: '+sname+'\n'
     header=header+'Bkg file: '+bname+'\n'
     for key in data[ofname].keys():
-        if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr':
+        if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='yraw':
             header=header+key+'='+str(data[ofname][key])+'\n'
+    header=header+'col_name=["Q (A^-1)", "Int", "Int_err"]\n'
+    header=header+'Q (A^-1)\tInt\tInt_err\n'
     np.savetxt(ofname,finaldata,header=header,comments='#')
     print('Subtracted filname data save in a file named %s'%ofname)
     return ofname
@@ -533,7 +592,7 @@ def interpolate_data(data,Npt=1000,kind='linear'):
         data[fname]['yintperr']=funerr(qintp)        
     return data
         
-def write1DSAXS(data):
+def write1DSAXS(data,textEdit=None):
     """
     Writes the data dictionary in the filename provided with full path by 'fname'
     """
@@ -546,10 +605,16 @@ def write1DSAXS(data):
         header='Processed data on %s\n'%time.asctime()
         #header='Original file=%s\n'%fname
         for key in data[fname].keys():
-            if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='y-flb':
+            if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='y-flb' and key!='yraw':
                 header=header+'%s=%s\n'%(key,data[fname][key])
-        header=header+'Q (A^-1)\tIntensity\tIntensity_error\n'
+        header=header+'col_name=["Q (A^-1)", "Int", "Int_err"]\n'
+        header=header+'Q (A^-1)\tInt\tInt_err\n'
         np.savetxt(pfname,np.vstack((data[fname]['x'],data[fname]['y'],data[fname]['yerr'])).T,comments='#',header=header)
+        print('Data saved in %s...'%pfname)
+        if textEdit is not None:
+            textEdit.append('Data saved in %s...'%pfname)
+            textEdit.moveCursor(QTextCursor.End)
+            QApplication.processEvents()
     return fdir
             
         

@@ -34,10 +34,14 @@ class Gaussian:
         self.params.add('wid',value=self.wid,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        
+    def update_params(self):
+        self.params['pos'].value=self.pos
+        self.params['wid'].value=self.wid
+        self.params['norm'].value=self.norm
+        self.params['bkg'].value=self.bkg
 
 
     def y(self):
-        pos=self.params['pos'].value
-        wid=self.params['wid'].value
-        norm=self.params['norm'].value
-        return self.gau(self.x,pos,wid,norm)+self.bkg
+        self.update_params()
+        return self.gau(self.x,self.pos,self.wid,self.norm)+self.bkg

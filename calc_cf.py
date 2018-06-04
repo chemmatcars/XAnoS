@@ -9,18 +9,19 @@ from scipy.interpolate import interp1d
 import pylab
 from lmfit import minimize, Parameters
 
-def fun(params,x,ycal,exp_dat,thickness):
+def fun(params,x,ycal,yexp,thickness):
     cf=params['cf'].value
-    qoff=params['qoff'].value
-    expdf=interp1d(exp_dat[:,0]-qoff,exp_dat[:,1]/thickness,kind='cubic')
-    return ycal(x)-cf*expdf(x-qoff)
+    return ycal(x)-cf*yexp(x)/thickness
 
-def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None):
+def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None,interpolation_type='linear'):
     """
     Calculates the calibration factor by using different chosen standards like
-    GC: Glassy Carbon with thickness 0.1055 cm from NIST
-    Water: Water with the the known thickness as the samples
-    thickness: Thickness of Standard sample in cm. It should be 0.1055 for NIST GC standard.
+    fname              : filename containing the experimental data done on standard sample
+    standard           : 'GC' or 'Water' for (Glassy Carbon with thickness 0.1055cm from NIST) or (Water with the the known thickness as the samples)
+    thickness          : Thickness of Standard sample in cm. It should be 0.1055 for NIST GC standard.
+    interpolation_type : 'linear','quadratic'or 'cubic'
+    plot : True or False for plotting or not plotting to view the goodness of fit
+    xmin,xmax : minimum and maximum Q-value between which the experimental data will be fitted with the standard data available
     """
     if os.path.exists(fname):
         if standard=='GC':
@@ -58,19 +59,18 @@ def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None):
         xmin=np.max([std_dat[istdmin,0],exp_dat[expdmin,0]])
         xmax=np.min([std_dat[istdmax,0],exp_dat[expdmax,0]])
         x=np.linspace(1.05*xmin,0.95*xmax,100)
-        istdf=interp1d(std_dat[:,0],std_dat[:,1],kind='cubic')
-        #expdf=interp1d(exp_dat[:,0],exp_dat[:,1]/.1055,kind='cubic')
+        istdf=interp1d(std_dat[:,0],std_dat[:,1],kind=interpolation_type)
+        expdf=interp1d(exp_dat[:,0],exp_dat[:,1],kind=interpolation_type)
         param=Parameters()
         param.add('cf',value=1.0,vary=True)
-        param.add('qoff',value=0.000,vary=False)
-        res=minimize(fun,param,args=(x,istdf,exp_dat,thickness))
-        cf,qoff=res.params['cf'].value,res.params['qoff'].value
+        res=minimize(fun,param,args=(x,istdf,expdf,thickness))
+        cf=res.params['cf'].value
         #print(cf,qoff)
         
         #cf=np.mean(istdf(x)/expdf(x))
         if plot:
             pylab.loglog(std_dat[:,0],std_dat[:,1],'r-',lw=3,label='NIST std')
-            pylab.loglog(x,+istdf(x)-res.residual,'g-',lw=3,label='15IDD data')
+            pylab.loglog(x,istdf(x)-res.residual,'g-',lw=3,label='15IDD data')
             pylab.xlabel(u'Q, \u212B$^{-1}$',fontsize=fs)
             pylab.ylabel(u'I, cm$^{-1}$',fontsize=fs)
             pylab.legend(loc='best',prop={'size':fs*0.6})
@@ -78,7 +78,7 @@ def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None):
             pylab.yticks(fontsize=fs)
             pylab.tight_layout()
             pylab.show()
-        return energy,cf,qoff,x,istdf(x)
+        return energy,cf,x,istdf(x)
     else:
         print('%s doesnot exist!'%fname)
 
@@ -93,6 +93,6 @@ if __name__=="__main__":
         plot=False
         xmin=None
         xmax=None
-    energy,cf,qoff,x,istdf=calc_cf(fname,plot=True,xmin=xmin,xmax=xmax)
-    print('Energy(keV)\tCf\tqOf')
-    print('%.4f\t%.4f\t%.5f'%(energy,cf,qoff))
+    energy,cf,x,istdf=calc_cf(fname,plot=plot,xmin=xmin,xmax=xmax,interpolation_type='linear')
+    print('Energy(keV)\tCf')
+    print('%.4f\t%.4f'%(energy,cf))

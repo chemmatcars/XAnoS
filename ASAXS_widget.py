@@ -40,7 +40,6 @@ class ASAXS_Widget(QWidget):
         self.minEnergy=1000000.0
         self.metaKeys=[]
         self.CF=1.0
-        self.qOff=0.0
         
         self.vblayout=QVBoxLayout(self)
         self.mainDock=DockArea(self,parent)
@@ -50,13 +49,16 @@ class ASAXS_Widget(QWidget):
         self.dataPlotDock=Dock('Data Plot',size=(6,8))
         self.metaDataPlotDock=Dock('Metadata Plot',size=(6,8))
         self.edgePlotDock=Dock('Edge Plot',size=(6,8))
+        self.ASAXSCheckPlotDock=Dock('ASAXS Check Plot',size=(6,8))
         self.ASAXSPlotDock=Dock('ASAXS components',size=(6,8))
         self.mainDock.addDock(self.dataDock)
         self.mainDock.addDock(self.dataPlotDock,'right')
         self.mainDock.addDock(self.metaDataPlotDock,'right')
         self.mainDock.addDock(self.edgePlotDock,'right')
+        self.mainDock.addDock(self.ASAXSCheckPlotDock,'right')
         self.mainDock.addDock(self.ASAXSPlotDock,'right')
-        self.mainDock.moveDock(self.edgePlotDock,'above',self.ASAXSPlotDock)
+        self.mainDock.moveDock(self.ASAXSCheckPlotDock,'above',self.ASAXSPlotDock)
+        self.mainDock.moveDock(self.edgePlotDock,'above',self.ASAXSCheckPlotDock)
         self.mainDock.moveDock(self.metaDataPlotDock,'above',self.edgePlotDock)
         self.mainDock.moveDock(self.dataPlotDock,'above',self.metaDataPlotDock)
         
@@ -64,6 +66,7 @@ class ASAXS_Widget(QWidget):
         self.create_dataPlotDock()
         self.create_metaDataPlotDock()
         self.create_edgePlotDock()
+        self.create_ASAXSCheckPlotDock()
         self.create_ASAXSPlotDock()
         
         self.edgeEnergy=float(self.elementEdgeComboBox.currentText().split(':')[1].lstrip())
@@ -314,8 +317,8 @@ class ASAXS_Widget(QWidget):
             xmax=float(xmax)
             standard=str(self.standardComboBox.currentText())
             thickness=float(self.thicknessLineEdit.text())
-            energy,self.CF,self.qOff,x,y=calc_cf(fname,standard=standard,thickness=thickness,xmin=xmin,xmax=xmax)
-            self.CFLineEdit.setText('%.5f,%.5f'%(self.CF,self.qOff))
+            energy,self.CF,x,y=calc_cf(fname,standard=standard,thickness=thickness,xmin=xmin,xmax=xmax)
+            self.CFLineEdit.setText('%.5f'%(self.CF))
             self.dataPlotWidget.add_data(x,y,yerr=None,name='std-data')
             self.apply_calc_factor()
             self.dataPlotWidget.Plot([self.dataListWidget.selectedItems()[0].text().split(': ')[0],'std-data'])
@@ -342,7 +345,6 @@ class ASAXS_Widget(QWidget):
             for item in self.dataListWidget.selectedItems():
                 fname=item.text().split(': ')[1]
                 self.data[fname]['CF']=self.CF
-                self.data[fname]['qOff']=self.qOff
             self.dataSelectionChanged()
             
         
@@ -458,9 +460,9 @@ class ASAXS_Widget(QWidget):
         for key in self.data[fname].keys():
             if key not in self.metaKeys:
                 self.metaKeys.append(key)
-        self.CFLineEdit.setText('%.3f,%.5f'%(self.data[fname]['CF'],self.data[fname]['qOff']))
+        self.CFLineEdit.setText('%.3f'%self.data[fname]['CF'])
         self.thicknessLineEdit.setText('%.5f'%self.data[fname]['Thickness'])
-        self.dataPlotWidget.add_data(self.data[fname]['x']+self.data[fname]['qOff'],self.data[fname]['CF']*self.data[fname]['y']/self.data[fname]['Thickness'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=num)
+        self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['y']/self.data[fname]['Thickness'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=num)
         
     def remove_data(self):
         """
@@ -527,7 +529,7 @@ class ASAXS_Widget(QWidget):
         normname=str(self.normAxisComboBox.currentText())
         for i in range(len(self.fnames)):
             fname=self.fnames[i]
-            self.CFLineEdit.setText('%.3f,%.5f'%(self.data[fname]['CF'],self.data[fname]['qOff']))
+            self.CFLineEdit.setText('%.3f'%self.data[fname]['CF'])
             self.thicknessLineEdit.setText('%.5f'%self.data[fname]['Thickness'])
             #Collecting meta data to plot
             if xname in self.data[fname].keys() and yname in self.data[fname].keys():
@@ -553,7 +555,7 @@ class ASAXS_Widget(QWidget):
                     return
             else:
                 self.data[fname]['xrf_bkg']=0.0
-            self.dataPlotWidget.add_data(self.data[fname]['x']+self.data[fname]['qOff'],self.data[fname]['CF']*(self.data[fname]['y']-self.data[fname]['xrf_bkg'])/self.data[fname]['Thickness'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
+            self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*(self.data[fname]['y']-self.data[fname]['xrf_bkg'])/self.data[fname]['Thickness'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
         self.metaData['x']=np.array(self.metaData['x'])
         self.metaData['y']=np.array(self.metaData['y'])
         self.metaData['norm']=np.array(self.metaData['norm'])
@@ -767,7 +769,7 @@ class ASAXS_Widget(QWidget):
         self.dataPlotWidget=PlotWidget(self)
         self.dataPlotWidget.setXLabel('Q')
         self.dataPlotWidget.setYLabel('Intensity')
-        self.dataPlotLayout.addWidget(self.dataPlotWidget,row=row,col=col,colspan=5)        
+        self.dataPlotLayout.addWidget(self.dataPlotWidget,row=row,col=col,colspan=6)        
         self.dataPlotDock.addWidget(self.dataPlotLayout)
         
     def create_metaDataPlotDock(self):
@@ -803,6 +805,15 @@ class ASAXS_Widget(QWidget):
         self.metaDataPlotWidget=PlotWidget(self)
         self.metaDataPlotLayout.addWidget(self.metaDataPlotWidget,row=row,col=col,colspan=8)
         self.metaDataPlotDock.addWidget(self.metaDataPlotLayout)
+        
+        
+    def create_ASAXSCheckPlotDock(self):
+        self.ASAXSCheckPlotLayout=pg.LayoutWidget(self)
+        row=0
+        col=0
+        self.ASAXSCheckPlotWidget=PlotWidget(self)
+        self.ASAXSCheckPlotLayout.addWidget(self.ASAXSCheckPlotWidget,row=row,col=col)
+        self.ASAXSCheckPlotDock.addWidget(self.ASAXSCheckPlotLayout)
         
         
     def initialize_metaDataPlotDock(self):
@@ -990,8 +1001,8 @@ class ASAXS_Widget(QWidget):
         #for item in self.dataListWidget.selectedItems():
         for fname in self.fnames:
             #dataname, fname=item.text().split(': ')
-            tmin=np.min(self.data[fname]['x']+self.data[fname]['qOff'])
-            tmax=np.max(self.data[fname]['x']+self.data[fname]['qOff'])
+            tmin=np.min(self.data[fname]['x'])
+            tmax=np.max(self.data[fname]['x'])
             if tmin>qmin:
                 qmin=copy.copy(tmin)
             if tmax<qmax:
@@ -1003,8 +1014,8 @@ class ASAXS_Widget(QWidget):
             #if self.xrfBkgCheckBox.isChecked():
             #    fun=interp1d(self.data[fname]['x'],self.data[fname]['y-flb'],kind=kind) #Calibration factor and thickness no#rmalization are already applied
             #else:
-            fun=interp1d(self.data[fname]['x']+self.qOff,self.data[fname]['CF']*(self.data[fname]['y']-self.data[fname]['xrf_bkg'])/self.data[fname]['Thickness'],kind=kind)
-            funerr=interp1d(self.data[fname]['x']+self.qOff,self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],kind=kind)
+            fun=interp1d(self.data[fname]['x'],self.data[fname]['CF']*(self.data[fname]['y']-self.data[fname]['xrf_bkg'])/self.data[fname]['Thickness'],kind=kind)
+            funerr=interp1d(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],kind=kind)
             self.data[fname]['yintp']=fun(self.qintp)
             self.data[fname]['yintperr']=funerr(self.qintp)
             
@@ -1274,18 +1285,22 @@ class ASAXS_Widget(QWidget):
             for i in range(self.BMatrix.shape[1]):
                 X.append(sp.linalg.lstsq(self.AMatrix,self.BMatrix[:,i],lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0])
                 tot.append(np.dot(self.AMatrix,X[-1]))            
-                if ans==QMessageBox.Yes:                
-                    try:
-                        sdata.setData(f1,self.BMatrix[:,i],pen=None,symbol='o')
-                        sline.setData(f1,tot[-1],connect='all')
-                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])
-                    except:
-                        fplot=pg.plot(labels={'left':'Intensity','bottom':self.elements[Np-1]+'_f1'})
-                        sdata=pg.PlotDataItem(f1,self.BMatrix[:,i],pen=None,symbol='o')
-                        sline=pg.PlotDataItem(f1,tot[-1],connect='all')
-                        fplot.addItem(sdata)
-                        fplot.addItem(sline)
-                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])   
+                if ans==QMessageBox.Yes:
+                    self.ASAXSCheckPlotWidget.add_data(f1,self.BMatrix[:,i],name='Data')
+                    self.ASAXSCheckPlotWidget.add_data(f1,tot[-1],name='Fit',fit=True)
+                    self.ASAXSCheckPlotWidget.Plot(['Data','Fit'])
+                    self.raiseDock(self.ASAXSCheckPlotDock)
+#                    try:
+#                        sdata.setData(f1,self.BMatrix[:,i],pen=None,symbol='o')
+#                        sline.setData(f1,tot[-1],connect='all')
+#                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])
+#                    except:
+#                        fplot=pg.plot(labels={'left':'Intensity','bottom':self.elements[Np-1]+'_f1'})
+#                        sdata=pg.PlotDataItem(f1,self.BMatrix[:,i],pen=None,symbol='o')
+#                        sline=pg.PlotDataItem(f1,tot[-1],connect='all')
+#                        fplot.addItem(sdata)
+#                        fplot.addItem(sline)
+#                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])   
                     ans=QMessageBox.question(self,'Question','Do you like to see the next Q?',QMessageBox.Yes, QMessageBox.No)                         
                 for key in self.AIndex.keys():
                     try:

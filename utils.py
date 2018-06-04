@@ -56,7 +56,7 @@ def calc_prm(q1,Iq1,dIq1=None,qmin=None,qmax=None,Nq=None,Nr=101,dmax=100.0):
     #chi_r=chi/(len(q)-len(a))
     return r,pr,dpr,q,Iqc
 
-def find_minmax(fun,pos=1.0,wid=1.0,accuracy=1e-3):
+def find_minmax(fun,pos=1.0,wid=1.0,accuracy=1e-6):
     """
     Find the minimum and maximum values of x for which a peak like function 'fun(x,pos,wid)' has a relatve value compare to the peak value more than the 'accuracy'.
     fun           : Peak like function class 
@@ -70,10 +70,10 @@ def find_minmax(fun,pos=1.0,wid=1.0,accuracy=1e-3):
     fun.pos=pos
     fun.wid=wid
     fval=fun.y()
-    frange=np.where(fval/np.max(fval)>accuracy)[0]
+    frange=np.where(fval/np.max(fval/100)>accuracy)[0]
     while len(frange)>1 and np.abs(fun.x[frange[len(frange)-1]]-fun.x[-1])<1e-6:
         xmax=xmax*3
         fun.x=np.linspace(xmin,xmax,N*3)        
         fval=fun.y()
-        frange=np.where(fval/np.max(fval)>accuracy)[0]
+        frange=np.where(fval/np.max(fval)/100>accuracy)[0]
     return fun.x[frange[0]],fun.x[frange[-1]]

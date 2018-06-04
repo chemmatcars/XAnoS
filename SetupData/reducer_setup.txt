@@ -1,1 +1,1 @@
-{"poniFile": "Z:/chemmat/Data/saxs/2018-02/HoffmanEstates/AgBh_30keV.poni", "maskFile": "Z:/chemmat/Data/saxs/2018-02/HoffmanEstates/new_Mask.msk"}
+{"poniFile": "V:/HoffmanEstates/AgBh_30keV.poni", "maskFile": "V:/HoffmanEstates/Mask.msk"}

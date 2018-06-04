@@ -13,7 +13,7 @@ from xr_ref import parratt
 
 
 class MultiSphereAtInterface: #Please put the class name same as the function name
-    def __init__(self,x=0.1,E=10.0,Rc=10.0,rhoc=4.68,Tsh=20.0,rhosh=0.0,rhoup=0.333,rhodown=0.38,sig=3.0, mpar={'Z0':[20],'cov':[1.0],'Z0sig':[0.0]},Nlayers=111,rrf=1,qoff=0.0,zmin=-10,zmax=100,Nc=20):
+    def __init__(self,x=0.1,E=10.0,Rc=10.0,rhoc=4.68,Tsh=20.0,rhosh=0.0,rhoup=0.333,rhodown=0.38,sig=3.0, mpar={'Z0':[20],'cov':[1.0],'Z0sig':[0.0]},rrf=1,qoff=0.0,zmin=-10,zmax=100,dz=1.0):
         """
         Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface
         x           : array of wave-vector transfer along z-direction
@@ -26,12 +26,11 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         rhodown     : Electron density of the lower bulk phase
         sig         : Roughness of the interface
         mpar        : The layer parameters where, Z0: position of the layer, cov: coverage of the nanoparticles in the layer, Z0sig: Width of distribution of the nanoparticles in the layer
-        Nlayers     : The number of layers in which the layers will be subdivided for applying Parratt formalism
         rrf         : 1 for Frensnel normalized refelctivity and 0 for just reflectivity
         qoff        : q-offset to correct the zero q of the instrument
         zmin        : minimum depth for electron density calculation
         zmax        : maximum depth for electron density calculation
-        Nc          : Number of points for convoluting interface roughness and electron density profile
+        dz          : minimum slab thickness
         ----------- -----------
         """
         if type(x)==list:
@@ -47,10 +46,9 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         self.rhodown=rhodown
         self.zmin=zmin
         self.zmax=zmax
-        self.Nc=Nc
         self.sig=sig
+        self.dz=dz
         self.__mpar__=mpar
-        self.Nlayers=Nlayers
         self.rrf=rrf
         self.qoff=qoff
         self.choices={'rrf':[1,0]}
@@ -88,10 +86,9 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         if sig<1e-3:
             zt=z
         else:
-            Nmax=len(z)+Nc
-            zmin=z[0]-(z[1]-z[0])*Nc/2
-            zmax=z[-1]+(z[1]-z[0])*Nc/2
-            zt=np.linspace(zmin,zmax,Nmax)
+            zmin=z[0]-5*sig
+            zmax=z[-1]+5*sig
+            zt=np.arange(zmin,zmax,self.dz)
         rhosum=np.zeros_like(zt)
         for i in range(len(Z0)):
             if Z0sig[i]<1e-3:
@@ -109,9 +106,13 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         if sig<1e-3:
             return rho
         else:
-            x=np.arange(-Nc/2,Nc/2+1)*(z[1]-z[0])
+            x=np.arange(-5*sig,5*sig,self.dz)
             rough=np.exp(-x**2/2/sig**2)/np.sqrt(2*np.pi)/sig
-            return np.convolve(rho,rough,mode='valid')*(x[1]-x[0])
+            res=np.convolve(rho,rough,mode='valid')*self.dz
+            if len(res)>len(z):
+                return res[0:len(z)]
+            else:
+                return res
 
     def calcProfile(self):
         """
@@ -120,12 +121,12 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         Z0=np.array([self.params['__Z0__%03d'%i].value for i in range(len(self.__mpar__['Z0']))])
         cov=np.array([self.params['__cov__%03d'%i].value for i in range(len(self.__mpar__['cov']))])
         Z0sig=np.array([self.params['__Z0sig__%03d'%i].value for i in range(len(self.__mpar__['Z0sig']))])
-        self.__z__=np.linspace(self.zmin,self.zmax,self.Nlayers)
-        self.__d__=(self.__z__[1]-self.__z__[0])*np.ones_like(self.__z__)
-        self.__rho__=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=Z0,cov=cov,Z0sig=Z0sig,rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig,Nc=self.Nc)
+        self.__z__=np.arange(self.zmin,self.zmax,self.dz)
+        self.__d__=self.dz*np.ones_like(self.__z__)
+        self.__rho__=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=Z0,cov=cov,Z0sig=Z0sig,rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
         self.output_params['Total density profile']={'x':self.__z__,'y':self.__rho__}
         for i in range(len(Z0)):
-            rho=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=[Z0[i]],cov=[cov[i]],Z0sig=[Z0sig[i]],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig,Nc=self.Nc)
+            rho=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=[Z0[i]],cov=[cov[i]],Z0sig=[Z0sig[i]],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
             self.output_params['Layer %d contribution'%(i+1)]={'x':self.__z__,'y':rho}
 
 

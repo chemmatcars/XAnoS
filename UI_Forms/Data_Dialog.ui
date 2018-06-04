@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1596</width>
-    <height>1033</height>
+    <width>1542</width>
+    <height>800</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -94,6 +100,9 @@
              </item>
              <item>
               <widget class="QTableWidget" name="metaDataTableWidget">
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
                <column>
                 <property name="text">
                  <string>Parameter</string>
@@ -126,6 +135,20 @@
                 </widget>
                </item>
                <item>
+                <widget class="QPushButton" name="addRowPushButton">
+                 <property name="text">
+                  <string>Add Row</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="removeRowsPushButton">
+                 <property name="text">
+                  <string>Remove Rows</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QPushButton" name="addColumnPushButton">
                  <property name="text">
                   <string>Add Column</string>
@@ -142,7 +165,11 @@
               </layout>
              </item>
              <item>
-              <widget class="QTableWidget" name="dataTableWidget"/>
+              <widget class="QTableWidget" name="dataTableWidget">
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>

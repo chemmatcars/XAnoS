@@ -1,0 +1,25 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module TwoD_Integrate ! in 
+    interface  ! in :TwoD_Integrate
+        subroutine integrate_2d(img,img_err,solid_angle,rad,chi,rad_val,chi_val,integ,integ_err,m,n,rad_npt,chi_npt) ! in :TwoD_Integrate:TwoD_Integrate.f90
+            double precision dimension(m,n),intent(in) :: img
+            double precision dimension(m,n),depend(m,n),intent(in) :: img_err
+            double precision dimension(m,n),depend(m,n),intent(in) :: solid_angle
+            double precision dimension(m,n),depend(m,n),intent(in) :: rad
+            double precision dimension(m,n),depend(m,n),intent(in) :: chi
+            double precision dimension(rad_npt),intent(in) :: rad_val
+            double precision dimension(chi_npt),intent(in) :: chi_val
+            double precision dimension(rad_npt,chi_npt),depend(rad_npt,chi_npt),intent(out) :: integ
+            double precision dimension(rad_npt,chi_npt),depend(rad_npt,chi_npt),intent(out) :: integ_err
+            integer(kind=8), optional,check(shape(img,0)==m),depend(img) :: m=shape(img,0)
+            integer(kind=8), optional,check(shape(img,1)==n),depend(img) :: n=shape(img,1)
+            integer(kind=8), optional,check(len(rad_val)>=rad_npt),depend(rad_val) :: rad_npt=len(rad_val)
+            integer(kind=8), optional,check(len(chi_val)>=chi_npt),depend(chi_val) :: chi_npt=len(chi_val)
+        end subroutine integrate_2d
+    end interface 
+end python module TwoD_Integrate
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
