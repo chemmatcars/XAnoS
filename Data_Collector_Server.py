@@ -1167,7 +1167,7 @@ class Data_Collector(QWidget):
                 self.abort=False
                 self.create_measurementList()
                 ans=QMessageBox.question(self,'Measurement Information','Total number of measurements to be done: %d\n Do you want to continue?'%self.measurementCount,QMessageBox.Yes,QMessageBox.No)
-                if ans==self.QMessageBox.Yes:
+                if ans==QMessageBox.Yes:
                     limitsOK=self.check_motorLimits()
                     if limitsOK:
                         self.dynamicCollectButton.setText('Abort')
@@ -1250,7 +1250,7 @@ class Data_Collector(QWidget):
                 if ans==QMessageBox.Yes:
                     self.abort=True
         except:
-            QMessageBox.warning(self,'Value Error','Please provide integer frame counts and floating point number sleep time',QMessageBox.Ok)
+            QMessageBox.warning(self,'Positioner File Error','Please load a Positioner file first.',QMessageBox.Ok)
         caput(self.scalers['scaler_mode']['PV'],1,wait=True) #Setting Scalar to Autocount mode
                 
         
