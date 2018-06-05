@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QGridLayout, QTabWidget, QGraphicsEllipseItem
 from PyQt5.QtGui import QPalette, QPainter
-from PyQt5.QtCore import Qt, QPoint, QRectF, QObject, pyqtSignal, QThread, QTimer
+from PyQt5.QtCore import Qt, QPoint, QRectF, QObject, pyqtSignal, QThread, QTimer, QProcess
 from PyQt5.uic import loadUi
 import os
 import sys
@@ -19,6 +19,7 @@ from Image_Widget import Image_Widget
 from calibrationWidget import CalibrationWidget
 import json
 from zmqClient import ZeroMQ_Listener
+from zmqServer import ZeroMQ_Server
 #from pyFAI.integrate_widget import AIWidget
 
 
@@ -146,6 +147,55 @@ class Data_Reduction_Client(QWidget):
         self.stopClientPushButton.clicked.connect(self.stopClient)
         self.serverAddressLineEdit.returnPressed.connect(self.serverAddressChanged)
         
+        self.startServerPushButton.clicked.connect(self.startServer)
+        self.stopServerPushButton.clicked.connect(self.stopServer)
+        
+    def startServer(self):
+        serverAddr=self.serverAddressLineEdit.text()
+        dataDir=QFileDialog.getExistingDirectory(self,'Select data folder',options=QFileDialog.ShowDirsOnly)
+        self.serverStatusLabel.setText('<font color="Red">Transmitting</font>')
+        QApplication.processEvents()
+        self.serverThread=QThread()
+        self.zeromq_server=ZeroMQ_Server(serverAddr,dataDir)
+        self.zeromq_server.moveToThread(self.serverThread)
+        self.serverThread.started.connect(self.zeromq_server.loop)
+        self.zeromq_server.messageEmitted.connect(self.updateServerMessage)
+        self.zeromq_server.folderFinished.connect(self.serverDone)
+        QTimer.singleShot(0,self.serverThread.start)
+        
+    
+    def updateServerMessage(self,mesg):
+        #self.serverStatusLabel.setText('<font color="Red">Transmitting</font>')
+        self.serverMessageLabel.setText('Server sends: %s'%mesg)
+        QApplication.processEvents()
+        
+    def serverDone(self):
+        self.serverStatusLabel.setText('<font color="Green">Idle</font>')
+        self.serverThread.quit()
+        self.serverThread.wait()
+        self.serverThread.deleteLater()
+        self.zeromq_server.deleteLater()
+        
+    def stopServer(self):
+        try:
+            self.zeromq_server.running=False
+            self.serverStatusLabel.setText('<font color="Green">Idle</font>')
+            self.serverThread.quit()
+            self.serverThread.wait()
+            self.serverThread.deleteLater()
+            self.zeromq_server.deleteLater()
+        except:
+            QMessageBox.warning(self,'Server Error','Start the server before stopping it')
+        
+    def enableClient(self,enable=True):
+        self.startClientPushButton.setEnabled(enable)
+        self.stopClientPushButton.setEnabled(enable)
+        
+    def enableServer(self,enable=True):
+        self.startServerPushButton.setEnabled(enable)
+        self.stopServerPushButton.setEnabled(enable)
+        
+        
     def startClient(self):
         if self.clientRunning:
             self.stopClient()
@@ -154,14 +204,14 @@ class Data_Reduction_Client(QWidget):
             self.clientRunning=True
             self.files=[]
             self.listenerThread = QThread()
-            addr=self.serverAddressLineEdit.text()
+            addr=self.clientAddressLineEdit.text()
             self.zeromq_listener = ZeroMQ_Listener(addr)
             self.zeromq_listener.moveToThread(self.listenerThread)
             self.listenerThread.started.connect(self.zeromq_listener.loop)
             self.zeromq_listener.messageReceived.connect(self.signal_received)
             QTimer.singleShot(0, self.listenerThread.start)
             QTimer.singleShot(1,self.clientReduce)
-            self.connectionStatusLabel.setText('<font color="red">Connected and Running</font>')
+            self.clientStatusLabel.setText('<font color="red">Connected</font>')
             
     def stopClient(self):
         self.clientRunning=False
@@ -172,7 +222,7 @@ class Data_Reduction_Client(QWidget):
         self.listenerThread.wait()
         self.listenerThread.deleteLater()
         self.zeromq_listener.deleteLater()
-        self.connectionStatusLabel.setText('<font color="green">Stopped and Disconnected</font>')
+        self.clientStatusLabel.setText('<font color="green">Idle</font>')
         
         
     def serverAddressChanged(self):
@@ -181,7 +231,7 @@ class Data_Reduction_Client(QWidget):
         
         
     def signal_received(self, message):
-        self.messageLabel.setText('Recieving files: %s'%message)
+        self.clientMessageLabel.setText('Client receives: %s'%message)
         if 'dark.edf' not in message:
             self.files.append(message)
             

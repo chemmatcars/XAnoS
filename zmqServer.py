@@ -5,25 +5,40 @@ Created on Sun Jun  3 11:32:01 2018
 @author: Mrinal Bera
 """
 
+from PyQt5 import QtCore
 import zmq
 import time
 import sys
 import glob
 import os
 
-port = "2036"
-try:
-    folder=sys.argv[1]
-except:
-    folder=None
-context = zmq.Context()
-socket = context.socket(zmq.PUB)
-socket.bind("tcp://*:%s" % port)
+class ZeroMQ_Server(QtCore.QObject):
+    messageEmitted = QtCore.pyqtSignal(str)
+    folderFinished = QtCore.pyqtSignal(bool)
+    stopped=QtCore.pyqtSignal(bool)
+    
+    def __init__(self,addr,folderName):
+       
+        QtCore.QObject.__init__(self)
+        
+        # Socket to talk to server
+        context = zmq.Context()
+#        self.socket = context.socket(zmq.SUB)
+        self.socket = context.socket(zmq.PUB)
+        self.socket.bind("tcp://%s" % addr)
+        self.fnames=glob.glob(os.path.join(folderName,'**','*.edf'),recursive=True)
+        self.running=True
+        
+        
+   
+    def loop(self):
+        for fname in self.fnames:
+            if self.running:
+                self.socket.send_string(fname)
+                self.messageEmitted.emit(fname)
+                time.sleep(1)
+            else:
+                self.stopped.emit(True)
+                break
+        self.folderFinished.emit(True)
 
-fnames=glob.glob(os.path.join(folder,'**','*.edf'),recursive=True)
-
-for fname in fnames:
-    mesg=fname
-    print(mesg)
-    socket.send_string(mesg)
-    time.sleep(1)
