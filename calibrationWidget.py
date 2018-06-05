@@ -132,7 +132,7 @@ class CalibrationWidget(QWidget):
                 self.maskData=None
                 QMessageBox.warning(self,'Mask error','The mask shape doesnot match the image shape',QMessageBox.Ok)
         else:
-            self.maskData=np.ones_like(self.imgData)
+            self.maskData=np.zeros_like(self.imgData)
         #self.cimgData=self.imgData.T
         self.SA_imgData=np.ones(self.imgData.shape)
         try:
@@ -617,6 +617,7 @@ class CalibrationWidget(QWidget):
         xmax=qr[-1]
         ymin=phir[0]
         ymax=phir[-1]
+        print(qr.min(),qr.max(),phir.min(),phir.max())
         self.cakedImageWidget.setImage(cakedArray,xmin=xmin,xmax=xmax,ymin=ymin,ymax=ymax,transpose=True)
         self.cakedImageWidget.imageView.view.setAspectLocked(False)
         i=0

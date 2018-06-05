@@ -319,7 +319,11 @@ class Data_Reduction_Client(QWidget):
         if fname is not None:
             img=fb.open(fname).data
             if self.maskFile is not None:
-                mask=fb.open(self.maskFile).data
+                try:
+                    mask=fb.open(self.maskFile).data
+                except:
+                    QMessageBox.warning(self,'Mask File Error','Cannot open %s.\n No masking will be done.'%self.maskFile)
+                    mask=None
             else:
                 mask=None
             pixel1=79.0
