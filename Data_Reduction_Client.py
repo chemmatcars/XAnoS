@@ -20,6 +20,7 @@ from calibrationWidget import CalibrationWidget
 import json
 from zmqClient import ZeroMQ_Listener
 from zmqServer import ZeroMQ_Server
+import zmq
 #from pyFAI.integrate_widget import AIWidget
 
 
@@ -162,7 +163,7 @@ class Data_Reduction_Client(QWidget):
         self.zeromq_server.messageEmitted.connect(self.updateServerMessage)
         self.zeromq_server.folderFinished.connect(self.serverDone)
         QTimer.singleShot(0,self.serverThread.start)
-        
+
     
     def updateServerMessage(self,mesg):
         #self.serverStatusLabel.setText('<font color="Red">Transmitting</font>')
@@ -171,6 +172,7 @@ class Data_Reduction_Client(QWidget):
         
     def serverDone(self):
         self.serverStatusLabel.setText('<font color="Green">Idle</font>')
+        self.zeromq_server.socket.unbind(self.zeromq_server.socket.last_endpoint)
         self.serverThread.quit()
         self.serverThread.wait()
         self.serverThread.deleteLater()
@@ -180,6 +182,7 @@ class Data_Reduction_Client(QWidget):
         try:
             self.zeromq_server.running=False
             self.serverStatusLabel.setText('<font color="Green">Idle</font>')
+            self.zeromq_server.socket.unbind(self.zeromq_server.socket.last_endpoint)
             self.serverThread.quit()
             self.serverThread.wait()
             self.serverThread.deleteLater()
@@ -210,19 +213,22 @@ class Data_Reduction_Client(QWidget):
             self.listenerThread.started.connect(self.zeromq_listener.loop)
             self.zeromq_listener.messageReceived.connect(self.signal_received)
             QTimer.singleShot(0, self.listenerThread.start)
-            QTimer.singleShot(1,self.clientReduce)
+            QTimer.singleShot(0,self.clientReduce)
             self.clientStatusLabel.setText('<font color="red">Connected</font>')
             
     def stopClient(self):
+#        try:
         self.clientRunning=False
         self.clientFree=False
         self.zeromq_listener.messageReceived.disconnect()
         self.zeromq_listener.running=False
         self.listenerThread.quit()
-        self.listenerThread.wait()
+        self.listenerThread.wait()        
         self.listenerThread.deleteLater()
         self.zeromq_listener.deleteLater()
         self.clientStatusLabel.setText('<font color="green">Idle</font>')
+#        except:
+#            QMessageBox.warning(self,'Client Error', 'Please start the client first before closing.',QMessageBox.Ok)
         
         
     def serverAddressChanged(self):
@@ -534,7 +540,7 @@ class Data_Reduction_Client(QWidget):
                     self.ai.set_wavelength(float(self.header['Wavelength'])*1e-10)
                 except:
                     self.ai.set_wavelength(self.wavelength)
-                print(self.darkFile)
+                #print(self.darkFile)
                 if os.path.exists(self.dataFile.split('.')[0]+'_dark.edf') and self.darkCheckBox.isChecked():
                     self.darkFile=self.dataFile.split('.')[0]+'_dark.edf'
                     dark=fb.open(self.darkFile)

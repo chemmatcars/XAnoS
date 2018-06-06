@@ -4,7 +4,8 @@ Created on Sun Jun  3 11:32:01 2018
 
 @author: Mrinal Bera
 """
-
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtTest import QTest
 from PyQt5 import QtCore
 import zmq
 import time
@@ -26,19 +27,30 @@ class ZeroMQ_Server(QtCore.QObject):
 #        self.socket = context.socket(zmq.SUB)
         self.socket = context.socket(zmq.PUB)
         self.socket.bind("tcp://%s" % addr)
+#        except:
+#            self.socket.unbind(self.socket.last_endpoint)
+#            self.socket.bind("tcp://%s" % addr)
         self.fnames=glob.glob(os.path.join(folderName,'**','*.edf'),recursive=True)
+        self.fnames.sort()
         self.running=True
+        
+        
         
         
    
     def loop(self):
+        for i in range(10): #This is to make sure the communication starts with no lose of data
+            self.socket.send_string('test')
+            QTest.qWait(100)
         for fname in self.fnames:
             if self.running:
-                self.socket.send_string(fname)
-                self.messageEmitted.emit(fname)
-                time.sleep(1)
+                if 'dark.edf' not in fname:
+                    print(fname)
+                    self.socket.send_string(fname)
+                    self.messageEmitted.emit(fname)
+                    QTest.qWait(1000)
             else:
                 self.stopped.emit(True)
-                break
+                return                
         self.folderFinished.emit(True)
 

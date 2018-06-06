@@ -577,7 +577,7 @@ def interpolate_data(data,Npt=1000,kind='linear'):
     #for item in self.dataListWidget.selectedItems():
     for fname in data.keys():
         #dataname, fname=item.text().split(': ')
-        tmin=np.min(data[fname]['x']    )
+        tmin=np.min(data[fname]['x'])
         tmax=np.max(data[fname]['x'])
         if tmin>qmin:
             qmin=copy.copy(tmin)

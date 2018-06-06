@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/HoffmanEstates/AgBh_30keV.poni", "maskFile": "/mnt/ChemData/Data/Asax/HoffmanEstates/Mask.msk"}
+{"poniFile": "X:/2018-04/Alignment/AgBh_17_038KeV/calibration_05302018.poni", "maskFile": "X:/2018-04/mask_after_run.msk"}

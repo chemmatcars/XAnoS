@@ -1,7 +1,7 @@
 import sys
 import zmq
 
-from PyQt5 import QtCore, QtWidgets      
+from PyQt5 import QtCore, QtWidgets, QtTest    
                 
 class ZeroMQ_Listener(QtCore.QObject):
     messageReceived = QtCore.pyqtSignal(str)
@@ -11,20 +11,25 @@ class ZeroMQ_Listener(QtCore.QObject):
         QtCore.QObject.__init__(self)
         
         # Socket to talk to server
-        context = zmq.Context()
-        self.socket = context.socket(zmq.SUB)
+        self.context = zmq.Context()
+        self.socket = self.context.socket(zmq.SUB)
 #        print ("Collecting updates from weather server")
         self.socket.connect ("tcp://%s"%addr)
         self.socket.setsockopt_string(zmq.SUBSCRIBE,'')
+        #self.socket.recv(zmq.DONTWAIT)
         self.running = True
     
     def loop(self):
         while self.running:
             try:
-                mess= self.socket.recv(zmq.NOBLOCK).decode()
-                self.messageReceived.emit(mess)
+                mess= self.socket.recv_string(zmq.NOBLOCK)
+                print(mess)
+                if '.edf' in mess or '.EDF' in mess:
+                    self.messageReceived.emit(mess)
             except:
                 pass
+
+            
             
 class ZeroMQ_Window(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
