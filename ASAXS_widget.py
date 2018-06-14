@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QShortcut, QSplitter
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QShortcut, QSplitter, QProgressDialog
 from PyQt5.QtGui import QPalette, QKeySequence
 from PyQt5.QtCore import Qt
 import os
@@ -37,6 +37,7 @@ class ASAXS_Widget(QWidget):
         self.energyLines={}
         self.ffactors={}
         self.fCounter=0
+        self.xrf_base=0.0
         self.minEnergy=1000000.0
         self.metaKeys=[]
         self.CF=1.0
@@ -150,12 +151,24 @@ class ASAXS_Widget(QWidget):
         self.xrfBkgCheckBox.setTristate(False)
         self.xrfBkgCheckBox.setEnabled(False)
         self.xrfBkgCheckBox.stateChanged.connect(self.dataSelectionChanged)
-        self.xrfBkgLineEdit=QLineEdit('95:100')
-        self.xrfBkgLineEdit.returnPressed.connect(self.dataSelectionChanged)
-        self.xrfBkgLineEdit.setEnabled(False)
+        self.xrfBkgRangeLineEdit=QLineEdit('95:100')
+        self.xrfBkgRangeLineEdit.returnPressed.connect(self.dataSelectionChanged)
+        self.xrfBkgRangeLineEdit.setEnabled(False)
         self.dataDockLayout.addWidget(self.xrfBkgCheckBox,row=row,col=col)
         col+=1
-        self.dataDockLayout.addWidget(self.xrfBkgLineEdit,row=row,col=col,colspan=2)        
+        self.dataDockLayout.addWidget(self.xrfBkgRangeLineEdit,row=row,col=col,colspan=2)        
+        
+        row+=1
+        col=0
+        XRFLabel=QLabel('XRF Baseline')
+        self.dataDockLayout.addWidget(XRFLabel,row=row,col=col)
+        col+=1
+        self.xrfBkgLineEdit=QLineEdit('0.0')
+        self.dataDockLayout.addWidget(self.xrfBkgLineEdit,row=row,col=col)
+        col+=1
+        self.xrfBkgCalcPushButton=QPushButton('Calc XRF-Bkg')
+        self.xrfBkgCalcPushButton.clicked.connect(self.calc_XRF_baseline)
+        self.dataDockLayout.addWidget(self.xrfBkgCalcPushButton,row=row,col=col)
         
         
         row+=1
@@ -283,7 +296,7 @@ class ASAXS_Widget(QWidget):
         row+=1
         col=0
         self.ASAXSCalcTypeComboBox=QComboBox()
-        self.ASAXSCalcTypeComboBox.addItems(['np.linalg.lstsq','sp.opt.minimize'])
+        self.ASAXSCalcTypeComboBox.addItems(['single','multiple'])
         self.dataDockLayout.addWidget(self.ASAXSCalcTypeComboBox,row=row,col=col)
         col+=1
         self.calcASAXSPushButton=QPushButton('Calculate scattering components')
@@ -417,6 +430,11 @@ class ASAXS_Widget(QWidget):
         self.dataFiles=QFileDialog.getOpenFileNames(self,caption='Import data',directory=self.dataDir,filter='Data files (*.dat *.txt *.chi)')[0]
         if len(self.dataFiles)>0:
             self.dataDir=os.path.dirname(self.dataFiles[0])
+            self.progressDialog=QProgressDialog(self)
+            self.progressDialog.setMinimum(0)
+            self.progressDialog.setMaximum(len(self.dataFiles))
+            self.progressDialog.open()
+            fnum=0
             for file in self.dataFiles:
                 if file not in self.data.keys():
                     item=str(self.fCounter)+': '+file
@@ -424,6 +442,10 @@ class ASAXS_Widget(QWidget):
                     self.read_data(item)
                     self.dataListWidget.item(self.dataListWidget.count()-1).setToolTip('%.4f keV'%self.data[file]['Energy'])
                     self.fCounter+=1
+                    fnum+=1
+                    self.progressDialog.setValue(fnum)
+                    self.progressDialog.setLabelText('Read file: %s successfully.'%file)
+                    QApplication.processEvents()
                 else:
                     QMessageBox.warning(self,'Import error','%s is already imported. Please remove the file to import it again'%file,QMessageBox.Ok)
             self.initialize_metaDataPlotDock()
@@ -433,21 +455,22 @@ class ASAXS_Widget(QWidget):
         
         
             
-    def calc_XRF_baseline(self,files):
+    def calc_XRF_baseline(self):
         """
-        Calculates the XRF baseline for estimating XRF-backgrounds from the data 
+        Calculates the XRF baseline for estimating XRF-backgrounds from the selected data
         """
-        self.minEnergy=1e7
-        for file in files:
-            if self.data[file]['Energy']<self.minEnergy:
-                self.minEnergy=self.data[file]['Energy']
-                self.xrfFile=file
-        minf,maxf=self.xrfBkgLineEdit.text().split(':')
-        xf_bkg_min,xf_bkg_max=float(minf)*np.max(self.data[self.xrfFile]['x'])/100.0,float(maxf)*np.max(self.data[self.xrfFile]['x'])/100.0
-        try:
-            self.xrf_base=np.mean(self.data[self.xrfFile]['y'][np.argwhere(self.data[self.xrfFile]['x']>xf_bkg_min)[0][0]:np.argwhere(self.data[self.xrfFile]['x']<xf_bkg_max)[-1][0]])
-        except:
-            self.xrf_base=0.0
+        if len(self.dataListWidget.selectedItems())==1:
+            fname=str(self.dataListWidget.selectedItems()[0].text().split(': ')[1])
+            self.xrfFile=fname
+            minf,maxf=self.xrfBkgRangeLineEdit.text().split(':')
+            xf_bkg_min,xf_bkg_max=float(minf)*np.max(self.data[self.xrfFile]['x'])/100.0,float(maxf)*np.max(self.data[self.xrfFile]['x'])/100.0
+            try:
+                self.xrf_base=np.mean(self.data[self.xrfFile]['y'][np.argwhere(self.data[self.xrfFile]['x']>xf_bkg_min)[0][0]:np.argwhere(self.data[self.xrfFile]['x']<xf_bkg_max)[-1][0]])
+            except:
+                self.xrf_base=0.0
+            self.xrfBkgLineEdit.setText('%.3e'%self.xrf_base)
+        else:
+            QMessageBox.warning(self,'Selection Error','Please select only one data set.',QMessageBox.Ok)
         
     def read_data(self,item):
         """
@@ -517,8 +540,6 @@ class ASAXS_Widget(QWidget):
         self.update_edgePlot()
         self.datanames=[item.text().split(': ')[0] for item in self.dataListWidget.selectedItems()]
         self.fnames=[item.text().split(': ')[1] for item in self.dataListWidget.selectedItems()]
-        if self.xrfBkgCheckBox.isChecked():
-            self.calc_XRF_baseline(self.fnames)
         #self.initialize_metaDataPlotDock()
         self.metaData={}
         self.metaData['x']=[]
@@ -541,18 +562,14 @@ class ASAXS_Widget(QWidget):
                     self.metaData['norm']=1.0
             #Doing the fluorescence correction
             if self.xrfBkgCheckBox.isChecked():
-                if (self.edgeEnergy-self.minEnergy)>0.049:
-                    minf,maxf=self.xrfBkgLineEdit.text().split(':')
-                    xf_bkg_min,xf_bkg_max=float(minf)*np.max(self.data[fname]['x'])/100.0,float(maxf)*np.max(self.data[fname]['x'])/100.0
-                    try:
-                        self.data[fname]['xrf_bkg']=np.mean(self.data[fname]['y'][np.argwhere(self.data[fname]['x']>xf_bkg_min)[0][0]:np.argwhere(self.data[fname]['x']<xf_bkg_max)[-1][0]])-self.xrf_base
-                    except:#In case no data found between the range provided
-                        self.data[fname]['xrf_bkg']=0.0
-                    #self.data[fname]['y-flb']=self.data[fname]['CF']*(self.data[fname]['y']-self.xrf_bkg[fname])/self.data[fname]['Thickness']
-                    #self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['y-flb'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
-                else:
-                    QMessageBox.information(self,'XRF-background','Please collect a data atleast 50 eV below '+str(self.edgeEnergy+self.EOff)+' keV to do XRF background subtraction.')
-                    return
+                minf,maxf=self.xrfBkgRangeLineEdit.text().split(':')
+                xf_bkg_min,xf_bkg_max=float(minf)*np.max(self.data[fname]['x'])/100.0,float(maxf)*np.max(self.data[fname]['x'])/100.0
+                try:
+                    self.data[fname]['xrf_bkg']=np.mean(self.data[fname]['y'][np.argwhere(self.data[fname]['x']>xf_bkg_min)[0][0]:np.argwhere(self.data[fname]['x']<xf_bkg_max)[-1][0]])-self.xrf_base
+                except:#In case no data found between the range provided
+                    self.data[fname]['xrf_bkg']=0.0
+                #self.data[fname]['y-flb']=self.data[fname]['CF']*(self.data[fname]['y']-self.xrf_bkg[fname])/self.data[fname]['Thickness']
+                #self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['y-flb'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
             else:
                 self.data[fname]['xrf_bkg']=0.0
             self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*(self.data[fname]['y']-self.data[fname]['xrf_bkg'])/self.data[fname]['Thickness'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
@@ -577,11 +594,11 @@ class ASAXS_Widget(QWidget):
             self.edgePlotWidget.plotWidget.plot([self.data[fname]['Energy']],[self.data[fname]['f1']],pen=None,symbol='o',symbolPen=self.dataPlotWidget.data[dataname].opts['pen'],symbolBrush=None)
         if len(self.datanames)>0:
             self.xrfBkgCheckBox.setEnabled(True)
-            self.xrfBkgLineEdit.setEnabled(True)
+            self.xrfBkgRangeLineEdit.setEnabled(True)
         else:
             self.xrfBkgCheckBox.setCheckState(Qt.Unchecked)
             self.xrfBkgCheckBox.setEnabled(False)
-            self.xrfBkgLineEdit.setEnabled(False)
+            self.xrfBkgRangeLineEdit.setEnabled(False)
         
         self.bkgSubPushButton.setDisabled(True)
         if len(self.datanames)==2:
@@ -606,8 +623,9 @@ class ASAXS_Widget(QWidget):
                 header='Background subtracted data obtained from data1-data2 where\n data1=%s \n data2=%s\n'%(self.fnames[0],self.fnames[1])
                 for key in self.data[self.fnames[0]].keys():
                     if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr':
-                        header=header+key+'='+str(self.data[self.fnames[0]][key])+'\n'
                         self.data[filename][key]=self.data[self.fnames[0]][key]
+                        header=header+key+'='+str(self.data[self.fnames[0]][key])+'\n'
+                self.data[filename]['CF']=1.0
                 np.savetxt(filename,data,header=header,comments='#')
                 self.data[filename]['x']=self.qintp
                 self.data[filename]['y']=tmp
@@ -1118,7 +1136,12 @@ class ASAXS_Widget(QWidget):
         
     def ASAXS_split(self):
         #try:
-        self.ASAXS_split_3()
+        if self.ASAXSCalcTypeComboBox.currentText()=='single':
+            self.ASAXS_split_1()
+        else:
+            self.ASAXS_split_3()
+            
+        #self.ASAXS_split_3()
 #        if str(self.ASAXSCalcTypeComboBox.currentText())=='np.linalg.lstsq':
 #            if len(self.fnames)==3:
 #                self.ASAXS_split_0()
@@ -1167,19 +1190,37 @@ class ASAXS_Widget(QWidget):
                 x,residuals,rank,s=lstsq(self.AMatrix,self.BMatrix[:,i])
                 self.XMatrix.append(x)
             self.XMatrix=np.array(self.XMatrix)
-            self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,0],name='SAXS-term')
-            #if np.all(self.XMatrix[:,1]>0):
-            self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
-            #else:
-            #    QMessageBox.warning(self,'Negative Log error','Cross terms are all negative so plotting the -ve of cross terms',QMessageBox.Ok)
-            #    self.ASAXSPlotWidget.add_data(self.qintp,-self.XMatrix[:,1],name='neg Cross-term')
-            self.ASAXSPlotWidget.add_data(self.qintp,self.XMatrix[:,2],name='Resonant-term')
-            self.ASAXSPlotWidget.add_data(self.qintp,np.sum(np.dot([self.AMatrix[0,:]],self.XMatrix.T),axis=0),name='Total')
+            
+            self.directComponentPlotWidget.add_data(self.qintp,self.XMatrix[:,0],name='SAXS-term')
+            self.directComponentPlotWidget.add_data(self.qintp,self.XMatrix[:,2],name='Resonant-term')
+            tot=np.sum(np.dot([self.AMatrix[0,:]],self.XMatrix.T),axis=0)
+            self.directComponentPlotWidget.add_data(self.qintp,tot,name='Total')           
+            self.directComponentPlotWidget.add_data(self.qintp,self.data[self.fnames[0]]['yintp'],name='Data_%s'%self.datanames[0])
+            self.directComponentListWidget.clear()
+            self.crossComponentListWidget.clear()
+            try:
+                self.directComponentListWidget.itemSelectionChanged.disconnect()
+                self.crossComponentListWidget.itemSelectionChanged.disconnect()
+            except:
+                pass
+            self.directComponentListWidget.addItems(['SAXS-term','Resonant-term','Total','Data_%s'%self.datanames[0]])
+            self.crossComponentListWidget.addItem('Cross-term')
+            self.crossComponentPlotWidget.add_data(self.qintp,self.XMatrix[:,1],name='Cross-term')
+            self.components={}
+            self.components['SAXS-term']=self.XMatrix[:,0]
+            self.components['Resonant-term']=self.XMatrix[:,2]
+            self.components['Cross-term']=self.XMatrix[:,1]
+            self.components['Total']=tot
+            self.components['Data_%s'%self.datanames[0]]=self.data[self.fnames[0]]['yintp']
             self.update_ASAXSPlot()
             self.saveASAXSPushButton.setEnabled(True)
+            self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
+            self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
+            self.directComponentListWidget.item(0).setSelected(True)
+            self.crossComponentListWidget.item(0).setSelected(True)
         else:
             #self.saveASAXSPushButton.setEnabled(True)
-            QMessageBox.warning(self,'Data error','Please select more than three data sets to do the calculation',QMessageBox.Ok)
+            QMessageBox.warning(self,'Data Error','Please select three or more data sets to do the calculation',QMessageBox.Ok)
             
             
     def residual(self,x,A,B):
@@ -1274,7 +1315,7 @@ class ASAXS_Widget(QWidget):
         from different elements mentioned in Elements List Widget
         Please use x if you do not wish to put the element information of the elements other than the edge elements
         """
-        if len(self.fnames)>3:
+        if len(self.fnames)>=3:
             Ne,Np=self.prepareNewData()
             X=[]
             tot=[]
@@ -1315,6 +1356,12 @@ class ASAXS_Widget(QWidget):
                 key='S_%s-%s'%(self.elements[i],self.elements[i])
                 self.components[key]=np.array(self.components[key])
                 self.directComponentPlotWidget.add_data(self.qintp,self.components[key],name=key)
+            tot=np.array(tot)
+            #print(len(self.qintp),tot.shape)
+            self.directComponentPlotWidget.add_data(self.qintp,tot[:,0],name='Total')
+            self.directComponentListWidget.addItem('Total')
+            self.directComponentPlotWidget.add_data(self.qintp,self.data[self.fnames[0]]['yintp'],name='data_%s'%self.datanames[0])
+            self.directComponentListWidget.addItem('data_%s'%self.datanames[0])
             for i in range(Np-1):
                 for j in range(i+1,Np):
                     key='S_%s-%s'%(self.elements[i],self.elements[j])
@@ -1325,7 +1372,7 @@ class ASAXS_Widget(QWidget):
             self.crossComponentListWidget.item(0).setSelected(True)
             self.saveASAXSPushButton.setEnabled(True)
         else:
-            QMessageBox.information(self,"ASAXS Info","Please select more than three data sets to get ASAXS components",QMessageBox.Ok)
+            QMessageBox.information(self,"ASAXS Error","Please select three or more data sets to get ASAXS components",QMessageBox.Ok)
         
         
     def directComponentSelectionChanged(self):
@@ -1380,6 +1427,7 @@ class ASAXS_Widget(QWidget):
         header=header+'Data files used for the the scattering components calculations are:\n'
         for file in self.fnames:
             header=header+file+'\n'
+        header=header+'col_names='+str(['Q(inv Angs)']+list(self.components.keys()))+'\n'
         header=header+'Q(inv Angs)\t'
         data=self.qintp
         for key in self.components.keys():
@@ -1414,7 +1462,7 @@ if __name__=='__main__':
     app=QApplication(sys.argv)
     w=ASAXS_Widget()
     w.setWindowTitle('ASAXS Widget')
-    w.setGeometry(200,200,1000,800)
+    w.setGeometry(20,20,1000,800)
     
     w.show()
     sys.exit(app.exec_())

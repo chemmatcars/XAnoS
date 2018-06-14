@@ -16,7 +16,7 @@ from itertools import combinations
 import os
 
 class Formol: #Please put the class name same as the function name
-    def __init__(self,x=0,E=12.0,fname1='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P8W48.xyz',eta1=1.0,fname2='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P2W12.xyz',eta2=0.0,qoff=0.0,sol=18.0,sig=0.0,norm=1,bkg=0.0,mpar={}):
+    def __init__(self,x=0,E=12.0,fname1='W:/Tianbo_Collab/Mo132.xyz',eta1=1.0,fname2='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P2W12.xyz',eta2=0.0,rmin=0.0,rmax=10.0,Nr=100, qoff=0.0,sol=18.0,sig=0.0,norm=1,bkg=0.0,mpar={}):
         """
         Calculates the form factor for two different kinds of  molecules for which the XYZ coordinates of the all the atoms composing the molecules are known
 
@@ -27,6 +27,9 @@ class Formol: #Please put the class name same as the function name
         eta 1     Fraction of molecule type 1
         fname2    Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the moleucule of type 2
         eta 2     Fraction of molecule type 2
+        rmin      Minimum radial distance for calculating electron density
+        rmax      Maximum radial distance for calculating electron density
+        Nr        Number of points at which electron density will be calculated
         qoff      Q-offset may be required due to uncertainity in Q-calibration
         sol       No of electrons in solvent molecule (Ex: H2O has 18 electrons)
         sig       Debye-waller factor
@@ -48,6 +51,12 @@ class Formol: #Please put the class name same as the function name
         else:
             self.fname2=None
         self.eta2=eta2
+        self.rmin=rmin
+        self.__rmin__=rmin
+        self.rmax=rmax
+        self.__rmax__=rmax
+        self.Nr=Nr
+        self.__Nr__=Nr
         self.norm=norm
         self.bkg=bkg
         self.E=E
@@ -59,10 +68,10 @@ class Formol: #Please put the class name same as the function name
         self.__fnames__=[self.fname1,self.fname2]
         self.__E__=E
         self.__xdb__=XrayDB()
-        if self.fname1 is not None:
-            self.__Natoms1__,self.__pos1__,self.__f11__=self.readXYZ(self.fname1)
-        if self.fname2 is not None:
-            self.__Natoms2__,self.__pos2__,self.__f12__=self.readXYZ(self.fname2)
+        #if self.fname1 is not None:
+        #    self.__Natoms1__,self.__pos1__,self.__f11__=self.readXYZ(self.fname1)
+        #if self.fname2 is not None:
+        #    self.__Natoms2__,self.__pos2__,self.__f12__=self.readXYZ(self.fname2)
         self.__x__=self.x
         self.__qoff__=self.qoff
 
@@ -82,61 +91,108 @@ class Formol: #Please put the class name same as the function name
 
     def readXYZ(self,fname):
         """
-        Reads the X,Y,Z coordinates from the file
+        Reads the xyz file to read the atomic positions and put it in dictionary
         """
         fh=open(fname,'r')
         lines=fh.readlines()
-        fh.close()
-        Natoms=int(lines[0].strip())
-        pos=[]
-        f1=[]
+        Natoms=eval(lines[0])
+        atoms={'Natoms':Natoms}
+        cen=np.zeros(3)
+        atoms['elements']=[]
         for i in range(Natoms):
-            ele,x,y,z=lines[i+2].strip().split()
-            pos.append([float(x),float(y),float(z)])
-            f1.append(self.__xdb__.f1_chantler(ele,energy=self.E*1e3,smoothing=0)*self.__xdb__.f0(ele,(self.x+self.qoff)/4.0/np.pi)/self.__xdb__.f0(ele,0)-self.sol)
-        return Natoms, np.array(pos), np.array(f1)
+            line=lines[i+2].split()
+            pos=np.array(list((map(eval,line[1:]))))
+            if line[0] not in atoms['elements']:
+                atoms['elements'].append(line[0])
+            atoms[i]={'element':line[0],'pos':pos}
+            cen=cen+pos
+        cen=cen/Natoms
+        for i in range(Natoms):
+            atoms[i]['pos']=atoms[i]['pos']-cen
+            atoms[i]['distance']=np.sqrt(np.sum(atoms[i]['pos']**2))
+        return atoms
+    
+    def calc_xtal_rho(self, fname,rmin=0,rmax=10,Nr=81,energy=None):
+        """
+        Calculates radially averaged complex electron density of a molecule from the co-ordinates obtained from X-ray crystallography.
+        
+        fname   :: .xyz file having all the X, Y, Z coordinates of atoms of the molecule in Angstroms
+        rmin    :: Minimum radial distance in Angstroms (If rmin=0 then calculaiton will be done with rmin=1e-3 to avoid r=0 in the density calculation)
+        rmax    :: Maximum radial distance in Angstroms
+        Nr      :: (Use odd numbers only) No. of points between rmin and rmax at which the electron density has to be calculated
+        energy  :: Energy in keV at which the electron density will be calculated
+        """
+        atoms=self.readXYZ(fname)
+        if rmin<1e-6:
+            rmin=1e-3
+        r=np.linspace(rmin,rmax,Nr)
+        dr=r[1]-r[0]
+        rho=np.zeros(Nr)*(1.0+0.0j)
+        for ele in atoms['elements']:
+            distances=[atoms[i]['distance'] for i in range(atoms['Natoms']) if atoms[i]['element']==ele]
+            Nrho,_=np.histogram(distances,bins=Nr,range=(rmin-dr/2,rmax+dr/2))
+            if energy is None:
+                rho=rho+Nrho*(self.__xdb__.f0(ele,0.0))#+xrdb.f1_chantler(element=ele,energy=energy*1e3,smoothing=0))
+            else:
+                f1=self.__xdb__.f1_chantler(element=ele,energy=energy*1e3,smoothing=0)
+                f2=self.__xdb__.f2_chantler(element=ele,energy=energy*1e3,smoothing=0)
+                rho=rho+Nrho*(self.__xdb__.f0(ele,0.0)+f1+1.0j*f2)
+    #print(r[:-1]+(),rho)
+        return r,rho/4/np.pi/r**2/dr
+    
+    def calc_form(self,q,r,rho):
+        """
+        Calculates the isotropic form factor using the isotropic electron density as a funciton of radial distance
+        
+        q       :: scaler or array of reciprocal reciprocal wave vector in inv. Angstroms at which the form factor needs to be calculated in
+        r       :: array of radial distances at which he electron density in known in Angstroms
+        rho     :: array of electron densities as a funciton of radial distance in el/Angstroms^3. Note: The electron density should decay to zero at the last radial distance
+        """
+        dr=r[1]-r[0]
+        form=np.zeros_like(q)
+        for r1, rho1 in zip(r,rho):
+            form=form+4*np.pi*r1*rho1*np.sin(q*r1)/q
+        form=np.absolute(form)**2*dr**2
+        return form
 
     def y(self):
         """
         Define the function in terms of x to return some value
         """
         self.output_params={}
-        form1=0.0
-        form2=0.0
 
         #if self.__fnames__!=[None,None]:
         #Contribution from first molecule
         if self.fname1 is not None:
-            if self.__fnames__[0]!=self.fname1 or self.__E__!=self.E or len(self.__x__)!=len(self.x) or self.__x__[-1]!=self.x[-1] or self.__qoff__!=self.qoff:
-                self.__Natoms1__,self.__pos1__,self.__f11__=self.readXYZ(self.fname1)
-            for i,j in combinations(range(self.__Natoms1__),2):
-                d=np.sqrt(np.sum((self.__pos1__[i]-self.__pos1__[j])**2))
-                form1+=2*self.__f11__[i,:]*self.__f11__[j,:]*np.sin((self.x+self.qoff)*d)/((self.x+self.qoff)*d)
-            form1+=np.sum([self.__f11__[i,:]**2 for i in range(self.__Natoms1__)],axis=0)
+            if self.__fnames__[0]!=self.fname1 or self.__E__!=self.E or len(self.__x__)!=len(self.x) or self.__x__[-1]!=self.x[-1] or self.__qoff__!=self.qoff or self.__Nr__!=self.Nr or self.__rmin__!=self.rmin or self.__rmax__!=self.rmax:
+                self.__r1__,self.__rho1__=self.calc_xtal_rho(self.fname1,rmin=self.rmin,rmax=self.rmax,Nr=self.Nr,energy=self.E)
+            form1=self.calc_form(self.x,self.__r1__,self.__rho1__)
+            self.output_params['rho_1']={'x':self.__r1__,'y':np.real(self.__rho1__)}
         #Contribution from second molecule
         if self.fname2 is not None:
-            if self.__fnames__[1]!=self.fname2 or self.__E__!=self.E or len(self.__x__)!=len(self.x) or self.__x__[-1]!=self.x[-1]:
-                self.__Natoms2__,self.__pos2__,self.__f12__=self.readXYZ(self.fname2)
-            for i,j in combinations(range(self.__Natoms2__),2):
-                d=np.sqrt(np.sum((self.__pos2__[i]-self.__pos2__[j])**2))
-                form2+=2*self.__f12__[i,:]*self.__f12__[j,:]*np.sin((self.x+self.qoff)*d)/((self.x+self.qoff)*d)
-            form2+=np.sum([self.__f12__[i,:]**2 for i in range(self.__Natoms2__)],axis=0)
+            if self.__fnames__[1]!=self.fname2 or self.__E__!=self.E or len(self.__x__)!=len(self.x) or self.__x__[-1]!=self.x[-1] or self.__qoff__!=self.qoff or self.__Nr__!=self.Nr or self.__rmin__!=self.rmin or self.__rmax__!=self.rmax:
+                self._r2__,self.__rho2__=self.calc_xtal_rho(self.fname2,rmin=self.rmin,rmax=self.rmax,Nr=self.Nr,energy=self.E)
+            form2=self.calc_form(self.x,self.__r2__,self.__rho2__)
+            self.output_params['rho_2']={'x':self.__r2__,'y':np.real(self.__rho2__)}
 
         self.__fnames__=[self.fname1,self.fname2]
         self.__E__=self.E
         self.__x__=self.x
+        self.__rmin__=self.rmin
+        self.__rmax__=self.rmax
+        self.__Nr__=self.Nr
         self.__qoff__=self.qoff
-        if self.__fnames__!=[None,None]:
-            self.output_params[self.fname1]={'x':self.x,'y':self.norm*self.eta1*form1}
-            self.output_params[self.fname2]={'x':self.x,'y':self.norm*self.eta2*form2}
+        if self.__fnames__[0] is not None and self.__fnames__[1] is not None:
+            self.output_params[os.path.basename(self.fname1)+'_1']={'x':self.x,'y':self.norm*self.eta1*form1}
+            self.output_params[os.path.basename(self.fname2)+'_1']={'x':self.x,'y':self.norm*self.eta2*form2}
             self.output_params['bkg']={'x':self.x,'y':self.bkg*np.ones_like(self.x)}
             return (self.eta1*form1+self.eta2*form2)*self.norm*np.exp(-self.x**2*self.sig**2)+self.bkg
-        elif self.__fnames__[1]==None:
-            self.output_params[self.fname1]={'x':self.x,'y':self.norm*self.eta1*form1}
+        elif self.__fnames__[0] is not None and self.__fnames__[1] is None:
+            self.output_params[os.path.basename(self.fname1)+'_1']={'x':self.x,'y':self.norm*self.eta1*form1}
             self.output_params['bkg']={'x':self.x,'y':self.bkg*np.ones_like(self.x)}
             return self.eta1*form1*self.norm*np.exp(-self.x**2*self.sig**2)+self.bkg
-        elif self.__fnames__[0]==None:
-            self.output_params[self.fname2]={'x':self.x,'y':self.norm*self.eta2*form2}
+        elif self.__fnames__[0] is None and self.__fnames__[1] is not None:
+            self.output_params[os.path.basename(self.fname2)+'_1']={'x':self.x,'y':self.norm*self.eta2*form2}
             self.output_params['bkg']={'x':self.x,'y':self.bkg*np.ones_like(self.x)}
             return self.eta2*form2*self.norm*np.exp(-self.x**2*self.sig**2)+self.bkg
         else:

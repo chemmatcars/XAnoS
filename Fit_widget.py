@@ -1194,7 +1194,7 @@ class Fit_Widget(QWidget):
     def fitParamChanged(self,row,col):
         txt=self.sfitParamTableWidget.item(row,0).text()
         try:
-            val=eval(self.sfitParamTableWidget.item(row,col).text())
+            val=float(self.sfitParamTableWidget.item(row,col).text())
         except:
             val=self.sfitParamTableWidget.item(row,col).text()
         if col==1:
