@@ -481,6 +481,9 @@ class Fit_Widget(QWidget):
             self.fit.x=self.data[fname]['x']
             self.fit.y=self.data[fname]['y']
             self.fit.yerr=self.data[fname]['yerr']
+            if len(np.where(self.data[fname]['yerr']<1e-30)[0])>0:
+                QMessageBox.warning(self,'Zero Errorbars','Some or all the errorbars of the selected data are zeros. Please select None for the Errorbar column in the Plot options of the data',QMessageBox.Ok)
+                break
             self.oldParams=copy.copy(self.fit.params)
             if self.fit.params['__mpar__']!={}:
                 self.oldmpar=copy.copy(self.mfitParamData)
