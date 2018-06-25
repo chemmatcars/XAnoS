@@ -65,7 +65,7 @@ class Detector_Widget(QWidget):
         if self.currentDetector=='PhotonII':
             self.imgFile=caget('13PII_1:TIFF1:FullFileName_RBV',as_string=True)
         else:
-            self.imgFile=caget(self.detPV+'FullFileName_RBV',as_string=True)
+            self.imgFile=caget(self.detPV.split(':')[0]+':TIFF1:FullFileName_RBV',as_string=True)
         self.img=fb.open(self.imgFile.replace(self.detectors[self.currentDetector]['det_folder'],self.detectors[self.currentDetector]['cars_folder']))
         self.imgData=self.img.data
         self.imgHeader=self.img.header
@@ -327,7 +327,7 @@ class Detector_Widget(QWidget):
             det_txt=str(self.detectorComboBox.currentText())
             det_name=self.detectors[det_txt]['PV']
             P,R,_=det_name.split(':')
-            QProcess.startDetached('medm -x -macro "P=%s:,R=%s:" "/home/epics/CARS5/Users/ChemMat/Beamline Operations/15IDD/SAXS/SAXS_Drive/adl/pilatusDetector.adl"'%(P,R))
+            QProcess.startDetached('medm -x -macro "P=%s:,R=%s:" "/home/epics/SAXS_Drive/adl/pilatusDetector.adl"'%(P,R))
         except:
             QMessageBox.warning(self,'Detector Error','Please select a valid detector first.',QMessageBox.Ok)
             
@@ -436,6 +436,7 @@ class Detector_Widget(QWidget):
         self.imgFName=str(self.imgFNameLineEdit.text())
         if self.detectorStatus!=0:
             caput(self.detPV+'FileName',self.imgFName)
+            caput(self.detPV.split(':')[0]+':TIFF1:FileName',self.imgFName)
             if self.currentDetector=='PhotonII':
                 caput('13PII_1:TIFF1:FileName',self.imgFName)
             
@@ -488,12 +489,15 @@ class Detector_Widget(QWidget):
             self.imgFNameLineEdit.setText(self.imgFName)
             self.imgFNameChanged()
             caput(self.detPV+'FileNumber', 1)
+            caput(self.detPV.split(':')[0]+':TIFF1:FileNumber', 1)
             caput(self.detPV+'AutoIncrement', 0)
+            caput(self.detPV.split(':')[0]+':TIFF1:AutoIncrement',0)            
             caput(self.detPV+'AutoSave', 1)
             #self.imgModeComboBox.setCurrentIndex(0)
             #caput(self.detPV+'ImageMode', 0)
             caput(self.detPV+'NumImages',1)
-            caput(self.detPV+'AcquirePeriod',0.0)
+            caput(self.detPV+'AcquirePeriod',(self.expTime+0.1))
+            caput(self.detPV.split(':')[0]+':TIFF1:EnableCallbacks',1)
 
 #    def set_det_experiment_mode(self):
 #        """
@@ -535,7 +539,8 @@ class Detector_Widget(QWidget):
                 #self.carsImgFolder=self.carsImgFolder.replace('\\','/')
                 self.carsImgFolderLineEdit.setText(self.carsImgFolder)
                 self.detImgFolder=self.carsImgFolder.replace(self.detectors[self.currentDetector]['cars_folder'],self.detectors[self.currentDetector]['det_folder'])
-                caput(self.detPV+'FilePath',self.detImgFolder)
+                caput(self.detPV+'FilePath','/tmp')
+                caput(self.detPV.split(':')[0]+':TIFF1:FilePath',self.detImgFolder)
                 if self.detectors[self.currentDetector]=='Apex2':
                     caput(self.detPV+'FileTemplate','%s%s_%04d.sfrm')
                 elif self.detectors[self.currentDetector]=='PhotonII':
@@ -543,6 +548,7 @@ class Detector_Widget(QWidget):
                     caput('13PII_1:TIFF1:FileTemplate','%s%s_%04d.tif')
                 else:
                     caput(self.detPV+'FileTemplate','%s%s_%04d.tif')
+                    caput(self.detPV.split(':')[0]+':TIFF1:FileTemplate','%s%s_%04d.tif')
                 #caput(self.detPV+'SeriesFileTemplate','%s%s_%04d')
                 #try:
                 #    self.fileWatcher.removePath(os.path.join(os.getcwd(),'img_0001.tif'))
@@ -597,7 +603,8 @@ class Detector_Widget(QWidget):
             detFolder=self.carsImgFolder.replace(self.detectors[self.currentDetector]['cars_folder'],self.detectors[self.currentDetector]['det_folder'])
             if self.currentDetector=='Apex2':
                 detFolder=detFolder.replace('/','\\')
-            caput(self.detPV+'FilePath',detFolder)
+            #caput(self.detPV+'FilePath',detFolder)
+            caput(self.detPV.split(':')[0]+'TIFF1:FilePath',detFolder)
             if self.currentDetector=='PhotonII':
                 caput('13PII_1:TIFF1:FilePath',detFolder)
             

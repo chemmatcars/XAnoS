@@ -24,7 +24,7 @@ class FileWatcher(QObject):
         if os.path.exists(self.path):
             time=int(os.path.getmtime(self.path))
             if time>self.mtime:
-#                print('File is modified on ', time)
+                print('File is modified on ', time)
                 self.fileModified.emit()
                 self.mtime=time
         else:

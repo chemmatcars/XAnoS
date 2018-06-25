@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem
 from PyQt5.QtGui import QPalette, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5 import QtTest
 import os
 import sys
@@ -22,6 +22,17 @@ class Data_Collector(QWidget):
     """
     This class is developed to collect SAXS/WAXS data using different Area detectors with different experimental conditions
     """
+    undulatorChanged=pyqtSignal(int)
+    undulatorGapChanged=pyqtSignal(int)
+    undulatorGapChanging=pyqtSignal(float)
+    undulatorChanging=pyqtSignal(float)
+    energyChanged=pyqtSignal(int)
+    energyChanging=pyqtSignal(float)
+    jjcvChanging=pyqtSignal(float)
+    jjchChanging=pyqtSignal(float)
+    jjdvChanging=pyqtSignal(float)
+    jjdhChanging=pyqtSignal(float)
+    
     def __init__(self,parent=None):
         QWidget.__init__(self,parent)
         self.palette=QPalette()
@@ -39,8 +50,8 @@ class Data_Collector(QWidget):
         self.delay=0.1
         self.detPV='None'
         self.palette.setColor(QPalette.Foreground,Qt.green)
-        self.undulatorStatus='Idle'
-        self.monochromatorStatus='Idle'
+        self.undulatorStatus='<font color="Green">Idle</font>'
+        self.monochromatorStatus='<font color="Green">Idle</font>'
         self.pixmapON=QPixmap('./Images/ShutterON.png')
         self.pixmapOFF=QPixmap('./Images/ShutterOFF.png')
         
@@ -80,12 +91,13 @@ class Data_Collector(QWidget):
                 ans=QMessageBox.question(self,'Shutter status','The shutter is open. Do you want to close the shutter to proceed further?',QMessageBox.No,QMessageBox.Yes)
                 if ans==QMessageBox.Yes:
                     self.shutter_OFF()
-        self.undulatorStatusLabel.setPalette(self.palette)
-        self.monochromatorStatusLabel.setPalette(self.palette)
+        #self.undulatorStatusLabel.setPalette(self.palette)
+        #self.monochromatorStatusLabel.setPalette(self.palette)
         
         self.redServerContext = zmq.Context()
         self.redServerSocket = self.redServerContext.socket(zmq.PUB)
         self.redServerSocket.bind("tcp://*:%s" %'2036')
+        
         
     def monitorAbsorber(self,**kwargs):
         """
@@ -204,6 +216,15 @@ class Data_Collector(QWidget):
         
         self.sync_BLInfo()
         
+        self.energyChanged.connect(self.monochromatorStatusChanged)
+        self.undulatorChanged.connect(self.undulatorStatusChanged)
+        self.undulatorChanging.connect(self.undulatorEnergyChanged)
+        self.undulatorGapChanging.connect(self.undulatorGapChanged)
+        self.jjcvChanging.connect(self.JJCV_Changing)
+        self.jjchChanging.connect(self.JJCH_Changing)
+        self.jjdvChanging.connect(self.JJDV_Changing)
+        self.jjdhChanging.connect(self.JJDH_Changing)
+        
         #except:
         #    QMessageBox.warning(self, 'EPICS error','Please check if 15IDA soft-IOC is running or not.',QMessageBox.Ok)
         #    return
@@ -232,8 +253,7 @@ class Data_Collector(QWidget):
         camonitor(self.BLParams['JJC_VSize']['PV'],callback=self.JJCV_changed)
         camonitor(self.BLParams['JJC_HSize']['PV'],callback=self.JJCH_changed)
         camonitor(self.BLParams['JJD_VSize']['PV'],callback=self.JJDV_changed)
-        camonitor(self.BLParams['JJD_HSize']['PV'],callback=self.JJDH_changed)
-        
+        camonitor(self.BLParams['JJD_HSize']['PV'],callback=self.JJDH_changed)        
         
         
     def monochromatorStatusCheck(self,**kwargs):
@@ -241,12 +261,16 @@ class Data_Collector(QWidget):
         Updates the status of the monochromator
         """
         value=kwargs['value']
+        self.energyChanged.emit(value)
+        
+        
+    def monochromatorStatusChanged(self,value):
         if value==1:
-            self.palette.setColor(QPalette.Foreground,Qt.red)
-            self.monochromatorStatus='Moving'
+            #self.palette.setColor(QPalette.Foreground,Qt.red)
+            self.monochromatorStatus='<font color="Red">Moving</font>'
         else:
-            self.palette.setColor(QPalette.Foreground,Qt.green)
-            self.monochromatorStatus='Idle'
+            #self.palette.setColor(QPalette.Foreground,Qt.green)
+            self.monochromatorStatus='<font color="Green">Idle</font>'
         self.monochromatorStatusLabel.setText(self.monochromatorStatus)
         self.monochromatorStatusLabel.setPalette(self.palette)
         pg.QtGui.QApplication.processEvents()
@@ -257,12 +281,15 @@ class Data_Collector(QWidget):
         Updates the status of the Undulator
         """
         value=kwargs['value']
+        self.undulatorChanged.emit(value)
+        
+    def undulatorStatusChanged(self,value):
         if value==1:
-            self.palette.setColor(QPalette.Foreground,Qt.red)
-            self.undulatorStatus='Moving'
+            #self.palette.setColor(QPalette.Foreground,Qt.red)
+            self.undulatorStatus='<font color="Red">Moving</font>'
         else:
-            self.palette.setColor(QPalette.Foreground,Qt.green)
-            self.undulatorStatus='Idle'
+            #self.palette.setColor(QPalette.Foreground,Qt.green)
+            self.undulatorStatus='<font color="Green">Idle</font>'
         self.undulatorStatusLabel.setText(self.undulatorStatus)
         self.undulatorStatusLabel.setPalette(self.palette)
 
@@ -271,7 +298,11 @@ class Data_Collector(QWidget):
         """
         Updates the energy of the undulator
         """
-        self.undulatorEnergy=kwargs['value']
+        value=kwargs['value']
+        self.undulatorChanging.emit(value)
+        
+    def undulatorEnergyChanged(self,value):
+        self.undulatorEnergy=value
         self.undulatorEnergyLabel.setText('%.5f keV'%self.undulatorEnergy)
         #pg.QtGui.QApplication.processEvents()
         
@@ -279,7 +310,11 @@ class Data_Collector(QWidget):
         """
         Updates the Gap of the undulator
         """
-        self.undulatorGap=kwargs['value']
+        value=kwargs['value']
+        self.undulatorGapChanging.emit(value)
+        
+    def undulatorGapChanged(self,value):
+        self.undulatorGap=value
         self.undulatorGapLabel.setText('%.5f mm'%self.undulatorGap)
 
         
@@ -287,6 +322,9 @@ class Data_Collector(QWidget):
         """
         Updates the JJC Vertical slit sizes in the GUI by sensing the changes in the slit sizes
         """
+        self.jjcvChanging.emit(value)
+        
+    def JJCV_Changing(self,value):
         try:
             self.beamsizeV= value # caget(self.BLParams['JJC_VSize']['PV'])
             self.JJCVLabel.setText('%.3f mm'%self.beamsizeV)
@@ -298,7 +336,10 @@ class Data_Collector(QWidget):
     def JJCH_changed(self, value=None,**kwargs):
         """
         Updates the JJC Horizontal slit sizes in the GUI by sensing the changes in the slit sizes
-        """        
+        """
+        self.jjchChanging.emit(value)
+
+    def JJCH_Changing(self,value):       
         try:
             self.beamsizeH=value#caget(self.BLParams['JJC_HSize']['PV'])
             self.JJCHLabel.setText('%.3f mm'%self.beamsizeH)
@@ -311,6 +352,9 @@ class Data_Collector(QWidget):
         """
         Updates the JJD Vertical slit sizes in the GUI by sensing the changes in the slit sizes
         """
+        self.jjdvChanging.emit(value)
+        
+    def JJDV_Changing(self,value):
         try:
             self.collsizeV=value#caget(self.BLParams['JJD_VSize']['PV'])
             self.JJDVLabel.setText('%.3f mm'%self.collsizeV)
@@ -322,10 +366,13 @@ class Data_Collector(QWidget):
         """
         Updates the JJD Horizontal slit sizes in the GUI by sensing the changes in the slit sizes
         """
+        self.jjdhChanging.emit(value)
+        
+    def JJDH_Changing(self,value):
         try:
-            self.experimentLogHandle.write('#Collimator-Horizontal : %.3f mm\n'%self.collsizeH)
             self.collsizeH=value#caget(self.BLParams['JJD_HSize']['PV'])
             self.JJDHLabel.setText('%.3f mm'%self.collsizeH)
+            self.experimentLogHandle.write('#Collimator-Horizontal : %.3f mm\n'%self.collsizeH)
         except:
             pass
         
@@ -335,7 +382,12 @@ class Data_Collector(QWidget):
         """
         Updates the energy in the GUI by sensing the energy change in EPICS
         """
-        self.energy=kwargs['value']
+        value=kwargs['value']
+        self.energyChanging.emit(value)
+        
+        
+    def energyWavelengthChanging(self,value):
+        self.energy=value    
         self.energyLabel.setText('%.5f keV'%self.energy)
         self.wavelength= 6.62607e-34*2.9979e8/1.60217e-19/1e3/self.energy*1e10
         self.wavelengthLabel.setText(u'%.5f \u212B'%self.wavelength)
@@ -822,11 +874,11 @@ class Data_Collector(QWidget):
                 return
             
             self.detectorWidgets[detname].detectorComboBox.setCurrentIndex(self.detectorWidgets[detname].detectorComboBox.findText(detname))
-#            if self.experimentFolder is not None:
-#                self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
-#            else:
-#                QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
-#                return
+            if self.experimentFolder is not None:
+                self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
+            else:
+                QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
+                return
             self.detectorComboBox.setCurrentIndex(self.detectorComboBox.findText(detname))
             if self.detectorWidgets[detname].connection:
                 self.detectorDialogs[detname]=QDialog(self)
@@ -891,11 +943,11 @@ class Data_Collector(QWidget):
         else:
             self.experimentLogHandle=open(self.experimentLogFile,'a')
             self.experimentLogHandle.write('##Experiment started on: '+time.asctime()+'\n')
-            self.energyWavelengthChanged(value=self.energy)
-            self.JJCH_changed()
-            self.JJCV_changed()
-            self.JJDV_changed()
-            self.JJDH_changed()
+            self.energyWavelengthChanging(self.energy)
+            self.JJCH_Changing(self.beamsizeH)
+            self.JJCV_Changing(self.beamsizeV)
+            self.JJDH_Changing(self.collsizeH)
+            self.JJDV_Changing(self.collsizeV)
             self.experimentLogHandle.close()
             self.experimentLogHandle=open(self.experimentLogFile,'a')
         self.experimentIsSet=True
@@ -924,14 +976,13 @@ class Data_Collector(QWidget):
             return
         lines=self.experimentLogHandle.readlines()
         self.experimentLogHandle.close()
-        self.experimentLogHandle=open(self.experimentLogFile,'a')
-        self.experimentLogHandle.write('##Experiment folder accessed on: '+time.asctime()+'\n')
-        self.energyWavelengthChanged(value=self.energy)
-        self.JJCH_changed()
-        self.JJCV_changed()
-        self.JJDH_changed()
-        self.JJDV_changed()
-        self.experimentLogHandle.close()
+        self.experimentLogHandle=open(self.experimentLogFile,'w')
+        self.experimentLogHandle.write('##Experiment started on: '+time.asctime()+'\n')
+        self.energyWavelengthChanging(self.energy)
+        self.JJCH_Changing(self.beamsizeH)
+        self.JJCV_Changing(self.beamsizeV)
+        self.JJDH_Changing(self.collsizeH)
+        self.JJDV_Changing(self.collsizeV)
         self.experimentLogHandle=open(self.experimentLogFile,'a')
         for line in lines:
             if '#Detectors :' in line:
@@ -1074,9 +1125,9 @@ class Data_Collector(QWidget):
         Collects the transmission data i.e Monitor and Photodiode counts just after the sample
         """
         self.bringPDIn()
-        self.palette.setColor(QPalette.Foreground,Qt.red)
-        self.instrumentStatus.setPalette(self.palette)
-        self.instrumentStatus.setText('Collecting transmission data! Please wait...')
+        #self.palette.setColor(QPalette.Foreground,Qt.red)
+        #self.instrumentStatus.setPalette(self.palette)
+        self.instrumentStatus.setText('<font color="Red">Collecting transmission data! Please wait...</font>')
         caput(self.scalers['scaler_count_time']['PV'],self.expTime)
         self.shutter_ON()
         caput(self.scalers['scaler_start']['PV'],1,wait=False) #Starts counting.
@@ -1086,9 +1137,9 @@ class Data_Collector(QWidget):
         self.trans_diode_counts=caget(self.scalers['diode']['PV'])
         self.trans_monitor_counts=caget(self.scalers['monitor']['PV'])
         self.PDTransmissionLabel.setText('%.5f'%(self.trans_diode_counts*1.0/self.trans_monitor_counts))
-        self.palette.setColor(QPalette.Foreground,Qt.green)
-        self.instrumentStatus.setPalette(self.palette)
-        self.instrumentStatus.setText('Done')
+        #self.palette.setColor(QPalette.Foreground,Qt.green)
+        #self.instrumentStatus.setPalette(self.palette)
+        self.instrumentStatus.setText('<font color="Green">Done</font>')
         pg.QtGui.QApplication.processEvents()
         
         
@@ -1117,7 +1168,8 @@ class Data_Collector(QWidget):
         """
         Collects SAXS data depending upon the settings also collects dark current and transmission using photodiode near the sample
         """
-        self.shutter_OFF()
+        if self.autoShutterCheckBox.checkState()>0:
+            self.shutter_OFF()
         try:
             self.frameCount=int(self.frameCountLineEdit.text())
             self.sleepTime=float(self.sleepTimeLineEdit.text())
@@ -1137,14 +1189,14 @@ class Data_Collector(QWidget):
                         self.redServerSocket.send_string(self.serverFileOut)
                     
                     if self.sleepTime>1e-3:
-                        self.palette.setColor(QPalette.Foreground,Qt.red)
-                        self.instrumentStatus.setPalette(self.palette)
-                        self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
+                        #self.palette.setColor(QPalette.Foreground,Qt.red)
+                        #self.instrumentStatus.setPalette(self.palette)
+                        self.instrumentStatus.setText('<font color="Red">Sleeping for %s s. Please wait...</font>'%self.sleepTime)
                         QtTest.QTest.qWait(self.sleepTime*1000)
                     self.measurementProgressDialog.setValue(i+1)
-                self.palette.setColor(QPalette.Foreground,Qt.green)
-                self.instrumentStatus.setPalette(self.palette)
-                self.instrumentStatus.setText('Done')
+                #self.palette.setColor(QPalette.Foreground,Qt.green)
+                #self.instrumentStatus.setPalette(self.palette)
+                self.instrumentStatus.setText('<font color="Green">Done</font>')
                 self.staticCollectButton.setText('Collect Static')
             else:
                 ans=QMessageBox.question(self,'Abort','Do you really like to abort the measurement',QMessageBox.Yes,QMessageBox.No)
@@ -1158,7 +1210,8 @@ class Data_Collector(QWidget):
         """
         Collects SAXS with changing PV of either motors or some beamline parameters
         """
-        self.shutter_OFF()
+        if self.autoShutterCheckBox.checkState()>0:
+            self.shutter_OFF()
         self.NLoops=self.loopSpinBox.value()
         try:
             self.frameCount=int(self.frameCountLineEdit.text())
@@ -1201,9 +1254,9 @@ class Data_Collector(QWidget):
                                 while moving:
                                     if self.abort:
                                         break
-                                    self.palette.setColor(QPalette.Foreground,Qt.red)
-                                    self.instrumentStatus.setPalette(self.palette)
-                                    self.instrumentStatus.setText('Motors are moving for the next position. Please wait')
+                                    #self.palette.setColor(QPalette.Foreground,Qt.red)
+                                    #self.instrumentStatus.setPalette(self.palette)
+                                    self.instrumentStatus.setText('<font color="Red">Motors are moving for the next position. Please wait...</font>')
                                     pg.QtGui.QApplication.processEvents()
                                     moving=self.checkMotorsMoving()
                                     QtTest.QTest.qWait(0.1*1000)
@@ -1232,16 +1285,16 @@ class Data_Collector(QWidget):
                                 caput(self.motors[motorname]['PV']+'.VAL',firstPosition[motorname],wait=False)
                         moving=self.checkMotorsMoving()
                         while moving:
-                            self.palette.setColor(QPalette.Foreground,Qt.red)
-                            self.instrumentStatus.setPalette(self.palette)
-                            self.instrumentStatus.setText('Motors are moving back to the starting position. Please wait')
+                            #self.palette.setColor(QPalette.Foreground,Qt.red)
+                            #self.instrumentStatus.setPalette(self.palette)
+                            self.instrumentStatus.setText('<font color="Red">Motors are moving back to the starting position. Please wait...</font>')
                             pg.QtGui.QApplication.processEvents()
                             moving=self.checkMotorsMoving()
                             QtTest.QTest.qWait(0.1*1000)
-                        self.palette.setColor(QPalette.Foreground,Qt.green)
-                        self.instrumentStatus.setPalette(self.palette)
+                        #self.palette.setColor(QPalette.Foreground,Qt.green)
+                        #self.instrumentStatus.setPalette(self.palette)
                         self.measurementProgressDialog.setValue(self.measurementCount*self.NLoops*self.frameCount)
-                        self.instrumentStatus.setText('Done')
+                        self.instrumentStatus.setText('<font color="Green">Done</font>')
                         self.dynamicCollectButton.setText('Collect Dynamic')                    
                     else:
                         QMessageBox.warning(self,'Limit error', 'The motor positions supplied for measurements are beyond the limits. Please review your positioner values.',QMessageBox.Ok)
@@ -1279,16 +1332,16 @@ class Data_Collector(QWidget):
         """
         self.pdInPosition=float(self.pdInPositionLineEdit.text())
         #if not self.pdIn:
-        self.palette.setColor(QPalette.Foreground,Qt.red)
-        self.instrumentStatus.setPalette(self.palette)
-        self.instrumentStatus.setText('Bringing photodiode in. Please wait...')
+        #self.palette.setColor(QPalette.Foreground,Qt.red)
+        #self.instrumentStatus.setPalette(self.palette)
+        self.instrumentStatus.setText('<font color="Red">Bringing photodiode in. Please wait...</font>')
         #print('I m here')
         caput(self.motors['cmir']['PV'],self.pdInPosition,wait=False)           
         while caget(self.motors['cmir']['PV']+'.DMOV')==0:
             pg.QtGui.QApplication.processEvents()           
-        self.palette.setColor(QPalette.Foreground,Qt.green)
-        self.instrumentStatus.setText('Done')
-        self.instrumentStatus.setPalette(self.palette)
+        #self.palette.setColor(QPalette.Foreground,Qt.green)
+        self.instrumentStatus.setText('<font color="Green">Done</font>')
+        #self.instrumentStatus.setPalette(self.palette)
 
         
     def bringBeamIn(self):
@@ -1296,15 +1349,15 @@ class Data_Collector(QWidget):
         Brings the photodiode into the beam for transmission measurements
         """
         self.beamInPosition=float(self.beamInPositionLineEdit.text())
-        self.palette.setColor(QPalette.Foreground,Qt.red)
-        self.instrumentStatus.setPalette(self.palette)
-        self.instrumentStatus.setText('Bringing beam in. Please wait...')
+        #self.palette.setColor(QPalette.Foreground,Qt.red)
+        #self.instrumentStatus.setPalette(self.palette)
+        self.instrumentStatus.setText('<font color="Red">Bringing beam in. Please wait...</font>')
         caput(self.motors['cmir']['PV'],self.beamInPosition,wait=False)
         while caget(self.motors['cmir']['PV']+'.DMOV')==0:
             pg.QtGui.QApplication.processEvents()
-        self.palette.setColor(QPalette.Foreground,Qt.green)
-        self.instrumentStatus.setText('Done')       
-        self.instrumentStatus.setPalette(self.palette)
+        #self.palette.setColor(QPalette.Foreground,Qt.green)
+        self.instrumentStatus.setText('<font color="Green">Done</font>')       
+        #self.instrumentStatus.setPalette(self.palette)
             
     def bringMirrorIn(self):
         """
@@ -1312,15 +1365,15 @@ class Data_Collector(QWidget):
         """
         self.mirrorInPosition=float(self.mirrorInPositionLineEdit.text())
         #if not self.mirrorIn:
-        self.palette.setColor(QPalette.Foreground,Qt.red)
-        self.instrumentStatus.setPalette(self.palette)
-        self.instrumentStatus.setText('Bringing Mirror in. Please wait...')
+        #self.palette.setColor(QPalette.Foreground,Qt.red)
+        #self.instrumentStatus.setPalette(self.palette)
+        self.instrumentStatus.setText('<font color="Red">Bringing Mirror in. Please wait...</font>')
         caput(self.motors['cmir']['PV'],self.mirrorInPosition,wait=False)
         while caget(self.motors['cmir']['PV']+'.DMOV')==0:
            pg.QtGui.QApplication.processEvents()            
-        self.palette.setColor(QPalette.Foreground,Qt.green)
-        self.instrumentStatus.setText('Done')       
-        self.instrumentStatus.setPalette(self.palette)
+        #self.palette.setColor(QPalette.Foreground,Qt.green)
+        self.instrumentStatus.setText('<font color="Green">Done</font>')       
+        #self.instrumentStatus.setPalette(self.palette)
 
     def pre_count(self):
         """
@@ -1329,14 +1382,14 @@ class Data_Collector(QWidget):
             2) Collecting transmission if collectTransmissionCheckBox is checked
         """
         camonitor(self.scalers['scaler_start']['PV'],callback=self.changeCountingState)
-        self.palette.setColor(QPalette.Foreground,Qt.red)
-        self.instrumentStatus.setPalette(self.palette)
+        #self.palette.setColor(QPalette.Foreground,Qt.red)
+        #self.instrumentStatus.setPalette(self.palette)
         try:
             shutterTime=float(self.shutterTimeLineEdit.text())
         except:
             shutterTime=0.0
             QMessageBox.warning(self,'Value error','Please check the shutter time. It should be a floating point number.',QMessageBox.Ok)
-        self.instrumentStatus.setText('Counting...please wait')
+        self.instrumentStatus.setText('<font color="Red">Counting. Please wait...</font>')
         caput(self.scalers['scaler_mode']['PV'],0,wait=True) #Setting the counter to one-shot mode
         caput(self.scalers['scaler_count_time']['PV'],self.expTime+2.0*shutterTime,wait=True)
         for detname in self.usedDetectors:
@@ -1367,21 +1420,22 @@ class Data_Collector(QWidget):
         """
         Triggers all the detectors and scalers for counting
         """
-        if not self.darkImage:
-            self.shutter_ON()
-            shutterTime=float(self.shutterTimeLineEdit.text())
-            QtTest.QTest.qWait(shutterTime*1000) #waiting for 0.3 seconds to open the shutter
-        else:
-            self.shutter_OFF()
+        if self.autoShutterCheckBox.checkState()>0:
+            if not self.darkImage:
+                self.shutter_ON()
+                shutterTime=float(self.shutterTimeLineEdit.text())
+                QtTest.QTest.qWait(shutterTime*1000) #waiting for 0.3 seconds to open the shutter
+            else:
+                self.shutter_OFF()
         for detname in self.usedDetectors:
             self.detectorWidgets[detname].detStatus='Acquire'
             self.detectorWidgets[detname].detState='Busy'
-        self.palette.setColor(QPalette.Foreground,Qt.red)
-        self.instrumentStatus.setPalette(self.palette)
+        #self.palette.setColor(QPalette.Foreground,Qt.red)
+        #self.instrumentStatus.setPalette(self.palette)
         if self.darkImage:
-            self.instrumentStatus.setText('Collecting dark images from all the Area Detectors. Please wait...')
+            self.instrumentStatus.setText('<font color="Red">Collecting dark images from all the Area Detectors. Please wait...</font>')
         else:
-            self.instrumentStatus.setText('Collecting data from all the Area Detectors. Please wait...')
+            self.instrumentStatus.setText('<font color="Red">Collecting data from all the Area Detectors. Please wait...</font>')
         #self.counting=Truecamonitor(self.scalers['scaler_start']['PV']
         for detname in self.usedDetectors:
             caput(self.detectors[detname]['PV']+'Acquire',1)
@@ -1394,9 +1448,9 @@ class Data_Collector(QWidget):
         while any([self.detectorWidgets[detname].detStatus=='Acquire' for detname in self.usedDetectors]):
             while any([self.detectorWidgets[detname].detState!='Idle' for detname in self.usedDetectors]):
                 pg.QtGui.QApplication.processEvents()
-        self.palette.setColor(QPalette.Foreground,Qt.green)
-        self.instrumentStatus.setPalette(self.palette)
-        self.instrumentStatus.setText('Counting Finished')      
+        #self.palette.setColor(QPalette.Foreground,Qt.green)
+        #self.instrumentStatus.setPalette(self.palette)
+        self.instrumentStatus.setText('<font color="Green">Counting Finished</font>')      
         
         
     def changeCountingState(self,**kwargs):
@@ -1419,13 +1473,13 @@ class Data_Collector(QWidget):
             3) Advance the image counter by 1
         """
         camonitor_clear(self.scalers['scaler_start']['PV'])
-        self.palette.setColor(QPalette.Foreground,Qt.red)
-        self.instrumentStatus.setPalette(self.palette)
+        #self.palette.setColor(QPalette.Foreground,Qt.red)
+        #self.instrumentStatus.setPalette(self.palette)
         for detname in self.usedDetectors:
             if detname=='PhotonII':
                 imgFile=caget('13PII_1:TIFF1:FullFileName_RBV',as_string=True)
             else:
-                imgFile=caget(self.detectors[detname]['PV']+'FullFileName_RBV',as_string=True)
+                imgFile=caget(self.detectors[detname]['PV'].split(':')[0]+':TIFF1:FullFileName_RBV',as_string=True)
             if self.darkImage:
                 self.serverFileOut=os.path.join(self.detectorFolders[detname],'%s_%04d_dark.edf'%(self.sampleName,self.sampleCounter))
 #                self.dataReducer.darkFile=fileout
@@ -1438,7 +1492,7 @@ class Data_Collector(QWidget):
 #            if not os.path.exists(self.dataReducer.extractedFolder):
 #                os.makedirs(self.dataReducer.extractedFolder)
 #            self.dataReducer.extractedFolderLineEdit.setText(self.dataReducer.extractedFolder)
-            #self.instrumentStatus.setText('Saving file: %s'%fileout)
+            self.instrumentStatus.setText('<font color="Red">Saving file</font>')
             cars_imgFile=imgFile.replace(self.detectors[detname]['det_folder'],self.detectors[detname]['cars_folder'])
             #print(cars_imgFile)
             QtTest.QTest.qWait(2*1000)
@@ -1465,9 +1519,9 @@ class Data_Collector(QWidget):
             file.header['Energy']=self.energy
             file.write(self.serverFileOut)
             self.BSTransmissionLabel.setText('%.5f'%(self.BSdiode_counts/self.monitor_counts))
-        self.palette.setColor(QPalette.Foreground,Qt.green)
-        self.instrumentStatus.setPalette(self.palette)
-        self.instrumentStatus.setText('Done')
+        #self.palette.setColor(QPalette.Foreground,Qt.green)
+        #self.instrumentStatus.setPalette(self.palette)
+        self.instrumentStatus.setText('<font color="Green">Done</file>')
         if not self.darkImage:
             self.sampleCounter+=1
             self.update_counter_record()        
@@ -1480,15 +1534,15 @@ class Data_Collector(QWidget):
             t1=time.time()
             QtTest.QTest.qWait(5*1000)
             while caget('15IDD:PHDUltra:PumpState',as_string=True)!='Idle':
-                self.instrumentStatus.setText('Now pumping new solution for next frame')
+                self.instrumentStatus.setText('<font color="Red">Pumping new solution for next frame. Please wait...</font>')
                 QtTest.QTest.qWait(0.01*1000)
             t2=time.time()
             print(t2-t1)
             caput("15IDD:PHDUltra:ClearVolume",0)
             caput("15IDD:PHDUltra:Infuse",0)
-            self.palette.setColor(QPalette.Foreground,Qt.red)
-            self.instrumentStatus.setPalette(self.palette)
-            self.instrumentStatus.setText('Done')
+            #self.palette.setColor(QPalette.Foreground,Qt.red)
+            #self.instrumentStatus.setPalette(self.palette)
+            self.instrumentStatus.setText('<font color="Green">Done</font>')
             
             
             
