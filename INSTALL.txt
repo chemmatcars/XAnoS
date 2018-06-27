@@ -40,18 +40,7 @@
    	
    		ii) Data Reduction package: 
    			python Data_Reducer.py
-   			
-   			You may get this error:
-	   			Traceback (most recent call last):
-				  File "Data_Reducer.py", line 18, in <module>
-					from calibrationWidget import CalibrationWidget
-				  File "/media/sf_Mrinal_Bera/Documents/SAXS_Drive/calibrationWidget.py", line 14, in <module>
-					from matplotlib import _cntr as cntr
-				ImportError: cannot import name '_cntr'
-			
-			In that case you may have to downgrade the matplotlib by running this command:
-				conda install matplotlib=2.0.2			
-   				
+
    		iii) Data viewer/Analysis package: 
    			python ASAXS_widget.py
    	
