@@ -1,1 +1,1 @@
-{"poniFile": "X:/2018-04/Alignment/AgBh_17_038KeV/calibration_05302018.poni", "maskFile": "X:/2018-04/mask_after_run.msk"}
+{"poniFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2018-07/Tianbo/POM/AgBh_15keV_flowCell.poni", "maskFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2018-07/mask_short_tube.msk"}

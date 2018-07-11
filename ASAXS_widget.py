@@ -18,6 +18,7 @@ import time
 from calc_cf import calc_cf
 from utils import calc_prm
 from readData import read1DSAXS
+import periodictable as pdt
 
 class ASAXS_Widget(QWidget):
     """
@@ -579,6 +580,7 @@ class ASAXS_Widget(QWidget):
         self.metaDataPlotWidget.setXLabel(self.xAxisComboBox.currentText())
         self.metaDataPlotWidget.setYLabel(self.yAxisComboBox.currentText())
         self.metaDataPlotWidget.add_data(self.metaData['x'],self.metaData['y']/self.metaData['norm'],name=self.yAxisComboBox.currentText())
+        self.metaDataPlotWidget.Plot([self.yAxisComboBox.currentText()])
         self.dataPlotWidget.Plot(self.datanames)
         element=str(self.elementComboBox.currentText().split(': ')[1])
         try:
@@ -856,7 +858,7 @@ class ASAXS_Widget(QWidget):
             dmax=float(self.DmaxLineEdit.text())
             Nr=int(self.NrLineEdit.text())
             for fname in self.fnames:
-                r,pr,dpr,q,iqc=calc_prm(self.data[fname]['x'],self.data[fname]['yraw'],self.data[fname]['yerr'],dmax=dmax,Nr=Nr)
+                r,pr,dpr,q,iqc=calc_prm(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['yraw']/self.data[fname]['Thickness'],self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],dmax=dmax,Nr=Nr)
                 self.data[fname]['r']=r
                 self.data[fname]['pr']=pr
                 self.data[fname]['pr_err']=dpr
@@ -875,13 +877,13 @@ class ASAXS_Widget(QWidget):
         """
         Plots the moore's autocorrelation function of the selected data
         """
-        #try:
-        plt=pg.plot()
-        for fname in self.fnames:
-            plt.plot(self.data[fname]['r'],self.data[fname]['pr'],pen='r')
+        try:
+            plt=pg.plot()
+            for fname in self.fnames:
+                plt.plot(self.data[fname]['r'],self.data[fname]['pr'],pen='r')
         #pg.plot(self.data[self.fnames[0]]['r'],self.data[self.fnames[0]]['pr'],pen=pg.mkPen('r',width=2))
-        #except:
-        #    QMessageBox.warning(self,'Data error','Please select Moore\'s autocorrelation first',QMessageBox.Ok)
+        except:
+            QMessageBox.warning(self,'Data error','Please select Moore\'s autocorrelation first',QMessageBox.Ok)
         
     def smoothData(self):
         """
@@ -1059,18 +1061,23 @@ class ASAXS_Widget(QWidget):
             dataChk=[]
             errChk=[]
             f1val=[]
+            energy=[]
             for item in self.dataListWidget.selectedItems():
                 dataname, fname=item.text().split(': ')
                 dataChk.append(self.data[fname]['yintp'])
                 errChk.append(self.data[fname]['yintperr'])
                 f1val.append(self.data[fname]['f1'])
+                energy.append(self.data[fname]['Energy'])
             dataChk=np.array(dataChk)
             errChk=np.array(errChk)
             dataChk=dataChk
             errChk=errChk
             f1val=np.array(f1val)
-            self.pdata=[[f1val,dataChk[:,i],errChk[:,i]] for i in range(dataChk.shape[1])]
-            self.dataCheckWidget=pg.plot(self.pdata[0][0],self.pdata[0][1]/self.pdata[0][1][0],pen=None,symbol='o')
+            energy=np.array(energy)
+            self.pdata=[[energy,f1val,dataChk[:,i],errChk[:,i]] for i in range(dataChk.shape[1])]
+            print(self.pdata[0][0],self.pdata[0][1],self.pdata[0][2]/self.pdata[0][2][0])#/self.pdata[0][2][0])
+            print(len(self.pdata[0][0]), len(self.pdata[0][1]), len(self.pdata[0][2]))
+            self.dataCheckWidget=pg.plot(self.pdata[0][1],self.pdata[0][2]/self.pdata[0][2][0],pen=None,symbol='o')
             self.checkDataSpinBox.setMinimum(0)
             self.checkDataSpinBox.setMaximum(dataChk.shape[1]-1)
             self.checkDataSpinBox.setValue(0)            
@@ -1087,8 +1094,9 @@ class ASAXS_Widget(QWidget):
             fname=QFileDialog.getSaveFileName(self,caption='Save checked data as',directory=self.dataDir,filter='Text files (*.txt)')[0]
             if fname !='':
                 i=self.checkDataSpinBox.value()
-                data=np.vstack((self.pdata[i][0],self.pdata[i][1],self.pdata[i][2])).T
-                header='Data extracted at Q=%.6f'%self.qintp[i]
+                data=np.vstack((self.pdata[i][0],self.pdata[i][1],self.pdata[i][2],self.pdata[i][3])).T
+                header='Data extracted at Q=%.6f\n'%self.qintp[i]
+                header+='col_names=["Energy","f1","Intensity","Intensity_err"]'
                 np.savetxt(fname,data,header=header,comments='#')            
         except:
             QMessageBox.warning(self,'Data error','No checked data to be saved. Please click Check Data button first',QMessageBox.Ok)
@@ -1100,7 +1108,7 @@ class ASAXS_Widget(QWidget):
         """
         i=self.checkDataSpinBox.value()
         self.dataCheckWidget.clear()
-        self.dataCheckWidget.plot(self.pdata[i][0],self.pdata[i][1]/self.pdata[i][1][0],symbol='o',pen=None)
+        self.dataCheckWidget.plot(self.pdata[i][1],self.pdata[i][2]/self.pdata[i][2][0],symbol='o',pen=None)
         if self.dataPlotWidget.plotWidget.getPlotItem().ctrl.logXCheck.isChecked():
             self.checkDataLocLine.setValue(np.log10(self.qintp[i]))
         else:

@@ -166,7 +166,7 @@ class PlotWidget(QWidget):
                 self.data_num+=1
                 #if len(x)>1:
                 self.Plot([dname])
-                return True
+            return True
         else:
             QMessageBox.warning(self,'Data error','The dimensions of x, y or yerr are not matching',QMessageBox.Ok)
             return False
@@ -360,6 +360,14 @@ class PlotWidget(QWidget):
             self.plotWidget.draw()
         else:
             self.plotWidget.getPlotItem().setTitle(title='<font size='+str(fontsize)+'>'+title+'</font>')
+
+    def addROI(self,values=(0,1),orientation='horizontal',movable=True):
+        if orientation=='vertical':
+            self.roi=pg.LinearRegionItem(values=values,orientation=pg.LinearRegionItem.Vertical,movable=movable)
+        else:
+            self.roi = pg.LinearRegionItem(values=values, orientation=pg.LinearRegionItem.Horizontal,movable=movable)
+        self.plotWidget.addItem(self.roi)
+
  
     
 if __name__=='__main__':

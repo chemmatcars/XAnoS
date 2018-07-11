@@ -74,7 +74,7 @@ class Detector_Widget(QWidget):
         self.imgWidget.imageView.getView().setTitle(self.imgFile.replace(self.detectors[self.currentDetector]['det_folder'],self.detectors[self.currentDetector]['cars_folder']))
         pg.QtGui.QApplication.processEvents()
         self.monitor_counts=caget(self.scalers['monitor']['PV'])
-        self.count_time=caget(self.scalers['scaler_count_time']['PV'])
+        self.count_time=caget(self.scalers['15IDD_scaler_count_time']['PV'])
         self.diode_counts=caget(self.scalers['diode']['PV'])
         self.BSDiode_counts=caget(self.scalers['bs_diode']['PV'])
         self.img.header['Monitor']=self.monitor_counts
@@ -358,9 +358,9 @@ class Detector_Widget(QWidget):
                 if self.align:
                     self.set_det_alignment_mode()
                 self.expTimeChanged()
-                caput(self.scalers['scaler_count_time']['PV'],self.expTime,wait=True)
+                caput(self.scalers['15IDD_scaler_count_time']['PV'],self.expTime,wait=True)
                 caput(self.detPV+'Acquire',1)
-                caput(self.scalers['scaler_start']['PV'],1)
+                caput(self.scalers['15IDD_scaler_start']['PV'],1)
                 self.counting=True
                 self.detStatus='Acquire'
                 self.countPushButton.setText('Stop')
@@ -386,7 +386,7 @@ class Detector_Widget(QWidget):
     #                print('BSDiode=%d'%self.BSdiode_counts)
             else:
                 caput(self.detPV+'Acquire',0)
-                caput(self.scalers['scaler_start']['PV'],0)
+                caput(self.scalers['15IDD_scaler_start']['PV'],0)
             self.counting=False
             self.countPushButton.setText('Count')
         else:
@@ -498,6 +498,7 @@ class Detector_Widget(QWidget):
             caput(self.detPV+'NumImages',1)
             caput(self.detPV+'AcquirePeriod',(self.expTime+0.1))
             caput(self.detPV.split(':')[0]+':TIFF1:EnableCallbacks',1)
+            caput(self.detPV.split(':')[0] + ':TIFF1:AutoSave', 1)
 
 #    def set_det_experiment_mode(self):
 #        """
@@ -604,7 +605,7 @@ class Detector_Widget(QWidget):
             if self.currentDetector=='Apex2':
                 detFolder=detFolder.replace('/','\\')
             #caput(self.detPV+'FilePath',detFolder)
-            caput(self.detPV.split(':')[0]+'TIFF1:FilePath',detFolder)
+            caput(self.detPV.split(':')[0]+':TIFF1:FilePath',detFolder)
             if self.currentDetector=='PhotonII':
                 caput('13PII_1:TIFF1:FilePath',detFolder)
             

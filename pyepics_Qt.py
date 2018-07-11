@@ -1,11 +1,12 @@
 import epics
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QComboBox
+from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QComboBox, QMessageBox
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QDoubleValidator,QIntValidator
 
 from epics.utils import BYTES2STR
 
 class PVText(QLabel):
-    pvChanging=pyqtSignal(str)
+    pvChanging=pyqtSignal(str,float)
     def __init__(self, pvname, parent=None):
         QLabel.__init__(self,'',parent)
         self.pv = None
@@ -13,8 +14,9 @@ class PVText(QLabel):
         if pvname is not None:
             self.setPV(pvname)
         
-    def setPV(self, pvname,prec=5):
+    def setPV(self, pvname,prec=5,type=float):
         self.prec=prec
+        self.type=type
         if self.pv is not None and self.cb_index is not None:
             self.pvChanging.disconnect()
             self.pv.remove_callback(self.cb_index)
@@ -25,12 +27,14 @@ class PVText(QLabel):
         self.pvChanging.connect(self.updatePV)
 
     def onPVChange(self, pvname=None, value=None, char_value=None, **kws):
-        self.pvChanging.emit(char_value)
+        self.pvChanging.emit(char_value,value)
 
-    def updatePV(self,char_value):
-        try:
-            self.setText(("{:."+str(self.prec)+"f}").format(char_value))
-        except:
+    def updatePV(self,char_value,value):
+        if self.type==float:
+            self.setText(('%.'+str(self.prec)+'f')%value)
+        elif self.type==int:
+            self.setText('%d'%value)
+        else:
             self.setText(char_value)
         
 class PVLineEdit(QLineEdit):
@@ -52,6 +56,13 @@ class PVLineEdit(QLineEdit):
         self.pv = epics.PV(BYTES2STR(pvname))
         self.cb_index = self.pv.add_callback(self.onPVChange)
         self.pvChanged.connect(self.updatePV)
+        if self.type==float:
+            self.validator=QDoubleValidator()
+            self.setValidator(self.validator)
+        elif self.type==int:
+            self.validator=QIntValidator()
+            self.setValidator(self.validator)
+        #self.updatePV(self.pv.char_value)
 
     def onPVChange(self, pvname=None, char_value=None, **kws):
         self.pvChanged.emit(char_value)
@@ -63,9 +74,17 @@ class PVLineEdit(QLineEdit):
         else:
             self.setText(char_value)
 
+
     def onReturn(self):
-        self.pv.put(BYTES2STR(self.text()))
-        
+        if (self.type==float or self.type==int):
+            if self.validator.validate(self.text(),0)[0]==self.validator.Acceptable:
+                self.pv.put(BYTES2STR(self.text()))
+            else:
+                QMessageBox.warning(self,'Value Error','Please input floating point numbers only',QMessageBox.Ok)
+        else:
+            self.pv.put(BYTES2STR(self.text()))
+
+
 class PVComboBox(QComboBox):
     def __init__(self,parent=None,pvname=None):
         QComboBox.__init__(self,parent)

@@ -32,6 +32,7 @@ class ASAXS_Batch_Processor(QWidget):
         self.QRange=[float(x) for x in self.standardNormRangeLineEdit.text().split(':')]
         self.interpType=self.interpTypeComboBox.currentText()
         self.interpNpts=int(self.interpNptsLineEdit.text())
+        self.bgFactor=float(self.bgFactorLineEdit.text())
         
         self.data=None
         self.ofnames=None
@@ -61,6 +62,7 @@ class ASAXS_Batch_Processor(QWidget):
         self.standardNormRangeLineEdit.returnPressed.connect(self.standardNormRangeChanged)
         self.interpTypeComboBox.currentIndexChanged.connect(self.interpTypeChanged)
         self.interpNptsLineEdit.returnPressed.connect(self.interpNptsChanged)
+        self.bgFactorLineEdit.returnPressed.connect(self.bgFactorChanged)
         
         self.processPushButton.clicked.connect(self.process)
         
@@ -171,7 +173,15 @@ class ASAXS_Batch_Processor(QWidget):
         except:
             self.interpNptsLineEdit.setText(str(self.interpNpts))
             QMessageBox.warning(self,'Value Error','Please enter integer values only',QMessageBox.Ok)
-            
+
+    def bgFactorChanged(self):
+        try:
+            self.bgFactor=float(self.bgFactorLineEdit.text())
+        except:
+            self.bgFactorLineEdit.setText(str(self.bgFactor))
+            QMessageBox.warning(self,'Value Error','Please enter floating values only',QMessageBox.Ok)
+
+
     def process(self):
         self.processMessageTextEdit.clear()
         self.sampleThicknessChanged()
@@ -213,9 +223,9 @@ class ASAXS_Batch_Processor(QWidget):
         if gc_name is None:
             self.processMessageTextEdit.append('File error:: Please provide glassy carbon filename')
             return None, None
-        if sol_name is None:
-            self.processMessageTextEdit.append('File error:: Please provide solvent/bacground filename')
-            return None, None
+        #if sol_name is None:
+        #    self.processMessageTextEdit.append('File error:: Please provide solvent/bacground filename')
+        #    return None, None
         
         #Calculating average for all the files:
         file_exists=True
@@ -250,30 +260,31 @@ class ASAXS_Batch_Processor(QWidget):
             num+=1
             QApplication.processEvents()
             
-        if len(ofnames)!=len(ogcnames):
-            self.processMessageTextEdit.append("File number error: Number of data files not same as number of glassy carbon files")
-            return None, None
+        #if len(ofnames)!=len(ogcnames):
+        #    self.processMessageTextEdit.append("File number error: Number of data files not same as number of glassy carbon files")
+        #    return None, None
             
-        file_exists=True        
-        num=1
-        osolnames=[]
-     
-        while file_exists:
-            try:
-                fnum=range((num-1)*sol_times+1,num*sol_times+1)
-                data,ofname=average1DSAXS(sol_name,num=fnum,ofname=sol_name+'_%04d_avg.txt'%((num-1)*sol_times+1),data=data)
-                self.processMessageTextEdit.append('Averaged data saved in a file named %s'%ofname)
-                osolnames.append(ofname)
-            except:
-                del data[sol_name+'_%04d.txt'%((num-1)*sol_times+1)]
-                self.processMessageTextEdit.append(sol_name+'_%04d.txt'%((num-1)*sol_times+1)+' doesnot exist')
-                file_exists=False
-            num+=1
-            QApplication.processEvents()
+
+        if sol_name is not None:
+            file_exists = True
+            num = 1
+            osolnames = []
+            while file_exists:
+                try:
+                    fnum=range((num-1)*sol_times+1,num*sol_times+1)
+                    data,ofname=average1DSAXS(sol_name,num=fnum,ofname=sol_name+'_%04d_avg.txt'%((num-1)*sol_times+1),data=data)
+                    self.processMessageTextEdit.append('Averaged data saved in a file named %s'%ofname)
+                    osolnames.append(ofname)
+                except:
+                    del data[sol_name+'_%04d.txt'%((num-1)*sol_times+1)]
+                    self.processMessageTextEdit.append(sol_name+'_%04d.txt'%((num-1)*sol_times+1)+' doesnot exist')
+                    file_exists=False
+                num+=1
+                QApplication.processEvents()
             
-        if len(ofnames)!=len(osolnames):
-            self.processMessageTextEdit.append("File number error: Number of data files not same as number of solvent/background files")
-            return None, None
+            if len(ofnames)!=len(osolnames):
+                self.processMessageTextEdit.append("File number error: Number of data files not same as number of solvent/background files")
+                return None, None
                
         if air_name is not None:
             file_exists=True        
@@ -338,26 +349,31 @@ class ASAXS_Batch_Processor(QWidget):
             data[ogcnames[num]]['CF']=cf    
             data[ogcnames[num]]['Thickness']=gc_thickness
             fkeys.append(ogcnames[num])
-            
+
+
             data[ofnames[num]]['x']=copy.copy(data[ofnames[num]]['xintp'])
-            data[ofnames[num]]['y']=(data[ofnames[num]]['yintp']-data[osolnames[num]]['yintp'])
-            data[ofnames[num]]['yerr']=np.sqrt(data[ofnames[num]]['yintperr']**2+data[osolnames[num]]['yintperr']**2)
+            if sol_name is not None:
+                data[ofnames[num]]['y']=(data[ofnames[num]]['yintp']-self.bgFactor*data[osolnames[num]]['yintp'])
+                data[ofnames[num]]['yerr']=np.sqrt(data[ofnames[num]]['yintperr']**2+self.bgFactor**2*data[osolnames[num]]['yintperr']**2)
+            else:
+                data[ofnames[num]]['y'] = data[ofnames[num]]['yintp']
+                data[ofnames[num]]['yerr'] = data[ofnames[num]]['yintperr']
             data[ofnames[num]]['CF']=cf
             data[ofnames[num]]['Thickness']=sample_thickness
             fkeys.append(ofnames[num])
             
             
-            
-            data[osolnames[num]]['x']=copy.copy(data[osolnames[num]]['xintp'])
-            if mt_name is not None:
-                data[osolnames[num]]['y']=(data[osolnames[num]]['yintp']-data[omtnames[num]]['yintp'])
-                data[osolnames[num]]['yerr']=np.sqrt(data[osolnames[num]]['yintperr']**2+data[omtnames[num]]['yintperr']**2)
-            else:
-                data[osolnames[num]]['y']=data[osolnames[num]]['yintp']
-                data[osolnames[num]]['yerr']=data[osolnames[num]]['yintperr']
-            data[osolnames[num]]['CF']=cf
-            data[osolnames[num]]['Thickness']=sol_thickness
-            fkeys.append(osolnames[num])
+            if sol_name is not None:
+                data[osolnames[num]]['x']=copy.copy(data[osolnames[num]]['xintp'])
+                if mt_name is not None:
+                    data[osolnames[num]]['y']=(data[osolnames[num]]['yintp']-data[omtnames[num]]['yintp'])
+                    data[osolnames[num]]['yerr']=np.sqrt(data[osolnames[num]]['yintperr']**2+data[omtnames[num]]['yintperr']**2)
+                else:
+                    data[osolnames[num]]['y']=data[osolnames[num]]['yintp']
+                    data[osolnames[num]]['yerr']=data[osolnames[num]]['yintperr']
+                data[osolnames[num]]['CF']=cf
+                data[osolnames[num]]['Thickness']=sol_thickness
+                fkeys.append(osolnames[num])
                  
             
             if mt_name is not None and air_name is not None:
