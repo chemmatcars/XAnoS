@@ -87,7 +87,7 @@ class Data_Dialog(QDialog):
         self.openDataFilePushButton.clicked.connect(self.openFile)
         self.autoUpdateCheckBox.stateChanged.connect(self.autoUpdate_ON_OFF)
         self.saveDataPushButton.clicked.connect(self.saveData)
-        self.addPlotPushButton.clicked.connect(self.addPlots)
+        self.addPlotPushButton.clicked.connect(lambda x: self.addPlots(plotIndex=None))
         self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)
         self.removePlotPushButton.clicked.connect(self.removePlots)
         
@@ -486,6 +486,7 @@ class Data_Dialog(QDialog):
             for i in range(1,3):
                 self.plotSetupTableWidget.setCellWidget(row,i,QComboBox())
                 self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
+                print(plotIndex)
                 if plotIndex is not None:
                     self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
                 else:
