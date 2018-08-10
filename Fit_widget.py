@@ -487,69 +487,69 @@ class Fit_Widget(QWidget):
             self.oldParams=copy.copy(self.fit.params)
             if self.fit.params['__mpar__']!={}:
                 self.oldmpar=copy.copy(self.mfitParamData)
-#            try:
-            self.showFitInfoDlg()
-            self.runFit()
-            #self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,fit_method=self.fit_method,callback=self.fitCallback)
-            
-            self.fit_info='Fit Message: %s\n'%self.fit_message
-            
-#            if self.autoCICheckBox.isChecked():
-#                self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
-            self.closeFitInfoDlg()
-            for row in range(self.sfitParamTableWidget.rowCount()):
-                key=self.sfitParamTableWidget.item(row,0).text()
-                self.sfitParamTableWidget.item(row,1).setText('%.6e'%(self.fit.result.params[key].value))
-            self.sfitParamTableWidget.resizeRowsToContents()
-            self.sfitParamTableWidget.resizeColumnsToContents()
-            for row in range(self.mfitParamTableWidget.rowCount()):
-                for col in range(self.mfitParamTableWidget.columnCount()):
-                    parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
-                    key='__%s__%03d'%(parkey,row)
-                    self.mfitParamTableWidget.item(row,col).setText('%.6e'%(self.fit.result.params[key].value))                    
-            self.sfitParamTableWidget.resizeRowsToContents()
-            self.sfitParamTableWidget.resizeColumnsToContents()
-            self.mfitParamTableWidget.resizeRowsToContents()
-            self.mfitParamTableWidget.resizeColumnsToContents()
-           
-            self.update_plot()
-            fitResultDlg=FitResultDialog(fit_report=self.fit_report,fit_info=self.fit_info)
-            #ans=QMessageBox.question(self,'Accept fit results?',self.fit_report,QMessageBox.Yes, QMessageBox.No)                
-            if fitResultDlg.exec_():
+            try:
+                self.showFitInfoDlg()
+                self.runFit()
+                #self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,fit_method=self.fit_method,callback=self.fitCallback)
+
+                self.fit_info='Fit Message: %s\n'%self.fit_message
+
+    #            if self.autoCICheckBox.isChecked():
+    #                self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
+                self.closeFitInfoDlg()
                 for row in range(self.sfitParamTableWidget.rowCount()):
                     key=self.sfitParamTableWidget.item(row,0).text()
-                    try:
-                        self.sfitParamTableWidget.item(row,1).setToolTip('%.3e \u00B1 %.3e'%(self.fit.result.params[key].value,self.fit.result.params[key].stderr))
-                    except:
-                        pass
-                    if self.fit.params['__mpar__']!={}:
-                        for row in range(self.mfitParamTableWidget.rowCount()):
-                            for col in range(self.mfitParamTableWidget.columnCount()):
-                                parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
-                                key='__%s__%03d'%(parkey,row)
-                                self.mfitParamTableWidget.item(row,col).setToolTip('%.3e \u00B1 %0.3e'%(self.fit.result.params[key].value,self.fit.result.params[key].stderr))  
-                                self.mfitParamData[parkey][row]=self.fit.result.params[key].value
-                ofname=os.path.splitext(fname)[0]
-                header='Data fitted with model: %s on %s\n'%(self.funcListWidget.currentItem().text(),time.asctime())
-                header+='Fixed Parameters\n'
-                header+='----------------\n'
-                for key in self.fit.params.keys():
-                    if key not in self.fit.fit_params.keys() and key not in self.special_keys and key[:2]!='__':
-                        header+=key+'='+str(self.fit.params[key])+'\n'
-                header+=self.fit_report+'\n'
-                header+='x \t y\t yerr \t yfit'
-                fitdata=np.vstack((self.fit.x[self.fit.imin:self.fit.imax+1],self.fit.y[self.fit.imin:self.fit.imax+1],self.fit.yerr[self.fit.imin:self.fit.imax+1],self.fit.yfit)).T
-                np.savetxt(ofname+'_fit.txt',fitdata,header=header,comments='#')
-            else:
-                self.undoFit()
-#            except:
-#                try:
-#                    self.closeFitInfoDlg()
-#                except:
-#                    pass
-#                QMessageBox.warning(self,'Minimization failed','The initial guesses of the parameters are too far probably!',QMessageBox.Ok)
-#                self.update_plot()
-#                break
+                    self.sfitParamTableWidget.item(row,1).setText('%.6e'%(self.fit.result.params[key].value))
+                self.sfitParamTableWidget.resizeRowsToContents()
+                self.sfitParamTableWidget.resizeColumnsToContents()
+                for row in range(self.mfitParamTableWidget.rowCount()):
+                    for col in range(self.mfitParamTableWidget.columnCount()):
+                        parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
+                        key='__%s__%03d'%(parkey,row)
+                        self.mfitParamTableWidget.item(row,col).setText('%.6e'%(self.fit.result.params[key].value))
+                self.sfitParamTableWidget.resizeRowsToContents()
+                self.sfitParamTableWidget.resizeColumnsToContents()
+                self.mfitParamTableWidget.resizeRowsToContents()
+                self.mfitParamTableWidget.resizeColumnsToContents()
+
+                self.update_plot()
+                fitResultDlg=FitResultDialog(fit_report=self.fit_report,fit_info=self.fit_info)
+                #ans=QMessageBox.question(self,'Accept fit results?',self.fit_report,QMessageBox.Yes, QMessageBox.No)
+                if fitResultDlg.exec_():
+                    for row in range(self.sfitParamTableWidget.rowCount()):
+                        key=self.sfitParamTableWidget.item(row,0).text()
+                        try:
+                            self.sfitParamTableWidget.item(row,1).setToolTip('%.3e \u00B1 %.3e'%(self.fit.result.params[key].value,self.fit.result.params[key].stderr))
+                        except:
+                            pass
+                        if self.fit.params['__mpar__']!={}:
+                            for row in range(self.mfitParamTableWidget.rowCount()):
+                                for col in range(self.mfitParamTableWidget.columnCount()):
+                                    parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
+                                    key='__%s__%03d'%(parkey,row)
+                                    self.mfitParamTableWidget.item(row,col).setToolTip('%.3e \u00B1 %0.3e'%(self.fit.result.params[key].value,self.fit.result.params[key].stderr))
+                                    self.mfitParamData[parkey][row]=self.fit.result.params[key].value
+                    ofname=os.path.splitext(fname)[0]
+                    header='Data fitted with model: %s on %s\n'%(self.funcListWidget.currentItem().text(),time.asctime())
+                    header+='Fixed Parameters\n'
+                    header+='----------------\n'
+                    for key in self.fit.params.keys():
+                        if key not in self.fit.fit_params.keys() and key not in self.special_keys and key[:2]!='__':
+                            header+=key+'='+str(self.fit.params[key])+'\n'
+                    header+=self.fit_report+'\n'
+                    header+='x \t y\t yerr \t yfit'
+                    fitdata=np.vstack((self.fit.x[self.fit.imin:self.fit.imax+1],self.fit.y[self.fit.imin:self.fit.imax+1],self.fit.yerr[self.fit.imin:self.fit.imax+1],self.fit.yfit)).T
+                    np.savetxt(ofname+'_fit.txt',fitdata,header=header,comments='#')
+                else:
+                    self.undoFit()
+            except:
+                try:
+                    self.closeFitInfoDlg()
+                except:
+                    pass
+                QMessageBox.warning(self,'Minimization failed','The initial guesses of the parameters are too far probably!',QMessageBox.Ok)
+                self.update_plot()
+                break
         self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
         self.fit.functionCalled.disconnect(self.fitCallback)
@@ -585,7 +585,7 @@ class Fit_Widget(QWidget):
 #            except:
 #                QMessageBox.information(self,'Info','Couldnot calculate confidence interval because the error estimated couldnot be calculated.',QMessageBox.Ok)
         else:
-            QMessageBox.warning(self,'Fit warning','Please fit first before calulating confidence intervals',QMessageBox.Ok)
+            QMessageBox.warning(self,'Fit warning','Please fit the data first before calculating confidence intervals',QMessageBox.Ok)
                 
     def conf_interv_status(self,params,iterations,residual,fit_scale):
         self.confIntervalStatus.setText(self.confIntervalStatus.text().split('\n')[0]+'\n\n {:^s} = {:10d}'.format('Iteration',iterations))            
@@ -1039,8 +1039,7 @@ class Fit_Widget(QWidget):
         self.plotWidget=PlotWidget()
         self.plotWidget.setXLabel('X',fontsize=5)
         self.plotWidget.setYLabel('Y',fontsize=5)
-        self.plotSplitter.addWidget(self.plotWidget)        
-        
+        self.plotSplitter.addWidget(self.plotWidget)
         self.extra_param_1DplotWidget=PlotWidget()
         self.extra_param_1DplotWidget.setXLabel('X',fontsize=5)
         self.extra_param_1DplotWidget.setYLabel('Y',fontsize=5)
@@ -1078,19 +1077,18 @@ class Fit_Widget(QWidget):
                 self.curr_funcClass[module]=reload(self.curr_funcClass[module])
             self.funcListWidget.item(i).setToolTip(getattr(self.curr_funcClass[module],self.funcListWidget.item(i).text()).__init__.__doc__)
         
-        
     def functionChanged(self):
         self.curr_module=self.funcListWidget.currentItem().text()
         module='Functions.%s.%s'%(self.curr_category,self.curr_module)
-        #try:
-        if module not in sys.modules:
-            self.curr_funcClass[module]=import_module(module)
-        else:
-            self.curr_funcClass[module]=reload(self.curr_funcClass[module])
-        self.update_parameters()
-        #except:
-        #    QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
-        self.fchanged=True
+        try:
+            if module not in sys.modules:
+                self.curr_funcClass[module]=import_module(module)
+            else:
+                self.curr_funcClass[module]=reload(self.curr_funcClass[module])
+            self.fchanged = True
+            self.update_parameters()
+        except:
+            QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
         
     def update_parameters(self):
         """
@@ -1113,7 +1111,7 @@ class Fit_Widget(QWidget):
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
         self.fixedParamTableWidget.cellChanged.connect(self.fixedParamChanged)
         self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
-        
+
     def update_fixed_parameters(self):
         fpdata=[]        
         for key in self.fit.params.keys():
@@ -1125,14 +1123,12 @@ class Fit_Widget(QWidget):
             self.fixedParamTableWidget.item(row,0).setFlags(Qt.ItemIsEnabled)
         self.fixedParamTableWidget.resizeRowsToContents()
         self.fixedParamTableWidget.resizeColumnsToContents()
-        
                 
     def update_fit_parameters(self):
         self.update_sfit_parameters()
         self.update_mfit_parameters()
         
-        
-    def update_sfit_parameters(self):        
+    def update_sfit_parameters(self):
         tpdata=[]
         for key in self.fit.fit_params.keys():
             if key[:2]!='__':

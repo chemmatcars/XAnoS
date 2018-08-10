@@ -29,7 +29,7 @@ class <*>: #Please put the class name same as the function name
     def init_params(self):
         """
         Define all the fitting parameters like
-        self.param.add('sig',value=0,vary=0)
+        self.param.add('sig',value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
         """
         self.params=Parameters()
     

@@ -101,14 +101,15 @@ class PlotWidget(QWidget):
                 x=10**x
             if self.plotWidget.getPlotItem().ctrl.logYCheck.isChecked():
                 y=10**y
-            if x>1e-3 and y>1e-3:
-                self.crosshairLabel.setText(u'X={: .5f} , y={: .5f}'.format(x,y))
-            if x<1e-3 and y>1e-3:
-                self.crosshairLabel.setText(u'X={: .3e} , y={: .5f}'.format(x,y))
-            if x>1e-3 and y<1e-3:
-                self.crosshairLabel.setText(u'X={: .5f} , y={: .3e}'.format(x,y))
-            if x<1e-3 and y<1e-3:
-                self.crosshairLabel.setText(u'X={: .3e} , y={: .3e}'.format(x,y))
+            self.crosshairLabel.setText(u'X={: .5g} , Y={: .5g}'.format(x,y))
+            # if x>1e-3 and y>1e-3:
+            #     self.crosshairLabel.setText(u'X={: .5f} , Y={: .5f}'.format(x,y))
+            # if x<1e-3 and y>1e-3:
+            #     self.crosshairLabel.setText(u'X={: .3e} , Y={: .5f}'.format(x,y))
+            # if x>1e-3 and y<1e-3:
+            #     self.crosshairLabel.setText(u'X={: .5f} , Y={: .3e}'.format(x,y))
+            # if x<1e-3 and y<1e-3:
+            #     self.crosshairLabel.setText(u'X={: .3e} , Y={: .3e}'.format(x,y))
         except:
             pass
                 
@@ -175,12 +176,14 @@ class PlotWidget(QWidget):
         """
         Color of the item changed
         """
-        color=QColorDialog.getColor()
-        #if self.lineWidthLineEdit.text()!='0':
-        item.setPen(pg.mkPen(color=color,width=int(self.lineWidthLineEdit.text())))
-        if self.pointSizeLineEdit.text()!='0':
-            item.setSymbolBrush(pg.mkBrush(color=color))
-            item.setSymbolPen(pg.mkPen(color=color))
+        color=item.opts['symbolPen'].color()
+        newcolor=QColorDialog.getColor(initial=color)
+        if newcolor.isValid():
+            #if self.lineWidthLineEdit.text()!='0':
+            item.setPen(pg.mkPen(color=newcolor,width=int(self.lineWidthLineEdit.text())))
+            if self.pointSizeLineEdit.text()!='0':
+                item.setSymbolBrush(pg.mkBrush(color=newcolor))
+                item.setSymbolPen(pg.mkPen(color=newcolor))
     
     def errorbarChanged(self):
         """
