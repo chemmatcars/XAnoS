@@ -1,7 +1,7 @@
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QApplication,QWidget,QMessageBox,QFileDialog
 import sys
-from readData import average1DSAXS, interpolate_data
+from readData import average1DSAXS, interpolate_data, read1DSAXS, bkgSub1DSAXS
 import copy
 import numpy as np
 from calc_cf import calc_cf
@@ -237,13 +237,14 @@ class ASAXS_Batch_Processor(QWidget):
                 data,ofname=average1DSAXS(fname,num=fnum,ofname=fname+'_%04d_avg.txt'%((num-1)*ftimes+1),data=data)
                 self.processMessageTextEdit.append('Averaged data saved in a file named %s'%ofname)
                 ofnames.append(ofname)
+                num += 1
             except:
                 del data[fname+'_%04d.txt'%((num-1)*ftimes+1)]
                 self.processMessageTextEdit.append(fname+'_%04d.txt'%((num-1)*ftimes+1)+ ' doesnot exist')
                 file_exists=False
-            num+=1
+
             QApplication.processEvents()
-            
+        filenumber=num+ftimes
         file_exists=True        
         num=1
         ogcnames=[]
@@ -253,16 +254,17 @@ class ASAXS_Batch_Processor(QWidget):
                 data,ofname=average1DSAXS(gc_name,num=fnum,ofname=gc_name+'_%04d_avg.txt'%((num-1)*gc_times+1),data=data)
                 self.processMessageTextEdit.append('Averaged data saved in a file named %s'%ofname)
                 ogcnames.append(ofname)
+                num += 1
             except:
                 del data[gc_name+'_%04d.txt'%((num-1)*gc_times+1)]
                 self.processMessageTextEdit.append(gc_name+'_%04d.txt'%((num-1)*gc_times+1)+' doesnot exist')
                 file_exists=False
-            num+=1
+
             QApplication.processEvents()
             
-        #if len(ofnames)!=len(ogcnames):
-        #    self.processMessageTextEdit.append("File number error: Number of data files not same as number of glassy carbon files")
-        #    return None, None
+        if len(ofnames)>len(ogcnames):
+            self.processMessageTextEdit.append("File number error: Number of data files not same as number of glassy carbon files")
+            return None, None
             
 
         if sol_name is not None:
@@ -275,16 +277,19 @@ class ASAXS_Batch_Processor(QWidget):
                     data,ofname=average1DSAXS(sol_name,num=fnum,ofname=sol_name+'_%04d_avg.txt'%((num-1)*sol_times+1),data=data)
                     self.processMessageTextEdit.append('Averaged data saved in a file named %s'%ofname)
                     osolnames.append(ofname)
+                    num += 1
                 except:
                     del data[sol_name+'_%04d.txt'%((num-1)*sol_times+1)]
                     self.processMessageTextEdit.append(sol_name+'_%04d.txt'%((num-1)*sol_times+1)+' doesnot exist')
                     file_exists=False
-                num+=1
+
                 QApplication.processEvents()
+            solnumber=num+sol_times
             
-            if len(ofnames)!=len(osolnames):
+            if len(ofnames)>len(osolnames):
                 self.processMessageTextEdit.append("File number error: Number of data files not same as number of solvent/background files")
                 return None, None
+
                
         if air_name is not None:
             file_exists=True        
@@ -296,13 +301,14 @@ class ASAXS_Batch_Processor(QWidget):
                     data,ofname=average1DSAXS(air_name,num=fnum,ofname=air_name+'_%04d_avg.txt'%((num-1)*air_times+1),data=data)
                     self.processMessageTextEdit.append('Averaged data saved in a file named %s'%ofname)
                     oairnames.append(ofname)
+                    num += 1
                 except:
                     del data[air_name+'_%04d.txt'%((num-1)*air_times+1)]
                     self.processMessageTextEdit.append(air_name+'_%04d.txt'%((num-1)*air_times+1)+' doesnot exist')
                     file_exists=False
-                num+=1
+
                 QApplication.processEvents()
-            if len(ofnames)!=len(oairnames):
+            if len(ofnames)>len(oairnames):
                 self.processMessageTextEdit.append("File number error: Number of data files not same as number of air background files")
                 return None, None
             
@@ -316,14 +322,15 @@ class ASAXS_Batch_Processor(QWidget):
                     data,ofname=average1DSAXS(mt_name,num=fnum,ofname=mt_name+'_%04d_avg.txt'%((num-1)*mt_times+1),data=data)
                     self.processMessageTextEdit.append('Averaged data saved in a file named %s'%ofname)
                     omtnames.append(ofname)
+                    num += 1
                 except:
                     del data[mt_name+'_%04d.txt'%((num-1)*mt_times+1)]
                     self.processMessageTextEdit.append(mt_name+'_%04d.txt'%((num-1)*mt_times+1)+' doesnot exist')
                     file_exists=False
-                num+=1
+
                 QApplication.processEvents()
                 
-            if len(ofnames)!=len(ogcnames):
+            if len(ofnames)>len(ogcnames):
                 self.processMessageTextEdit.append("File number error: Number of data files not same as number of empty capillary files")
                 return None, None 
 
@@ -387,6 +394,25 @@ class ASAXS_Batch_Processor(QWidget):
         self.processMessageTextEdit.append('Saving all the data now...')
         fkeys.sort()
         self.write1DSAXS(data,fnames=fkeys)
+
+        #Performing background subtraction for all the individual data
+        self.processMessageTextEdit.append('Performing background subtraction for all the individual data...')
+        indData = {}
+        if sol_name is not None:
+            if filenumber<=solnumber:
+                for num in range(1,filenumber+1):
+                    fnum = range((num - 1) * ftimes + 1, num * ftimes + 1)
+                    snum = range((num - 1) * sol_times + 1, num * sol_times + 1)
+                    print(list(fnum),list(snum[:len(fnum)]))
+                    for i in range(len(fnum)):
+                        try:
+                            indData=read1DSAXS(fname+'_%04d.txt'%fnum[i],data=indData)
+                            indData=read1DSAXS(sol_name+'_%04d.txt'%snum[i],data=indData)
+                            bkgSub1DSAXS(indData,fname+'_%04d.txt'%fnum[i],indData,sol_name+'_%04d.txt'%snum[i],fname+'_%04d_bkg_sub.txt'%fnum[i],cf=data[ofnames[num-1]]['CF'])
+                            self.processMessageTextEdit.append('     Background subtraction done for %s_%04d.txt'%(fname,fnum[i]))
+                        except:
+                           pass
+                        QApplication.processEvents()
         self.processMessageTextEdit.append('Data processing completed successfully.')
         return data,fkeys
     
