@@ -349,7 +349,6 @@ class ASAXS_Widget(QWidget):
         self.dataBase=str(self.xrayDataBaseComboBox.currentText())
         self.elementChanged()
 
-
     def apply_calc_factor(self):
         """
         Apply the current calibration factor to all the selected data
@@ -360,9 +359,6 @@ class ASAXS_Widget(QWidget):
                 fname=item.text().split(': ')[1]
                 self.data[fname]['CF']=self.CF
             self.dataSelectionChanged()
-            
-        
-
         
     def elementChanged(self):
         """
@@ -397,30 +393,33 @@ class ASAXS_Widget(QWidget):
         emin=float(self.EminLineEdit.text())
         emax=float(self.EmaxLineEdit.text())
         esteps=int(self.EstepsLineEdit.text())
+        self.EOff = float(self.EOffLineEdit.text())
+        self.delE = float(self.delELineEdit.text())
         self.edgeEnergy=float(self.elementEdgeComboBox.currentText().split(':')[1].lstrip())
         element=str(self.elementComboBox.currentText().split(': ')[1])    
         self.Evals=np.linspace(emin,emax,esteps)
-        self.EOff=float(self.EOffLineEdit.text())
-        self.delE=float(self.delELineEdit.text())
         self.calc_f1,self.calc_f2=self.get_f1_f2(element=element,energy=(self.Evals-self.EOff))
         #self.calc_f1=self.xrdb.f1_chantler(element=element,energy=(self.Evals-self.EOff)*1000)
         #self.calc_f2=self.xrdb.f2_chantler(element=element,energy=(self.Evals-self.EOff)*1000)
         if self.delE>=(self.Evals[1]-self.Evals[0]):
-            dE=np.arange(-20.0*self.delE,20.0*self.delE,self.Evals[1]-self.Evals[0])
-            kern=np.exp(-dE**2/2.0/self.delE**2)/np.sqrt(2*np.pi)/self.delE
-            self.calc_f1=fftconvolve(self.calc_f1,kern,mode='same')*(self.Evals[1]-self.Evals[0])
-            self.calc_f2=fftconvolve(self.calc_f2,kern,mode='same')*(self.Evals[1]-self.Evals[0])
+            # dE=np.arange(-20.0*self.delE,20.0*self.delE,self.Evals[1]-self.Evals[0])
+            # kern=np.exp(-dE**2/2.0/self.delE**2)/np.sqrt(2*np.pi)/self.delE
+            # self.calc_f1=fftconvolve(self.calc_f1,kern,mode='valid')*(self.Evals[1]-self.Evals[0])
+            # self.calc_f2=fftconvolve(self.calc_f2,kern,mode='valid')*(self.Evals[1]-self.Evals[0])
             self.edgePlotWidget.setYLabel('Effective scattering factors')
         else:                         
             self.edgePlotWidget.setYLabel('Scattering factors')
-        self.edgePlotWidget.add_data(self.Evals,self.calc_f1,name='f1')
-        self.edgePlotWidget.add_data(self.Evals,self.calc_f2,name='f2')
+        # win=int((len(self.Evals)-len(self.calc_f1))/2)
+        # if win>0:
+        #     self.edgePlotWidget.add_data(self.Evals[win:-win],self.calc_f1,name='f1')
+        #     self.edgePlotWidget.add_data(self.Evals[win:-win],self.calc_f2,name='f2')
+        # else:
+        self.edgePlotWidget.add_data(self.Evals, self.calc_f1, name='f1')
+        self.edgePlotWidget.add_data(self.Evals, self.calc_f2, name='f2')
         self.edgePlotWidget.Plot(['f1','f2'])
         self.edgePlotWidget.updatePlot()
         #except:
         #    QMessageBox.warning(self,'Value error','Please input numeric values only',QMessageBox.Ok)
-        
-        
         
     def import_data(self):
         """
@@ -857,21 +856,20 @@ class ASAXS_Widget(QWidget):
             self.smoothCheckBox.setChecked(False)
             dmax=float(self.DmaxLineEdit.text())
             Nr=int(self.NrLineEdit.text())
-            for fname in self.fnames:
-                r,pr,dpr,q,iqc=calc_prm(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['yraw']/self.data[fname]['Thickness'],self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],dmax=dmax,Nr=Nr)
+            for i,fname in enumerate(self.fnames):
+                r,pr,dpr,q,iqc=calc_prm(self.data[fname]['x'],self.data[fname]['yraw'],self.data[fname]['yerr'],dmax=dmax,Nr=Nr)
                 self.data[fname]['r']=r
                 self.data[fname]['pr']=pr
                 self.data[fname]['pr_err']=dpr
                 self.data[fname]['y']=iqc
-                res=self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],name='Moores',fit=True)
-                if res:
-                    self.dataPlotWidget.Plot(self.datanames+['Moores'])
+#                res=self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['y']/self.data[fname]['Thickness'],name=self.datanames[i],fit=True)
+#            self.dataPlotWidget.Plot(self.datanames)
         else:
             for fname in self.fnames:
                 self.data[fname]['r']=None
                 self.data[fname]['pr']=None
                 self.data[fname]['y']=self.data[fname]['yraw']
-            self.dataSelectionChanged()
+        self.dataSelectionChanged()
     
     def plotPDDF(self):
         """
@@ -1043,13 +1041,38 @@ class ASAXS_Widget(QWidget):
         """
         Obtains f1 and f2 either from NIST table or Henke's function with element=element symbol and energy in keV
         """
-        if self.dataBase=='NIST':
-            f1=self.xrdb.f1_chantler(element=element,energy=energy*1000,smoothing=0)
-            f2=self.xrdb.f2_chantler(element=element,energy=energy*1000,smoothing=0)
+        self.delE = float(self.delELineEdit.text())
+        if self.delE>1e-4:
+            if type(energy) is list or type(energy) is np.ndarray:
+                f1=[]
+                f2=[]
+                for e in energy:
+                    evals=np.arange(e-5*self.delE,e+5*self.delE,0.0001)
+                    calc_f1 = self.xrdb.f1_chantler(element=element, energy=evals * 1000, smoothing=0)
+                    calc_f2 = self.xrdb.f2_chantler(element=element, energy=evals * 1000, smoothing=0)
+                    kern = np.exp(-(evals-e) ** 2 / 2.0 / self.delE ** 2) / np.sqrt(2 * np.pi) / self.delE
+                    ksum = np.sum(kern)
+                    f1.append(np.sum(kern*calc_f1)/ksum)
+                    f2.append(np.sum(kern*calc_f2)/ksum)
+                return np.array(f1),np.array(f2)
+            else:
+                e=energy
+                evals = np.arange(e - 5 * self.delE, e + 5 * self.delE, 0.0001)
+                calc_f1 = self.xrdb.f1_chantler(element=element, energy=evals * 1000, smoothing=0)
+                calc_f2 = self.xrdb.f2_chantler(element=element, energy=evals * 1000, smoothing=0)
+                kern = np.exp(-(evals - e) ** 2 / 2.0 / self.delE ** 2) / np.sqrt(2 * np.pi) / self.delE
+                ksum = np.sum(kern)
+                f1=np.sum(kern * calc_f1) / ksum
+                f2=np.sum(kern * calc_f2) / ksum
+                return f1, f2
         else:
-            f1=eval('-pdt.%s.number+pdt.%s.xray.scattering_factors(energy=energy)[0]'%(element,element))
-            f2=eval('pdt.%s.xray.scattering_factors(energy=energy)[1]'%(element))
-        return f1, f2
+            if self.dataBase=='NIST':
+                f1=self.xrdb.f1_chantler(element=element,energy=energy*1000,smoothing=0)
+                f2=self.xrdb.f2_chantler(element=element,energy=energy*1000,smoothing=0)
+            else:
+                f1=eval('-pdt.%s.number+pdt.%s.xray.scattering_factors(energy=energy)[0]'%(element,element))
+                f2=eval('pdt.%s.xray.scattering_factors(energy=energy)[1]'%(element))
+            return f1, f2
     
     def checkData(self):
         """
@@ -1075,8 +1098,8 @@ class ASAXS_Widget(QWidget):
             f1val=np.array(f1val)
             energy=np.array(energy)
             self.pdata=[[energy,f1val,dataChk[:,i],errChk[:,i]] for i in range(dataChk.shape[1])]
-            print(self.pdata[0][0],self.pdata[0][1],self.pdata[0][2]/self.pdata[0][2][0])#/self.pdata[0][2][0])
-            print(len(self.pdata[0][0]), len(self.pdata[0][1]), len(self.pdata[0][2]))
+            #print(self.pdata[0][0],self.pdata[0][1],self.pdata[0][2]/self.pdata[0][2][0])#/self.pdata[0][2][0])
+            #print(len(self.pdata[0][0]), len(self.pdata[0][1]), len(self.pdata[0][2]))
             self.dataCheckWidget=pg.plot(self.pdata[0][1],self.pdata[0][2]/self.pdata[0][2][0],pen=None,symbol='o')
             self.checkDataSpinBox.setMinimum(0)
             self.checkDataSpinBox.setMaximum(dataChk.shape[1]-1)
