@@ -540,7 +540,8 @@ class Detector_Widget(QWidget):
                 #self.carsImgFolder=self.carsImgFolder.replace('\\','/')
                 self.carsImgFolderLineEdit.setText(self.carsImgFolder)
                 self.detImgFolder=self.carsImgFolder.replace(self.detectors[self.currentDetector]['cars_folder'],self.detectors[self.currentDetector]['det_folder'])
-                caput(self.detPV+'FilePath','/tmp')
+
+                caput(self.detPV+'FilePath','/ramdisk/Asax/tmp')
                 caput(self.detPV.split(':')[0]+':TIFF1:FilePath',self.detImgFolder)
                 if self.detectors[self.currentDetector]=='Apex2':
                     caput(self.detPV+'FileTemplate','%s%s_%04d.sfrm')

@@ -1194,6 +1194,8 @@ class Data_Collector_Server(QWidget):
                 self.measurementProgressDialog.setMaximum(self.frameCount)
                 self.measurementProgressDialog.setValue(0)
                 if self.collectDarkCheckBox.isChecked():
+                    caput('15PIL3:cam1:FileNumber', 1)
+                    caput('15PIL3:cam1:AutoIncrement', 1)
                     self.collect_dark()
                 for i in range(self.frameCount):
                     if self.abort:
@@ -1208,6 +1210,8 @@ class Data_Collector_Server(QWidget):
                         self.instrumentStatus.setText('<font color="Red">Sleeping for %s s. Please wait...</font>'%self.sleepTime)
                         QtTest.QTest.qWait(self.sleepTime*1000)
                     self.measurementProgressDialog.setValue(i+1)
+                caput('15PIL3:cam1:FileNumber', 1)
+                caput('15PIL3:cam1:AutoIncrement', 0)
                 #self.palette.setColor(QPalette.Foreground,Qt.green)
                 #self.instrumentStatus.setPalette(self.palette)
                 self.instrumentStatus.setText('<font color="Green">Done</font>')
@@ -1280,6 +1284,8 @@ class Data_Collector_Server(QWidget):
                                     QtTest.QTest.qWait(10)
                                 #Counting starts
                                 if self.collectDarkCheckBox.isChecked():
+                                    caput('15PIL3:cam1:FileNumber',1)
+                                    caput('15PIL3:cam1:AutoIncrement',1)
                                     self.collect_dark()
                                 for j in range(self.frameCount):
                                     if self.abort:
@@ -1291,6 +1297,8 @@ class Data_Collector_Server(QWidget):
                                         self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
                                         QtTest.QTest.qWait(self.sleepTime*1000)
                                     self.measurementProgressDialog.setValue(loop*self.measurementCount*self.frameCount+self.frameCount*i+j+1)
+                                caput('15PIL3:cam1:FileNumber', 1)
+                                caput('15PIL3:cam1:AutoIncrement', 0)
                                 
                         #Moving back the motors to the staring position
                         

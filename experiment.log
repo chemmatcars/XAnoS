@@ -1,22 +1,7 @@
-##Experiment started on: Tue May 23 19:59:13 2017
-##Experiment folder accessed on: Sun Dec 17 12:50:56 2017
-#X-ray Energy : 7.11198 keV
-#X-ray Wavelength : 1.74331 Angs
-#Beamsize-Horizontal : 0.200 mm
-#Beamsize-Vertical : 0.200 mm
-#Collimator-Horizontal : 0.220 mm
-#Collimator-Vertical : 0.220 mm
-##Experiment folder accessed on: Thu Mar  1 11:23:47 2018
-#X-ray Energy : 15.18998 keV
-#X-ray Wavelength : 0.81622 Angs
-#Beamsize-Horizontal : 0.100 mm
-#Beamsize-Vertical : 0.100 mm
-#Collimator-Horizontal : 0.120 mm
-#Collimator-Vertical : 0.120 mm
-##Experiment folder accessed on: Fri Mar  2 17:18:48 2018
-#X-ray Energy : 30.00009 keV
-#X-ray Wavelength : 0.41328 Angs
-#Beamsize-Horizontal : 0.200 mm
-#Beamsize-Vertical : 0.200 mm
-#Collimator-Horizontal : 0.220 mm
-#Collimator-Vertical : 0.220 mm
+##Experiment started on: Sun Aug 19 04:03:30 2018
+#X-ray Energy : 50.27958 keV
+#X-ray Wavelength : 0.24659 Angs
+#Beamsize-Horizontal : 0.120 mm
+#Beamsize-Vertical : 0.120 mm
+#Collimator-Horizontal : 0.150 mm
+#Collimator-Vertical : 0.150 mm

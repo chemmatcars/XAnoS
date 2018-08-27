@@ -1,1 +1,1 @@
-{"poniFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2018-07/Tianbo/POM/AgBh_15keV_flowCell.poni", "maskFile": "/home/epics/CARS5/Data/chemmat/Data/saxs/2018-07/mask_short_tube.msk"}
+{"poniFile": "/mnt/ChemData/Data/Asax/2018-08/Alignment/AgBh_50_439keV.poni", "maskFile": "/mnt/ChemData/Data/Asax/2018-08/Mask_50_439keV.msk"}
