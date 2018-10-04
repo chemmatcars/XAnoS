@@ -881,12 +881,13 @@ class Data_Collector_Server(QWidget):
             detname=str(self.detectorComboBox.currentText())
         if detname not in self.usedDetectors:
             self.detectorWidgets[detname]=Detector_Widget(imgFName='img_'+detname)
-            if self.experimentFolder is not None:
-                self.detectorWidgets[detname].carsImgFolder=self.experimentFolder
-            else:
-                QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
-                return
-            
+            # if self.experimentFolder is not None:
+            #     self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
+            #     #self.detectorWidgets[detname].carsImgFolder=self.experimentFolder
+            # else:
+            #     QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
+            #     return
+            #
             self.detectorWidgets[detname].detectorComboBox.setCurrentIndex(self.detectorWidgets[detname].detectorComboBox.findText(detname))
             if self.experimentFolder is not None:
                 self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
@@ -1184,44 +1185,45 @@ class Data_Collector_Server(QWidget):
         """
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()
-        try:
-            self.frameCount=int(self.frameCountLineEdit.text())
-            self.sleepTime=float(self.sleepTimeLineEdit.text())
-            if str(self.staticCollectButton.text())!='Abort':
-                self.abort=False
-                self.staticCollectButton.setText('Abort')
-                self.measurementProgressDialog.setMinimum(0)
-                self.measurementProgressDialog.setMaximum(self.frameCount)
-                self.measurementProgressDialog.setValue(0)
-                if self.collectDarkCheckBox.isChecked():
-                    caput('15PIL3:cam1:FileNumber', 1)
-                    caput('15PIL3:cam1:AutoIncrement', 1)
-                    self.collect_dark()
-                for i in range(self.frameCount):
-                    if self.abort:
-                        break
-                    self.collect_data()
-                    if self.autoReduceCheckBox.isChecked():
-                        self.redServerSocket.send_string(self.serverFileOut)
+        #try:
+        self.frameCount=int(self.frameCountLineEdit.text())
+        self.sleepTime=float(self.sleepTimeLineEdit.text())
+        if str(self.staticCollectButton.text())!='Abort':
+            self.abort=False
+            self.staticCollectButton.setText('Abort')
+            self.measurementProgressDialog.setMinimum(0)
+            self.measurementProgressDialog.setMaximum(self.frameCount)
+            self.measurementProgressDialog.setValue(0)
+            if self.collectDarkCheckBox.isChecked():
+                #caput('15PIL3:cam1:FileNumber', 1)
+                #caput('15PIL3:cam1:AutoIncrement', 1)
+                self.collect_dark()
+            for i in range(self.frameCount):
+                if self.abort:
+                    break
+                self.collect_data()
+                if self.autoReduceCheckBox.isChecked():
+                    self.redServerSocket.send_string(self.serverFileOut)
 
-                    if self.sleepTime>1e-3:
-                        #self.palette.setColor(QPalette.Foreground,Qt.red)
-                        #self.instrumentStatus.setPalette(self.palette)
-                        self.instrumentStatus.setText('<font color="Red">Sleeping for %s s. Please wait...</font>'%self.sleepTime)
-                        QtTest.QTest.qWait(self.sleepTime*1000)
-                    self.measurementProgressDialog.setValue(i+1)
-                caput('15PIL3:cam1:FileNumber', 1)
-                caput('15PIL3:cam1:AutoIncrement', 0)
-                #self.palette.setColor(QPalette.Foreground,Qt.green)
-                #self.instrumentStatus.setPalette(self.palette)
-                self.instrumentStatus.setText('<font color="Green">Done</font>')
-                self.staticCollectButton.setText('Collect Static')
-            else:
-                ans=QMessageBox.question(self,'Abort','Do you really like to abort the measurement',QMessageBox.Yes,QMessageBox.No)
-                if ans==QMessageBox.Yes:
-                    self.abort=True
-        except:
-            QMessageBox.warning(self,'Value Error','Please provide integer frame counts and floating point number sleep time',QMessageBox.Ok)
+                if self.sleepTime>1e-3:
+                    #self.palette.setColor(QPalette.Foreground,Qt.red)
+                    #self.instrumentStatus.setPalette(self.palette)
+                    self.instrumentStatus.setText('<font color="Red">Sleeping for %s s. Please wait...</font>'%self.sleepTime)
+                    QtTest.QTest.qWait(self.sleepTime*1000)
+                self.measurementProgressDialog.setValue(i+1)
+            #caput('15PIL3:cam1:FileNumber', 1)
+            #caput('15PIL3:cam1:AutoIncrement', 0)
+            #self.palette.setColor(QPalette.Foreground,Qt.green)
+            #self.instrumentStatus.setPalette(self.palette)
+            self.instrumentStatus.setText('<font color="Green">Done</font>')
+            self.staticCollectButton.setText('Collect Static')
+        else:
+            ans=QMessageBox.question(self,'Abort','Do you really like to abort the measurement',QMessageBox.Yes,QMessageBox.No)
+            if ans==QMessageBox.Yes:
+                self.abort=True
+        #except:
+        #    QMessageBox.warning(self,'Value Error','Please provide integer frame counts and floating point number
+        # sleep time',QMessageBox.Ok)
         caput(self.scalers['15IDD_scaler_mode']['PV'],1,wait=True) #Setting Scalar to Autocount mode
             
     def dynamic_collect(self):
@@ -1284,8 +1286,8 @@ class Data_Collector_Server(QWidget):
                                     QtTest.QTest.qWait(10)
                                 #Counting starts
                                 if self.collectDarkCheckBox.isChecked():
-                                    caput('15PIL3:cam1:FileNumber',1)
-                                    caput('15PIL3:cam1:AutoIncrement',1)
+                                    #caput('15PIL3:cam1:FileNumber',1)
+                                    #caput('15PIL3:cam1:AutoIncrement',1)
                                     self.collect_dark()
                                 for j in range(self.frameCount):
                                     if self.abort:
@@ -1297,8 +1299,8 @@ class Data_Collector_Server(QWidget):
                                         self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
                                         QtTest.QTest.qWait(self.sleepTime*1000)
                                     self.measurementProgressDialog.setValue(loop*self.measurementCount*self.frameCount+self.frameCount*i+j+1)
-                                caput('15PIL3:cam1:FileNumber', 1)
-                                caput('15PIL3:cam1:AutoIncrement', 0)
+                                #caput('15PIL3:cam1:FileNumber', 1)
+                                #caput('15PIL3:cam1:AutoIncrement', 0)
                                 
                         #Moving back the motors to the staring position
                         
@@ -1413,7 +1415,7 @@ class Data_Collector_Server(QWidget):
             1) Setting up the count_time for all the detectors and scalars
             2) Collecting transmission if collectTransmissionCheckBox is checked
         """
-        camonitor(self.scalers['15IDC_scaler_start']['PV'], callback=self.changeCountingState_15IDC)
+        #camonitor(self.scalers['15IDC_scaler_start']['PV'], callback=self.changeCountingState_15IDC)
         camonitor(self.scalers['15IDD_scaler_start']['PV'], callback=self.changeCountingState_15IDD)
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
@@ -1423,12 +1425,14 @@ class Data_Collector_Server(QWidget):
             shutterTime=0.0
             QMessageBox.warning(self,'Value error','Please check the shutter time. It should be a floating point number.',QMessageBox.Ok)
         self.instrumentStatus.setText('<font color="Red">Counting. Please wait...</font>')
-        caput(self.scalers['15IDC_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
+        #caput(self.scalers['15IDC_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
         caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
-        caput(self.scalers['15IDC_scaler_count_time']['PV'], self.expTime + 2.0 * shutterTime, wait=True)
+        #caput(self.scalers['15IDC_scaler_count_time']['PV'], self.expTime + 2.0 * shutterTime, wait=True)
         caput(self.scalers['15IDD_scaler_count_time']['PV'], self.expTime + 2.0 * shutterTime, wait=True)
         for detname in self.usedDetectors:
             caput(self.detectors[detname]['PV']+'AcquireTime', self.expTime+2.0*shutterTime, wait=True)
+            caput(self.detectors[detname]['PV'] +'AcquirePeriod', self.expTime + 2.0 * shutterTime+0.1, wait=True)
+            self.detectorWidgets[detname].imageFlag=0
         if self.collectTransmissionCheckBox.isChecked() and not self.darkImage:
             self.bringPDIn()
             self.collect_transmission()
@@ -1437,6 +1441,7 @@ class Data_Collector_Server(QWidget):
             self.bringBeamIn()
             self.trans_diode_counts=0.0
             self.trans_monitor_counts=1.0
+
             
     def shutter_ON(self):
         """
@@ -1463,8 +1468,8 @@ class Data_Collector_Server(QWidget):
             else:
                 self.shutter_OFF()
         for detname in self.usedDetectors:
-            self.detectorWidgets[detname].detStatus='Acquire'
-            self.detectorWidgets[detname].detState='Busy'
+            self.detectorWidgets[detname].detStatus=1
+            #self.detectorWidgets[detname].detState='Busy'
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
         if self.darkImage:
@@ -1472,26 +1477,35 @@ class Data_Collector_Server(QWidget):
         else:
             self.instrumentStatus.setText('<font color="Red">Collecting data from all the Area Detectors. Please wait...</font>')
         #self.counting=Truecamonitor(self.scalers['15IDD_scaler_start']['PV']
+        stime=time.time()
         for detname in self.usedDetectors:
             caput(self.detectors[detname]['PV'] + 'Acquire', 1)
         self.counting=True
-        caput(self.scalers['15IDC_scaler_start']['PV'], 1, wait=False)
+        #caput(self.scalers['15IDC_scaler_start']['PV'], 1, wait=False)
         caput(self.scalers['15IDD_scaler_start']['PV'], 1, wait=False)
         QtTest.QTest.qWait(10)
         while self.counting:
             if self.abort:
                 break
+            timeElapsed = time.time() - stime
+            for detname in self.usedDetectors:
+                self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
+            pg.QtGui.QApplication.processEvents()
             QtTest.QTest.qWait(10)
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()
         QtTest.QTest.qWait(10)
-        while any([self.detectorWidgets[detname].detStatus=='Acquire' for detname in self.usedDetectors]):
+        while any([self.detectorWidgets[detname].imageFlag==0 for detname in self.usedDetectors]):
             if self.abort:
                 break
-            while any([self.detectorWidgets[detname].detState!='Idle' for detname in self.usedDetectors]):
-                if self.abort:
-                    break
-                QtTest.QTest.qWait(10)
+            #while any([self.detectorWidgets[detname].detState!='Idle' for detname in self.usedDetectors]):
+            #    if self.abort:
+            #        break
+            timeElapsed = time.time() - stime
+            for detname in self.usedDetectors:
+                self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
+            pg.QtGui.QApplication.processEvents()
+            QtTest.QTest.qWait(10)
         self.counting=False
         #self.palette.setColor(QPalette.Foreground,Qt.green)
         #self.instrumentStatus.setPalette(self.palette)
@@ -1527,15 +1541,15 @@ class Data_Collector_Server(QWidget):
             2) Reads the images and put all the necessary information together to generate an EDF file to store in correct locations
             3) Advance the image counter by 1
         """
-        camonitor_clear(self.scalers['15IDC_scaler_start']['PV'])
+        #camonitor_clear(self.scalers['15IDC_scaler_start']['PV'])
         camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
         for detname in self.usedDetectors:
-            if detname=='PhotonII':
-                imgFile=caget('13PII_1:TIFF1:FullFileName_RBV',as_string=True)
-            else:
-                imgFile=caget(self.detectors[detname]['PV'].split(':')[0]+':TIFF1:FullFileName_RBV',as_string=True)
+            #if detname=='PhotonII':
+            #    imgFile=caget('13PII_1:TIFF1:FullFileName_RBV',as_string=True)
+            #else:
+            #    imgFile=caget(self.detectors[detname]['PV'].split(':')[0]+':TIFF1:FullFileName_RBV',as_string=True)
             if self.darkImage:
                 self.serverFileOut=os.path.join(self.detectorFolders[detname],'%s_%04d_dark.edf'%(self.sampleName,self.sampleCounter))
 #                self.dataReducer.darkFile=fileout
@@ -1549,19 +1563,22 @@ class Data_Collector_Server(QWidget):
 #                os.makedirs(self.dataReducer.extractedFolder)
 #            self.dataReducer.extractedFolderLineEdit.setText(self.dataReducer.extractedFolder)
             self.instrumentStatus.setText('<font color="Red">Saving file</font>')
-            cars_imgFile=imgFile.replace(self.detectors[detname]['det_folder'],self.detectors[detname]['cars_folder'])
+            #cars_imgFile=imgFile.replace(self.detectors[detname]['det_folder'],self.detectors[detname]['cars_folder'])
+            cars_imgFile=self.serverFileOut
             #print(cars_imgFile)
-            QtTest.QTest.qWait(2*1000)
-            img=fb.open(cars_imgFile)
-            file=fb.edfimage.EdfImage()
-            file.data=img.data
-            file.header=img.header
+            #QtTest.QTest.qWait(2*1000)
+            #img=fb.open(cars_imgFile)
+            file=fb.edfimage.EdfImage(data=None)
+            #file.data=img.data
+            file.data=self.detectorWidgets[detname].imgData
+            #file.header=img.header
+            #file.data=random.random((100,100))
             self.monB_counts=caget(self.scalers['monitorB']['PV'])
             self.monitor_counts=caget(self.scalers['monitor']['PV'])
             self.count_time=caget(self.scalers['15IDD_scaler_count_time']['PV'])
             self.diode_counts=caget(self.scalers['diode']['PV'])
             self.BSdiode_counts=caget(self.scalers['bs_diode']['PV'])
-            file.header['Time']=os.path.getctime(cars_imgFile)
+            file.header['Time']=time.asctime()
             file.header['MonB']=self.monB_counts
             file.header['Monitor']=self.monitor_counts#1000#caget(self.scalers['Monitor']['PV'])
             file.header['count_time']=self.count_time#1.0#caget(self.scalers['count_time']['PV'])
