@@ -1080,15 +1080,15 @@ class Fit_Widget(QWidget):
     def functionChanged(self):
         self.curr_module=self.funcListWidget.currentItem().text()
         module='Functions.%s.%s'%(self.curr_category,self.curr_module)
-        try:
-            if module not in sys.modules:
-                self.curr_funcClass[module]=import_module(module)
-            else:
-                self.curr_funcClass[module]=reload(self.curr_funcClass[module])
-            self.fchanged = True
-            self.update_parameters()
-        except:
-            QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
+        # try:
+        if module not in sys.modules:
+            self.curr_funcClass[module]=import_module(module)
+        else:
+            self.curr_funcClass[module]=reload(self.curr_funcClass[module])
+        self.fchanged = True
+        self.update_parameters()
+        # except:
+        #     QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
         
     def update_parameters(self):
         """

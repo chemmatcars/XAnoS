@@ -561,7 +561,7 @@ class Data_Reduction_Client(QWidget):
                         self.header['BSDiode_corr']=float(imageData.header['BSDiode'])
                         self.header['Monitor_corr']=float(imageData.header['Monitor'])
                     except:
-                        self.normComboBox.setCurrentIndex('None')
+                        self.normComboBox.setCurrentText('None')
                     print("No dark correction done")
                 if str(self.normComboBox.currentText())=='BSDiode':
                     norm_factor=self.header['BSDiode_corr']#/float(self.header['count_time'])

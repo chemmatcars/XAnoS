@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/2018-08/Alignment/AgBh_50_439keV.poni", "maskFile": "/mnt/ChemData/Data/Asax/2018-08/Mask_50_439keV.msk"}
+{"poniFile": "C:/Users/Mrinal Bera/Desktop/India_collab/AgBh/SAXS/AgBh_SAXS_0000.poni", "maskFile": "C:/Users/Mrinal Bera/Desktop/India_collab/mask.msk"}
