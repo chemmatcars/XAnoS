@@ -5,6 +5,7 @@ import sys
 
 class FileWatcher(QObject):
     fileModified=pyqtSignal()
+    fileCreated=pyqtSignal(str)
     def __init__(self,path=None, parent=None):
         QObject.__init__(self,parent)
         if path is not None:
@@ -19,6 +20,12 @@ class FileWatcher(QObject):
             self.mtime=int(os.path.getmtime(self.path))
         else:
             print('%s doesnot exist!'%path)
+
+    def addNewPath(self,path):
+        if path is not None:
+            self.newPath=path
+        else:
+            print('Please provide a path')
             
     def fileIsModified(self):
         if os.path.exists(self.path):
@@ -30,6 +37,11 @@ class FileWatcher(QObject):
         else:
             print('%s doesnot exist in the system'%self.path)
             self.path=None
+
+    def fileIsCreated(self):
+        if os.path.exists(self.newPath):
+            self.fileCreated.emit(self.newPath)
+
                 
                 
     def watch(self):
@@ -39,13 +51,24 @@ class FileWatcher(QObject):
             except (KeyboardInterrupt, SystemExit):
                 print('File watcher terminated cleanly!')
                 raise
+
+    def watchNew(self):
+        while self.newPath is not None:
+            try:
+                self.fileIsCreated()
+            except (keyboardInterrupt, SystemExit):
+                print('File watcher terminated cleanly')
+
             
     def run(self):
         self.watcher.started.connect(self.watch)
         self.watcher.start()
         self.isRunning=True
         
-        
+    def run_new(self):
+        self.watcher.started.connect(self.watchNew)
+        self.watcher.start()
+        self.isRunning=True
         
             
 if __name__=='__main__':

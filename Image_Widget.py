@@ -74,7 +74,7 @@ class Image_Widget(QWidget):
         self.vbLayout.addWidget(self.imageLayout)
         
         self.autoMinMaxCheckBox=QCheckBox('Auto')
-        self.autoMinMaxCheckBox.setTristate(False)
+        self.autoMinMaxCheckBox.setTristate(on=False)
         self.autoMinMaxCheckBox.setChecked(True)#setCheckState(Qt.Checked)
         self.autoMinMaxCheckBox.stateChanged.connect(self.autoScale)
         minLabel=QLabel('Min')
@@ -157,7 +157,7 @@ class Image_Widget(QWidget):
             #self.autoMinMaxCheckBox.setCheckState(Qt.Unchecked)
             #self.imageHistogram.setLevels(self.image_min,self.image_max)            
         except:
-            QMessageBox.warning(self,'Value Error','Please input numbers only.\n',QMessageBox.Ok)
+            QMessageBox.warning(self,'Value Error','Please input numerical values only.\n',QMessageBox.Ok)
             self.minLineEdit.setText(str(self.image_min))
             self.maxLineEdit.setText(str(self.image_max))
             
@@ -204,8 +204,7 @@ class Image_Widget(QWidget):
         self.ylabel=ylabel
         self.unit=unit
         self.imageLogLinear()
-        if self.autoMinMaxCheckBox.isChecked():
-            self.autoScale()
+        self.autoScale()
         self.hor_Npt=self.imageData.shape[0]
         self.ver_Npt=self.imageData.shape[1]
         self.imageView.getView().vb.scene().sigMouseMoved.connect(self.image_mouseMoved)
@@ -286,11 +285,11 @@ class Image_Widget(QWidget):
         else:
             self.imageView.setImage(self.imageData,levels=(self.image_min,self.image_max),pos=pos,scale=scale,autoRange=True)
         #self.get_color_map()
-        self.update_color_map()
+        #self.update_color_map()
         self.imageView.ui.histogram.autoHistogramRange()
         self.imageView.getView().setLabels(bottom=(self.xlabel,self.unit[0]),left=(self.ylabel,self.unit[1]))
         #self.imageView.view.setRange(xRange=(self.xmin,self.xmax),yRange=(self.ymin,self.ymax))
-        #pg.QtGui.QApplication.processEvents() 
+        pg.QtGui.QApplication.processEvents()
         
 if __name__=='__main__':
     # create application
