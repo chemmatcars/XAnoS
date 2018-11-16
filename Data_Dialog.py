@@ -44,7 +44,6 @@ class InsertCol_Dialog(QDialog):
         self.setWindowTitle('Data Column Dialog')
         self.show()
         
-        
 
 class Data_Dialog(QDialog):
     def __init__(self,fname=None,data=None,comment='#',skiprows=0,delimiter=' ',autoupdate=False,parent=None,matplotlib=False,plotIndex=None):
