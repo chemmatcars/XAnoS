@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Data_Collector_Server.py" afterPath="$PROJECT_DIR$/Data_Collector_Server.py" />
-      <change beforePath="$PROJECT_DIR$/Detector_Widget.py" afterPath="$PROJECT_DIR$/Detector_Widget.py" />
-      <change beforePath="$PROJECT_DIR$/SetupData/detector_params.txt" afterPath="$PROJECT_DIR$/SetupData/detector_params.txt" />
       <change beforePath="$PROJECT_DIR$/SetupData/scaler_params.txt" afterPath="$PROJECT_DIR$/SetupData/scaler_params.txt" />
+      <change beforePath="$PROJECT_DIR$/readData.py" afterPath="$PROJECT_DIR$/readData.py" />
+      <change beforePath="$PROJECT_DIR$/scanner.py" afterPath="$PROJECT_DIR$/scanner.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,44 +20,10 @@
       <file leaf-file-name="Data_Collector_Server.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="1473" column="0" lean-forward="true" selection-start-line="1473" selection-start-column="0" selection-end-line="1473" selection-end-column="0" />
+            <state relative-caret-position="8713">
+              <caret line="1553" column="47" lean-forward="true" selection-start-line="1553" selection-start-column="47" selection-end-line="1553" selection-end-column="47" />
               <folding>
                 <element signature="e#0#220#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Setup.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Setup.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="24" lean-forward="false" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScatterPlotItem.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/pyqtgraph/graphicsItems/ScatterPlotItem.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12342">
-              <caret line="726" column="0" lean-forward="false" selection-start-line="726" selection-start-column="0" selection-end-line="726" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fileWatcher.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fileWatcher.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -65,7 +32,7 @@
       <file leaf-file-name="Detector_Widget.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
+            <state relative-caret-position="7684">
               <caret line="452" column="9" lean-forward="false" selection-start-line="452" selection-start-column="9" selection-end-line="452" selection-end-column="9" />
               <folding>
                 <element signature="e#0#168#0" expanded="true" />
@@ -84,20 +51,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImageItem.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/pyqtgraph/graphicsItems/ImageItem.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7718">
-              <caret line="463" column="0" lean-forward="false" selection-start-line="463" selection-start-column="0" selection-end-line="463" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Image_Widget.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Image_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
+            <state relative-caret-position="2669">
               <caret line="164" column="17" lean-forward="false" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="17" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
@@ -109,8 +66,62 @@
       <file leaf-file-name="scaler_params.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SetupData/scaler_params.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="31" lean-forward="false" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+            <state relative-caret-position="136">
+              <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scanner.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scanner.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="12240">
+              <caret line="733" column="21" lean-forward="false" selection-start-line="733" selection-start-column="21" selection-end-line="733" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Data_Reducer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Data_Reducer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#267#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readData.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/readData.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="476">
+              <caret line="274" column="8" lean-forward="false" selection-start-line="274" selection-start-column="8" selection-end-line="274" selection-end-column="8" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="calc_cf.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calc_cf.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1054">
+              <caret line="67" column="23" lean-forward="false" selection-start-line="67" selection-start-column="23" selection-end-line="67" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="batch" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/batch">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -127,14 +138,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>post_count</find>
-      <find>updateImageInfo</find>
-      <find>delete</find>
-      <find>ArraySizeY_RBV</find>
-      <find>self.detectorWidgets</find>
       <find>newImageObtained</find>
       <find>15PIL</find>
-      <find>15IDC</find>
       <find>provide</find>
       <find>self.update_color_map</find>
       <find>applyDefaultCMap</find>
@@ -157,6 +162,12 @@
       <find>self.shutter_ON</find>
       <find>collect_dark</find>
       <find>collect_data</find>
+      <find>self.detectorListWidget</find>
+      <find>bs-diode</find>
+      <find>diode</find>
+      <find>fulldata.update</find>
+      <find>fulldata</find>
+      <find>15IDC</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -164,6 +175,7 @@
       <replace>15IDD_scaler_mode</replace>
       <replace>self.u</replace>
       <replace>self.undulatorChanging</replace>
+      <replace>bs_diode</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -182,7 +194,6 @@
         <option value="$PROJECT_DIR$/yap_window_scan.py" />
         <option value="$PROJECT_DIR$/pyepics_Qt.py" />
         <option value="$PROJECT_DIR$/positionerFile.txt" />
-        <option value="$PROJECT_DIR$/scanner.py" />
         <option value="$PROJECT_DIR$/Energy_Widget.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor.py" />
         <option value="$PROJECT_DIR$/PlotWidget.py" />
@@ -191,16 +202,19 @@
         <option value="$PROJECT_DIR$/Image_Widget.py" />
         <option value="$PROJECT_DIR$/fileWatcher.py" />
         <option value="$PROJECT_DIR$/SetupData/detector_params.txt" />
-        <option value="$PROJECT_DIR$/SetupData/scaler_params.txt" />
-        <option value="$PROJECT_DIR$/Data_Collector_Server.py" />
         <option value="$PROJECT_DIR$/Detector_Widget.py" />
+        <option value="$PROJECT_DIR$/SetupData/scaler_params.txt" />
+        <option value="$PROJECT_DIR$/scanner.py" />
+        <option value="$PROJECT_DIR$/readData.py" />
+        <option value="$PROJECT_DIR$/Data_Collector_Server.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="28" />
-    <option name="width" value="1920" />
-    <option name="height" value="1018" />
+    <option name="x" value="3072" />
+    <option name="y" value="31" />
+    <option name="width" value="1536" />
+    <option name="height" value="801" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -217,6 +231,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -224,22 +239,11 @@
               <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
               <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
-              <item name="adl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
-              <item name="SetupData" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -263,7 +267,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Data_Collector_Server">
+  <component name="RunManager" selected="Python.scanner">
     <configuration name="ASAXS_Batch_Processor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -318,24 +322,6 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="Data_Dialog" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SAXS_Drive" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data_Dialog.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
     <configuration name="Detector_Widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -354,20 +340,38 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="scanner" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SAXS_Drive" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scanner.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.Data_Dialog" />
-      <item index="1" class="java.lang.String" itemvalue="Python.ASAXS_widget" />
-      <item index="2" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Detector_Widget" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
+      <item index="0" class="java.lang.String" itemvalue="Python.ASAXS_widget" />
+      <item index="1" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Detector_Widget" />
+      <item index="3" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
+      <item index="4" class="java.lang.String" itemvalue="Python.scanner" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Detector_Widget" />
-        <item index="2" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
-        <item index="3" class="java.lang.String" itemvalue="Python.ASAXS_widget" />
-        <item index="4" class="java.lang.String" itemvalue="Python.Data_Dialog" />
+        <item index="0" class="java.lang.String" itemvalue="Python.scanner" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Detector_Widget" />
+        <item index="3" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
+        <item index="4" class="java.lang.String" itemvalue="Python.ASAXS_widget" />
       </list>
     </recent_temporary>
   </component>
@@ -424,13 +428,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="12" y="12" width="1930" height="1184" extended-state="6" />
+    <frame x="3072" y="31" width="2410" height="1318" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.07372301" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.08583465" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35085714" sideWeight="0.5063291" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2814739" sideWeight="0.49367088" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2802276" sideWeight="0.49367088" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12114286" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3977143" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24960506" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -484,34 +488,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pyepics_Qt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="56" column="61" lean-forward="false" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/pyqtgraph/graphicsItems/ImageItem.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8172">
-          <caret line="463" column="0" lean-forward="false" selection-start-line="463" selection-start-column="0" selection-end-line="463" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SetupData/detector_params.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="51" lean-forward="false" selection-start-line="9" selection-start-column="51" selection-end-line="9" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="11" column="28" lean-forward="false" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Energy_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3672">
@@ -668,13 +644,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scanner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11118">
-          <caret line="667" column="51" lean-forward="false" selection-start-line="667" selection-start-column="51" selection-end-line="667" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2771">
@@ -766,7 +735,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="12342">
           <caret line="726" column="0" lean-forward="false" selection-start-line="726" selection-start-column="0" selection-end-line="726" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -774,9 +742,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="969">
           <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -791,7 +756,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7718">
           <caret line="463" column="0" lean-forward="false" selection-start-line="463" selection-start-column="0" selection-end-line="463" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -800,6 +764,26 @@
         <state relative-caret-position="3060">
           <caret line="194" column="0" lean-forward="false" selection-start-line="194" selection-start-column="0" selection-end-line="194" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Image_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2669">
+          <caret line="164" column="17" lean-forward="false" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7684">
+          <caret line="452" column="9" lean-forward="false" selection-start-line="452" selection-start-column="9" selection-end-line="452" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#168#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -815,36 +799,60 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SetupData/scaler_params.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="31" lean-forward="false" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+        <state relative-caret-position="136">
+          <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Image_Widget.py">
+    <entry file="file://$PROJECT_DIR$/scanner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="164" column="17" lean-forward="false" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="17" />
+        <state relative-caret-position="12240">
+          <caret line="733" column="21" lean-forward="false" selection-start-line="733" selection-start-column="21" selection-end-line="733" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/batch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Reducer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#27#0" expanded="true" />
+            <element signature="e#0#267#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
+    <entry file="file://$PROJECT_DIR$/calc_cf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="452" column="9" lean-forward="false" selection-start-line="452" selection-start-column="9" selection-end-line="452" selection-end-column="9" />
+        <state relative-caret-position="1054">
+          <caret line="67" column="23" lean-forward="false" selection-start-line="67" selection-start-column="23" selection-end-line="67" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="274" column="8" lean-forward="false" selection-start-line="274" selection-start-column="8" selection-end-line="274" selection-end-column="8" />
           <folding>
-            <element signature="e#0#168#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="1473" column="0" lean-forward="true" selection-start-line="1473" selection-start-column="0" selection-end-line="1473" selection-end-column="0" />
+        <state relative-caret-position="8713">
+          <caret line="1553" column="47" lean-forward="true" selection-start-line="1553" selection-start-column="47" selection-end-line="1553" selection-end-column="47" />
           <folding>
             <element signature="e#0#220#0" expanded="true" />
           </folding>

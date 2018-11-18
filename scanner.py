@@ -147,7 +147,7 @@ class Scanner(QWidget):
         self.scanMotorComboBox.addItems(list(self.motors.keys()))
         self.scanMotorComboBox.setCurrentIndex(self.scanMotorComboBox.findText('d_x'))
         self.normDetectorComboBox=QComboBox()
-        self.normDetectorComboBox.addItems(['none','monB','monP','monitor','diode','bs-diode'])
+        self.normDetectorComboBox.addItems(['none','monB','monP','monitor','monitor_diode','trans_diode','bs_diode'])
         self.normDetectorComboBox.currentIndexChanged.connect(self.normDetectorChanged)
         self.scanTypeComboBox=QComboBox()
         self.scanTypeComboBox.addItems(['Relative','Absolute'])
@@ -479,7 +479,7 @@ class Scanner(QWidget):
         row=0
         col=0
         self.detectorListWidget=QListWidget(self)
-        self.detectorListWidget.addItems(['monB','monP','monitor','diode','bs-diode'])
+        self.detectorListWidget.addItems(['monB','monP','monitor','monitor_diode','trans_diode','bs_diode'])
         self.detectorListWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.detectorListWidget.itemSelectionChanged.connect(self.detectorListWidgetChanged)
         self.detectorListWidget.item(0).setSelected(True)
@@ -560,14 +560,21 @@ class Scanner(QWidget):
             self.monB_counts=caget(self.scalers['monitorB']['PV'])
             self.monP_counts=caget(self.scalers['monitorP']['PV'])
             self.bs_diode_counts=caget(self.scalers['bs_diode']['PV'])
-            self.diode_counts=caget(self.scalers['diode']['PV'])
+            self.monitor_diode_counts=caget(self.scalers['monitor_diode']['PV'])
+            self.trans_diode_counts=caget(self.scalers['trans_diode']['PV'])
             self.monitor_counts=caget(self.scalers['monitor']['PV'])
             t1=time.time()-t
             if 'scanArray' in self.scans[self.scanNum]:
-                self.scans[self.scanNum]['scanArray']=np.vstack((self.scans[self.scanNum]['scanArray'],np.array([t1,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts])))
+                self.scans[self.scanNum]['scanArray']=np.vstack((self.scans[self.scanNum]['scanArray'],np.array([t1,
+                                                                                                                 count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,
+                                                                                                                 self.monitor_diode_counts,self.trans_diode_counts,self.monitor_counts])))
             else:
-                self.scans[self.scanNum]['scanArray']=np.array([[t1,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts]])
-            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num,t1,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts)
+                self.scans[self.scanNum]['scanArray']=np.array([[t1,count_time,self.monB_counts,self.monP_counts,
+                                                                 self.bs_diode_counts,self.monitor_diode_counts,
+                                                                 self.trans_diode_counts,self.monitor_counts]])
+            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num,t1,count_time,self.monB_counts,self.monP_counts,
+                                                       self.bs_diode_counts,self.monitor_diode_counts,
+                                                       self.trans_diode_counts,self.monitor_counts)
             names=[]
             norm=1.0
             if self.normDetectorComboBox.currentText()!='none':
@@ -641,13 +648,20 @@ class Scanner(QWidget):
             self.monB_counts = caget(self.scalers['monitorB']['PV'])
             self.monP_counts = caget(self.scalers['monitorP']['PV'])
             self.bs_diode_counts=caget(self.scalers['bs_diode']['PV'])
-            self.diode_counts=caget(self.scalers['diode']['PV'])
+            self.monitor_diode_counts = caget(self.scalers['monitor_diode']['PV'])
+            self.trans_diode_counts = caget(self.scalers['trans_diode']['PV'])
             self.monitor_counts=caget(self.scalers['monitor']['PV'])
             if 'scanArray' in self.scans[self.scanNum]:
-                self.scans[self.scanNum]['scanArray']=np.vstack((self.scans[self.scanNum]['scanArray'],np.array([pos,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts])))
+                self.scans[self.scanNum]['scanArray']=np.vstack((self.scans[self.scanNum]['scanArray'],np.array([pos,count_time,self.monB_counts,self.monP_counts,
+                                                                                                                 self.bs_diode_counts,self.monitor_diode_counts,
+                                                                                                                 self.trans_diode_counts,self.monitor_counts])))
             else:
-                self.scans[self.scanNum]['scanArray']=np.array([[pos,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts]])
-            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num,pos,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts)
+                self.scans[self.scanNum]['scanArray']=np.array([[pos,count_time,self.monB_counts,self.monP_counts,
+                                                                 self.bs_diode_counts,self.monitor_diode_counts,
+                                                                 self.trans_diode_counts,self.monitor_counts]])
+            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num,pos,count_time,self.monB_counts,self.monP_counts,
+                                                       self.bs_diode_counts,self.monitor_diode_counts,
+                                                       self.trans_diode_counts,self.monitor_counts)
             names=[]
             norm=1.0
             if self.normDetectorComboBox.currentText()!='none':
@@ -722,13 +736,20 @@ class Scanner(QWidget):
             self.monB_counts=caget(self.scalers['monitorB']['PV'])
             self.monP_counts=caget(self.scalers['monitorP']['PV'])
             self.bs_diode_counts=caget(self.scalers['bs_diode']['PV'])
-            self.diode_counts=caget(self.scalers['diode']['PV'])
+            self.monitor_diode_counts=caget(self.scalers['monitor_diode']['PV'])
+            self.trans_diode_counts=caget(self.scalers['trans_diode']['PV'])
             self.monitor_counts=caget(self.scalers['monitor']['PV'])
             if 'scanArray' in self.scans[self.scanNum]:
-                self.scans[self.scanNum]['scanArray']=np.vstack((self.scans[self.scanNum]['scanArray'],np.array([pos,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts])))
+                self.scans[self.scanNum]['scanArray']=np.vstack((self.scans[self.scanNum]['scanArray'],np.array([pos,count_time,self.monB_counts,self.monP_counts,
+                                                                                                                 self.bs_diode_counts,self.monitor_diode_counts,
+                                                                                                                 self.trans_diode_counts,self.monitor_counts])))
             else:
-                self.scans[self.scanNum]['scanArray']=np.array([[pos,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts]])
-            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num, pos,count_time,self.monB_counts,self.monP_counts,self.bs_diode_counts,self.diode_counts,self.monitor_counts)
+                self.scans[self.scanNum]['scanArray']=np.array([[pos,count_time,self.monB_counts,self.monP_counts,
+                                                                 self.bs_diode_counts,self.monitor_diode_counts,
+                                                                 self.trans_diode_counts,self.monitor_counts]])
+            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num, pos,count_time,self.monB_counts,self.monP_counts,
+                                                       self.bs_diode_counts,self.monitor_diode_counts,
+                                                       self.trans_diode_counts,self.monitor_counts)
             names=[]
             norm=1.0
             if self.normDetectorComboBox.currentText()!='none':
@@ -823,7 +844,8 @@ class Scanner(QWidget):
                 self.scanfh.write(text)
                 self.scanfh.write('\n')
                 print(text+'\n')
-                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs-diode','diode','monitor')
+                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
+                                                       'monitor_diode','trans_diode','monitor')
                 self.scans[self.scanNum]['scanVariables']=text.split()[1:]
                 self.scanfh.write(text+'\n')
                 #self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
@@ -845,7 +867,8 @@ class Scanner(QWidget):
             self.scanfh.write(text)
             self.scanfh.write('\n')
             print(text+'\n')
-            text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs-diode','diode','monitor')
+            text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
+                                                   'monitor_diode','trans_diode','monitor')
             self.scans[self.scanNum]['scanVariables']=text.split()[1:]
             self.scanfh.write(text+'\n')
             #self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
@@ -870,7 +893,8 @@ class Scanner(QWidget):
                 self.scanfh.write(text)
                 self.scanfh.write('\n')
                 print(text+'\n')
-                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs-diode','diode','monitor')
+                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
+                                                       'monitor_diode','trans_diode','monitor')
                 self.scans[self.scanNum]['scanVariables']=text.split()[1:]
                 self.scanfh.write(text+'\n')
                 #self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
@@ -901,7 +925,8 @@ class Scanner(QWidget):
         #         self.scanfh.write('\n')
         #         print(text + '\n')
         #         text = '#%s %s\t%s\t%s\t%s\t%s\t%s\t%s' % (
-        #         'Pt', self.scanMotorName, 'count-time', 'monB', 'monP', 'bs-diode', 'diode', 'monitor')
+        #         'Pt', self.scanMotorName, 'count-time', 'monB', 'monP', 'bs_diode', 'monitor_diode','trans_diode',
+        # 'monitor')
         #         self.scans[self.scanNum]['scanVariables'] = text.split()[1:]
         #         self.scanfh.write(text + '\n')
         #         # self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)

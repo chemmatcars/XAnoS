@@ -1434,7 +1434,7 @@ class Data_Collector_Server(QWidget):
             1) Setting up the count_time for all the detectors and scalars
             2) Collecting transmission if collectTransmissionCheckBox is checked
         """
-        #camonitor(self.scalers['15IDC_scaler_start']['PV'], callback=self.changeCountingState_15IDC)
+        camonitor(self.scalers['15IDC_scaler_start']['PV'], callback=self.changeCountingState_15IDC)
         camonitor(self.scalers['15IDD_scaler_start']['PV'], callback=self.changeCountingState_15IDD)
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
@@ -1444,9 +1444,9 @@ class Data_Collector_Server(QWidget):
             shutterTime=0.0
             QMessageBox.warning(self,'Value error','Please check the shutter time. It should be a floating point number.',QMessageBox.Ok)
         self.instrumentStatus.setText('<font color="Red">Counting. Please wait...</font>')
-        #caput(self.scalers['15IDC_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
+        caput(self.scalers['15IDC_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
         caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
-        #caput(self.scalers['15IDC_scaler_count_time']['PV'], self.expTime + 2.0 * shutterTime, wait=True)
+        caput(self.scalers['15IDC_scaler_count_time']['PV'], self.expTime, wait=True)
         caput(self.scalers['15IDD_scaler_count_time']['PV'], self.expTime, wait=True)
         for detname in self.usedDetectors:
             caput(self.detectors[detname]['PV']+'AcquireTime', self.expTime, wait=True)
@@ -1503,7 +1503,7 @@ class Data_Collector_Server(QWidget):
         for detname in self.usedDetectors:
             caput(self.detectors[detname]['PV'] + 'Acquire', 1)
         self.counting=True
-        #caput(self.scalers['15IDC_scaler_start']['PV'], 1, wait=False)
+        caput(self.scalers['15IDC_scaler_start']['PV'], 1, wait=False)
         caput(self.scalers['15IDD_scaler_start']['PV'], 1, wait=False)
         QtTest.QTest.qWait(10)
         while self.counting:
@@ -1563,7 +1563,7 @@ class Data_Collector_Server(QWidget):
             2) Reads the images and put all the necessary information together to generate an EDF file to store in correct locations
             3) Advance the image counter by 1
         """
-        #camonitor_clear(self.scalers['15IDC_scaler_start']['PV'])
+        camonitor_clear(self.scalers['15IDC_scaler_start']['PV'])
         camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)

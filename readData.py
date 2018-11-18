@@ -76,7 +76,7 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
     air_num           : First image number corresponding to the image collected from Air
     sol_num           : First image number corresponding to the image collected from solvent (water in most of the cases)
     mt_num            : First image number corresponding to the image collected from Emtpy capillary
-    Ntime             : First image number corresponding to how many times the measurements were repeated
+    Ntime             : The number of times the measurements were repeated
     xmin, xmax        : Minimum, Maximum Q-values for getting CF by comparing experimental Glassy Carbon data from standard NIST data
     Npt               : Number of  points in which the data will be interpolated
     interpolation_type: Choose between 'linear' (default), 'quadratic' and 'cubic'
@@ -89,41 +89,48 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
         return 'Please provide a list of image numbers of all the samples to be reduced'
     if gc_num is None:
         return 'Please provide the first image number corresponding to the glassy carbon'
-    if air_num is None:
-        return 'Please provide the first image number corresponding to Air background'
     if sol_num is None:
         return 'Please provide the first image number corresponding to solvent(water) background'
-    if mt_num is None:
-        return 'Please provide the first image number corresponding to emtpy capillary tube'
+    # if air_num is None:
+    #     return 'Please provide the first image number corresponding to Air background'
+    # if mt_num is None:
+    #     return 'Please provide the first image number corresponding to emtpy capillary tube'
     Nfile=len(sam_nums)+4
     fulldata={}
     
     for times in range(Ntimes):
         fincr=Nfile*times
         gc_fname=fname+'_%04d.txt'%(gc_num+fincr)
-        air_fname=fname+'_%04d.txt'%(air_num+fincr)
+        data = read1DSAXS(gc_fname, data={})
         sol_fname=fname+'_%04d.txt'%(sol_num+fincr)
-        mt_fname=fname+'_%04d.txt'%(mt_num+fincr)
-        data=read1DSAXS(gc_fname,data={})
-        data=read1DSAXS(air_fname,data=data)
+        data = read1DSAXS(sol_fname, data=data)
+        if air_num is not None:
+            air_fname = fname + '_%04d.txt' % (air_num + fincr)
+            data = read1DSAXS(air_fname, data=data)
+        if mt_num is not None:
+            mt_fname=fname+'_%04d.txt'%(mt_num+fincr)
+            data = read1DSAXS(mt_fname, data=data)
         
         #Interpolating the GC and air data
         data=interpolate_data(data,Npt=Npt,kind=interpolation_type)
         data[gc_fname]['x']=copy.copy(data[gc_fname]['xintp'])
         #Subtracting the air bkg from glassy carbon
-        data[gc_fname]['y']=data[gc_fname]['yintp']-bkg_fac*data[air_fname]['yintp']
-        data[gc_fname]['yerr']=np.sqrt(data[gc_fname]['yintperr']**2+bkg_fac**2*data[air_fname]['yintperr']**2)
-        fdir=write1DSAXS(data)
+        if air_num is not None:
+            data[gc_fname]['y']=data[gc_fname]['yintp']-bkg_fac*data[air_fname]['yintp']
+            data[gc_fname]['yerr']=np.sqrt(data[gc_fname]['yintperr']**2+bkg_fac**2*data[air_fname]['yintperr']**2)
+            fdir=write1DSAXS(data)
+
         pfname=os.path.basename(gc_fname).split('.')[0]+'_bkg_sub_norm.txt'
         cfname=os.path.join(fdir,pfname)
         en,cf,x,y=calc_cf(cfname,xmin=xmin,xmax=xmax)
-        data=read1DSAXS(sol_fname,data=data)
-        data=read1DSAXS(mt_fname,data=data)
+
+
         for num in sam_nums:
             tfname=fname+'_%04d.txt'%(num+fincr)
             data=read1DSAXS(tfname,data=data)
         #Interpolating all the data set again
         data=interpolate_data(data,Npt=Npt,kind=interpolation_type)
+
         #Normalizing all the data from onwards
         data[gc_fname]['x']=copy.copy(data[gc_fname]['xintp'])
         data[gc_fname]['y']=cf*data[gc_fname]['yintp']/0.1055
@@ -134,48 +141,64 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
             data[tfname]['x']=copy.copy(data[tfname]['xintp'])
             data[tfname]['y']=cf*(data[tfname]['yintp']-bkg_fac*data[sol_fname]['yintp'])/sample_thickness
             data[tfname]['yerr']=cf*np.sqrt(data[tfname]['yintperr']**2+bkg_fac**2*data[sol_fname]['yintperr']**2)/sample_thickness
-            
-        data[sol_fname]['x']=copy.copy(data[sol_fname]['xintp'])
-        data[sol_fname]['y']=cf*(data[sol_fname]['yintp']-bkg_fac*data[mt_fname]['yintp'])/sample_thickness
-        data[sol_fname]['yerr']=cf*np.sqrt(data[sol_fname]['yintperr']**2+bkg_fac**2*data[mt_fname]['yintperr']**2)/sample_thickness
-        data[mt_fname]['x']=copy.copy(data[mt_fname]['xintp'])
-        data[mt_fname]['y']=cf*(data[mt_fname]['yintp']-bkg_fac*data[air_fname]['yintp'])/0.002 #Capillary thickness is 20 microns
-        data[mt_fname]['yerr']=cf*np.sqrt(data[mt_fname]['yintperr']**2+bkg_fac**2*data[air_fname]['yintperr']**2)/0.002
+        if mt_num is not None:
+            data[sol_fname]['x']=copy.copy(data[sol_fname]['xintp'])
+            data[sol_fname]['y']=cf*(data[sol_fname]['yintp']-bkg_fac*data[mt_fname]['yintp'])/sample_thickness
+            data[sol_fname]['yerr']=cf*np.sqrt(data[sol_fname]['yintperr']**2+bkg_fac**2*data[mt_fname]['yintperr']**2)/sample_thickness
+            if air_fname is not None:
+                data[mt_fname]['x']=copy.copy(data[mt_fname]['xintp'])
+                data[mt_fname]['y']=cf*(data[mt_fname]['yintp']-bkg_fac*data[air_fname]['yintp'])/0.002 #Capillary thickness is 20 microns
+                data[mt_fname]['yerr']=cf*np.sqrt(data[mt_fname]['yintperr']**2+bkg_fac**2*data[air_fname]['yintperr']**2)/0.002
+            else:
+                data[mt_fname]['x'] = copy.copy(data[mt_fname]['xintp'])
+                data[mt_fname]['y'] = cf * data[mt_fname]['yintp']/ 0.002  # Capillary thickness is 20 microns
+                data[mt_fname]['yerr'] = cf*data[mt_fname]['yintperr']/0.002
+        else:
+            data[sol_fname]['x'] = copy.copy(data[sol_fname]['xintp'])
+            data[sol_fname]['y'] = cf*data[sol_fname]['yintp']/sample_thickness
+            data[sol_fname]['yerr'] = cf*data[sol_fname]['yintperr']/sample_thickness
+
         write1DSAXS(data)
         fulldata.update(data)
         
     #Performing means of all the data
     fulldata=interpolate_data(fulldata,Npt=Npt,kind=interpolation_type)
     gc_mean={}
-    air_mean={}
     sol_mean={}
-    mt_mean={}
     sam_mean={}
+    if air_num is not None:
+        air_mean={}
+    if mt_num is not None:
+        mt_mean={}
     for num in sam_nums:
         sam_mean[num]={}
     #Calculating the mean of all the signals
     for times in range(Ntimes):
         fincr=Nfile*times
         gc_fname=fname+'_%04d.txt'%(gc_num+fincr)
-        air_fname=fname+'_%04d.txt'%(air_num+fincr)
         sol_fname=fname+'_%04d.txt'%(sol_num+fincr)
-        mt_fname=fname+'_%04d.txt'%(mt_num+fincr)
+        if air_num is not None:
+            air_fname = fname + '_%04d.txt' % (air_num + fincr)
+        if mt_num is not None:
+            mt_fname=fname+'_%04d.txt'%(mt_num+fincr)
         try:
             gc_mean['y']=gc_mean['y']+fulldata[gc_fname]['yintp']
         except:
             gc_mean['y']=fulldata[gc_fname]['yintp']
-        try:
-            air_mean['y']=air_mean['y']+fulldata[air_fname]['yintp']
-        except:
-            air_mean['y']=fulldata[air_fname]['yintp']
+        if air_num is not None:
+            try:
+                air_mean['y']=air_mean['y']+fulldata[air_fname]['yintp']
+            except:
+                air_mean['y']=fulldata[air_fname]['yintp']
         try:
             sol_mean['y']=sol_mean['y']+fulldata[sol_fname]['yintp']
         except:
             sol_mean['y']=fulldata[sol_fname]['yintp']
-        try:
-            mt_mean['y']=mt_mean['y']+fulldata[mt_fname]['yintp']
-        except:
-            mt_mean['y']=fulldata[mt_fname]['yintp']
+        if mt_num is not None:
+            try:
+                mt_mean['y']=mt_mean['y']+fulldata[mt_fname]['yintp']
+            except:
+                mt_mean['y']=fulldata[mt_fname]['yintp']
             
         for num in sam_nums:
             tfname=fname+'_%04d.txt'%(num+fincr)
@@ -185,9 +208,11 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
             except:
                 sam_mean[num]['y']=fulldata[tfname]['yintp']
     gc_mean['y']=gc_mean['y']/Ntimes
-    air_mean['y']=air_mean['y']/Ntimes
+    if air_num is not None:
+        air_mean['y']=air_mean['y']/Ntimes
     sol_mean['y']=sol_mean['y']/Ntimes
-    mt_mean['y']=mt_mean['y']/Ntimes
+    if mt_num is not None:
+        mt_mean['y']=mt_mean['y']/Ntimes
     for num in sam_nums:
         sam_mean[num]['y']=sam_mean[num]['y']/Ntimes   
     
@@ -195,25 +220,29 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
     for times in range(Ntimes):
         fincr=Nfile*times
         gc_fname=fname+'_%04d.txt'%(gc_num+fincr)
-        air_fname=fname+'_%04d.txt'%(air_num+fincr)
         sol_fname=fname+'_%04d.txt'%(sol_num+fincr)
-        mt_fname=fname+'_%04d.txt'%(mt_num+fincr)
+        if air_num is not None:
+            air_fname = fname + '_%04d.txt' % (air_num + fincr)
+        if mt_num is not None:
+            mt_fname=fname+'_%04d.txt'%(mt_num+fincr)
         try:
             gc_mean['yerr']=gc_mean['yerr']+(gc_mean['y']-fulldata[gc_fname]['yintp'])**2
         except:
             gc_mean['yerr']=(gc_mean['y']-fulldata[gc_fname]['yintp'])**2
-        try:
-            air_mean['yerr']=air_mean['yerr']+(air_mean['y']-fulldata[air_fname]['yintp'])**2
-        except:
-            air_mean['yerr']=(air_mean['y']-fulldata[air_fname]['yintp'])**2
+        if air_num is not None:
+            try:
+                air_mean['yerr']=air_mean['yerr']+(air_mean['y']-fulldata[air_fname]['yintp'])**2
+            except:
+                air_mean['yerr']=(air_mean['y']-fulldata[air_fname]['yintp'])**2
         try:
             sol_mean['yerr']=sol_mean['yerr']+(sol_mean['y']-fulldata[sol_fname]['yintp'])**2
         except:
             sol_mean['yerr']=(sol_mean['y']-fulldata[sol_fname]['yintp'])**2
-        try:
-            mt_mean['yerr']=mt_mean['yerr']+(mt_mean['y']-fulldata[mt_fname]['yintp'])**2
-        except:
-            mt_mean['yerr']=(mt_mean['y']-fulldata[mt_fname]['yintp'])**2
+        if mt_num is not None:
+            try:
+                mt_mean['yerr']=mt_mean['yerr']+(mt_mean['y']-fulldata[mt_fname]['yintp'])**2
+            except:
+                mt_mean['yerr']=(mt_mean['y']-fulldata[mt_fname]['yintp'])**2
             
         for num in sam_nums:
             tfname=fname+'_%04d.txt'%(num+fincr)
@@ -222,22 +251,28 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
             except:
                 sam_mean[num]['yerr']=(sam_mean[num]['y']-fulldata[tfname]['yintp'])**2
     gc_mean['yerr']=np.sqrt(gc_mean['yerr']/Ntimes)
-    air_mean['yerr']=np.sqrt(air_mean['yerr']/Ntimes)
     sol_mean['yerr']=np.sqrt(sol_mean['yerr']/Ntimes)
-    mt_mean['yerr']=np.sqrt(mt_mean['yerr']/Ntimes)
+    if air_num is not None:
+        air_mean['yerr'] = np.sqrt(air_mean['yerr'] / Ntimes)
+    if mt_num is not None:
+        mt_mean['yerr']=np.sqrt(mt_mean['yerr']/Ntimes)
     for num in sam_nums:
         sam_mean[num]['yerr']=np.sqrt(sam_mean[num]['yerr']/Ntimes)
     
     gc_mean['x']=fulldata[gc_fname]['xintp']
-    air_mean['x']=fulldata[air_fname]['xintp']
-    mt_mean['x']=fulldata[mt_fname]['xintp']
+    if air_num is not None:
+        air_mean['x']=fulldata[air_fname]['xintp']
+    if mt_num is not None:
+        mt_mean['x']=fulldata[mt_fname]['xintp']
     sol_mean['x']=fulldata[sol_fname]['xintp']
     meandir=os.path.join(fdir,'Mean')
     if not os.path.exists(meandir):
         os.makedirs(meandir)
     np.savetxt(os.path.join(meandir,'gc_mean.txt'),np.vstack((gc_mean['x'],gc_mean['y'],gc_mean['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
-    np.savetxt(os.path.join(meandir,'air_mean.txt'),np.vstack((air_mean['x'],air_mean['y'],air_mean['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
-    np.savetxt(os.path.join(meandir,'mt_mean.txt'),np.vstack((mt_mean['x'],mt_mean['y'],mt_mean['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
+    if air_num is not None:
+        np.savetxt(os.path.join(meandir,'air_mean.txt'),np.vstack((air_mean['x'],air_mean['y'],air_mean['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
+    if mt_num is not None:
+        np.savetxt(os.path.join(meandir,'mt_mean.txt'),np.vstack((mt_mean['x'],mt_mean['y'],mt_mean['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
     np.savetxt(os.path.join(meandir,'sol_mean.txt'),np.vstack((sol_mean['x'],sol_mean['y'],sol_mean['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
     for num in sam_nums:
         np.savetxt(os.path.join(meandir,'sam%04d_mean.txt'%num),np.vstack((sam_mean[num]['x'],sam_mean[num]['y'],sam_mean[num]['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
