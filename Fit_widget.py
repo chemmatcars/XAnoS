@@ -800,7 +800,7 @@ class Fit_Widget(QWidget):
         
     def add_mpar(self):
         self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
-        try:
+        if len(self.mfitParamTableWidget.selectedItems())!=0:
             curRow=self.mfitParamTableWidget.currentRow()
             #if curRow!=0:
             self.mfitParamTableWidget.insertRow(curRow)
@@ -820,9 +820,10 @@ class Fit_Widget(QWidget):
                 item=self.mfitParamTableWidget.item(curRow,col)
                 item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
                 item.setCheckState(Qt.Unchecked)
+            #self.update_mfit_parameters()
             self.update_plot()
             self.remove_mpar_button.setEnabled(True)
-        except:
+        else:
             QMessageBox.warning(self,'Warning','Please select a row at which you would like to add a set of parameters',QMessageBox.Ok)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
             
@@ -831,6 +832,10 @@ class Fit_Widget(QWidget):
         num=self.mfitParamTableWidget.rowCount()-len(selrows)
         if num<self.mpar_N:
             QMessageBox.warning(self,'Selection error','The minimum number of rows required for this function to work is %d. You can only remove %d rows'%(self.mpar_N,num),QMessageBox.Ok)
+            return
+        if self.mfitParamTableWidget.rowCount()-1 in selrows:
+            QMessageBox.warning(self, 'Selection error',
+                                'Cannot remove the last row. Please select the rows other than the last row', QMessageBox.Ok)
             return
         self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         if selrows!=[]:

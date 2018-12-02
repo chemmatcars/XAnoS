@@ -372,14 +372,21 @@ class Data_Dialog(QDialog):
                     if '\t' in line:
                         delimiter='\t'
                     elif ',' in line:
-                        delimiter=','                            
+                        delimiter=','
+                    elif ' ' in line:
+                        delimiter=' '
                     break
             if 'col_names' in self.data['meta'].keys():
-                self.data['data']=pd.read_csv(self.fname,comment=comment,names=self.data['meta']['col_names'],header=None,delimiter=delimiter)
+                self.data['data']=pd.read_csv(self.fname,comment=comment,names=self.data['meta']['col_names'],header=None,sep=delimiter)
+                if not np.all(self.data['data'].isnull()):
+                    self.data['data']=pd.DataFrame(np.loadtxt(self.fname,skiprows=skiprows))
             else:
-                self.data['data']=pd.read_csv(self.fname,comment=comment,header=None,delimiter=delimiter)
+                self.data['data']=pd.read_csv(self.fname,comment=comment,header=None,sep=delimiter)
+                if not np.all(self.data['data'].isnull()):
+                    self.data['data']=pd.DataFrame(np.loadtxt(self.fname,skiprows=skiprows))
                 self.data['data'].columns=['Col_%d'%i for i in self.data['data'].columns.values.tolist()]
                 self.data['meta']['col_names']=self.data['data'].columns.values.tolist()
+            print(self.data['data'])
             #print(self.data['data'])
             self.autoUpdate_ON_OFF()
             return self.data                
