@@ -1296,7 +1296,10 @@ class Fit_Widget(QWidget):
             #    QMessageBox.warning(self,'Value error','Something wrong with the value of the parameters which you just entered',QMessageBox.Ok)
             #    return
             self.gen_rows=[self.genParamListWidget.row(item) for item in self.genParamListWidget.selectedItems()]
-            self.genParamListWidget.itemSelectionChanged.disconnect(self.plot_extra_param)
+            try:
+                self.genParamListWidget.itemSelectionChanged.disconnect(self.plot_extra_param)
+            except:
+                pass
             self.genParamListWidget.clear()
             if len(self.fit.params['output_params'])>0:
                 for key in self.fit.params['output_params'].keys():

@@ -61,6 +61,7 @@ class Scanner(QWidget):
         self.motorChanged.connect(self.motorStatusChanged)
         self.scalerCounting.connect(self.scalerStatusChanged)
         self.slitMoved.connect(self.slitStatusChanged)
+        self.detectorListWidget.itemSelectionChanged.connect(self.scanDetectorsChanged)
         
     def changeScanFolder(self,scanFolder=None):
         """
@@ -142,7 +143,7 @@ class Scanner(QWidget):
         row+=1
         col=0
         self.scanNameComboBox=QComboBox()
-        self.scanNameComboBox.addItems(['MotorScan','TimeScan','EnergyScan','SlitScan'])
+        self.scanNameComboBox.addItems(['MotorScan','TimeScan','EnergyScan','SlitScan','TransScan'])
         self.scanMotorComboBox=QComboBox()
         self.scanMotorComboBox.addItems(list(self.motors.keys()))
         self.scanMotorComboBox.setCurrentIndex(self.scanMotorComboBox.findText('d_x'))
@@ -239,6 +240,9 @@ class Scanner(QWidget):
             self.scanMotorPositionLabel.setText('%.4f'%caget(self.motors[str(self.scanMotorComboBox.currentText())]['PV']+'.RBV'))
         elif self.scanName=='TimeScan':
             self.scanMotorComboBox.addItem('time')
+            self.scanMotorPositionLabel.setText('0.0')
+        elif self.scanName=='TransScan':
+            self.scanMotorComboBox.addItem('trans')
             self.scanMotorPositionLabel.setText('0.0')
         elif self.scanName=='EnergyScan':
             self.scanMotorComboBox.addItem('Energy')
@@ -342,6 +346,9 @@ class Scanner(QWidget):
         """
         #self.scanDetectors=[item.text() for item in self.detectorListWidget.selectedItems()]
         self.scanSelectionChanged()
+
+    def scanDetectorsChanged(self):
+        self.scanDetectors = [item.text() for item in self.detectorListWidget.selectedItems()]
         
     def scanTypeChanged(self):
         """
@@ -531,9 +538,9 @@ class Scanner(QWidget):
                     break
             self.scanListWidget.addItem('Scan %d: %s'%(num,motorName))
             
-    def tscan(self,count_time,sleep_time):
+    def trans_scan(self,count_time,sleep_time):
         """
-        Peform the time scan with the provided count_time and sleep_time:
+        Peform the transmission scan with the provided count_time and sleep_time:
         """
         caput(self.scalers['15IDC_scaler_count_time']['PV'], count_time)
         caput(self.scalers['15IDD_scaler_count_time']['PV'], count_time)
@@ -544,6 +551,8 @@ class Scanner(QWidget):
             if self.shutterModeCheckBox.isChecked():
                 self.shutter_ON()
             self.scalerDone=1
+            caput("pd_state",0)
+            QtTest.QTest.qWait(1000)
             self.triggerAllDetectors()
             # caput(self.scalers['15IDD_scaler_start']['PV'],1,wait=False)
             # QtTest.QTest.qWait(10)
@@ -560,9 +569,33 @@ class Scanner(QWidget):
             self.monB_counts=caget(self.scalers['monitorB']['PV'])
             self.monP_counts=caget(self.scalers['monitorP']['PV'])
             self.bs_diode_counts=caget(self.scalers['bs_diode']['PV'])
-            self.monitor_diode_counts=caget(self.scalers['monitor_diode']['PV'])
-            self.trans_diode_counts=caget(self.scalers['trans_diode']['PV'])
             self.monitor_counts=caget(self.scalers['monitor']['PV'])
+            self.monitor_diode_counts=caget(self.scalers['monitor_diode']['PV'])/self.monitor_counts
+
+
+            if self.shutterModeCheckBox.isChecked():
+                self.shutter_ON()
+            self.scalerDone = 1
+            caput("pd_state",2)
+            QtTest.QTest.qWait(1000)
+            self.triggerAllDetectors()
+            # caput(self.scalers['15IDD_scaler_start']['PV'],1,wait=False)
+            # QtTest.QTest.qWait(10)
+            # while self.scalerDone==1 and not self.abort:
+            #     pg.QtGui.QApplication.processEvents()
+            #     QtTest.QTest.qWait(10)
+            if self.abort:
+                self.initiat_abort()
+                break
+            #self.scalerDone=0
+            if self.shutterModeCheckBox.isChecked():
+                self.shutter_OFF()
+            self.count_time=caget(self.scalers['15IDD_scaler_count_time']['PV'])
+            self.monB_counts=caget(self.scalers['monitorB']['PV'])
+            self.monP_counts=caget(self.scalers['monitorP']['PV'])
+            self.bs_diode_counts=caget(self.scalers['bs_diode']['PV'])
+            self.monitor_counts=caget(self.scalers['monitor']['PV'])
+            self.trans_diode_counts=caget(self.scalers['trans_diode']['PV'])/self.monitor_counts
             t1=time.time()-t
             if 'scanArray' in self.scans[self.scanNum]:
                 self.scans[self.scanNum]['scanArray']=np.vstack((self.scans[self.scanNum]['scanArray'],np.array([t1,
@@ -572,7 +605,8 @@ class Scanner(QWidget):
                 self.scans[self.scanNum]['scanArray']=np.array([[t1,count_time,self.monB_counts,self.monP_counts,
                                                                  self.bs_diode_counts,self.monitor_diode_counts,
                                                                  self.trans_diode_counts,self.monitor_counts]])
-            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num,t1,count_time,self.monB_counts,self.monP_counts,
+            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%f\t%f\t%d'%(self.data_num,t1,count_time,self.monB_counts,
+                                                           self.monP_counts,
                                                        self.bs_diode_counts,self.monitor_diode_counts,
                                                        self.trans_diode_counts,self.monitor_counts)
             names=[]
@@ -595,6 +629,92 @@ class Scanner(QWidget):
                 self.scanCounterStatus.setText('<font color="Red">Sleeping</font>')
                 QtTest.QTest.qWait(1000*sleep_time)
             self.scanCounterStatus.clear()
+#            else:
+#                try:
+#                    camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
+#                except:
+#                    pass
+#                self.continuousScanCheckBox.setCheckState(Qt.Unchecked)
+#                self.scanfh.write('\n')
+#                self.scanfh.write('##Scan Aborted after %d points'%self.data_num)
+#                print('\n')
+#                print('##Scan Aborted after %d points'%self.data_num)
+#                self.motorStopped=True
+#                break
+#            pg.QtGui.QApplication.processEvents()
+
+    def tscan(self, count_time, sleep_time):
+        """
+        Peform the time scan with the provided count_time and sleep_time:
+        """
+        caput(self.scalers['15IDC_scaler_count_time']['PV'], count_time)
+        caput(self.scalers['15IDD_scaler_count_time']['PV'], count_time)
+        t = time.time()
+        self.data_num = 0
+        while True:
+            #            if not self.abort:
+            if self.shutterModeCheckBox.isChecked():
+                self.shutter_ON()
+            self.scalerDone = 1
+            self.triggerAllDetectors()
+            # caput(self.scalers['15IDD_scaler_start']['PV'],1,wait=False)
+            # QtTest.QTest.qWait(10)
+            # while self.scalerDone==1 and not self.abort:
+            #     pg.QtGui.QApplication.processEvents()
+            #     QtTest.QTest.qWait(10)
+            if self.abort:
+                self.initiat_abort()
+                break
+            # self.scalerDone=0
+            if self.shutterModeCheckBox.isChecked():
+                self.shutter_OFF()
+            self.count_time = caget(self.scalers['15IDD_scaler_count_time']['PV'])
+            self.monB_counts = caget(self.scalers['monitorB']['PV'])
+            self.monP_counts = caget(self.scalers['monitorP']['PV'])
+            self.bs_diode_counts = caget(self.scalers['bs_diode']['PV'])
+            self.monitor_diode_counts = caget(self.scalers['monitor_diode']['PV'])
+            self.trans_diode_counts = caget(self.scalers['trans_diode']['PV'])
+            self.monitor_counts = caget(self.scalers['monitor']['PV'])
+            t1 = time.time() - t
+            if 'scanArray' in self.scans[self.scanNum]:
+                self.scans[self.scanNum]['scanArray'] = np.vstack(
+                    (self.scans[self.scanNum]['scanArray'], np.array([t1,
+                                                                      count_time, self.monB_counts,
+                                                                      self.monP_counts, self.bs_diode_counts,
+                                                                      self.monitor_diode_counts,
+                                                                      self.trans_diode_counts,
+                                                                      self.monitor_counts])))
+            else:
+                self.scans[self.scanNum]['scanArray'] = np.array(
+                    [[t1, count_time, self.monB_counts, self.monP_counts,
+                      self.bs_diode_counts, self.monitor_diode_counts,
+                      self.trans_diode_counts, self.monitor_counts]])
+            text = '%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d\t%d' % (self.data_num, t1, count_time, self.monB_counts,
+                                                               self.monP_counts,
+                                                               self.bs_diode_counts, self.monitor_diode_counts,
+                                                               self.trans_diode_counts, self.monitor_counts)
+            names = []
+            norm = 1.0
+            if self.normDetectorComboBox.currentText() != 'none':
+                norm_num = self.scans[self.scanNum]['scanVariables'].index(self.normDetectorComboBox.currentText())
+                norm = self.scans[self.scanNum]['scanArray'][:, norm_num]
+            for det in self.scanDetectors:
+                det_num = self.scans[self.scanNum]['scanVariables'].index(det)
+                names.append('%d-%s' % (self.scanNum, det))
+                self.plotWidget.add_data(self.scans[self.scanNum]['scanArray'][:, 0],
+                                         self.scans[self.scanNum]['scanArray'][:, det_num] / norm, name=names[-1])
+            self.plotWidget.Plot(names)
+            self.scanfh.write(text + '\n')
+            print(text)
+            self.counterLabel.setText('#%d' % self.data_num)
+            self.data_num += 1
+
+            # Sleeping
+            if sleep_time > 1e-3:
+                self.scanCounterStatus.setText('<font color="Red">Sleeping</font>')
+                QtTest.QTest.qWait(1000 * sleep_time)
+            self.scanCounterStatus.clear()
+
 #            else:
 #                try:
 #                    camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
@@ -659,7 +779,8 @@ class Scanner(QWidget):
                 self.scans[self.scanNum]['scanArray']=np.array([[pos,count_time,self.monB_counts,self.monP_counts,
                                                                  self.bs_diode_counts,self.monitor_diode_counts,
                                                                  self.trans_diode_counts,self.monitor_counts]])
-            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num,pos,count_time,self.monB_counts,self.monP_counts,
+            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d\t%d'%(self.data_num,pos,count_time,self.monB_counts,
+                                                          self.monP_counts,
                                                        self.bs_diode_counts,self.monitor_diode_counts,
                                                        self.trans_diode_counts,self.monitor_counts)
             names=[]
@@ -747,7 +868,8 @@ class Scanner(QWidget):
                 self.scans[self.scanNum]['scanArray']=np.array([[pos,count_time,self.monB_counts,self.monP_counts,
                                                                  self.bs_diode_counts,self.monitor_diode_counts,
                                                                  self.trans_diode_counts,self.monitor_counts]])
-            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d'%(self.data_num, pos,count_time,self.monB_counts,self.monP_counts,
+            text='%d\t%.4f\t%.4f\t%d\t%d\t%d\t%d\t%d\t%d'%(self.data_num, pos,count_time,self.monB_counts,
+                                                         self.monP_counts,
                                                        self.bs_diode_counts,self.monitor_diode_counts,
                                                        self.trans_diode_counts,self.monitor_counts)
             names=[]
@@ -793,6 +915,9 @@ class Scanner(QWidget):
             camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
         except:
             pass
+        caput(self.scalers['15IDD_scaler_start']['PV'],0)
+        caput(self.scalers['15IDC_scaler_start']['PV'], 0)
+        caput(self.scalers['15IDD_scaler_mode']['PV'],1)
         self.continuousScanCheckBox.setCheckState(Qt.Unchecked)
         self.scanfh.write('\n')
         self.scanfh.write('##Scan Aborted after %d points'%self.data_num)
@@ -844,7 +969,8 @@ class Scanner(QWidget):
                 self.scanfh.write(text)
                 self.scanfh.write('\n')
                 print(text+'\n')
-                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
+                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP',
+                                                           'bs_diode',
                                                        'monitor_diode','trans_diode','monitor')
                 self.scans[self.scanNum]['scanVariables']=text.split()[1:]
                 self.scanfh.write(text+'\n')
@@ -867,7 +993,7 @@ class Scanner(QWidget):
             self.scanfh.write(text)
             self.scanfh.write('\n')
             print(text+'\n')
-            text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
+            text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
                                                    'monitor_diode','trans_diode','monitor')
             self.scans[self.scanNum]['scanVariables']=text.split()[1:]
             self.scanfh.write(text+'\n')
@@ -875,6 +1001,28 @@ class Scanner(QWidget):
             print(text)
             self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'],fontsize=5)
             self.preScanOK=True
+
+        elif self.scanName=='TransScan':
+            self.scanMotorName=self.scanMotorComboBox.currentText()
+            camonitor(self.scalers['15IDD_scaler_start']['PV'],callback=self.scalerStatus)
+            self.scans[self.scanNum]={}
+            self.scanFile=os.path.join(self.scanFolder,'Scan%04d.dat'%self.scanNum)
+            self.scanfh=open(self.scanFile,'w')
+            print('\n')
+            text='#S %d %s %s %.5f %.5f'%(self.scanNum,self.scanName,self.scanMotorName,count_time,sleep_time)
+            self.scans[self.scanNum]['scanHeader']=text
+            self.scanfh.write(text)
+            self.scanfh.write('\n')
+            print(text+'\n')
+            text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
+                                                   'monitor_diode','trans_diode','monitor')
+            self.scans[self.scanNum]['scanVariables']=text.split()[1:]
+            self.scanfh.write(text+'\n')
+            #self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
+            print(text)
+            self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'],fontsize=5)
+            self.preScanOK=True
+
         elif self.scanName=='SlitScan':
             self.scanMotorName=self.scanMotorComboBox.currentText()
             high=caget(self.slitParams[motorname]['PV']+'.DRVH')
@@ -893,7 +1041,8 @@ class Scanner(QWidget):
                 self.scanfh.write(text)
                 self.scanfh.write('\n')
                 print(text+'\n')
-                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP','bs_diode',
+                text='#%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s'%('Pt',self.scanMotorName,'count-time','monB','monP',
+                                                           'bs_diode',
                                                        'monitor_diode','trans_diode','monitor')
                 self.scans[self.scanNum]['scanVariables']=text.split()[1:]
                 self.scanfh.write(text+'\n')
@@ -984,6 +1133,12 @@ class Scanner(QWidget):
             if self.preScanOK:
                 self.slitscan(self.scanMotorName,start,finish,steps,self.countTime,self.sleepTime)
             self.post_scan(self.scanMotorName)
+        elif self.scanName=='TransScan':
+            self.pre_scan(self.scanMotorName, start, finish, steps, self.countTime, self.sleepTime)
+            if self.preScanOK:
+                self.trans_scan(self.countTime, self.sleepTime)
+            self.post_scan(self.scanMotorName)
+
             
             
         
@@ -1074,6 +1229,7 @@ class Scanner(QWidget):
         """
         #for name in self.detectors.keys():
         #    caput(self.detectors[name]['PV']+'Acquire',1)
+        QtTest.QTest.qWait(1000)
         caput(self.scalers['15IDD_scaler_start']['PV'],1)
         caput(self.scalers['15IDC_scaler_start']['PV'],1)
         QtTest.QTest.qWait(10)

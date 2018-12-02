@@ -276,7 +276,9 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
     np.savetxt(os.path.join(meandir,'sol_mean.txt'),np.vstack((sol_mean['x'],sol_mean['y'],sol_mean['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
     for num in sam_nums:
         np.savetxt(os.path.join(meandir,'sam%04d_mean.txt'%num),np.vstack((sam_mean[num]['x'],sam_mean[num]['y'],sam_mean[num]['yerr'])).T,comments='#',header='Energy=%.3f'%fulldata[gc_fname]['Energy'])
-        
+
+
+
 def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_times=1,sol_name=None,sol_times=1,mt_name=None,mt_times=1,standard='GC', xmin=0.0,xmax=1.0,Npt=1000,interpolation_type='linear',sample_thickness=1.0,sol_thickness=1.0, mt_thickness=1e-4, gc_thickness=0.1055, bkg_fac=1.0,data={},textEdit=None):
     """
     Reduce a set of SAXS data (with data, backgrounds and standard samples kept in different folders) with background subtraction and normalizing the data for absolute 
@@ -491,7 +493,7 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
     return data
         
 
-def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=None):
+def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=None,extra_key=''):
     """
     Averages over the 1D-SAXS patterns recorded in files with the names in the format like 'fname_0001.txt' where the last four numbers of the filename with path will be given as a list of numbers in 'num'.
     delete_prev=True will delete the directory containing output files if it exists
@@ -517,18 +519,21 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
                 diode=diode+data[fnam]['Diode']
                 pDiodeCorr=pDiodeCorr+data[fnam]['BSDiode_corr']
                 monitorCorr=monitorCorr+data[fnam]['Monitor_corr']
+                trans=trans+data[fnam]['Transmission']
             except:
-                monitor=1.0
-                pDiode=1.0
-                diode=1.0
-                pDiodeCorr=1.0
-                monitorCorr=1.0
+                monitor=0.0
+                pDiode=0.0
+                diode=0.0
+                pDiodeCorr=0.0
+                monitorCorr=0.0
+                trans=0.0
         tlen=len(num)
         monitor=monitor/tlen
         pDiode=pDiode/tlen
         diode=diode/tlen
         pDiodeCorr=pDiodeCorr/tlen
         monitorCorr=monitorCorr/tlen
+        trans=trans/tlen
         sumdata=np.array(sumdata)
         meandata=np.mean(sumdata,axis=0)
         errordata=np.std(sumdata,axis=0)
@@ -540,7 +545,7 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         if not os.path.exists(os.path.join(fdir,'Mean')):
             os.makedirs(os.path.join(fdir,'Mean'))
         if ofname is None:
-            ofname=os.path.join(fdir,'Mean',os.path.basename(fname)+'_mean.txt')
+            ofname=os.path.join(fdir,'Mean',os.path.basename(fname)+'_'+str(extra_key)+'_mean.txt')
         else:
             ofname=os.path.join(fdir,'Mean',ofname)
             
@@ -552,6 +557,7 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         data[ofname]['Monitor_corr']=monitorCorr
         data[ofname]['BSDiode']=pDiode
         data[ofname]['BSDiode_corr']=pDiodeCorr
+        data[ofname]['Transmission']=trans
         header='Processed data obtained by taking Mean over the following files:\n'
         for fnam in fnames:
             header=header+fnam+'\n'
@@ -566,13 +572,12 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
             textEdit.append('Averaged data saved in a file named %s'%ofname)
         return data,ofname
     
-def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg_sub',norm=1.0):
+def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg_sub',norm=1.0,bg_factor=1.0,data={}):
     """
     Subtracting the Background data 'bdata' from the signal data 'sdata' where 'sname' and 'bname' are keys for the specific data to be subtracted
     'ofname' is the output file name
     """
     fdir=os.path.dirname(sname)
-    data={}
     data[sname]=sdata[sname]
     data[bname]=bdata[bname]
     ofdir=os.path.join(fdir,folder)
@@ -581,8 +586,8 @@ def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg
     ofname=os.path.join(ofdir,ofname)
     interpolate_data(data,Npt=len(data[sname]['x']))
     data[ofname]=copy.copy(data[sname])
-    data[ofname]['y']=data[sname]['yintp']-data[bname]['yintp']
-    data[ofname]['yerr']=np.sqrt(data[sname]['yintperr']**2+data[bname]['yintperr']**2)
+    data[ofname]['y']=data[sname]['yintp']-bg_factor*data[bname]['yintp']
+    data[ofname]['yerr']=np.sqrt(data[sname]['yintperr']**2+bg_factor**2*data[bname]['yintperr']**2)
     data[ofname]['CF']=cf
     data[ofname]['Thickness']=thickness
     finaldata=np.vstack((data[ofname]['x'],norm*data[ofname]['y'],norm*data[ofname]['yerr'])).T
@@ -596,7 +601,7 @@ def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg
     header=header+'Q (A^-1)\tInt\tInt_err\n'
     np.savetxt(ofname,finaldata,header=header,comments='#')
     print('Subtracted filname data save in a file named %s'%ofname)
-    return ofname
+    return data, ofname
         
         
 def interpolate_data(data,Npt=1000,kind='linear'):
