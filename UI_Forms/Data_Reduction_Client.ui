@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>652</width>
+    <width>751</width>
     <height>508</height>
    </rect>
   </property>
@@ -187,6 +187,11 @@
            <item>
             <property name="text">
              <string>BSDiode</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>TransDiode</string>
             </property>
            </item>
            <item>
