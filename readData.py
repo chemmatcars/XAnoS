@@ -70,7 +70,7 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
     Reduce a set of SAXS data (kept in a same folder with a same name for data, backgrounds and standard sample) with background subtraction and normalizing the data for absolute 
     scale using Glassy carbon 
     
-    fname             : Filename initials other than the numbers. for instance for 'sample01_0001.edf' the filename would be 'sample01' where '0001' acts as the text corresponding to image number 1.
+    fname             : Filename initials other than the numbers. for instance for 'sample01_0001.txt' the filename would be 'sample01' where '0001' acts as the text corresponding to image number 1.
     sam_nums          : a list of image numbers considered to be samples
     gc_num            : First image number corresponding to the image collected from Glassy Carbon
     air_num           : First image number corresponding to the image collected from Air
@@ -87,15 +87,22 @@ def reduce1DSAXS(fname=None,sam_nums=None,gc_num=None,air_num=None,sol_num=None,
         return 'Please provide a filename'
     if sam_nums is None:
         return 'Please provide a list of image numbers of all the samples to be reduced'
+    else:
+        Nfile=len(sam_nums)+1
     if gc_num is None:
         return 'Please provide the first image number corresponding to the glassy carbon'
+    else:
+        Nfile+=1
     if sol_num is None:
         return 'Please provide the first image number corresponding to solvent(water) background'
-    # if air_num is None:
+    else:
+        Nfile+=1
+    if air_num is not None:
+        Nfile+=1
     #     return 'Please provide the first image number corresponding to Air background'
-    # if mt_num is None:
+    if mt_num is not None:
     #     return 'Please provide the first image number corresponding to emtpy capillary tube'
-    Nfile=len(sam_nums)+4
+        Nfile+=1
     fulldata={}
     
     for times in range(Ntimes):
@@ -662,33 +669,33 @@ def write1DSAXS(data,textEdit=None):
 if __name__=='__main__':
     try:
         fname=sys.argv[1]
-        run=True
     except:
         print('Please provide the basefile name without numbers at the end as argument 2')
-        run=False
     try:
-        fnum=int(sys.argv[2])
-        run=run and True
+        sam_nums=int(sys.argv[2])
     except:
-        print('Please provide the number of repeated measurements of data as argument 3')
-        run= False
+        print('Please provide a list of first image of the samples')
     try:
-        sol_name=sys.argv[3]
-    except:
-        print('Please provide the solvent/background file name without numbers at the end as argument 4')
-    try:
-        sol_num=int(sys.argv[4])
+        sol_num=int(sys.argv[3])
     except:
         print('Please provide the number of repeated measurements of solvent/background data as argument 5')
     try:
-        gc_name=sys.argv[5]
-    except:
-        print('Please provide Glassy Carbon file name without numbers at the end as argument 6')
-    try:
-        gc_num=int(sys.argv[6])
+        gc_num=int(sys.argv[4])
     except:
         print('Please provide the number of repeated measurements of Glassy carbon as argument 7')
-    reduce1DSAXS2(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,sample_thickness=0.15,xmin=0.04,xmax=0.07)
+    try:
+        mt_num=sys.argv[5]
+    except:
+        mt_num=None
+    try:
+        air_num=sys.argv[6]
+    except:
+        air_num=None
+
+    reduce1DSAXS(fname=fname, sam_nums=None, gc_num=None, air_num=None, sol_num=None, mt_num=None, Ntimes=1, xmin=0.0,
+                 xmax=1.0, Npt=1000, interpolation_type='linear', sample_thickness=0.148, bkg_fac=1.0):
+
+    reduce1DSAXS(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,mt_name=mt_name,mt_num=mt_num,air_name=air_name,air_num=air_num,sample_thickness=0.15,xmin=0.04,xmax=0.07)
 
 #if __name__=='__main__':
 #    fname=sys.argv[1]

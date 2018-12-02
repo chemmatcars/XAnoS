@@ -4,12 +4,7 @@
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Data_Collector_Server.py" afterPath="$PROJECT_DIR$/Data_Collector_Server.py" />
-      <change beforePath="$PROJECT_DIR$/Data_Reduction_Client.py" afterPath="$PROJECT_DIR$/Data_Reduction_Client.py" />
-      <change beforePath="$PROJECT_DIR$/Fit_widget.py" afterPath="$PROJECT_DIR$/Fit_widget.py" />
-      <change beforePath="$PROJECT_DIR$/SetupData/reducer_setup.txt" afterPath="$PROJECT_DIR$/SetupData/reducer_setup.txt" />
-      <change beforePath="$PROJECT_DIR$/UI_Forms/Data_Reduction_Client.ui" afterPath="$PROJECT_DIR$/UI_Forms/Data_Reduction_Client.ui" />
-      <change beforePath="$PROJECT_DIR$/energySteps.py" afterPath="$PROJECT_DIR$/energySteps.py" />
-      <change beforePath="$PROJECT_DIR$/positionerFile.txt" afterPath="$PROJECT_DIR$/positionerFile.txt" />
+      <change beforePath="$PROJECT_DIR$/SetupData/scaler_params.txt" afterPath="$PROJECT_DIR$/SetupData/scaler_params.txt" />
       <change beforePath="$PROJECT_DIR$/readData.py" afterPath="$PROJECT_DIR$/readData.py" />
       <change beforePath="$PROJECT_DIR$/scanner.py" afterPath="$PROJECT_DIR$/scanner.py" />
     </list>
@@ -22,56 +17,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Data_Collector_Server.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Data_Collector_Server.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22372">
-              <caret line="1333" column="112" lean-forward="false" selection-start-line="1333" selection-start-column="112" selection-end-line="1333" selection-end-column="112" />
+            <state relative-caret-position="8713">
+              <caret line="1553" column="47" lean-forward="true" selection-start-line="1553" selection-start-column="47" selection-end-line="1553" selection-end-column="47" />
               <folding>
                 <element signature="e#0#220#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="positionerFile.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/positionerFile.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="148" lean-forward="false" selection-start-line="1" selection-start-column="148" selection-end-line="1" selection-end-column="148" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Fit_widget.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Fit_widget.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="1275" column="29" lean-forward="false" selection-start-line="1275" selection-start-column="29" selection-end-line="1275" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#318#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="energySteps.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/energySteps.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="20" column="11" lean-forward="false" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Energy_Widget.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Energy_Widget.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5746">
-              <caret line="349" column="8" lean-forward="false" selection-start-line="349" selection-start-column="8" selection-end-line="349" selection-end-column="8" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -88,11 +41,65 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="HistogramLUTItem.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/pyqtgraph/graphicsItems/HistogramLUTItem.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3060">
+              <caret line="194" column="0" lean-forward="false" selection-start-line="194" selection-start-column="0" selection-end-line="194" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Image_Widget.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Image_Widget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2669">
+              <caret line="164" column="17" lean-forward="false" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scaler_params.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SetupData/scaler_params.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scanner.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scanner.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="12240">
+              <caret line="733" column="21" lean-forward="false" selection-start-line="733" selection-start-column="21" selection-end-line="733" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Data_Reducer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Data_Reducer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#267#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="readData.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/readData.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9758">
-              <caret line="584" column="26" lean-forward="false" selection-start-line="584" selection-start-column="26" selection-end-line="584" selection-end-column="26" />
+            <state relative-caret-position="476">
+              <caret line="274" column="8" lean-forward="false" selection-start-line="274" selection-start-column="8" selection-end-line="274" selection-end-column="8" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -110,23 +117,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ASAXS_widget.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ASAXS_widget.py">
+      <file leaf-file-name="batch" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/batch">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10030">
-              <caret line="610" column="82" lean-forward="false" selection-start-line="610" selection-start-column="72" selection-end-line="610" selection-end-column="82" />
-              <folding>
-                <element signature="e#0#288#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Data_Reduction_Client.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9316">
-              <caret line="570" column="60" lean-forward="false" selection-start-line="570" selection-start-column="60" selection-end-line="570" selection-end-column="60" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -143,36 +138,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>15IDC</find>
-      <find>'SlitScan'</find>
-      <find>trans</find>
-      <find>self.preScanOK</find>
-      <find>scanSelectionChanged</find>
-      <find>scanType</find>
-      <find>self.scanName</find>
-      <find>scanNameChanged</find>
-      <find>triggerAllDetectors</find>
-      <find>free</find>
-      <find>print</find>
-      <find>create</find>
-      <find>trans_scan</find>
-      <find>Please load</find>
-      <find>initiat_abort</find>
-      <find>scaler_mode</find>
-      <find>15IDD_scaler_mode</find>
-      <find>15IDD_scaler_start</find>
-      <find>self.trans</find>
-      <find>self.normComboBox</find>
-      <find>self.normCom</find>
-      <find>self.transmission_value</find>
+      <find>newImageObtained</find>
+      <find>15PIL</find>
+      <find>provide</find>
+      <find>self.update_color_map</find>
+      <find>applyDefaultCMap</find>
+      <find>autominmaxcheckbox</find>
+      <find>autoscale</find>
+      <find>DetectorWidget</find>
+      <find>detstatus</find>
+      <find>acquireperiod</find>
+      <find>acquire</find>
+      <find>onArrayDataUpdate</find>
+      <find>arrayDataUpdated</find>
+      <find>imageChanged</find>
+      <find>updateDetectorImage</find>
+      <find>bringPDIn</find>
+      <find>self.collect_data()</find>
+      <find>self.collect_data</find>
+      <find>collect_data(</find>
+      <find>count_em</find>
       <find>transmission</find>
-      <find>self.detectorListWidgetChanged</find>
-      <find>self.scanDetectors</find>
+      <find>self.shutter_ON</find>
+      <find>collect_dark</find>
+      <find>collect_data</find>
       <find>self.detectorListWidget</find>
-      <find>self.header['Monitor_corr']</find>
-      <find>bkgSub1D</find>
-      <find>background</find>
-      <find>untrack</find>
+      <find>bs-diode</find>
+      <find>diode</find>
+      <find>fulldata.update</find>
+      <find>fulldata</find>
+      <find>15IDC</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -198,30 +193,28 @@
         <option value="$PROJECT_DIR$/MCA_Widget.py" />
         <option value="$PROJECT_DIR$/yap_window_scan.py" />
         <option value="$PROJECT_DIR$/pyepics_Qt.py" />
+        <option value="$PROJECT_DIR$/positionerFile.txt" />
         <option value="$PROJECT_DIR$/Energy_Widget.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor.py" />
         <option value="$PROJECT_DIR$/PlotWidget.py" />
         <option value="$PROJECT_DIR$/ASAXS_widget.py" />
+        <option value="$PROJECT_DIR$/energySteps.py" />
         <option value="$PROJECT_DIR$/Image_Widget.py" />
         <option value="$PROJECT_DIR$/fileWatcher.py" />
         <option value="$PROJECT_DIR$/SetupData/detector_params.txt" />
         <option value="$PROJECT_DIR$/Detector_Widget.py" />
         <option value="$PROJECT_DIR$/SetupData/scaler_params.txt" />
-        <option value="$PROJECT_DIR$/energySteps.py" />
         <option value="$PROJECT_DIR$/scanner.py" />
-        <option value="$PROJECT_DIR$/Data_Reduction_Client.py" />
         <option value="$PROJECT_DIR$/readData.py" />
         <option value="$PROJECT_DIR$/Data_Collector_Server.py" />
-        <option value="$PROJECT_DIR$/positionerFile.txt" />
-        <option value="$PROJECT_DIR$/Fit_widget.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="3072" />
     <option name="y" value="31" />
-    <option name="width" value="1540" />
-    <option name="height" value="845" />
+    <option name="width" value="1536" />
+    <option name="height" value="801" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -238,7 +231,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -246,22 +239,11 @@
               <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
               <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
-              <item name="Functions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
-              <item name="Functions" type="462c0819:PsiDirectoryNode" />
-              <item name="FormFactors" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -285,7 +267,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Data_Reduction_Client">
+  <component name="RunManager" selected="Python.scanner">
     <configuration name="ASAXS_Batch_Processor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -304,6 +286,24 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="ASAXS_widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SAXS_Drive" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ASAXS_widget.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="Data_Collector_Server" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -317,24 +317,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="SAXS_Drive" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data_Collector_Server.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="Data_Reduction_Client" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SAXS_Drive" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data_Reduction_Client.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -377,19 +359,19 @@
       <option name="MODULE_MODE" value="false" />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
-      <item index="1" class="java.lang.String" itemvalue="Python.Detector_Widget" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
-      <item index="3" class="java.lang.String" itemvalue="Python.scanner" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Data_Reduction_Client" />
+      <item index="0" class="java.lang.String" itemvalue="Python.ASAXS_widget" />
+      <item index="1" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Detector_Widget" />
+      <item index="3" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
+      <item index="4" class="java.lang.String" itemvalue="Python.scanner" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Data_Reduction_Client" />
-        <item index="1" class="java.lang.String" itemvalue="Python.scanner" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
-        <item index="3" class="java.lang.String" itemvalue="Python.Detector_Widget" />
-        <item index="4" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
+        <item index="0" class="java.lang.String" itemvalue="Python.scanner" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Detector_Widget" />
+        <item index="3" class="java.lang.String" itemvalue="Python.ASAXS_Batch_Processor" />
+        <item index="4" class="java.lang.String" itemvalue="Python.ASAXS_widget" />
       </list>
     </recent_temporary>
   </component>
@@ -442,30 +424,23 @@
       <option name="project" value="LOCAL" />
       <updated>1538685842938</updated>
     </task>
-    <task id="LOCAL-00006" summary="Updated the Data_Collector_Server and readData">
-      <created>1542514366014</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1542514366014</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="8" y="31" width="1540" height="845" extended-state="0" />
+    <frame x="3072" y="31" width="2410" height="1318" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1961817" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.08583465" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35085714" sideWeight="0.5063291" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2802276" sideWeight="0.49367088" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12114286" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.397351" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24812031" sideWeight="0.49367088" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3977143" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24960506" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781956" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914287" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39885715" sideWeight="0.496875" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -484,8 +459,7 @@
     <MESSAGE value="Updated INSTALL.txt" />
     <MESSAGE value="Updated all the modules and functions during the July 2018 beamtime" />
     <MESSAGE value="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files" />
-    <MESSAGE value="Updated the Data_Collector_Server and readData" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated the Data_Collector_Server and readData" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -663,6 +637,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/positionerFile.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="151" lean-forward="false" selection-start-line="0" selection-start-column="151" selection-end-line="0" selection-end-column="151" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2771">
@@ -684,6 +665,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Energy_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5933">
+          <caret line="349" column="8" lean-forward="false" selection-start-line="349" selection-start-column="8" selection-end-line="349" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/zmqServer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -698,6 +686,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20128">
+          <caret line="1202" column="20" lean-forward="false" selection-start-line="1202" selection-start-column="20" selection-end-line="1202" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3150">
+          <caret line="197" column="53" lean-forward="false" selection-start-line="197" selection-start-column="53" selection-end-line="197" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/zmqClient.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -705,10 +710,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ASAXS_widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="15" column="37" lean-forward="false" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="21" column="52" lean-forward="false" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/energySteps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="16" column="19" lean-forward="false" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -742,15 +761,29 @@
     </entry>
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/pyqtgraph/graphicsItems/HistogramLUTItem.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3240">
+        <state relative-caret-position="3060">
           <caret line="194" column="0" lean-forward="false" selection-start-line="194" selection-start-column="0" selection-end-line="194" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Image_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2826">
+        <state relative-caret-position="2669">
           <caret line="164" column="17" lean-forward="false" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7684">
+          <caret line="452" column="9" lean-forward="false" selection-start-line="452" selection-start-column="9" selection-end-line="452" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#168#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -764,10 +797,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SetupData/scaler_params.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scanner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12240">
+          <caret line="733" column="21" lean-forward="false" selection-start-line="733" selection-start-column="21" selection-end-line="733" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/batch">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -775,28 +825,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SetupData/scaler_params.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scanner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="63" column="86" lean-forward="false" selection-start-line="63" selection-start-column="86" selection-end-line="63" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9316">
-          <caret line="570" column="60" lean-forward="false" selection-start-line="570" selection-start-column="60" selection-end-line="570" selection-end-column="60" />
-          <folding />
+          <folding>
+            <element signature="e#0#267#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -808,76 +839,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ASAXS_widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10030">
-          <caret line="610" column="82" lean-forward="false" selection-start-line="610" selection-start-column="72" selection-end-line="610" selection-end-column="82" />
-          <folding>
-            <element signature="e#0#288#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/readData.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9758">
-          <caret line="584" column="26" lean-forward="false" selection-start-line="584" selection-start-column="26" selection-end-line="584" selection-end-column="26" />
+        <state relative-caret-position="476">
+          <caret line="274" column="8" lean-forward="false" selection-start-line="274" selection-start-column="8" selection-end-line="274" selection-end-column="8" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7684">
-          <caret line="452" column="9" lean-forward="false" selection-start-line="452" selection-start-column="9" selection-end-line="452" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#168#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Energy_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5746">
-          <caret line="349" column="8" lean-forward="false" selection-start-line="349" selection-start-column="8" selection-end-line="349" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22372">
-          <caret line="1333" column="112" lean-forward="false" selection-start-line="1333" selection-start-column="112" selection-end-line="1333" selection-end-column="112" />
+        <state relative-caret-position="8713">
+          <caret line="1553" column="47" lean-forward="true" selection-start-line="1553" selection-start-column="47" selection-end-line="1553" selection-end-column="47" />
           <folding>
-            <element signature="e#0#220#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/energySteps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="20" column="11" lean-forward="false" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/positionerFile.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="148" lean-forward="false" selection-start-line="1" selection-start-column="148" selection-end-line="1" selection-end-column="148" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="1275" column="29" lean-forward="false" selection-start-line="1275" selection-start-column="29" selection-end-line="1275" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#318#0" expanded="true" />
+            <element signature="e#0#220#0" expanded="true" />
           </folding>
         </state>
       </provider>
