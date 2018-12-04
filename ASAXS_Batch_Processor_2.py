@@ -59,8 +59,8 @@ class ASAXS_Batch_Processor(QWidget):
     def process(self):
         if self.sampleFileName is not None:
             sam_num = 1
-            bg_num = 2
-            gc_num = 3
+            bg_num = sam_num + self.repeatNpts
+            gc_num = bg_num + self.repeatNpts
             fdir = os.path.dirname(self.sampleFileName)
             mean_dir = os.path.join(fdir, 'Mean')
             ctimes = 3 * self.repeatNpts

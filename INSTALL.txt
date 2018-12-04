@@ -4,7 +4,7 @@
 	
 	a) conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
 
-	b) pip install lmfit pyfai
+	b) pip install lmfit pyfai periodictable
 
 3) Go to the website: https://github.com/scikit-beam/XrayDB
 

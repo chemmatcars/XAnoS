@@ -695,7 +695,7 @@ if __name__=='__main__':
     reduce1DSAXS(fname=fname, sam_nums=None, gc_num=None, air_num=None, sol_num=None, mt_num=None, Ntimes=1, xmin=0.0,
                  xmax=1.0, Npt=1000, interpolation_type='linear', sample_thickness=0.148, bkg_fac=1.0)
 
-    reduce1DSAXS(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,mt_name=mt_name,mt_num=mt_num,air_name=air_name,air_num=air_num,sample_thickness=0.15,xmin=0.04,xmax=0.07)
+    #reduce1DSAXS(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,mt_name=mt_name,mt_num=mt_num,air_name=air_name,air_num=air_num,sample_thickness=0.15,xmin=0.04,xmax=0.07)
 
 #if __name__=='__main__':
 #    fname=sys.argv[1]

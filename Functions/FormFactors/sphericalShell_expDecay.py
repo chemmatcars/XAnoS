@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 
 ####Import your modules below if needed####
 from xraydb import XrayDB
-from pyEQL import chemical_formula
+#from pyEQL import chemical_formula
 
 
 class sphericalShell_expDecay: #Please put the class name same as the function name
