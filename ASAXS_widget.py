@@ -197,9 +197,9 @@ class ASAXS_Widget(QWidget):
         self.deleteShortCut.activated.connect(self.remove_data)
         self.dataDockLayout.addWidget(self.removeDataPushButton,row=row,col=col)
         col+=1
-        self.saveDataPushButton=QPushButton('Save processed data')
-        self.dataDockLayout.addWidget(self.saveDataPushButton,row=row,col=col,colspan=2)
-        self.saveDataPushButton.clicked.connect(self.save_processed_data)
+        self.batchProcessorPushButton=QPushButton('Open Batch Processor')
+        self.dataDockLayout.addWidget(self.batchProcessorPushButton,row=row,col=col,colspan=2)
+        self.batchProcessorPushButton.clicked.connect(self.batchProcess)
         
         row+=1
         col=0
@@ -221,6 +221,10 @@ class ASAXS_Widget(QWidget):
         self.dataDockLayout.addWidget(self.processTypeComboBox,row=row,col=col)
         col+=1
         self.dataDockLayout.addWidget(self.processPushButton,row=row,col=col,colspan=2)
+        col += 1
+        self.saveDataPushButton = QPushButton('Save processed data')
+        self.dataDockLayout.addWidget(self.saveDataPushButton, row=row, col=col, colspan=2)
+        self.saveDataPushButton.clicked.connect(self.save_processed_data)
         
         
         row+=1
