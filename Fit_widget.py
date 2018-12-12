@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QSplitter, QSizePolicy, QAbstractScrollArea, QHBoxLayout, QTextEdit
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox,\
+    QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem,\
+    QAbstractItemView, QSpinBox, QSplitter, QSizePolicy, QAbstractScrollArea, QHBoxLayout, QTextEdit
 from PyQt5.QtGui import QPalette
 from PyQt5.QtCore import Qt, QThread
 import os
@@ -146,7 +148,10 @@ class FitResultDialog(QDialog):
 
 class Fit_Widget(QWidget):
     """
-    This widget class is developed to provide an end-user a *Graphical User Interface* by which either they can develop their own fitting functions in python or use the existing fitting functions under different categories to analyze different kinds of one-dimensional data sets. 'LMFIT':https://lmfit.github.io/lmfit-py/ is extensively used within this widget.
+    This widget class is developed to provide an end-user a *Graphical User Interface* by which either they can \
+    develop their own fitting functions in python or use the existing fitting functions under different categories\
+     to analyze different kinds of one-dimensional data sets. 'LMFIT':https://lmfit.github.io/lmfit-py/ is extensively\
+      used within this widget.
     
     **Features**
     
@@ -286,7 +291,8 @@ class Fit_Widget(QWidget):
     def removeCategory(self):
         self.funcListWidget.clear()
         if len(self.categoryListWidget.selectedItems())==1:
-            ans=QMessageBox.question(self,'Delete warning','Are you sure you would like to delte the category?',QMessageBox.No,QMessageBox.Yes)
+            ans=QMessageBox.question(self,'Delete warning','Are you sure you would like to delte the category?',\
+                                     QMessageBox.No,QMessageBox.Yes)
             if ans==QMessageBox.Yes:
                 category=os.path.abspath('./Functions/%s'%self.categoryListWidget.currentItem().text())
                 #os.rename(category,)
@@ -346,7 +352,8 @@ class Fit_Widget(QWidget):
     
     def removeFunction(self):
         if len(self.funcListWidget.selectedItems())==1:
-            ans=QMessageBox.question(self,'Warning','Are you sure you would like to remove the function',QMessageBox.No,QMessageBox.Yes)
+            ans=QMessageBox.question(self,'Warning','Are you sure you would like to remove the function',\
+                                     QMessageBox.No,QMessageBox.Yes)
             if ans==QMessageBox.Yes:
                 dirName=os.path.abspath('./Functions/%s'%self.categoryListWidget.currentItem().text())
                 fname=self.funcListWidget.currentItem().text()
@@ -362,7 +369,8 @@ class Fit_Widget(QWidget):
                     fh.close()
                     self.update_functions()
                 except:
-                    QMessageBox.warning(self,'Remove error','Cannot remove the function becuase the function file might be open elsewhere.',QMessageBox.Ok)
+                    QMessageBox.warning(self,'Remove error','Cannot remove the function becuase the function file\
+                     might be open elsewhere.',QMessageBox.Ok)
         elif len(self.funcListWidget.selectedItems())>1:
             QMessageBox.warning(self,'Warning','Please select only one function at a time to remove',QMessageBox.Ok)
         else:
@@ -482,7 +490,8 @@ class Fit_Widget(QWidget):
             self.fit.y=self.data[fname]['y']
             self.fit.yerr=self.data[fname]['yerr']
             if len(np.where(self.data[fname]['yerr']<1e-30)[0])>0:
-                QMessageBox.warning(self,'Zero Errorbars','Some or all the errorbars of the selected data are zeros. Please select None for the Errorbar column in the Plot options of the data',QMessageBox.Ok)
+                QMessageBox.warning(self,'Zero Errorbars','Some or all the errorbars of the selected data are zeros.\
+                 Please select None for the Errorbar column in the Plot options of the data',QMessageBox.Ok)
                 break
             self.oldParams=copy.copy(self.fit.params)
             if self.fit.params['__mpar__']!={}:
@@ -490,7 +499,8 @@ class Fit_Widget(QWidget):
             try:
                 self.showFitInfoDlg()
                 self.runFit()
-                #self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,fit_method=self.fit_method,callback=self.fitCallback)
+                #self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,\
+                # fit_method=self.fit_method,callback=self.fitCallback)
 
                 self.fit_info='Fit Message: %s\n'%self.fit_message
 
@@ -519,7 +529,9 @@ class Fit_Widget(QWidget):
                     for row in range(self.sfitParamTableWidget.rowCount()):
                         key=self.sfitParamTableWidget.item(row,0).text()
                         try:
-                            self.sfitParamTableWidget.item(row,1).setToolTip('%.3e \u00B1 %.3e'%(self.fit.result.params[key].value,self.fit.result.params[key].stderr))
+                            self.sfitParamTableWidget.item(row,1).setToolTip('%.3e \u00B1 %.3e'%\
+                                                                             (self.fit.result.params[key].value,\
+                                                                              self.fit.result.params[key].stderr))
                         except:
                             pass
                         if self.fit.params['__mpar__']!={}:
@@ -527,7 +539,9 @@ class Fit_Widget(QWidget):
                                 for col in range(self.mfitParamTableWidget.columnCount()):
                                     parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                                     key='__%s__%03d'%(parkey,row)
-                                    self.mfitParamTableWidget.item(row,col).setToolTip('%.3e \u00B1 %0.3e'%(self.fit.result.params[key].value,self.fit.result.params[key].stderr))
+                                    self.mfitParamTableWidget.item(row,col).setToolTip('%.3e \u00B1 %0.3e'%\
+                                                                                       (self.fit.result.params[key].value,\
+                                                                                        self.fit.result.params[key].stderr))
                                     self.mfitParamData[parkey][row]=self.fit.result.params[key].value
                     ofname=os.path.splitext(fname)[0]
                     header='Data fitted with model: %s on %s\n'%(self.funcListWidget.currentItem().text(),time.asctime())
@@ -538,7 +552,8 @@ class Fit_Widget(QWidget):
                             header+=key+'='+str(self.fit.params[key])+'\n'
                     header+=self.fit_report+'\n'
                     header+='x \t y\t yerr \t yfit'
-                    fitdata=np.vstack((self.fit.x[self.fit.imin:self.fit.imax+1],self.fit.y[self.fit.imin:self.fit.imax+1],self.fit.yerr[self.fit.imin:self.fit.imax+1],self.fit.yfit)).T
+                    fitdata=np.vstack((self.fit.x[self.fit.imin:self.fit.imax+1],self.fit.y[self.fit.imin:self.fit.imax+1],\
+                                       self.fit.yerr[self.fit.imin:self.fit.imax+1],self.fit.yfit)).T
                     np.savetxt(ofname+'_fit.txt',fitdata,header=header,comments='#')
                 else:
                     self.undoFit()
@@ -547,7 +562,8 @@ class Fit_Widget(QWidget):
                     self.closeFitInfoDlg()
                 except:
                     pass
-                QMessageBox.warning(self,'Minimization failed','The initial guesses of the parameters are too far probably!',QMessageBox.Ok)
+                QMessageBox.warning(self,'Minimization failed','The initial guesses of the parameters are too far probably!',\
+                                    QMessageBox.Ok)
                 self.update_plot()
                 break
         self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
@@ -585,14 +601,16 @@ class Fit_Widget(QWidget):
 #            except:
 #                QMessageBox.information(self,'Info','Couldnot calculate confidence interval because the error estimated couldnot be calculated.',QMessageBox.Ok)
         else:
-            QMessageBox.warning(self,'Fit warning','Please fit the data first before calculating confidence intervals',QMessageBox.Ok)
+            QMessageBox.warning(self,'Fit warning','Please fit the data first before calculating confidence intervals',\
+                                QMessageBox.Ok)
                 
     def conf_interv_status(self,params,iterations,residual,fit_scale):
         self.confIntervalStatus.setText(self.confIntervalStatus.text().split('\n')[0]+'\n\n {:^s} = {:10d}'.format('Iteration',iterations))            
         QApplication.processEvents()
         
     def runFit(self):
-        self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,fit_method=self.fit_method,maxiter=int(self.fitIterationLineEdit.text()))
+        self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,\
+                                                              fit_method=self.fit_method,maxiter=int(self.fitIterationLineEdit.text()))
         
     
     def showFitInfoDlg(self):
@@ -617,7 +635,8 @@ class Fit_Widget(QWidget):
     def fitCallback(self,params,iterations,residual,fit_scale):
         self.fitIterLabel.setText('Iteration=%d,\t Chi-sqr=%.5e'%(iterations,np.sum(residual**2)))
         #self.fit.evaluate()
-        self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text(),fit=True)
+        self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,\
+                                 name=self.funcListWidget.currentItem().text(),fit=True)
         QApplication.processEvents()
         pg.QtGui.QApplication.processEvents()
         
@@ -646,7 +665,8 @@ class Fit_Widget(QWidget):
         self.dataListWidget.itemSelectionChanged.disconnect(self.dataFileSelectionChanged)
         #try:
         if fnames is None:
-            fnames,_=QFileDialog.getOpenFileNames(self,caption='Open data files',directory=self.curDir,filter='Data files (*.txt *.dat *.chi *.rrf)')
+            fnames,_=QFileDialog.getOpenFileNames(self,caption='Open data files',directory=self.curDir,\
+                                                  filter='Data files (*.txt *.dat *.chi *.rrf)')
         if len(fnames)!=0:
             self.curDir=os.path.dirname(fnames[0])
             for fname in fnames:
@@ -656,12 +676,14 @@ class Fit_Widget(QWidget):
                     self.dlg_data[fname]=data_dlg.data
                     self.plotColIndex[fname]=data_dlg.plotColIndex
                     self.data[fname]=data_dlg.externalData
-                    self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name='%d'%self.fileNumber)
+                    self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],\
+                                             yerr=self.data[fname]['yerr'],name='%d'%self.fileNumber)
                     self.dataListWidget.addItem(str(self.fileNumber)+'<>'+fname)
                     self.fileNames[self.fileNumber]=fname
                     self.fileNumber+=1
                 else:
-                    QMessageBox.warning(self,'Import Error','Data file has been imported before. Please remove the data file before importing again')
+                    QMessageBox.warning(self,'Import Error','Data file has been imported before.\
+                     Please remove the data file before importing again')
             #except:
             #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
@@ -831,7 +853,8 @@ class Fit_Widget(QWidget):
         selrows=list(set([item.row() for item in self.mfitParamTableWidget.selectedItems()]))
         num=self.mfitParamTableWidget.rowCount()-len(selrows)
         if num<self.mpar_N:
-            QMessageBox.warning(self,'Selection error','The minimum number of rows required for this function to work is %d. You can only remove %d rows'%(self.mpar_N,num),QMessageBox.Ok)
+            QMessageBox.warning(self,'Selection error','The minimum number of rows required for this function to work is %d.\
+             You can only remove %d rows'%(self.mpar_N,num),QMessageBox.Ok)
             return
         if self.mfitParamTableWidget.rowCount()-1 in selrows:
             QMessageBox.warning(self, 'Selection error',
@@ -1016,7 +1039,8 @@ class Fit_Widget(QWidget):
                             self.fit.fit_params[parname].expr=expr
                             self.fit.fit_params[parname].brute_step=brute_step
                         except:
-                            self.fit.fit_params.add(parname,value=float(parval),vary=int(parfit),min=float(parmin),max=float(parmax),expr=expr,brute_step=brute_step)
+                            self.fit.fit_params.add(parname,value=float(parval),vary=int(parfit),min=float(parmin),\
+                                                    max=float(parmax),expr=expr,brute_step=brute_step)
                         _,par,num=parname.split('__')
                         num=int(num)
                         try:
@@ -1137,8 +1161,10 @@ class Fit_Widget(QWidget):
         tpdata=[]
         for key in self.fit.fit_params.keys():
             if key[:2]!='__':
-                tpdata.append((key,self.fit.fit_params[key].value,self.fit.fit_params[key].min,self.fit.fit_params[key].max,self.fit.fit_params[key].expr,self.fit.fit_params[key].brute_step))        
-        self.fitParamData=np.array(tpdata,dtype=[('Params',object),('Value',object),('Min',object),('Max',object),('Expr',object),('Brute step',object)])
+                tpdata.append((key,self.fit.fit_params[key].value,self.fit.fit_params[key].min,\
+                               self.fit.fit_params[key].max,self.fit.fit_params[key].expr,self.fit.fit_params[key].brute_step))
+        self.fitParamData=np.array(tpdata,dtype=[('Params',object),('Value',object),('Min',object),('Max',object),\
+                                                 ('Expr',object),('Brute step',object)])
         self.sfitParamTableWidget.setData(self.fitParamData)
         for row in range(self.sfitParamTableWidget.rowCount()):
             self.sfitParamTableWidget.item(row,0).setFlags(Qt.ItemIsEnabled)
@@ -1314,7 +1340,8 @@ class Fit_Widget(QWidget):
                     self.genParamListWidget.item(row).setSelected(True)
                 self.plot_extra_param()
             self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
-            self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,name=self.funcListWidget.currentItem().text(),fit=True)
+            self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,\
+                                     name=self.funcListWidget.currentItem().text(),fit=True)
             pfnames=pfnames+[self.funcListWidget.currentItem().text()]
         #except:
         #    pass

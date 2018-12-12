@@ -16,18 +16,18 @@ from xraydb import XrayDB
 
 class sphericalShell_expDecay: #Please put the class name same as the function name
     No = 6.023e23  # Avagadro number
-    re2= 7.9355e-30 # Square of classical electron radius in Angs^2
+    re2= (2.817e-5)**2 # Square of classical electron radius in Angs^2
     def __init__(self, x=0, rmin=0.0, rmax=30.0, Nr=31, Rc=10.0, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0, norm=1.0, bkg=0.0, mpar={}):
         """
         Documentation
-        x           : independent variable in ter form of a scalar or an array
+        x           : independent variable in the form of a scalar or an array
         Rc          : Radial distance in Angstroms after which the solvent contribution starts
         strho       : Concentration of the ions of interest in the stern layer in Molar
         tst         : Thickness of stern layer in Angstroms
         lrho        : The maximum concentration of the diffuse layer in Molars
         lexp        : The decay length of the diffuse layer assuming exponential decay
         rhosol      : The surrounding bulk density
-        norm        : The scaling factor
+        norm        : Density of particles in Moles/Liter
         bkg         : Constant background
         """
         if type(x)==list:
@@ -89,16 +89,16 @@ class sphericalShell_expDecay: #Please put the class name same as the function n
         Calculates the isotropic form factor using the isotropic electron density as a funciton of radial distance
 
         q       :: scaler or array of reciprocal reciprocal wave vector in inv. Angstroms at which the form factor needs to be calculated in
-        r       :: array of radial distances at which he electron density in known in Angstroms
-        rho     :: array of electron densities as a funciton of radial distance in el/Angstroms^3. Note: The electron density should decay to zero at the last radial distance
+        r       :: array of radial distances at which the element/ion density in known in Angstroms
+        rho     :: array of element/ion densities as a function of radial distance in el/Angstroms^3. Note: The electron density should decay to zero at the last radial distance
         """
         dr = r[1] - r[0]
         form = np.zeros_like(q)
-        rho = (rho - rho[-1])* self.No / 1e-3 / 1e30 #converting it to Angs^-3
+        rho = (rho - rho[-1])* self.No/1e27 #converting it to moles/Angs^3
         for r1, rho1 in zip(r, rho):
             form = form + 4 * np.pi * r1 * rho1 * np.sin(q * r1) / q
-        form = np.absolute(form) ** 2 * dr ** 2
-        return self.re2*form*1e16# in inv-cm
+        form = (np.absolute(form) * dr)**2
+        return self.re2 * form * 1e-16 * self.No / 1e3 # in cm^-1
 
     def y(self):
         """

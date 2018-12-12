@@ -14,6 +14,8 @@ from scipy.signal import fftconvolve, savgol_filter
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize
 from numpy.linalg import lstsq, solve
+from lmfit import Parameters
+from lmfit import minimize as lmfit_minimize
 import time
 from calc_cf import calc_cf
 from utils import calc_prm
@@ -220,10 +222,10 @@ class ASAXS_Widget(QWidget):
         self.processPushButton.clicked.connect(self.processData)
         self.dataDockLayout.addWidget(self.processTypeComboBox,row=row,col=col)
         col+=1
-        self.dataDockLayout.addWidget(self.processPushButton,row=row,col=col,colspan=2)
+        self.dataDockLayout.addWidget(self.processPushButton,row=row,col=col,colspan=1)
         col += 1
         self.saveDataPushButton = QPushButton('Save processed data')
-        self.dataDockLayout.addWidget(self.saveDataPushButton, row=row, col=col, colspan=2)
+        self.dataDockLayout.addWidget(self.saveDataPushButton, row=row, col=col, colspan=1)
         self.saveDataPushButton.clicked.connect(self.save_processed_data)
         
         
@@ -322,6 +324,9 @@ class ASAXS_Widget(QWidget):
         self.dataDockLayout.addWidget(self.saveASAXSPushButton,row=row,col=col,colspan=3)
         
         self.dataDock.addWidget(self.dataDockLayout)
+
+    def batchProcess(self):
+        pass
 
     def calc_cal_factor(self):
         """
@@ -619,8 +624,10 @@ class ASAXS_Widget(QWidget):
             #self.bkgScale=self.data[self.fnames[0]]['BSDiode_corr']*self.data[self.fnames[1]]['Monitor_corr']/self.data[self.fnames[0]]['Monitor_corr']/self.data[self.fnames[1]]['BSDiode_corr']
             #self.bkgScaleLineEdit.setText('%.5f'%self.bkgScale)
             self.interpolate_data(kind='linear')
-            tmp=(self.data[self.fnames[0]]['yintp']-self.bkgScale*self.data[self.fnames[1]]['yintp'])#*self.data[self.fnames[0]]['Monitor_corr']/self.data[self.fnames[0]]['BSDiode_corr']
-            tmperr=np.sqrt(self.data[self.fnames[0]]['yintperr']**2+self.bkgScale**2*self.data[self.fnames[1]]['yintperr']**2)
+            tmp=(self.data[self.fnames[0]]['yintp']-self.bkgScale*self.data[self.fnames[1]]['yintp'])\
+                *self.data[self.fnames[0]]['Thickness']/self.data[self.fnames[0]]['CF']
+            tmperr=np.sqrt(self.data[self.fnames[0]]['yintperr']**2+self.bkgScale**2*self.data[self.fnames[1]]['yintperr']**2)\
+                *self.data[self.fnames[0]]['Thickness']/self.data[self.fnames[0]]['CF']
             data=np.vstack((self.qintp,tmp,tmperr)).T
             filename=QFileDialog.getSaveFileName(self,caption='Save as',directory=os.path.dirname(self.fnames[0]),filter='Text files (*.txt)')[0]
             if filename!='':
@@ -630,7 +637,8 @@ class ASAXS_Widget(QWidget):
                     if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr':
                         self.data[filename][key]=self.data[self.fnames[0]][key]
                         header=header+key+'='+str(self.data[self.fnames[0]][key])+'\n'
-                self.data[filename]['CF']=1.0
+                self.data[filename]['CF']=self.data[self.fnames[0]]['CF']
+                self.data[filename]['Thickness']=self.data[self.fnames[0]]['Thickness']
                 np.savetxt(filename,data,header=header,comments='#')
                 self.data[filename]['x']=self.qintp
                 self.data[filename]['y']=tmp
@@ -1172,7 +1180,8 @@ class ASAXS_Widget(QWidget):
     def ASAXS_split(self):
         #try:
         if self.ASAXSCalcTypeComboBox.currentText()=='single':
-            self.ASAXS_split_1()
+            #self.ASAXS_split_1()
+            self.ASAXS_split_w_errbars()
         else:
             self.ASAXS_split_3()
             
@@ -1256,8 +1265,90 @@ class ASAXS_Widget(QWidget):
         else:
             #self.saveASAXSPushButton.setEnabled(True)
             QMessageBox.warning(self,'Data Error','Please select three or more data sets to do the calculation',QMessageBox.Ok)
-            
-            
+
+
+    def lmfit_residual(self, param, A, B):
+        """
+        Calculates the residual for lmfit to obtain the errorbars in the parameters
+        :param param:
+        :param A: Amatrix
+        :param B: BMatrix
+        :return: residual
+        """
+        x=np.array([param['x1'],param['x2'],param['x3']])
+        return np.dot(A,x)-B
+
+    def lmfit_finderrbars(self,x,A,B):
+        param=Parameters()
+        param.add('x1',value = x[0])
+        param.add('x2',value = x[1])
+        param.add('x3',value = x[2])
+        out = lmfit_minimize(self.lmfit_residual, param, args=(A,B))
+        x1 = out.params['x1'].value
+        x1err = out.params['x1'].stderr
+        x2 = out.params['x2'].value
+        x2err = out.params['x2'].stderr
+        x3 = out.params['x3'].value
+        x3err = out.params['x3'].stderr
+        return x1, x1err, x2, x2err, x3, x3err
+
+
+
+    def ASAXS_split_w_errbars(self):
+        """
+        This calculates scattering compononents out
+        """
+        if len(self.dataListWidget.selectedItems()) >= 3:
+            self.prepareData()
+            self.XMatrix = []
+            self.XMatrixErr = []
+            for i in range(len(self.qintp)):
+                x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i])
+                x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i])
+                xn=[x1,x2,x3]
+                self.XMatrix.append(xn)
+                xnerr=[x1err, x2err, x3err]
+                self.XMatrixErr.append(xnerr)
+            self.XMatrix = np.array(self.XMatrix)
+            self.XMatrixErr = np.array(self.XMatrixErr)
+
+            self.directComponentPlotWidget.add_data(self.qintp, self.XMatrix[:, 0], yerr=self.XMatrixErr[:, 0], name='SAXS-term')
+            self.directComponentPlotWidget.add_data(self.qintp, self.XMatrix[:, 2], yerr=self.XMatrixErr[:, 2], name='Resonant-term')
+            tot = np.sum(np.dot([self.AMatrix[0, :]], self.XMatrix.T), axis=0)
+            self.directComponentPlotWidget.add_data(self.qintp, tot, name='Total')
+            self.directComponentPlotWidget.add_data(self.qintp, self.data[self.fnames[0]]['yintp'],
+                                                    name='Data_%s' % self.datanames[0])
+            self.directComponentListWidget.clear()
+            self.crossComponentListWidget.clear()
+            try:
+                self.directComponentListWidget.itemSelectionChanged.disconnect()
+                self.crossComponentListWidget.itemSelectionChanged.disconnect()
+            except:
+                pass
+            self.directComponentListWidget.addItems(
+                ['SAXS-term', 'Resonant-term', 'Total', 'Data_%s' % self.datanames[0]])
+            self.crossComponentListWidget.addItem('Cross-term')
+            self.crossComponentPlotWidget.add_data(self.qintp, self.XMatrix[:, 1], yerr=self.XMatrixErr[:, 1], name='Cross-term')
+            self.components = {}
+            self.components['SAXS-term'] = self.XMatrix[:, 0]
+            self.components['SAXS-term_err'] = self.XMatrixErr[:, 0]
+            self.components['Resonant-term'] = self.XMatrix[:, 2]
+            self.components['Resonant-term_err'] = self.XMatrixErr[:, 2]
+            self.components['Cross-term'] = self.XMatrix[:, 1]
+            self.components['Cross-term_err'] = self.XMatrixErr[:, 1]
+            self.components['Total'] = tot
+            self.components['Data_%s' % self.datanames[0]] = self.data[self.fnames[0]]['yintp']
+            self.update_ASAXSPlot()
+            self.saveASAXSPushButton.setEnabled(True)
+            self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
+            self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
+            self.directComponentListWidget.item(0).setSelected(True)
+            self.crossComponentListWidget.item(0).setSelected(True)
+        else:
+            # self.saveASAXSPushButton.setEnabled(True)
+            QMessageBox.warning(self, 'Data Error', 'Please select three or more data sets to do the calculation',
+                                QMessageBox.Ok)
+
     def residual(self,x,A,B):
         """
         Calculates the residual for ASAXS_split_2

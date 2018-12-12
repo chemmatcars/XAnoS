@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="sampleFileNameLabel">
        <property name="text">
-        <string>Sample Filename</string>
+        <string>First Sample Name</string>
        </property>
       </widget>
      </item>
@@ -37,6 +37,52 @@
       <widget class="QPushButton" name="processPushButton">
        <property name="text">
         <string>Process</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="firstSampleNumsLabel">
+       <property name="text">
+        <string>First Sample Nums</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="firstSampleNumsLineEdit">
+       <property name="text">
+        <string>1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="firstBkgNumLabel">
+       <property name="text">
+        <string>First Bkg Num</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="firstBkgNumLineEdit">
+       <property name="text">
+        <string>2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="firstStdNumLabel">
+       <property name="text">
+        <string>First Std Num</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="firstStdNumLineEdit">
+       <property name="text">
+        <string>3</string>
        </property>
       </widget>
      </item>

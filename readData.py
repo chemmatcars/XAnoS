@@ -593,7 +593,7 @@ def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg
     ofname=os.path.join(ofdir,ofname)
     interpolate_data(data,Npt=len(data[sname]['x']))
     data[ofname]=copy.copy(data[sname])
-    data[ofname]['y']=data[sname]['yintp']-bg_factor*data[bname]['yintp']
+    data[ofname]['y']=(data[sname]['yintp']-bg_factor*data[bname]['yintp'])
     data[ofname]['yerr']=np.sqrt(data[sname]['yintperr']**2+bg_factor**2*data[bname]['yintperr']**2)
     data[ofname]['CF']=cf
     data[ofname]['Thickness']=thickness
@@ -630,7 +630,8 @@ def interpolate_data(data,Npt=1000,kind='linear'):
             qmin=copy.copy(tmin)
         if tmax<qmax:
             qmax=copy.copy(tmax)
-    qintp=np.linspace(qmin,qmax,Npt)                
+    print('qmin=%.5f'%qmin,'qmax=%.5f'%qmax)
+    qintp=np.linspace(qmin,qmax,Npt)
     for fname in data.keys():
         data[fname]['xintp']=qintp
         fun=interp1d(data[fname]['x'],data[fname]['y'],kind=kind)
@@ -666,36 +667,36 @@ def write1DSAXS(data,textEdit=None):
             
         
         
-if __name__=='__main__':
-    try:
-        fname=sys.argv[1]
-    except:
-        print('Please provide the basefile name without numbers at the end as argument 2')
-    try:
-        sam_nums=int(sys.argv[2])
-    except:
-        print('Please provide a list of first image of the samples')
-    try:
-        sol_num=int(sys.argv[3])
-    except:
-        print('Please provide the number of repeated measurements of solvent/background data as argument 5')
-    try:
-        gc_num=int(sys.argv[4])
-    except:
-        print('Please provide the number of repeated measurements of Glassy carbon as argument 7')
-    try:
-        mt_num=sys.argv[5]
-    except:
-        mt_num=None
-    try:
-        air_num=sys.argv[6]
-    except:
-        air_num=None
-
-    reduce1DSAXS(fname=fname, sam_nums=None, gc_num=None, air_num=None, sol_num=None, mt_num=None, Ntimes=1, xmin=0.0,
-                 xmax=1.0, Npt=1000, interpolation_type='linear', sample_thickness=0.148, bkg_fac=1.0)
-
-    #reduce1DSAXS(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,mt_name=mt_name,mt_num=mt_num,air_name=air_name,air_num=air_num,sample_thickness=0.15,xmin=0.04,xmax=0.07)
+# if __name__=='__main__':
+#     try:
+#         fname=sys.argv[1]
+#     except:
+#         print('Please provide the basefile name without numbers at the end as argument 2')
+#     try:
+#         sam_nums=int(sys.argv[2])
+#     except:
+#         print('Please provide a list of first image of the samples')
+#     try:
+#         sol_num=int(sys.argv[3])
+#     except:
+#         print('Please provide the number of repeated measurements of solvent/background data as argument 5')
+#     try:
+#         gc_num=int(sys.argv[4])
+#     except:
+#         print('Please provide the number of repeated measurements of Glassy carbon as argument 7')
+#     try:
+#         mt_num=sys.argv[5]
+#     except:
+#         mt_num=None
+#     try:
+#         air_num=sys.argv[6]
+#     except:
+#         air_num=None
+#
+#     reduce1DSAXS(fname=fname, sam_nums=None, gc_num=None, air_num=None, sol_num=None, mt_num=None, Ntimes=1, xmin=0.0,
+#                  xmax=1.0, Npt=1000, interpolation_type='linear', sample_thickness=0.148, bkg_fac=1.0)
+#
+#     #reduce1DSAXS(fname=fname,ftimes=fnum,sol_name=sol_name,sol_times=sol_num,gc_name=gc_name,gc_times=gc_num,mt_name=mt_name,mt_num=mt_num,air_name=air_name,air_num=air_num,sample_thickness=0.15,xmin=0.04,xmax=0.07)
 
 #if __name__=='__main__':
 #    fname=sys.argv[1]
