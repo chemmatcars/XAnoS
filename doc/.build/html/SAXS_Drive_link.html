@@ -4,29 +4,19 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Introduction &#8212; SAXS_Drive 0.11 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.11',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Welcome to SAXS_Drive’s documentation!" href="index.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -49,12 +39,14 @@
                         title="previous chapter">Welcome to SAXS_Drive’s documentation!</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -68,7 +60,7 @@
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <blockquote>
-<div>Its a collection of widgets developed for the measurement, visualization and analysis of Small Angle X-ray Scattering data at ChemMatCARS (Sector 15) at Advance Photon Source, USA.</div></blockquote>
+<div>Its a collection of widgets developed for the measurement, visualization and analysis of Anomalous Small Angle X-ray Scattering data at NSF’s ChemMatCARS (Sector 15) at Advance Photon Source, USA.</div></blockquote>
 <div class="section" id="data-collection-widget">
 <h2>Data Collection Widget<a class="headerlink" href="#data-collection-widget" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -78,15 +70,305 @@
 <div class="section" id="mask-widget">
 <h2>Mask Widget<a class="headerlink" href="#mask-widget" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="asaxs-widget">
-<h2>ASAXS Widget<a class="headerlink" href="#asaxs-widget" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-ASAXS_widget">
+<span id="asaxs-widget"></span><h2>ASAXS Widget<a class="headerlink" href="#module-ASAXS_widget" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ASAXS_widget.ASAXS_Widget">
+<em class="property">class </em><code class="descclassname">ASAXS_widget.</code><code class="descname">ASAXS_Widget</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>This widget class is developed to perform to decouple various scattering contributions of ASAXS data. The contributions include
+1) Non resonant scattering term
+2) Cross term
+3) Resonant term</p>
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.ASAXS_split_0">
+<code class="descname">ASAXS_split_0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.ASAXS_split_0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.ASAXS_split_0" title="Permalink to this definition">¶</a></dt>
+<dd><p>This calculates scattering compononents out</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.ASAXS_split_1">
+<code class="descname">ASAXS_split_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.ASAXS_split_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.ASAXS_split_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>This calculates scattering compononents out</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.ASAXS_split_2">
+<code class="descname">ASAXS_split_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.ASAXS_split_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.ASAXS_split_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>This calculates the scattering components by constraining the SAXS and anomalous term to be positive</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.ASAXS_split_3">
+<code class="descname">ASAXS_split_3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.ASAXS_split_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.ASAXS_split_3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits the energy dependent SAXS data into partial scattering factors i.e. contribution of scattering intensity 
+from different elements mentioned in Elements List Widget
+Please use x if you do not wish to put the element information of the elements other than the edge elements</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.ASAXS_split_w_errbars">
+<code class="descname">ASAXS_split_w_errbars</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.ASAXS_split_w_errbars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.ASAXS_split_w_errbars" title="Permalink to this definition">¶</a></dt>
+<dd><p>This calculates scattering compononents out</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.CF_changed">
+<code class="descname">CF_changed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.CF_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.CF_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calibration factor changed for the selected data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.applyMooresAC">
+<code class="descname">applyMooresAC</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.applyMooresAC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.applyMooresAC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply Moore’s autocorrelation function operated smoothing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.apply_calc_factor">
+<code class="descname">apply_calc_factor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.apply_calc_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.apply_calc_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the current calibration factor to all the selected data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.calc_XRF_baseline">
+<code class="descname">calc_XRF_baseline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.calc_XRF_baseline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.calc_XRF_baseline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the XRF baseline for estimating XRF-backgrounds from the selected data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.calc_cal_factor">
+<code class="descname">calc_cal_factor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.calc_cal_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.calc_cal_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the calibration factor using Intensity calibration sample. At present only Glassy carbon is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.checkData">
+<code class="descname">checkData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.checkData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.checkData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do initial check on the selected data for further ASAXS analysis</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.check_components">
+<code class="descname">check_components</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.check_components"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.check_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the scattering components</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.create_ASAXSPlotDock">
+<code class="descname">create_ASAXSPlotDock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.create_ASAXSPlotDock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.create_ASAXSPlotDock" title="Permalink to this definition">¶</a></dt>
+<dd><p>This dock holds the plots of different scattering contributions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.create_dataDock">
+<code class="descname">create_dataDock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.create_dataDock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.create_dataDock" title="Permalink to this definition">¶</a></dt>
+<dd><p>This dock is to hold the information about the resonant element of interest and a list of data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.create_dataPlotDock">
+<code class="descname">create_dataPlotDock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.create_dataPlotDock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.create_dataPlotDock" title="Permalink to this definition">¶</a></dt>
+<dd><p>This dock holds the plot of all the selected data for further analysis</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.create_edgePlotDock">
+<code class="descname">create_edgePlotDock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.create_edgePlotDock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.create_edgePlotDock" title="Permalink to this definition">¶</a></dt>
+<dd><p>This dock holds the plots for scattering factors at the selected energy edge</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.create_metaDataPlotDock">
+<code class="descname">create_metaDataPlotDock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.create_metaDataPlotDock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.create_metaDataPlotDock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the metaPlotDataDock</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.dataBaseChanged">
+<code class="descname">dataBaseChanged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.dataBaseChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.dataBaseChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the X-ray database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.dataSelectionChanged">
+<code class="descname">dataSelectionChanged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.dataSelectionChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.dataSelectionChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>This triggers when the item selection changes in the dataListWidget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.edgeChanged">
+<code class="descname">edgeChanged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.edgeChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.edgeChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is triggerred when the current index ov edgeComboBox Changed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.elementChanged">
+<code class="descname">elementChanged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.elementChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.elementChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is triggered when the current index of elementComboBox changed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.get_f1_f2">
+<code class="descname">get_f1_f2</code><span class="sig-paren">(</span><em>element</em>, <em>energy</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.get_f1_f2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.get_f1_f2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains f1 and f2 either from NIST table or Henke’s function with element=element symbol and energy in keV</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.import_data">
+<code class="descname">import_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.import_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports data to populate the dataListWidget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.initialize_metaDataPlotDock">
+<code class="descname">initialize_metaDataPlotDock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.initialize_metaDataPlotDock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.initialize_metaDataPlotDock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize metaDataPlotDock</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.interpolate_data">
+<code class="descname">interpolate_data</code><span class="sig-paren">(</span><em>kind='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.interpolate_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.interpolate_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolates all the selected data with the common q values
+Npt=No. of common q-values on which interpolated values will be calculated
+kind=’linear’,’cubic’…please check the documentation of scipy.interpolate.interp1d for more options</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.lmfit_residual">
+<code class="descname">lmfit_residual</code><span class="sig-paren">(</span><em>param</em>, <em>A</em>, <em>B</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.lmfit_residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.lmfit_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the residual for lmfit to obtain the errorbars in the parameters
+:param param:
+:param A: Amatrix
+:param B: BMatrix
+:return: residual</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.plotPDDF">
+<code class="descname">plotPDDF</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.plotPDDF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.plotPDDF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the moore’s autocorrelation function of the selected data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.polyDegreeChanged">
+<code class="descname">polyDegreeChanged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.polyDegreeChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.polyDegreeChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the degree of polynomial for smoothing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.prepareData">
+<code class="descname">prepareData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.prepareData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.prepareData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the selected data for ASAXS splitting i.e.
+1) Interpolate the all data sets with same q values. SAXS data collection at different energies can bring different q-values
+2) Calculates the scattering factors f1 and f2 for energies at which the data were collected</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.prepareNewData">
+<code class="descname">prepareNewData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.prepareNewData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.prepareNewData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the selected data for new ASAXS splitting provided by ASAXS_split_3 i.e.
+1) Interpolate the all data sets with same q values. SAXS data collection at different energies can bring different q-values
+2) Calculates the scattering factors f1 and f2 for energies at which the data were collected</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.processData">
+<code class="descname">processData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.processData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.processData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the selected data for calculating mean and sum</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.raiseDock">
+<code class="descname">raiseDock</code><span class="sig-paren">(</span><em>dock</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.raiseDock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.raiseDock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises the dock as the topmost</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.read_data">
+<code class="descname">read_data</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.read_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.read_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the data while importing the files in the listWidget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.remove_data">
+<code class="descname">remove_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.remove_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.remove_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes selected data from the dataListWidget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.residual">
+<code class="descname">residual</code><span class="sig-paren">(</span><em>x</em>, <em>A</em>, <em>B</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the residual for ASAXS_split_2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.saveCheckData">
+<code class="descname">saveCheckData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.saveCheckData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.saveCheckData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the checked data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.save_processed_data">
+<code class="descname">save_processed_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.save_processed_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.save_processed_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the data with currently processed settings</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.smoothData">
+<code class="descname">smoothData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.smoothData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.smoothData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smooth the selected data with Savitizky-Golay method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.subtract_bkg">
+<code class="descname">subtract_bkg</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.subtract_bkg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.subtract_bkg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Out of the two selected data subtracts one from the other to do background subtraction</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.thicknessChanged">
+<code class="descname">thicknessChanged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.thicknessChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.thicknessChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changing sample thickness of the selected data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.update_ASAXSPlot">
+<code class="descname">update_ASAXSPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.update_ASAXSPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.update_ASAXSPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the ASAXS plot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.update_dataCheckPlot">
+<code class="descname">update_dataCheckPlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.update_dataCheckPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.update_dataCheckPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the dataCheckplot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.update_edgePlot">
+<code class="descname">update_edgePlot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.update_edgePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.update_edgePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the edgePlot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASAXS_widget.ASAXS_Widget.windowChanged">
+<code class="descname">windowChanged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ASAXS_widget.html#ASAXS_Widget.windowChanged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASAXS_widget.ASAXS_Widget.windowChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the window size for smoothing</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-Fit_widget">
 <span id="fit-widget"></span><h2>Fit Widget<a class="headerlink" href="#module-Fit_widget" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="Fit_widget.FitResultDialog">
+<em class="property">class </em><code class="descclassname">Fit_widget.</code><code class="descname">FitResultDialog</code><span class="sig-paren">(</span><em>fit_report</em>, <em>fit_info</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#FitResultDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.FitResultDialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="Fit_widget.Fit_Widget">
 <em class="property">class </em><code class="descclassname">Fit_widget.</code><code class="descname">Fit_Widget</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget" title="Permalink to this definition">¶</a></dt>
-<dd><p>This widget class is developed to provide an end-user a <em>Graphical User Interface</em> by which either they can develop their own fitting functions in python or use the existing fitting functions under different categories to analyze different kinds of one-dimensional data sets. ‘LMFIT’:<a class="reference external" href="https://lmfit.github.io/lmfit-py/">https://lmfit.github.io/lmfit-py/</a> is extensively used within this widget.</p>
+<dd><p>This widget class is developed to provide an end-user a <em>Graphical User Interface</em> by which either they can     develop their own fitting functions in python or use the existing fitting functions under different categories     to analyze different kinds of one-dimensional data sets. <a class="reference external" href="https://lmfit.github.io/lmfit-py/">LMFIT</a> is extensively      used within this widget.</p>
 <p><strong>Features</strong></p>
 <ol class="arabic simple">
 <li>Read and fit multiple data files</li>
@@ -97,9 +379,13 @@
 <li>The function editor is enabled with python syntax highlighting.</li>
 </ol>
 <p><strong>Usage</strong></p>
-<p><a class="reference internal" href="#Fit_widget.Fit_Widget" title="Fit_widget.Fit_Widget"><code class="xref py py-class docutils literal"><span class="pre">Fit_Widget</span></code></a> can be used as stand-alone python fitting package by running it in terminal as:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$python Fit_widget.py
+<p><a class="reference internal" href="#Fit_widget.Fit_Widget" title="Fit_widget.Fit_Widget"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fit_Widget</span></code></a> can be used as stand-alone python fitting package by running it in terminal as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python Fit_widget.py
 </pre></div>
+</div>
+<div class="figure" id="id1" style="width: 100%">
+<img alt="_images/Fit_widget.png" src="_images/Fit_widget.png" />
+<p class="caption"><span class="caption-text"><strong>Fit Widget</strong> in action.</span></p>
 </div>
 <p>Also it can be used as a widget with any other python application.</p>
 <dl class="method">
@@ -136,6 +422,13 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="Fit_widget.Fit_Widget.saveSimulatedCurve">
+<code class="descname">saveSimulatedCurve</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.saveSimulatedCurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.saveSimulatedCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the simulated curve in a user-supplied ascii file
+:return:</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Fit_widget.Fit_Widget.update_catagories">
 <code class="descname">update_catagories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#Fit_Widget.update_catagories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.Fit_Widget.update_catagories" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all the modules in the the Functions directory and populates the funcListWidget</p>
@@ -154,6 +447,11 @@
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="Fit_widget.minMaxDialog">
+<em class="property">class </em><code class="descclassname">Fit_widget.</code><code class="descname">minMaxDialog</code><span class="sig-paren">(</span><em>value</em>, <em>minimum=None</em>, <em>maximum=None</em>, <em>expr=None</em>, <em>brute_step=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Fit_widget.html#minMaxDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Fit_widget.minMaxDialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>
@@ -180,8 +478,8 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Mrinal Kanti Bera.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
+        &#169; Copyright 2017, Mrinal Kanti Bera@NSF&#39;s ChemMatCARS.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
     </div>
   </body>
 </html>

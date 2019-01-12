@@ -150,7 +150,7 @@ class Fit_Widget(QWidget):
     """
     This widget class is developed to provide an end-user a *Graphical User Interface* by which either they can \
     develop their own fitting functions in python or use the existing fitting functions under different categories\
-     to analyze different kinds of one-dimensional data sets. 'LMFIT':https://lmfit.github.io/lmfit-py/ is extensively\
+     to analyze different kinds of one-dimensional data sets. `LMFIT <https://lmfit.github.io/lmfit-py/>`_ is extensively\
       used within this widget.
     
     **Features**
@@ -168,10 +168,10 @@ class Fit_Widget(QWidget):
     
         $python Fit_widget.py
         
-    .. image:: Figures/Fit_widget.png
-       :scale: 80
+    .. figure:: Figures/Fit_widget.png
+       :figwidth: 100%
        
-       `Fit_widget` in action.
+       **Fit Widget** in action.
     
     Also it can be used as a widget with any other python application.
     """
@@ -716,17 +716,21 @@ class Fit_Widget(QWidget):
         self.fixedparamLayoutWidget.addWidget(xlabel)
         self.xLineEdit=QLineEdit('np.linspace(0.001,1,100)')
         self.fixedparamLayoutWidget.addWidget(self.xLineEdit,col=1)
+        self.saveSimulatedButton=QPushButton("Save Simulated Curve")
+        self.saveSimulatedButton.setEnabled(False)
+        self.saveSimulatedButton.clicked.connect(self.saveSimulatedCurve)
+        self.fixedparamLayoutWidget.addWidget(self.saveSimulatedButton,col=2)
         
         self.fixedparamLayoutWidget.nextRow()
         fixedParamLabel=QLabel('Fixed Parameters')
-        self.fixedparamLayoutWidget.addWidget(fixedParamLabel,colspan=2)
+        self.fixedparamLayoutWidget.addWidget(fixedParamLabel,colspan=3)
         
         self.fixedparamLayoutWidget.nextRow()
         self.fixedParamTableWidget=pg.TableWidget()
         self.fixedParamTableWidget.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         self.fixedParamTableWidget.setEditable(editable=True)
         self.fixedParamTableWidget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        self.fixedparamLayoutWidget.addWidget(self.fixedParamTableWidget,colspan=2)
+        self.fixedparamLayoutWidget.addWidget(self.fixedParamTableWidget,colspan=3)
         
         self.parSplitter.addWidget(self.fixedparamLayoutWidget)
         
@@ -794,6 +798,23 @@ class Fit_Widget(QWidget):
         self.parSplitter.addWidget(self.genparamLayoutWidget)
         
         self.paramDock.addWidget(self.parSplitter)
+
+
+    def saveSimulatedCurve(self):
+        """
+        Saves the simulated curve in a user-supplied ascii file
+        :return:
+        """
+        fname=QFileDialog.getSaveFileName(caption='Save As',filter='Text files (*.dat, *.txt)',directory=self.curDir)[0]
+        if fname!='':
+            header='Simulated curve generated on %s\n'%time.asctime()
+            header+='Category:%s\n'%self.curr_category
+            header+='Function:%s\n'%self.funcListWidget.currentItem().text()
+            header+='col_names=[\'q\',\'I\']'
+            np.savetxt(fname,np.vstack((self.fit.x,self.fit.yfit)).T,header=header,comments='#')
+        else:
+            pass
+
         
     def mparDoubleClicked(self,row,col):
         parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
@@ -1084,11 +1105,13 @@ class Fit_Widget(QWidget):
         self.categories=sorted([path for path in os.listdir('./Functions/') if path[:2]!='__' and os.path.isdir('./Functions/'+path)])
         #self.catagories=sorted([m.split('.')[0] for m in modules if m[:2]!='__'],key=str.lower)
         self.categoryListWidget.addItems(self.categories)
+
         
     def update_functions(self):
         """
         Depending upon the selected category this populates the funcListWidget
         """
+        self.saveSimulatedButton.setEnabled(False)
         self.funcListWidget.clear()
         self.curr_category=self.categoryListWidget.currentItem().text()
         self.modules=[]
@@ -1116,6 +1139,7 @@ class Fit_Widget(QWidget):
                 self.curr_funcClass[module]=reload(self.curr_funcClass[module])
             self.fchanged = True
             self.update_parameters()
+            self.saveSimulatedButton.setEnabled(True)
         except:
             QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
         

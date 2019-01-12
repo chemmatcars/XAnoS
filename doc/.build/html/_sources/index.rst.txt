@@ -7,7 +7,7 @@ Welcome to SAXS_Drive's documentation!
 ======================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    SAXS_Drive_link
 

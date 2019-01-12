@@ -53,7 +53,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'SAXS_Drive'
-copyright = '2017, Mrinal Kanti Bera'
+copyright = '2017, Mrinal Kanti Bera@NSF\'s ChemMatCARS'
 author = 'Mrinal Kanti Bera'
 
 # The version info for the project you're documenting, acts as replacement for
