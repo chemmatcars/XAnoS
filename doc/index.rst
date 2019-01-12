@@ -7,9 +7,10 @@ Welcome to SAXS_Drive's documentation!
 ======================================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    
-   SAXS_Drive_link
+   Introduction
+   Fit_Widget
 
 
 Indices and tables
