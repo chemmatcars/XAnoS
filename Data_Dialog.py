@@ -240,18 +240,20 @@ class Data_Dialog(QDialog):
                 except:
                     try:
                         expr=self.insertColDialog.colExprTextEdit.toPlainText()
+                        print(expr)
                         expr=expr.replace('col.','self.data[\'data\'].')
+                        print(expr)
                         self.data['data'][colname]=eval(expr)
                     except:
-                        QMessageBox.warning(self,'Column Error','Please check the expression',QMessageBox.Ok)
-                        self.addDataColumn(colName='colx',minCounter=imin,maxCounter=imax,expr=expr)
+                        QMessageBox.warning(self,'Column Error','Please check the expression.\n The expression should be in this format:\n col.column_name*5',QMessageBox.Ok)
+                        self.addDataColumn(colName='colx',expr=expr)
                 self.setData2Table()
                 self.dataAltered=True
                 self.resetPlotSetup()
                 self.dataAltered=False
             else:
                 QMessageBox.warning(self,'Column Name Error','Please choose different column name than the exisiting ones',QMessageBox.Ok)
-                self.addDataColumn(colName='colx',minCounter=imin,maxCounter=imax,expr=expr)
+                self.addDataColumn(colName='colx',expr=expr)
                 
     def removeDataColumn(self):
         """
@@ -491,7 +493,6 @@ class Data_Dialog(QDialog):
             for i in range(1,3):
                 self.plotSetupTableWidget.setCellWidget(row,i,QComboBox())
                 self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
-                print(plotIndex)
                 if plotIndex is not None:
                     self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
                 else:
@@ -503,11 +504,13 @@ class Data_Dialog(QDialog):
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
             if plotIndex is not None:
                 self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(plotIndex[-1])
+                print('1')
             else:
-                try:
-                    self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(3)
-                except:
-                    self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
+                # try:
+                #     self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(2)
+                # except:
+                #
+                self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
             self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
             self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
             self.plotSetupTableWidget.setCurrentCell(row,3)
