@@ -1,31 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/Introduction.rst" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SAXS_Drive.rst" beforeDir="false" afterPath="$PROJECT_DIR$/SAXS_Drive.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/Fit_widget.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/doctrees/Fit_widget.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/SAXS_Drive_link.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/doctrees/SAXS_Drive_link.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/index.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/doctrees/index.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/Fit_widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/Fit_widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/SAXS_Drive_link.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/SAXS_Drive_link.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/Fit_widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/_modules/Fit_widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/_modules/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/Fit_widget.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/_sources/Fit_widget.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/SAXS_Drive_link.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/_sources/SAXS_Drive_link.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/_sources/index.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/genindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/objects.inv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/py-modindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/py-modindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/searchindex.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/SAXS_Drive_link.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/doc/conf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc/index.rst" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -471,7 +448,14 @@
       <option name="project" value="LOCAL" />
       <updated>1547325348776</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Updated the documentation">
+      <created>1547331826825</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1547331826825</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView">
@@ -537,7 +521,8 @@
     <MESSAGE value="Fix some bugs in Data_Dailog and Fit_widget" />
     <MESSAGE value="Fix the bug of importing two column data" />
     <MESSAGE value="Fix from factor functions in Fit_widget.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix from factor functions in Fit_widget.py" />
+    <MESSAGE value="Updated the documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
