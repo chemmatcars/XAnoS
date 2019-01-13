@@ -2,7 +2,75 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the documentation">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Dialog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.buildinfo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.doctrees/environment.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.doctrees/index.doctree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.nojekyll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_sources/index.rst.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/Fit_Widget.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/ajax-loader.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/alabaster.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/basic.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment-bright.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment-close.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/custom.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/doctools.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/down-pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/file.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/jquery-3.1.0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/minus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/plus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/pygments.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/searchtools.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/underscore-1.3.1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/underscore.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/up-pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/websupport.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/Fit_widget.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/doctrees/Fit_widget.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/doctrees/Introduction.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/SAXS_Drive_link.doctree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/doctrees/environment.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/genindex.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/Fit_widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/Fit_widget.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/Introduction.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/SAXS_Drive_link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/ASAXS_widget.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/Fit_widget.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/Fit_widget.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/_sources/Fit_widget.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/_sources/Introduction.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/SAXS_Drive_link.rst.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/alabaster.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/custom.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/jquery-3.1.0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/objects.inv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/py-modindex.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.build/html/searchindex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/SAXS_Drive.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/footnotehyper-sphinx.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/latexmkjarc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/latexmkrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/python.ist" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinx.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxhighlight.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxhowto.cls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxmanual.cls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxmulticell.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/objects.inv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/search.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/searchindex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/Fit_Widget.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Fit_Widget.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Introduction.rst" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="622">
-              <caret line="491" column="68" selection-start-line="491" selection-start-column="68" selection-end-line="491" selection-end-column="68" />
+            <state relative-caret-position="87">
+              <caret line="317" column="8" lean-forward="true" selection-start-line="317" selection-start-column="8" selection-end-line="317" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -44,7 +112,12 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/doc/Introduction.rst">
+          <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc/Fit_Widget.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -84,9 +157,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bs-diode</find>
-      <find>diode</find>
-      <find>fulldata.update</find>
       <find>fulldata</find>
       <find>15IDC</find>
       <find>processEvents</find>
@@ -114,6 +184,9 @@
       <find>addPlots(self</find>
       <find>self.oldPlotIndex</find>
       <find>curr_category</find>
+      <find>self.data['data']</find>
+      <find>self.dataTableWidget</find>
+      <find>sort</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -158,13 +231,14 @@
         <option value="$PROJECT_DIR$/ASAXS_widget.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Formol.py" />
-        <option value="$PROJECT_DIR$/Data_Dialog.py" />
         <option value="$PROJECT_DIR$/Fit_widget.py" />
         <option value="$PROJECT_DIR$/doc/SAXS_Drive_link.rst" />
         <option value="$PROJECT_DIR$/doc/index.rst" />
         <option value="$PROJECT_DIR$/SAXS_Drive.rst" />
         <option value="$PROJECT_DIR$/doc/conf.py" />
+        <option value="$PROJECT_DIR$/doc/Introduction.rst" />
         <option value="$PROJECT_DIR$/doc/Fit_Widget.rst" />
+        <option value="$PROJECT_DIR$/Data_Dialog.py" />
       </list>
     </option>
   </component>
@@ -209,7 +283,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/doc" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -455,7 +529,14 @@
       <option name="project" value="LOCAL" />
       <updated>1547331826825</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Updated the documentation">
+      <created>1547331994454</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1547331994454</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -754,7 +835,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc/.build/html/Fit_widget.html">
+    <entry file="file://$PROJECT_DIR$/doc/.build/html/Fit_Widget.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc/SAXS_Drive_link.rst">
@@ -763,9 +844,6 @@
           <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc/Introduction.rst">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Fit_Widget.rst" />
     <entry file="file://$PROJECT_DIR$/SAXS_Drive.rst">
@@ -799,21 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="622">
-          <caret line="491" column="68" selection-start-line="491" selection-start-column="68" selection-end-line="491" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc/index.rst">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -834,6 +897,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/doc/index.rst">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/Introduction.rst">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/doc/Fit_Widget.rst">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -841,6 +916,13 @@
         </state>
       </provider>
       <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="317" column="8" lean-forward="true" selection-start-line="317" selection-start-column="8" selection-end-line="317" selection-end-column="8" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

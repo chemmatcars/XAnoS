@@ -63,8 +63,16 @@ class Data_Dialog(QDialog):
         self.dataAltered=False
         if data is not None:
             self.data=data
+            self.autoUpdateCheckBox.setEnabled(False)
         elif fname is not None:
             self.data=self.readData(fname,comment=comment,skiprows=skiprows,delimiter=delimiter)
+        else:
+            self.data=None
+            self.autoUpdateCheckBox.setEnabled(False)
+            self.saveDataPushButton.setEnabled(False)
+            self.addRowPushButton.setEnabled(False)
+            self.removeRowsPushButton.setEnabled(False)
+            self.removeColumnPushButton.setEnabled(False)
         if self.data is not None:
             self.setMeta2Table()
             self.setData2Table()
@@ -100,6 +108,7 @@ class Data_Dialog(QDialog):
         self.addColumnPushButton.clicked.connect(lambda x: self.addDataColumn(colName='colX'))
         self.removeColumnPushButton.clicked.connect(self.removeDataColumn)
         self.removeRowsPushButton.clicked.connect(self.removeDataRows)
+        self.dataTableWidget.setSelection
         self.dataTableWidget.horizontalHeader().sortIndicatorChanged.connect(self.dataSorted)
         self.addRowPushButton.clicked.connect(self.addDataRow)
         
@@ -227,48 +236,94 @@ class Data_Dialog(QDialog):
         
         
     def addDataColumn(self,colName='colx',expr=None):
-        row,col=self.data['data'].shape
-        self.insertColDialog=InsertCol_Dialog(colName=colName,minCounter=1,maxCounter=row,expr=expr)
-        if self.insertColDialog.exec_():
-            imin=eval(self.insertColDialog.minCounterLineEdit.text())
-            imax=eval(self.insertColDialog.maxCounterLineEdit.text())
-            i=np.arange(imin,imax+1)            
-            colname=self.insertColDialog.colNameLineEdit.text()
-            if colname not in self.data['data'].columns:
-                try:
-                    self.data['data'][colname]=eval(expr)
-                except:
+        if self.data is not None:
+            row,col=self.data['data'].shape
+            self.insertColDialog=InsertCol_Dialog(colName=colName,minCounter=1,maxCounter=row,expr=expr)
+            if self.insertColDialog.exec_():
+                imin=eval(self.insertColDialog.minCounterLineEdit.text())
+                imax=eval(self.insertColDialog.maxCounterLineEdit.text())
+                i=np.arange(imin,imax+1)
+                colname=self.insertColDialog.colNameLineEdit.text()
+                if colname not in self.data['data'].columns:
                     try:
-                        expr=self.insertColDialog.colExprTextEdit.toPlainText()
-                        print(expr)
-                        expr=expr.replace('col.','self.data[\'data\'].')
-                        print(expr)
                         self.data['data'][colname]=eval(expr)
                     except:
-                        QMessageBox.warning(self,'Column Error','Please check the expression.\n The expression should be in this format:\n col.column_name*5',QMessageBox.Ok)
-                        self.addDataColumn(colName='colx',expr=expr)
-                self.setData2Table()
-                self.dataAltered=True
-                self.resetPlotSetup()
-                self.dataAltered=False
-            else:
-                QMessageBox.warning(self,'Column Name Error','Please choose different column name than the exisiting ones',QMessageBox.Ok)
-                self.addDataColumn(colName='colx',expr=expr)
+                        try:
+                            expr=self.insertColDialog.colExprTextEdit.toPlainText()
+                            expr=expr.replace('col.','self.data[\'data\'].')
+                            self.data['data'][colname]=eval(expr)
+                        except:
+                            QMessageBox.warning(self,'Column Error','Please check the expression.\n The expression should be in this format:\n col.column_name*5',QMessageBox.Ok)
+                            self.addDataColumn(colName='colx',expr=expr)
+                    self.setData2Table()
+                    self.data['meta']['col_names'].append(colname)
+                    self.setMeta2Table()
+                    self.dataAltered=True
+                    self.resetPlotSetup()
+                    self.dataAltered=False
+                else:
+                    QMessageBox.warning(self,'Column Name Error','Please choose different column name than the exisiting ones',QMessageBox.Ok)
+                    self.addDataColumn(colName='colx',expr=expr)
+        else:
+            self.data={}
+            self.insertColDialog = InsertCol_Dialog(colName=colName, minCounter=1, maxCounter=100, expr=expr)
+            if self.insertColDialog.exec_():
+                imin = eval(self.insertColDialog.minCounterLineEdit.text())
+                imax = eval(self.insertColDialog.maxCounterLineEdit.text())
+                i = np.arange(imin, imax + 1)
+                colname = self.insertColDialog.colNameLineEdit.text()
+                expr = self.insertColDialog.colExprTextEdit.toPlainText()
+                expr = expr.replace('col.', 'self.data[\'data\'].')
+                try:
+                    self.data['data']=pd.DataFrame(eval(expr),columns=[colname])
+                    self.data['meta']={}
+                    self.data['meta']['col_names']=[colname]
+                    self.setData2Table()
+                    self.setMeta2Table()
+                    self.dataAltered = True
+                    self.resetPlotSetup()
+                    self.dataAltered = False
+                    self.saveDataPushButton.setEnabled(True)
+                    self.addRowPushButton.setEnabled(True)
+                    self.removeRowsPushButton.setEnabled(True)
+                    self.removeColumnPushButton.setEnabled(True)
+                except:
+                    QMessageBox.warning(self, 'Column Error',
+                                        'Please check the expression.\n The expression should be in this format:\n col.column_name*5',
+                                        QMessageBox.Ok)
+                    self.data=None
+                    self.addDataColumn(colName='colx', expr=expr)
+
+
+
                 
     def removeDataColumn(self):
         """
         Removes selected columns from dataTableWidget
         """
         colIndexes=self.dataTableWidget.selectionModel().selectedColumns()
-        if self.dataTableWidget.columnCount()-len(colIndexes)>=2:
+        if self.dataTableWidget.columnCount()-len(colIndexes)>=2 or self.plotSetupTableWidget.rowCount()==0:
             for index in colIndexes:
+                self.data['meta']['col_names'].pop(index.column())
                 self.dataTableWidget.removeColumn(index.column())
-            self.getDataFromTable()
-            self.dataAltered=True
-            self.resetPlotSetup()
-            self.dataAltered=False
+            if self.dataTableWidget.columnCount()!=0:
+                self.getDataFromTable()
+                self.setMeta2Table()
+                self.dataAltered=True
+                self.resetPlotSetup()
+                self.dataAltered=False
+            else:
+                self.data=None
+                self.dataTableWidget.clear()
+                self.metaDataTableWidget.clear()
+                self.autoUpdateCheckBox.setEnabled(False)
+                self.saveDataPushButton.setEnabled(False)
+                self.addRowPushButton.setEnabled(False)
+                self.removeRowsPushButton.setEnabled(False)
+                self.removeColumnPushButton.setEnabled(False)
         else:
-            QMessageBox.warning(self,'Remove Error','Cannot these many column because Datawidget needs to have atleast two columns',QMessageBox.Ok)
+            QMessageBox.warning(self,'Remove Error','Cannot remove these many columns because Datawidget needs to have '
+                                                    'atleast two columns',QMessageBox.Ok)
                 
     def removeDataRows(self):
         rowIndexes=[index.row() for index in self.dataTableWidget.selectionModel().selectedRows()]
@@ -287,7 +342,7 @@ class Data_Dialog(QDialog):
             
     def setMeta2Table(self):
         """
-        Populates the metaDataTable widget with metadata avaiable from the data
+        Populates the metaDataTable widget with metadata available from the data
         """
         try:
             self.metaDataTableWidget.itemChanged.disconnect()
@@ -390,6 +445,7 @@ class Data_Dialog(QDialog):
                 self.data['meta']['col_names']=self.data['data'].columns.values.tolist()
             #print(self.data['data'])
             self.autoUpdate_ON_OFF()
+            self.autoUpdateCheckBox.setEnabled(True)
             return self.data                
         else:
             QMessageBox.warning(self,'File Error','The file doesnot exists!')
@@ -583,12 +639,13 @@ class Data_Dialog(QDialog):
         
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    fname=r'X:/2018-04/Y_corrected_energy_flu.txt'
-    #data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':np.arange(1000),'y':np.arange(1000),'y_err':np.arange(1000)})}
     try:
-        w=Data_Dialog(fname=fname,matplotlib=False)
+        fname=sys.argv[1]
     except:
-        w=Data_Dialog(data=data,matplotlib=False)
+        fname=None
+    print(fname)
+    #data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':np.arange(1000),'y':np.arange(1000),'y_err':np.arange(1000)})}
+    w=Data_Dialog(fname=fname,data=None,matplotlib=False)
     w.resize(600,400)
 #    w.showFullScreen()
     sys.exit(app.exec_())

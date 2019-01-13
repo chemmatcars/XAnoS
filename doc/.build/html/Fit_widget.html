@@ -55,31 +55,56 @@
           <div class="body" role="main">
             
   <div class="section" id="fit-widget">
-<h1>Fit Widget<a class="headerlink" href="#fit-widget" title="Permalink to this headline">¶</a></h1>
-<p>This widget is developed to provide a <em>Graphical User Interface</em> to an end-user by
-which either they can develop their own fitting functions in python or use the existing
-fitting functions under different categories to analyze different kinds of one-dimensional
-data sets. <a class="reference external" href="https://lmfit.github.io/lmfit-py/">LMFIT</a> is extensively used within this widget.</p>
-<div class="figure" id="id1" style="width: 100%">
+<span id="id1"></span><h1>Fit Widget<a class="headerlink" href="#fit-widget" title="Permalink to this headline">¶</a></h1>
+<p>This widget provides a data fitting platform which uses <a class="reference external" href="https://lmfit.github.io/lmfit-py/">LMFIT</a> python library.
+Some of the commonly used functions are provided under different categories and the users can develop their own
+categories and fitting functions by using an easy to use template within a <a class="reference internal" href="#function-editor">Function_Editor</a></p>
+<div class="figure" id="id4" style="width: 100%">
 <img alt="_images/Fit_Widget.png" src="_images/Fit_Widget.png" />
 <p class="caption"><span class="caption-text">Fit Widget in action</span></p>
-</div>
-<div class="section" id="features">
-<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<div class="legend">
+<p><strong>Features</strong></p>
 <ol class="arabic simple">
-<li>Read and fit multiple data files</li>
-<li>Already available functions are categorized as per the function types and techniques</li>
-<li>Easy to add more catergories and user-defined functions</li>
+<li>Read and fit multiple data sets</li>
+<li>Functions are categorized under different types and experimental techniques</li>
+<li>Easy to add new categories and new functions within the categories</li>
 <li>Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.</li>
-<li>An in-built Function editor with a function template is provided.</li>
-<li>The function editor is enabled with python syntax highlighting.</li>
+<li>An in-built <a class="reference internal" href="#function-editor">Function_Editor</a> is provided with a easy to use template.</li>
+<li>A <a class="reference internal" href="#data-dialog">Data_Dialog</a> is provided for importing and manipulating data files</li>
 </ol>
+<p><strong>Usage</strong></p>
+<p><a class="reference internal" href="#fit-widget">Fit_Widget</a> can be used as stand-alone python fitting package by running this in terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python Fit_widget.py
+</pre></div>
 </div>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p><cite>Fit_Widget</cite> can be used as stand-alone python fitting package by running it in terminal as::
-$python Fit_widget.py</p>
-<p>Also it can be used as a widget with any other python application.</p>
+<p>The widget can be used as a widget with any other python application.</p>
+</div>
+</div>
+<div class="section" id="data-dialog">
+<span id="id2"></span><h2>Data Dialog<a class="headerlink" href="#data-dialog" title="Permalink to this headline">¶</a></h2>
+<p>The dialog provides an interface to import and manipulate data for the <a class="reference internal" href="#fit-widget">Fit_Widget</a>.</p>
+<div class="figure" id="id5" style="width: 100%">
+<img alt="_images/Data_Dialog.png" src="_images/Data_Dialog.png" />
+<p class="caption"><span class="caption-text">Data Dialog</span></p>
+</div>
+<p>The dialog can also be used stand-alone to visualize, manipulate a data file provided  running this command in terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python Data_Dialog.py [filename]
+</pre></div>
+</div>
+<p>where [filename] is an optional argument to provide a file with full path.</p>
+<p>Data Dialog has several cool features:</p>
+<div class="section" id="data-manipulation">
+<h3>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="function-editor">
+<span id="id3"></span><h2>Function Editor<a class="headerlink" href="#function-editor" title="Permalink to this headline">¶</a></h2>
+<p>The editor provides an interface to write new functions to be included
+in the <a class="reference internal" href="#fit-widget">Fit_Widget</a>. The is enabled with python syntax highlighting.</p>
+<div class="figure" id="id6" style="width: 100%">
+<img alt="_images/Function_Editor.png" src="_images/Function_Editor.png" />
+<p class="caption"><span class="caption-text">Function Editor</span></p>
+</div>
 </div>
 </div>
 
