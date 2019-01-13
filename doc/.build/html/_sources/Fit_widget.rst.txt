@@ -26,7 +26,7 @@ categories and fitting functions by using an easy to use template within a Funct
 
     Fit_Widget_ can be used as stand-alone python fitting package by running this in terminal::
 
-        $python Fit_widget.py
+        $python Fit_Widget.py
 
     The widget can be used as a widget with any other python application.
 

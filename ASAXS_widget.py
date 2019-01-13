@@ -560,7 +560,7 @@ class ASAXS_Widget(QWidget):
         for i in range(len(self.fnames)):
             fname=self.fnames[i]
             self.CFLineEdit.setText('%.3f'%self.data[fname]['CF'])
-            self.thicknessLineEdit.setText('%.5f'%self.data[fname]['Thickness'])
+                                                                                                self.thicknessLineEdit.setText('%.5f'%self.data[fname]['Thickness'])
             #Collecting meta data to plot
             if xname in self.data[fname].keys() and yname in self.data[fname].keys():
                 self.metaData['x'].append(self.data[fname][xname])
@@ -1254,13 +1254,13 @@ class ASAXS_Widget(QWidget):
             self.components['SAXS-term']=self.XMatrix[:,0]
             self.components['Resonant-term']=self.XMatrix[:,2]
             self.components['Cross-term']=self.XMatrix[:,1]
-            self.components['Total']=tot
             self.components['Data_%s'%self.datanames[0]]=self.data[self.fnames[0]]['yintp']
             self.update_ASAXSPlot()
             self.saveASAXSPushButton.setEnabled(True)
             self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
             self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
             self.directComponentListWidget.item(0).setSelected(True)
+            self.directComponentListWidget.item(1).setSelected(True)
             self.crossComponentListWidget.item(0).setSelected(True)
         else:
             #self.saveASAXSPushButton.setEnabled(True)

@@ -13,6 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Fit Widget" href="Fit_Widget.html" />
@@ -66,6 +67,86 @@
 <blockquote>
 <div>SAXS_Drive is a collection of widgets developed for the measurement, visualization, data reduction and analysis
 of Anomalous Small Angle X-ray Scattering data at <a class="reference external" href="https://chemmatcars.uchicago.edu/">NSF’s ChemMatCARS (Sector 15)</a>  at <a class="reference external" href="https://www.aps.anl.gov/">Advanced Photon Source</a> , USA.</div></blockquote>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Follow the following instructions for installation:</p>
+<ol class="arabic">
+<li><p class="first">Install Anaconda python (Python 3.6) for your operating system from: ‘<a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>’</p>
+</li>
+<li><p class="first">Open a Anaconda terminal the first two commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
+$pip install lmfit pyfai periodictable lmdifftools
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go to the website: <a class="reference external" href="https://github.com/scikit-beam/XrayDB">https://github.com/scikit-beam/XrayDB</a></p>
+<blockquote>
+<div><ol class="lowerroman">
+<li><p class="first">Click the green button named “Clone or download”</p>
+</li>
+<li><p class="first">Download the zip file</p>
+</li>
+<li><p class="first">Extract the zip file into a folder</p>
+</li>
+<li><p class="first">In the Anaconda terminal go the the extracted folder and type the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$cd &quot;/home/mrinal/Download/XrayDB-master&quot;
+</pre></div>
+</div>
+</li>
+</ol>
+<p>$cd python</p>
+<blockquote>
+<div><p>$python setup.py install</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>Download SAXS_Drive from the Github page:</dt>
+<dd><ol class="first last lowerroman">
+<li><p class="first">Click the green button named “Clone or download”</p>
+</li>
+<li><p class="first">Download the zip file</p>
+</li>
+<li><p class="first">Extract the zip file into a folder</p>
+</li>
+<li><p class="first">In the Anconda terminal go the the extracted folder:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$cd &quot;/home/mrinal/Download/SAXS_Drive-master&quot;
+</pre></div>
+</div>
+</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Run the following commands to run different packages:</dt>
+<dd><ol class="first last lowerroman">
+<li><p class="first">Data Collection package (Do not run this when not in the beamline!):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python Data_Collector.py
+</pre></div>
+</div>
+</li>
+<li><p class="first">Data Reduction package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python Data_Reducer.py
+</pre></div>
+</div>
+</li>
+<li><p class="first">Data viewer and analysis package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python ASAXS_Widget.py
+</pre></div>
+</div>
+</li>
+<li><p class="first">Data fitting package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python Fit_Widget.py
+</pre></div>
+</div>
+</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
 </div>
 
 
@@ -91,7 +172,7 @@ of Anomalous Small Angle X-ray Scattering data at <a class="reference external" 
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Mrinal Kanti Bera@NSF&#39;s ChemMatCARS.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>

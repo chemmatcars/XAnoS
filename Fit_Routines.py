@@ -59,7 +59,7 @@ class Fit(QObject):
         if fit_method=='leastsq':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit',maxfev=maxiter)
         else:
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit',maxiter=maxiter)
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit', calc_covar=True)
         self.result=self.fitter.minimize(method=fit_method)        
         return fit_report(self.result),self.result.message
         
