@@ -467,12 +467,25 @@ class Fit_Widget(QWidget):
     def openDataDialog(self,item):
         fnum,fname=item.text().split('<>')
         data_dlg=Data_Dialog(data=self.dlg_data[fname],parent=self,plotIndex=self.plotColIndex[fname])
+        data_dlg.dataFileLineEdit.setText(fname)
         if data_dlg.exec_():
-            self.plotColIndex[fname]=data_dlg.plotColIndex
-            self.dlg_data[fname]=copy.copy(data_dlg.data)
-            self.data[fname]=copy.copy(data_dlg.externalData)
-            self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fnum)
-            self.update_plot()
+            newFname=data_dlg.dataFileLineEdit.text()
+            if fname==newFname:
+                self.plotColIndex[fname]=data_dlg.plotColIndex
+                self.dlg_data[fname]=copy.copy(data_dlg.data)
+                self.data[fname]=copy.copy(data_dlg.externalData)
+                self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fnum)
+                self.update_plot()
+            else:
+                item.setText('%s<>%s'%(fnum,newFname))
+                self.data[newFname]=self.data.pop(fname)
+                self.dlg_data[newFname]=self.dlg_data.pop(fname)
+                self.dlg_data[newFname]=copy.copy(data_dlg.data)
+                self.data[newFname]=copy.copy(data_dlg.externalData)
+                self.plotColIndex[newFname]=data_dlg.plotColIndex
+                self.plotWidget.add_data(self.data[newFname]['x'], self.data[newFname]['y'], yerr=self.data[newFname][
+                    'yerr'],name=fnum)
+                self.update_plot()
             
     
     def xminmaxChanged(self):
