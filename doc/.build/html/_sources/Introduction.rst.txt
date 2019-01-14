@@ -8,7 +8,7 @@ Installation
 Follow the following instructions for installation:
 
 1) Install Anaconda python (Python 3.6) for your operating system from: 'https://www.anaconda.com/download/'
-2) Open a Anaconda terminal the first two commands::
+2) Open a Anaconda terminal the run these two commands::
 
     $conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
     $pip install lmfit pyfai periodictable lmdifftools
@@ -21,16 +21,14 @@ Follow the following instructions for installation:
 	iv) In the Anaconda terminal go the the extracted folder and type the following commands::
 
    		$cd "/home/mrinal/Download/XrayDB-master"
-
-        $cd python
-
+   		$cd python
    		$python setup.py install
 
 4) Download SAXS_Drive from the Github page:
 	i) Click the green button named "Clone or download"
 	ii) Download the zip file
    	iii) Extract the zip file into a folder
-   	iv) In the Anconda terminal go the the extracted folder::
+   	iv) In the Anaconda terminal go the the extracted folder::
 
    	    $cd "/home/mrinal/Download/SAXS_Drive-master"
 
