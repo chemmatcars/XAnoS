@@ -1,8 +1,13 @@
-Copyright (c) 2017 NSF's ChemMatCARS, The University of Chicago
+.. _MIT_License:
+
+License
+=======
+© Copyright 2017 `NSF's ChemMatCARS <https://chemmatcars.uchicago.edu/>`_, `The University of Chicago <https://www.uchicago.edu>`_
 
 Mrinal K. Bera ('mrinalkb@cars.uchicago.edu')
 
-The MIT License
+**MIT License**
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights

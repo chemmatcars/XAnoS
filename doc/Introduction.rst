@@ -1,13 +1,19 @@
+.. _Introduction:
+
 Introduction
 ============
     SAXS_Drive is a collection of widgets developed for the measurement, visualization, data reduction and analysis
     of Anomalous Small Angle X-ray Scattering data at `NSF's ChemMatCARS (Sector 15) <https://chemmatcars.uchicago.edu/>`_  at `Advanced Photon Source <https://www.aps.anl.gov/>`_ , USA.
 
+    If you are using any components of SAXS_Drive for your research/work please do not forget to acknowledge (see :ref:`Acknowledgements`).
+
+.. _Installation:
+
 Installation
 ************
 Follow the following instructions for installation:
 
-1) Install Anaconda python (Python 3.6) for your operating system from: 'https://www.anaconda.com/download/'
+1) Install Anaconda python (Python 3.6 and higher) for your operating system from: 'https://www.anaconda.com/download/'
 2) Open a Anaconda terminal the run these two commands::
 
     $conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib

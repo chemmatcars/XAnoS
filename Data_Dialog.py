@@ -86,6 +86,11 @@ class Data_Dialog(QDialog):
         self.openDataFilePushButton.setDefault(False)
         self.setWindowTitle('Data Dialog')
         #self.setWindowSize((600,400))
+        if self.parentWidget() is not None:
+            self.addPlotPushButton.setEnabled(False)
+            self.removePlotPushButton.setEnabled(False)
+
+
             
     def init_signals(self):
         self.closePushButton.clicked.connect(self.closeWidget)
@@ -301,11 +306,12 @@ class Data_Dialog(QDialog):
         """
         Removes selected columns from dataTableWidget
         """
-        colIndexes=self.dataTableWidget.selectionModel().selectedColumns()
+        colIndexes=[index.column() for index in self.dataTableWidget.selectionModel().selectedColumns()]
+        colIndexes.sort(reverse=True)
         if self.dataTableWidget.columnCount()-len(colIndexes)>=2 or self.plotSetupTableWidget.rowCount()==0:
             for index in colIndexes:
-                self.data['meta']['col_names'].pop(index.column())
-                self.dataTableWidget.removeColumn(index.column())
+                self.data['meta']['col_names'].pop(index)
+                self.dataTableWidget.removeColumn(index)
             if self.dataTableWidget.columnCount()!=0:
                 self.getDataFromTable()
                 self.setMeta2Table()
@@ -313,17 +319,16 @@ class Data_Dialog(QDialog):
                 self.resetPlotSetup()
                 self.dataAltered=False
             else:
-                self.data=None
+                self.data['data']=None
                 self.dataTableWidget.clear()
-                self.metaDataTableWidget.clear()
+                #self.metaDataTableWidget.clear()
                 self.autoUpdateCheckBox.setEnabled(False)
                 self.saveDataPushButton.setEnabled(False)
                 self.addRowPushButton.setEnabled(False)
                 self.removeRowsPushButton.setEnabled(False)
                 self.removeColumnPushButton.setEnabled(False)
         else:
-            QMessageBox.warning(self,'Remove Error','Cannot remove these many columns because Datawidget needs to have '
-                                                    'atleast two columns',QMessageBox.Ok)
+            QMessageBox.warning(self,'Remove Error','Cannot remove these many columns because Data Dialog needs to have atleast two columns',QMessageBox.Ok)
                 
     def removeDataRows(self):
         rowIndexes=[index.row() for index in self.dataTableWidget.selectionModel().selectedRows()]
@@ -446,6 +451,10 @@ class Data_Dialog(QDialog):
             #print(self.data['data'])
             self.autoUpdate_ON_OFF()
             self.autoUpdateCheckBox.setEnabled(True)
+            self.saveDataPushButton.setEnabled(True)
+            self.addRowPushButton.setEnabled(True)
+            self.removeRowsPushButton.setEnabled(True)
+            self.removeColumnPushButton.setEnabled(True)
             return self.data                
         else:
             QMessageBox.warning(self,'File Error','The file doesnot exists!')
@@ -537,44 +546,47 @@ class Data_Dialog(QDialog):
             
     def addPlots(self,plotIndex=None):
         #self.plotSetupTableWidget.clear()
-        try:
-            self.plotSetupTableWidget.cellChanged.disconnect()
-        except:
-            pass
-        columns=self.data['data'].columns.tolist()
-        if len(columns)>=2:
-            self.plotSetupTableWidget.insertRow(self.plotSetupTableWidget.rowCount())
-            row=self.plotSetupTableWidget.rowCount()-1
-            self.plotSetupTableWidget.setItem(row,0,QTableWidgetItem('Data_%d'%self.plotNum))
-            for i in range(1,3):
-                self.plotSetupTableWidget.setCellWidget(row,i,QComboBox())
-                self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
+        if self.parentWidget() is None or self.plotSetupTableWidget.rowCount()==0:
+            try:
+                self.plotSetupTableWidget.cellChanged.disconnect()
+            except:
+                pass
+            columns=self.data['data'].columns.tolist()
+            if len(columns)>=2:
+                self.plotSetupTableWidget.insertRow(self.plotSetupTableWidget.rowCount())
+                row=self.plotSetupTableWidget.rowCount()-1
+                self.plotSetupTableWidget.setItem(row,0,QTableWidgetItem('Data_%d'%self.plotNum))
+                for i in range(1,3):
+                    self.plotSetupTableWidget.setCellWidget(row,i,QComboBox())
+                    self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
+                    if plotIndex is not None:
+                        self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
+                    else:
+                        self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
+                    self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updatePlotData)
+                self.xlabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText())
+                self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
+                self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
+                self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
                 if plotIndex is not None:
-                    self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
+                    self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(plotIndex[-1])
+                    print('1')
                 else:
-                    self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
-                self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updatePlotData)
-            self.xlabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText())
-            self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
-            self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
-            self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
-            if plotIndex is not None:
-                self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(plotIndex[-1])
-                print('1')
+                    # try:
+                    #     self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(2)
+                    # except:
+                    #
+                    self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
+                self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
+                self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
+                self.plotSetupTableWidget.setCurrentCell(row,3)
+                self.updatePlotData()
+                self.plotNum+=1
             else:
-                # try:
-                #     self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(2)
-                # except:
-                #
-                self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
-            self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
-            self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
-            self.plotSetupTableWidget.setCurrentCell(row,3)
-            self.updatePlotData()
-            self.plotNum+=1
+                QMessageBox.warning(self,'Data file error','The data file do not have two or more columns to be plotted.',QMessageBox.Ok)
+            self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)
         else:
-            QMessageBox.warning(self,'Data file error','The data file do not have two or more columns to be plotted.',QMessageBox.Ok)
-        self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)
+            QMessageBox.warning(self,'Warning','As the Data Dialog is used within another widget you cannot add more plots',QMessageBox.Ok)
         
     def removePlots(self):
         """
@@ -585,12 +597,22 @@ class Data_Dialog(QDialog):
         except:
             pass
         rowIndexes=self.plotSetupTableWidget.selectionModel().selectedRows()
-        if self.plotSetupTableWidget.rowCount()-len(rowIndexes)>=1:
+        if self.parentWidget() is None:
             for index in rowIndexes:
                 row=index.row()
                 name=self.plotSetupTableWidget.item(row,0).text()
                 self.plotWidget.remove_data([name])
-                self.dataTableWidget.removeRow(index.row())            
+                self.plotSetupTableWidget.removeRow(index.row())
+        else:
+            if self.plotSetupTableWidget.rowCount()-len(rowIndexes)>=1:
+                for index in rowIndexes:
+                    row = index.row()
+                    name = self.plotSetupTableWidget.item(row, 0).text()
+                    self.plotWidget.remove_data([name])
+                    self.plotSetupTableWidget.removeRow(index.row())
+            else:
+                QMessageBox.warning(self, 'Warning', 'Cannot remove single plots from Data Dialog because the Data Dialog is used within another widget',
+                                QMessageBox.Ok)
         self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)
             
         

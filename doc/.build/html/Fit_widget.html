@@ -15,6 +15,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="License.html" />
     <link rel="prev" title="Introduction" href="Introduction.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -23,6 +24,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="License.html" title="License"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Introduction.html" title="Introduction"
              accesskey="P">previous</a> |</li>
@@ -34,6 +38,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="Introduction.html"
                         title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="License.html"
+                        title="next chapter">License</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -59,7 +66,7 @@
 <p>This widget provides a data fitting platform which uses <a class="reference external" href="https://lmfit.github.io/lmfit-py/">LMFIT</a> python library.
 Some of the commonly used functions are provided under different categories and the users can develop their own
 categories and fitting functions by using an easy to use template within a <a class="reference internal" href="#function-editor">Function_Editor</a></p>
-<div class="figure" id="id4" style="width: 100%">
+<div class="figure" id="id7" style="width: 100%">
 <img alt="_images/Fit_Widget.png" src="_images/Fit_Widget.png" />
 <p class="caption"><span class="caption-text">Fit Widget in action</span></p>
 <div class="legend">
@@ -70,7 +77,7 @@ categories and fitting functions by using an easy to use template within a <a cl
 <li>Easy to add new categories and new functions within the categories</li>
 <li>Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.</li>
 <li>An in-built <a class="reference internal" href="#function-editor">Function_Editor</a> is provided with a easy to use template.</li>
-<li>A <a class="reference internal" href="#data-dialog">Data_Dialog</a> is provided for importing and manipulating data files</li>
+<li>A <a class="reference internal" href="#data-dialog">Data_Dialog</a> is provided for importing and manipulating data files.</li>
 </ol>
 <p><strong>Usage</strong></p>
 <p><a class="reference internal" href="#fit-widget">Fit_Widget</a> can be used as stand-alone python fitting package by running this in terminal:</p>
@@ -83,25 +90,175 @@ categories and fitting functions by using an easy to use template within a <a cl
 <div class="section" id="data-dialog">
 <span id="id2"></span><h2>Data Dialog<a class="headerlink" href="#data-dialog" title="Permalink to this headline">¶</a></h2>
 <p>The dialog provides an interface to import and manipulate data for the <a class="reference internal" href="#fit-widget">Fit_Widget</a>.</p>
-<div class="figure" id="id5" style="width: 100%">
+<div class="figure" id="id8" style="width: 100%">
 <img alt="_images/Data_Dialog.png" src="_images/Data_Dialog.png" />
 <p class="caption"><span class="caption-text">Data Dialog</span></p>
+<div class="legend">
+<p><strong>Features</strong></p>
+<p>Data Dialog has several cool features:</p>
+<ol class="arabic simple">
+<li>It can import any ascii file with tabulated data with the file extensions (<strong>.txt</strong>, <strong>.dat</strong>).</li>
+<li>It can show both the meta-data and the data present in the file provided that the data file is written in this particular format as mentioned in <a class="reference internal" href="#data-file-format">Data_File_Format</a>.</li>
+<li>After loading the file, both meta-data and the data can be added or removed or modified.</li>
+<li>New rows and columns can be added or removed for the data.</li>
+<li>Mathematical calculations can be done on the existing columns of the data which will be added as new columns. For data manipulations please follow the instructions in <a class="reference internal" href="#data-manipulation">Data_Manipulation</a>.</li>
+<li>Provides 1D plots of all/some of the columns of the data. See <a class="reference internal" href="#plotting-with-data-dialog">Plotting_With_Data_Dialog</a></li>
+<li>If the <strong>☐Auto Update</strong> is checked, any change in the data file will update the data automatically in the <a class="reference internal" href="#data-dialog">Data_Dialog</a> along with <strong>Plots</strong>.</li>
+<li>Using the <strong>☐Auto Update</strong> feature a datafile can be visualized dynamically on change in the data within the file.</li>
+</ol>
+<p><strong>Usage</strong></p>
+<p>The dialog can be used as a dialog to import data in any other widgets like the <a class="reference internal" href="#fit-widget">Fit_Widget</a>. For example, within the <a class="reference internal" href="#fit-widget">Fit_Widget</a> the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is used to manipulate the data by opening the dialog using the following function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Data_Dialog</span> <span class="k">import</span> <span class="n">Data_Dialog</span>
+
+<span class="k">def</span> <span class="nf">openDataDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">fnum</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&lt;&gt;&#39;</span><span class="p">)</span>
+    <span class="n">data_dlg</span><span class="o">=</span><span class="n">Data_Dialog</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">fname</span><span class="p">],</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span><span class="n">plotIndex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">plotColIndex</span><span class="p">[</span><span class="n">fname</span><span class="p">])</span>
+    <span class="n">data_dlg</span><span class="o">.</span><span class="n">dataFileLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data_dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">():</span>
+        <span class="n">newFname</span><span class="o">=</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">dataFileLineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="o">==</span><span class="n">newFname</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotColIndex</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">=</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">plotColIndex</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">externalData</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotWidget</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span><span class="n">yerr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">][</span><span class="s1">&#39;yerr&#39;</span><span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="n">fnum</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_plot</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&lt;&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">fnum</span><span class="p">,</span><span class="n">newFname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">externalData</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotColIndex</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">plotColIndex</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotWidget</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">][</span>
+                <span class="s1">&#39;yerr&#39;</span><span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="n">fnum</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_plot</span><span class="p">()</span>
+</pre></div>
 </div>
-<p>The dialog can also be used stand-alone to visualize, manipulate a data file provided  running this command in terminal:</p>
+<p>The dialog can also be used stand-alone to visualize, manipulate a data file with data and meta-data (see <a class="reference internal" href="#data-file-format">Data_File_Format</a>) by running this command in terminal:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python Data_Dialog.py [filename]
 </pre></div>
 </div>
 <p>where [filename] is an optional argument to provide a file with full path.</p>
-<p>Data Dialog has several cool features:</p>
+</div>
+</div>
+<div class="section" id="data-file-format">
+<span id="id3"></span><h3>Data File Format<a class="headerlink" href="#data-file-format" title="Permalink to this headline">¶</a></h3>
+<p>The data file must be written in the format as shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Any text about explaining the data</span>
+<span class="c1">#parameter1_name=parameter1_value</span>
+<span class="c1">#parameter2_name=parameter2_value</span>
+<span class="c1">#col_names=[&#39;col1&#39;,&#39;col2&#39;,&#39;col3&#39;]</span>
+<span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>
+<span class="mi">2</span>   <span class="mi">4</span>   <span class="mi">8</span>
+<span class="mi">3</span>   <span class="mi">9</span>   <span class="mi">27</span>
+</pre></div>
+</div>
+<p>The first few lines with ‘#’ can be used for stating the details of the file. Any meta-data needs to be saved should
+follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. When the above file is saved as <strong>data_file.txt</strong> and opened in <a class="reference internal" href="#data-dialog">Data_Dialog</a>, the data looks like this:</p>
+<div class="figure" id="id9" style="width: 100%">
+<img alt="_images/Data_Dialog_w_Data_File.png" src="_images/Data_Dialog_w_Data_File.png" />
+<p class="caption"><span class="caption-text">Data Dialog in action</span></p>
+</div>
+</div>
 <div class="section" id="data-manipulation">
-<h3>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this headline">¶</a></h3>
+<p>In the <a class="reference internal" href="#data-dialog">Data_Dialog</a> both the meta-data and data can be added/removed and edited with the following conditions:</p>
+<ol class="arabic simple">
+<li>If a file is imported with <strong>col_names</strong> as one of the meta-data, you can edit the values of the <strong>col_names</strong> but cannot remove it.</li>
+<li>If the columns are already set for plotting in the <strong>Plot Setup</strong> tab you cannot remove the last two tabs.</li>
+<li>When the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is not used within any other widgets, all the data columns can be removed.</li>
+<li>When the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is used within any other widgets, one can delete all the columns except the remaining two.</li>
+</ol>
+<div class="section" id="add-new-data-column">
+<h4>Add New Data Column<a class="headerlink" href="#add-new-data-column" title="Permalink to this headline">¶</a></h4>
+<p>You can add new columns by clicking <strong>Add Column</strong> which will open up a <a class="reference internal" href="#data-column-dialog-i">Data_Column_Dialog_i</a>. Then the column values can be either:</p>
+<ol class="arabic">
+<li><p class="first">An expression of <strong>i</strong> which can take integer values from a minimum value (default=0) to a maximum value (default=100). The expression can be any numpy expression like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div>Here <strong>np</strong> is the imported <strong>numpy</strong> module. Please see <a class="reference internal" href="#data-column-dialog-i">Data_Column_Dialog_i</a>.</div></blockquote>
+<ol class="arabic" start="2">
+<li><p class="first">A numpy expression involving the data columns (col_A and col_B in this case) like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="o">+</span><span class="n">col</span><span class="o">.</span><span class="n">col_B</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_B</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div>Here a particular column is used as <strong>col.Column_Name</strong>. Please see <a class="reference internal" href="#data-column-dialog-columns">Data_Column_Dialog_Columns</a>.</div></blockquote>
+<div class="figure" id="id10" style="width: 100%">
+<span id="data-column-dialog-i"></span><img alt="_images/Data_Column_Dialog_with_i.png" src="_images/Data_Column_Dialog_with_i.png" />
+<p class="caption"><span class="caption-text">Data Column Dialog with numpy expression involving i</span></p>
+</div>
+<div class="figure" id="id11" style="width: 100%">
+<span id="data-column-dialog-columns"></span><img alt="_images/Data_Column_Dialog_with_columns.png" src="_images/Data_Column_Dialog_with_columns.png" />
+<p class="caption"><span class="caption-text">Data Column Dialog with numpy expression involving columns</span></p>
+</div>
+</div>
+<div class="section" id="remove-data-columns">
+<h4>Remove Data Columns<a class="headerlink" href="#remove-data-columns" title="Permalink to this headline">¶</a></h4>
+<p>The columns can be removed by:</p>
+<ol class="arabic simple">
+<li>Selecting the entire column either by:<ul>
+<li>Selecting the first row of the column and select the last row with <strong>SHIFT</strong> button pressed.</li>
+<li>Clicking the <strong>Left-Button</strong> of the mouse over the first row of the column and keeping the <strong>Left-Button</strong> pressed drag all the way to the last column.</li>
+</ul>
+</li>
+<li>Click the <strong>Remove Column</strong> button.</li>
+</ol>
+</div>
+<div class="section" id="add-new-data-rows">
+<h4>Add New Data Rows<a class="headerlink" href="#add-new-data-rows" title="Permalink to this headline">¶</a></h4>
+<p>A new row can be added by selecting a row where you want to add a row and click <strong>Add Row</strong></p>
+</div>
+<div class="section" id="remove-data-rows">
+<h4>Remove Data Rows<a class="headerlink" href="#remove-data-rows" title="Permalink to this headline">¶</a></h4>
+<p>Multiple rows can be removed by selecting multiple rows and click <strong>Remove Rows</strong></p>
+</div>
+</div>
+<div class="section" id="plotting-with-data-dialog">
+<span id="id5"></span><h3>Plotting with Data Dialog<a class="headerlink" href="#plotting-with-data-dialog" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#data-dialog">Data_Dialog</a> can also be used for visualizing (within the Data Dialog) and selecting the data (for other widgets) to create 1D plots with errorbars. In order to plot the data needs to be at least a two column data. Once a two-column data is opened, in order to to visualize/select the data for plotting one needs to do the following:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Click to the <strong>Plot Setup</strong> tab. See <a class="reference internal" href="#data-dialog-plot-setup">Data_Dialog_Plot_Setup</a>.</li>
+<li>Click <strong>Add</strong> button which will automatically add a row in the table.</li>
+<li>By default the row will be loaded with with <em>Data_0</em> as label, first and second column of the data as <em>X</em> and <em>Y</em> column, respectively.</li>
+<li>By default the <em>Yerr</em> column is selected as <em>None</em>.</li>
+<li>Many rows can be added in this way to visualize the data in <a class="reference internal" href="#data-dialog">Data_Dialog</a> whereas when the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is used within other widgets only one row will be added by default.</li>
+<li>The data rows can be removed from the <strong>Plot Setup</strong> by selecting entire row (by clicking the row numbers at the extreme left) and clicking the <strong>Remove</strong> button.</li>
+<li>When using the <a class="reference internal" href="#data-dialog">Data_Dialog</a> with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.</li>
+<li>All the columns of the data will be available as drop down menu in each of the cells for selecting them as <em>X</em>, <em>Y</em>, and <em>Yerr</em> columns to plot.</li>
+<li>After adding the column, go to <strong>Plots</strong> tab within the <a class="reference internal" href="#data-dialog">Data_Dialog</a> to visualize the data. See <a class="reference internal" href="#data-dialog-plot-tab">Data_Dialog_Plot_tab</a>.</li>
+<li>Both the X- and Y-axis labels will be updated with the column names selected in the <strong>Plot Setup</strong>.</li>
+<li>In order to switch between the log/linear scales of both the axes check/uncheck the <strong>☐LogX</strong> and <strong>☐LogY</strong> checkboxes.</li>
+<li>Line-width and the Symbol sizes can be tweaked by changing the <strong>Line width</strong> and <strong>Point size</strong> options.</li>
+<li>By default, the errorbars are not plotted and can be plotted by checking the <strong>☐Errorbar</strong> checkbox, provided that a column is already selected in <em>Yerr</em> column of the <strong>Plot Setup</strong>.</li>
+</ol>
+</div></blockquote>
+<div class="figure" id="id12" style="width: 100%">
+<span id="data-dialog-plot-setup"></span><img alt="_images/Data_Dialog_Plot_Setup.png" src="_images/Data_Dialog_Plot_Setup.png" />
+<p class="caption"><span class="caption-text">Plot Setup of Data Dialog</span></p>
+</div>
+<div class="figure" id="id13" style="width: 100%">
+<span id="data-dialog-plot-tab"></span><img alt="_images/Data_Dialog_Plot_tab.png" src="_images/Data_Dialog_Plot_tab.png" />
+<p class="caption"><span class="caption-text">Plot tab of Data Dialog</span></p>
+</div>
 </div>
 </div>
 <div class="section" id="function-editor">
-<span id="id3"></span><h2>Function Editor<a class="headerlink" href="#function-editor" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>Function Editor<a class="headerlink" href="#function-editor" title="Permalink to this headline">¶</a></h2>
 <p>The editor provides an interface to write new functions to be included
 in the <a class="reference internal" href="#fit-widget">Fit_Widget</a>. The is enabled with python syntax highlighting.</p>
-<div class="figure" id="id6" style="width: 100%">
+<div class="figure" id="id14" style="width: 100%">
 <img alt="_images/Function_Editor.png" src="_images/Function_Editor.png" />
 <p class="caption"><span class="caption-text">Function Editor</span></p>
 </div>
@@ -120,6 +277,9 @@ in the <a class="reference internal" href="#fit-widget">Fit_Widget</a>. The is e
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="License.html" title="License"
+             >next</a> |</li>
         <li class="right" >
           <a href="Introduction.html" title="Introduction"
              >previous</a> |</li>

@@ -11,6 +11,8 @@ Welcome to SAXS_Drive's documentation!
    
    Introduction
    Fit_Widget
+   License
+   Acknowledgements
 
 
 Indices and tables

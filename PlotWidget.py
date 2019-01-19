@@ -297,6 +297,7 @@ class PlotWidget(QWidget):
                     del self.mplErrorData[dname]
             else:
                 self.plotWidget.removeItem(self.data[dname])
+                self.legendItem.removeItem(dname)
                 if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
                     self.plotWidget.removeItem(self.dataErrPos[dname])
                     self.plotWidget.removeItem(self.dataErrNeg[dname])
