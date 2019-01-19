@@ -170,7 +170,8 @@ The columns can be removed by:
 1. Selecting the entire column either by:
 
    * Selecting the first row of the column and select the last row with **SHIFT** button pressed.
-   * Clicking the **Left-Button** of the mouse over the first row of the column and keeping the **Left-Button** pressed drag all the way to the last column.
+   * Clicking the **Left-Mouse-Button** of the mouse over the first row of the column and keeping the **Left-Mouse-Button** pressed drag all the way to the last column.
+   * All the columns can be selected by be clicking on a single data cell and press **CTRL-A**
 
 2. Click the **Remove Column** button.
 
@@ -181,6 +182,10 @@ A new row can be added by selecting a row where you want to add a row and click 
 Remove Data Rows
 ++++++++++++++++
 Multiple rows can be removed by selecting multiple rows and click **Remove Rows**
+
+Change Data Column Names
+++++++++++++++++++++++++
+The column names of the Data can be changed by changing the meta-data **col_names**.
 
 
 .. _Plotting_With_Data_Dialog:
