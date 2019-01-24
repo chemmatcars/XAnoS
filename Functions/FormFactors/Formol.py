@@ -26,9 +26,9 @@ class Formol: #Please put the class name same as the function name
         x         scalar or array of reciprocal wave vectors
         E         Energy of the X-rays at which the scattering pattern is measured
         fname1    Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the molecule of type 1
-        eta 1     Fraction of molecule type 1
+        eta1      Fraction of molecule type 1
         fname2    Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the moleucule of type 2
-        eta 2     Fraction of molecule type 2
+        eta2     Fraction of molecule type 2
         rmin      Minimum radial distance for calculating electron density
         rmax      Maximum radial distance for calculating electron density
         Nr        Number of points at which electron density will be calculated
@@ -162,7 +162,6 @@ class Formol: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         self.output_params={}
-
         #if self.__fnames__!=[None,None]:
         #Contribution from first molecule
         if self.fname1 is not None:

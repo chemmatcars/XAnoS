@@ -560,7 +560,7 @@ class ASAXS_Widget(QWidget):
         for i in range(len(self.fnames)):
             fname=self.fnames[i]
             self.CFLineEdit.setText('%.3f'%self.data[fname]['CF'])
-                                                                                                self.thicknessLineEdit.setText('%.5f'%self.data[fname]['Thickness'])
+            self.thicknessLineEdit.setText('%.5f'%self.data[fname]['Thickness'])
             #Collecting meta data to plot
             if xname in self.data[fname].keys() and yname in self.data[fname].keys():
                 self.metaData['x'].append(self.data[fname][xname])

@@ -16,10 +16,12 @@ class PowerLaw: #Please put the class name same as the function name
     def __init__(self,x=0,A=1,n=0,mpar={}):
         """
         The power law function is y=Ax^n
-        x           : independent variable in ter form of a scalar or an array
-        A           : Amplitude
-        n           : Exponent
+
+        x		: Independent variable in the form of a scalar or an array
+        A		: Amplitude
+        n		: Exponent
         """
+
         if type(x)==list:
             self.x=np.array(x)
         else:
@@ -28,7 +30,6 @@ class PowerLaw: #Please put the class name same as the function name
         self.n=n
         self.__mpar__={} #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
-        self.output_params={}
 
 
     def init_params(self):
@@ -44,6 +45,7 @@ class PowerLaw: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
+        self.output_params={}
         return self.A*self.x**self.n
 
 

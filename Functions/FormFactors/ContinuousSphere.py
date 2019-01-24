@@ -10,18 +10,19 @@ from PeakFunctions import Gaussian, LogNormal
 
 
 class ContinuousSphere:
-    
+
     def __init__(self,x=0.001,Rsig=0.0,dist='Gaussian',N=50,norm=1.0,bkg=0.0,mpar={'R':[10.0,11.0],'rho':[1.0,0.0]}):
         """
-        This class calculates the form factor of a sphere with continous electron density gradient along the radial direction
-        x: single or array of q-values in the reciprocal unit as R
-        R: An array of radial locations
-        rho: Electron density at the locations R
-        Rsig: Width of the distribution of all the radial locations
-        N: No. of poits on which the distribution will be calculated
-        dist: 'Gaussian' or 'LogNormal'
-        norm: Normalization constant
-        bkg: Constant Bkg
+        This calculates the form factor of a sphere with continous electron density gradient along the radial direction
+
+        x			: single or array of q-values in the reciprocal unit as R
+        R			: An array of radial locations
+        rho		    : Electron density at the locations R
+        Rsig		: Width of the distribution of all the radial locations
+        N			: No. of points on which the distribution will be calculated
+        dist		: 'Gaussian' or 'LogNormal'
+        norm		: Normalization constant
+        bkg		    : Constant Bkg
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -55,6 +56,7 @@ class ContinuousSphere:
         return np.array(res)**2
 
     def y(self):
+        self.output_params={}
         R=[self.params['__R__%03d'%i] for i in range(len(self.__mpar__['R']))]
         rho=[self.params['__rho__%03d'%i] for i in range(len(self.__mpar__['rho']))]
         if self.Rsig<0.001:

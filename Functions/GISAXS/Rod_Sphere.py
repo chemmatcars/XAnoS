@@ -61,6 +61,7 @@ class Rod_Sphere: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
+        self.output_params={}
         if self.qparsig>1e-3:
             qpar=np.linspace(self.qpar-5*self.qparsig,self.qpar+5*self.qparsig,10)
             peak=np.exp(-(qpar-self.qpar)**2/2.0/self.qparsig**2)

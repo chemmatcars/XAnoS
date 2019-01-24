@@ -10,6 +10,7 @@ Welcome to SAXS_Drive's documentation!
    :maxdepth: 2
    
    Introduction
+   ASAXS_Widget
    Fit_Widget
    License
    Acknowledgements

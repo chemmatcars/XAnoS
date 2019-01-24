@@ -12,13 +12,14 @@ class Ellipsoid:
     def __init__(self, x=0.001,R1=1.0,R2=1.0,rhoc=1.0,rhosol=0.0,norm=1.0,bkg=0.0,mpar={}):
         """
         Calculates the form factor of an ellipsoid
-        x				: sigle or Array of q-values in the reciprocal unit as R1 and R2
-        R1				: Semi-minor of the ellipsoid
-        R2				: Semi-major axis of the ellipsoid
-        rhoc			: Electron density of the ellipsoid
-        rhosol		: Electron density of the surrounding media/solvent
-        norm			: Normalization constant
-        bkg			: Constant Bkg
+
+        x			: Single or Array of q-values in the reciprocal unit as R1 and R2
+        R1		:  Semi-minor of the ellipsoid
+        R2		: Semi-major axis of the ellipsoid
+        rhoc				: Electron density of the ellipsoid
+        rhosol			: Electron density of the surrounding media/solvent
+        norm		: Normalization constant
+        bkg		: Constant Bkg
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -48,6 +49,7 @@ class Ellipsoid:
         """
         Computes the form factor of an ellipsoid
         """
+        self.output_params={}
         r=lambda a: np.sqrt((self.R1*np.sin(a))**2+(self.R2*np.cos(a))**2)
         ang=np.linspace(0,np.pi/2.0,91)
         if type(self.x)==np.ndarray:

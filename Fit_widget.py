@@ -105,6 +105,7 @@ class minMaxDialog(QDialog):
 class FitResultDialog(QDialog):
     def __init__(self,fit_report,fit_info,parent=None):
         QDialog.__init__(self,parent)
+        self.setWindowTitle('Fit Results')
         self.fit_report=fit_report
         self.fit_info=fit_info
         self.createUI()
@@ -1335,8 +1336,9 @@ class Fit_Widget(QWidget):
         
             
     def xChanged(self):
-        #try:
+        try:
             x=eval(self.xLineEdit.text())
+            x=np.array(x)
             try:
                 self.fit.params['x']=x
                 self.fit.x=x
@@ -1346,9 +1348,9 @@ class Fit_Widget(QWidget):
                 pass
             self.fchanged=False
             self.update_plot()
-        #except:
-        #    QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
-        #    self.xLineEdit.setText('np.linspace(0.001,0.1,100)')
+        except:
+            QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
+            self.xLineEdit.setText('np.linspace(0.001,0.1,100)')
             
         
     def update_plot(self):
@@ -1387,10 +1389,10 @@ class Fit_Widget(QWidget):
             if len(self.fit.params['output_params'])>0:
                 for key in self.fit.params['output_params'].keys():
                     self.genParamListWidget.addItem(str(key)+':'+str(list(self.fit.params['output_params'][key].keys())))
-            if not self.fchanged:
-                for row in self.gen_rows:
-                    self.genParamListWidget.item(row).setSelected(True)
-                self.plot_extra_param()
+                if not self.fchanged:
+                    for row in self.gen_rows:
+                        self.genParamListWidget.item(row).setSelected(True)
+            self.plot_extra_param()
             self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
             self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,\
                                      name=self.funcListWidget.currentItem().text(),fit=True)
