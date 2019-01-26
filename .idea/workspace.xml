@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Merged with SAXS_Drive_Beta">
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" afterDir="false" />
-    </list>
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Merged with SAXS_Drive_Beta" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -633,14 +631,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.167107" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" visible="true" weight="0.19660537" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.19660537" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
