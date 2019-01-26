@@ -1,31 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="removed INSTALL.txt">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="updated Documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Acknowledgements.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Acknowledgements.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/License.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/License.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/basic.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/doctools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/documentation_options.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/documentation_options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/jquery-3.2.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/jquery-3.2.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/jquery.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/jquery.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/searchtools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/underscore-1.3.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/underscore-1.3.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/underscore.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/underscore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/websupport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/genindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -673,7 +651,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548536677097</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="updated Documentation">
+      <created>1548537583322</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1548537583322</updated>
+    </task>
+    <task id="LOCAL-00031" summary="updated Documentation">
+      <created>1548537652352</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1548537652352</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TodoView">
@@ -748,7 +740,8 @@
     <MESSAGE value="Merged with SAXS_Drive_Beta" />
     <MESSAGE value="Updated README" />
     <MESSAGE value="removed INSTALL.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed INSTALL.txt" />
+    <MESSAGE value="updated Documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated Documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
