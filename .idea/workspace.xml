@@ -63,7 +63,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
+            <state relative-caret-position="452">
               <caret line="91" column="30" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
             </state>
           </provider>
@@ -249,6 +249,11 @@
               <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
               <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
               <item name="doc_source" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
@@ -758,7 +763,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548540553755</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="updated Documentation">
+      <created>1548540901837</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1548540901837</updated>
+    </task>
+    <task id="LOCAL-00045" summary="updated Documentation">
+      <created>1548542219879</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1548542219879</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1149,7 +1168,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
+        <state relative-caret-position="452">
           <caret line="91" column="30" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
         </state>
       </provider>
