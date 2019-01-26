@@ -1657,7 +1657,6 @@ class Data_Collector_Server(QWidget):
             self.instrumentStatus.setText('<font color="Green">Done</font>')
             
             
-            
         
         
         
