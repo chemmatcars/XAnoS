@@ -10,6 +10,9 @@ Welcome to SAXS_Drive's documentation!
    :maxdepth: 2
    
    Introduction
+   Data_Collection_Server
+   Data_Reduction_Client
+   ASAXS_Batch_Processor
    ASAXS_Widget
    Fit_Widget
    License
