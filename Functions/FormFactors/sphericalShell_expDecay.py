@@ -14,7 +14,7 @@ from xraydb import XrayDB
 #from pyEQL import chemical_formula
 
 
-class SphericalShell_expDecay: #Please put the class name same as the function name
+class sphericalShell_expDecay: #Please put the class name same as the function name
     No = 6.023e23  # Avagadro number
     re2= (2.817e-5)**2 # Square of classical electron radius in Angs^2
     def __init__(self, x=0, rmin=0.0, rmax=30.0, Nr=31, Rc=10.0, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0, norm=1.0, bkg=0.0, mpar={}):

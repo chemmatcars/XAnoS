@@ -1,244 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/ASAXS_Batch_Processor-checkpoint.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fortran_routines/xr_ref.cpython-37m-darwin.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/.doctrees/ASAXS_Widget.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/.doctrees/Acknowledgements.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/.doctrees/Fit_Widget.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/.doctrees/Introduction.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/.doctrees/License.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/.doctrees/environment.pickle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/.doctrees/index.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/ASAXS_Widget.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/Acknowledgements.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/Fit_Widget.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/Introduction.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/License.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/ASAXS_Widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Column_Dialog_with_columns.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Column_Dialog_with_i.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog_Plot_Setup.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog_Plot_tab.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog_w_Data_File.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Fit_Progress.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Fit_Results.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Fit_Widget_in_Action.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_images/Function_Editor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_sources/ASAXS_Widget.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_sources/Acknowledgements.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_sources/Fit_Widget.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_sources/Introduction.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_sources/License.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_static/Fit_Widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_static/documentation_options.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/_static/jquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/objects.inv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/searchindex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/ASAXS_Widget.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/Acknowledgements.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/Fit_widget.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/Introduction.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/License.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/environment.pickle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/index.doctree" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/ASAXS_Widget.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/Fit_widget.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/Introduction.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/License.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/ASAXS_Widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Column_Dialog_with_columns.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Column_Dialog_with_i.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog_Plot_Setup.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog_Plot_tab.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog_w_Data_File.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_Progress.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_Results.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_Widget_in_Action.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Function_Editor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/ASAXS_Widget.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/Acknowledgements.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/Fit_widget.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/Introduction.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/License.rst.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/Fit_Widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/contents.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/documentation_options.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/jquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/navigation.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/sphinxdoc.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/genindex.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/objects.inv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/searchindex.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/.static/Fit_Widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/ASAXS_Widget.rst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Acknowledgements.rst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Data/data_file.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/ASAXS_Widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Column_Dialog_with_columns.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Column_Dialog_with_i.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog_Plot_Setup.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog_Plot_tab.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog_w_Data_File.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Progress.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Results.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Widget.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Widget_in_Action.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Function_Editor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/License.rst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc_source/data_file.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SAXS_Drive.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SAXS_Drive.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Collector_Server.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Collector_Server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Reduction_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Reduction_Client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Detector_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Detector_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fit_Routines.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Routines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fit_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/Backgrounds/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/Backgrounds/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/INSTALL.txt" beforeDir="false" afterPath="$PROJECT_DIR$/INSTALL.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlotWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotWidget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README" beforeDir="false" afterPath="$PROJECT_DIR$/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SAXS_Drive.rst" beforeDir="false" afterPath="$PROJECT_DIR$/SAXS_Drive.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SetupData/detector_params.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SetupData/detector_params.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SetupData/reducer_setup.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SetupData/reducer_setup.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SetupData/scaler_params.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SetupData/scaler_params.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_Forms/Data_Dialog.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/Data_Dialog.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_Forms/Data_Reduction_Client.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/Data_Reduction_Client.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.buildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/.doctrees/environment.pickle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/.doctrees/index.doctree" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/.nojekyll" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.nojekyll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_sources/index.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/ajax-loader.gif" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/ajax-loader.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/alabaster.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/basic.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment-bright.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/comment-bright.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment-close.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/comment-close.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/comment.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/custom.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/doctools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/down-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/down-pressed.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/down.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/down.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/file.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/file.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/jquery-3.1.0.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/jquery-3.2.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/minus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/minus.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/plus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/plus.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/pygments.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/pygments.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/searchtools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/underscore-1.3.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/underscore-1.3.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/underscore.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/underscore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/up-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/up-pressed.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/up.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/up.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/websupport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/Fit_widget.doctree" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/SAXS_Drive_link.doctree" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/environment.pickle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/index.doctree" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/genindex.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/.buildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/.nojekyll" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/.nojekyll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/Fit_widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/Acknowledgements.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/SAXS_Drive_link.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/Fit_widget.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/Fit_widget.rst.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/SAXS_Drive_link.rst.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/index.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/ajax-loader.gif" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/ajax-loader.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/alabaster.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/basic.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/comment-bright.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/comment-bright.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/comment-close.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/comment-close.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/comment.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/comment.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/contents.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/contents.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/custom.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/doctools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/down-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/down-pressed.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/down.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/down.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/file.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/file.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/jquery-3.1.0.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/jquery-3.2.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/minus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/minus.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/navigation.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/navigation.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/plus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/plus.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/pygments.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/pygments.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/searchtools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/sphinxdoc.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/sphinxdoc.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/underscore-1.3.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/underscore-1.3.1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/underscore.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/underscore.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/up-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/up-pressed.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/up.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/up.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/websupport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/genindex.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/objects.inv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/py-modindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/genindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/html/searchindex.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/Makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/SAXS_Drive.tex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/footnotehyper-sphinx.sty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/latexmkjarc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/latexmkrc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/python.ist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinx.sty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxhighlight.sty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxhowto.cls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxmanual.cls" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxmulticell.sty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/objects.inv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/.build/searchindex.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/SAXS_Drive_link.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/conf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/index.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/make.bat" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/make.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/energySteps.py" beforeDir="false" afterPath="$PROJECT_DIR$/energySteps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functionTemplate.txt" beforeDir="false" afterPath="$PROJECT_DIR$/functionTemplate.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img_0001.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img_Mar_CCD_0001.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img_Pilatus_100K_0001.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/license" beforeDir="false" afterPath="$PROJECT_DIR$/license" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/positionerFile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/positionerFile.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readData.py" beforeDir="false" afterPath="$PROJECT_DIR$/readData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scanner.py" beforeDir="false" afterPath="$PROJECT_DIR$/scanner.py" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Merged with SAXS_Drive_Beta">
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -278,7 +42,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
@@ -286,6 +50,15 @@
               <folding>
                 <element signature="e#0#328#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -409,7 +182,6 @@
         <option value="$PROJECT_DIR$/batch_settings.txt" />
         <option value="$PROJECT_DIR$/readData.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
-        <option value="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" />
         <option value="$PROJECT_DIR$/Fit_widget.py" />
         <option value="$PROJECT_DIR$/doc/SAXS_Drive_link.rst" />
         <option value="$PROJECT_DIR$/SAXS_Drive.rst" />
@@ -442,6 +214,7 @@
         <option value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
         <option value="$PROJECT_DIR$/Data_Collector_Server.py" />
         <option value="$PROJECT_DIR$/Fit_Widget.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" />
       </list>
     </option>
   </component>
@@ -839,7 +612,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548461246709</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Merged with SAXS_Drive_Beta">
+      <created>1548485539144</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1548485539144</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView">
@@ -911,7 +691,8 @@
     <MESSAGE value="Updated Fit_Widget, Data_Dialog and its documentation" />
     <MESSAGE value="Updated Fit_Widget, Data_Dialog and their documentation" />
     <MESSAGE value="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py" />
+    <MESSAGE value="Merged with SAXS_Drive_Beta" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merged with SAXS_Drive_Beta" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1095,13 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="30" column="41" selection-start-line="22" selection-start-column="8" selection-end-line="30" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -1233,6 +1007,13 @@
           <folding>
             <element signature="e#0#328#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
         </state>
       </provider>
     </entry>
