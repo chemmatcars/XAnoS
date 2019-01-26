@@ -41,10 +41,10 @@ Follow the following instructions for installation:
 
     b) Easier way with `GIT <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_ already installed, run the following commands in a terminal with your own folder path::
 
-            cd /home/mrinal/Download/
-            git clone https://github.com/nayanbera/SAXS_Drive.git
+        cd /home/mrinal/Download/
+        git clone https://github.com/nayanbera/SAXS_Drive.git
 
-        This will create **SAXS_Drive** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named **SAXS_Drive** and run the following command to upgrade it::
+       This will create **SAXS_Drive** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named **SAXS_Drive** and run the following command to upgrade it::
 
             git pull
 
