@@ -16,13 +16,14 @@ class FirstCumulant: #Please put the class name same as the function name
     def __init__(self,x=0,tfac=1e-6,lam=6370,n=1.33,theta=90,T=295,D=1.0,norm=1.0,bkg=0.0,mpar={}):
         """
         Calculates auto-correlation function for DLS measurements in water as a solvent
-        x         : scalar or array of time intervals in microseconds
-        tfac      : factor to change from time units of from data to seconds
-        lam       : Wavelength of light in Angstroms
-        n         : Refractive index of solvent
-        theta     : Angle of the detector in degrees with respect to the beam direction
-        T         : Temperature of the solvent in kelvin scale
-        D         : Hydrodynamic diameter in Angstroms
+
+        x			: Independent variable in the form of scalar or array of time intervals in microseconds
+        tfac		: factor to change from time units of from data to seconds
+        lam		: Wavelength of light in Angstroms
+        n			: Refractive index of solvent
+        theta	: Angle of the detector in degrees with respect to the beam direction
+        T			: Temperature of the solvent in kelvin scale
+        D			: Hydrodynamic diameter in Angstroms
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -38,7 +39,6 @@ class FirstCumulant: #Please put the class name same as the function name
         self.bkg=bkg
         self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
-        self.output_params={}
 
     def eta(self,T):
         """
@@ -61,6 +61,7 @@ class FirstCumulant: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
+        self.output_params={}
         q=4*np.pi*self.n*np.sin(self.theta*np.pi/180.0/2.0)/self.lam/1e-10
         Dt=1.38065e-23*self.T/(3.0*np.pi*self.eta(self.T)*self.D*1e-10)
         gamma=q**2*Dt

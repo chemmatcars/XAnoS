@@ -235,11 +235,11 @@ class Detector_Widget(QWidget):
             det_name=self.detectors[det_txt]['PV']
             P,R,_=det_name.split(':')
             if 'Pilatus' in det_txt:
-                QProcess.startDetached('medm -x -macro "P=%s:,R=%s:" "/home/epics/SAXS_Drive/adl/pilatusDetector.adl"'%(P,R))
+                QProcess.startDetached('medm -x -macro "P=%s:,R=%s:" "./adl/pilatusDetector.adl"'%(P,R))
             elif 'Mar' in det_txt:
                 print('I m here')
                 QProcess.startDetached(
-                    'medm -x -macro "P=%s:,R=%s:" "/home/epics/SAXS_Drive/adl/marCCD.adl"' % (P, R))
+                    'medm -x -macro "P=%s:,R=%s:" "./adl/marCCD.adl"' % (P, R))
         except:
             QMessageBox.warning(self,'Detector Error','Please select a valid detector first.',QMessageBox.Ok)
             
@@ -446,11 +446,11 @@ class Detector_Widget(QWidget):
             Nx = caget(self.detPV + 'ArraySizeX_RBV')
         self.imgData=data.reshape(Ny,Nx)
         #self.imgData = np.rot90(data.reshape(self.detPV+'MaxSizeY_RBV', self.detPV+'MaxSizeX_RBV'), k=1, axes=(0, 1))
-        self.imgWidget.setImage(self.imgData, transpose=True)
+        self.imgWidget.setImage(self.imgData+0.001*np.random.random(size=self.imgData.shape), transpose=True)
         pg.QtGui.QApplication.processEvents()
         self.monitor_counts = caget(self.scalers['monitor']['PV'])
         self.count_time = caget(self.scalers['15IDD_scaler_count_time']['PV'])
-        self.diode_counts = caget(self.scalers['diode']['PV'])
+        #self.diode_counts = caget(self.scalers['diode']['PV'])
         self.BSdiode_counts = caget(self.scalers['bs_diode']['PV'])
         self.imageFlag=1
 

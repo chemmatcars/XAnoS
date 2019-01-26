@@ -58,8 +58,9 @@ class Fit(QObject):
         self.imin,self.imax=np.where(self.x>=xmin)[0][0],np.where(self.x<=xmax)[0][-1]
         if fit_method=='leastsq':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit',maxfev=maxiter)
-        else:
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit',maxiter=maxiter)
+        elif fit_method=='differential_evolution':
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,
+                                  nan_policy='omit', calc_covar=True, maxiter=maxiter)
         self.result=self.fitter.minimize(method=fit_method)        
         return fit_report(self.result),self.result.message
         

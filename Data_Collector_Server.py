@@ -818,8 +818,8 @@ class Data_Collector_Server(QWidget):
                 self.measurementList[keyf]=[]
                 for value in self.positioner_free[keyf]:                    
                     for i in range(coupled_len):
+                        self.measurementList[keyf].append(value)
                         for keyc in self.positioner_coupled.keys():
-                            self.measurementList[keyf].append(value)
                             self.measurementList[keyc].append(self.positioner_coupled[keyc][i])
                         self.measurementCount+=1
         else:
@@ -1139,19 +1139,39 @@ class Data_Collector_Server(QWidget):
         """
         Collects the transmission data i.e Monitor and Photodiode counts just after the sample
         """
-        self.bringPDIn()
+        #self.bringPDIn()
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
         self.instrumentStatus.setText('<font color="Red">Collecting transmission data! Please wait...</font>')
-        caput(self.scalers['15IDD_scaler_count_time']['PV'],self.expTime)
+        caput(self.scalers['15IDD_scaler_count_time']['PV'], self.expTime)
+        #caput('pd_state',1)
+        #QtTest.QTest.qWait(1000)
+        #self.shutter_ON()
+        #QtTest.QTest.qWait(1000)
+        #caput(self.scalers['15IDD_scaler_start']['PV'],1,wait=False) #Starts counting.
+        #while caget(self.scalers['15IDD_scaler_start']['PV'])!=0:
+        #    pg.QtGui.QApplication.processEvents()
+        #self.shutter_OFF()
+        self.direct_diode_counts=caget(self.scalers['monitor_diode']['PV'])
+        self.direct_monitor_counts = caget(self.scalers['monitor']['PV'])
+
+        caput('pd_state', 2)
+        QtTest.QTest.qWait(1000)
         self.shutter_ON()
-        caput(self.scalers['15IDD_scaler_start']['PV'],1,wait=False) #Starts counting.
-        while caget(self.scalers['15IDD_scaler_start']['PV'])!=0:
+        QtTest.QTest.qWait(1000)
+        caput(self.scalers['15IDD_scaler_start']['PV'], 1, wait=False)  # Starts counting.
+        while caget(self.scalers['15IDD_scaler_start']['PV']) != 0:
             pg.QtGui.QApplication.processEvents()
         self.shutter_OFF()
-        self.trans_diode_counts=caget(self.scalers['diode']['PV'])
-        self.trans_monitor_counts=caget(self.scalers['monitor']['PV'])
-        self.PDTransmissionLabel.setText('%.5f'%(self.trans_diode_counts*1.0/self.trans_monitor_counts))
+        caput('pd_state',0)
+        QtTest.QTest.qWait(1000)
+
+        self.trans_diode_counts = caget(self.scalers['trans_diode']['PV'])
+        self.trans_monitor_counts = caget(self.scalers['monitor']['PV'])
+        self.transmission_value=(
+                self.trans_diode_counts/self.trans_monitor_counts)#/(
+        # self.direct_diode_counts/self.direct_monitor_counts)
+        self.PDTransmissionLabel.setText('%.5f'%self.transmission_value)
         #self.palette.setColor(QPalette.Foreground,Qt.green)
         #self.instrumentStatus.setPalette(self.palette)
         self.instrumentStatus.setText('<font color="Green">Done</font>')
@@ -1239,6 +1259,9 @@ class Data_Collector_Server(QWidget):
             if str(self.dynamicCollectButton.text())!='Abort':
                 self.abort=False
                 self.create_measurementList()
+                for key in self.measurementList.keys():
+                    print(key, len(self.measurementList[key]))
+                    print(self.measurementList[key])
                 ans=QMessageBox.question(self,'Measurement Information','Total number of measurements to be done: %d\n Do you want to continue?'%self.measurementCount,QMessageBox.Yes,QMessageBox.No)
                 if ans==QMessageBox.Yes:
                     limitsOK=self.check_motorLimits()
@@ -1248,7 +1271,9 @@ class Data_Collector_Server(QWidget):
                         self.measurementProgressDialog.setMaximum(self.measurementCount*self.NLoops*self.frameCount)
                         self.measurementProgressDialog.setValue(0)
                         firstPosition={}
+                        # Recording the intial starting positions of all the motors involved in the Dynamic scan
                         for motorname in self.measurementList.keys():
+
                             if motorname=='Energy':
                                 self.energyWidget.track_undulator()
                                 firstPosition[motorname]=caget(self.motors[motorname]['PV']+'RdbkAO')
@@ -1256,10 +1281,10 @@ class Data_Collector_Server(QWidget):
                                 firstPosition[motorname]=caget(self.motors['Undulator_Energy']['PV'])
                             else:
                                 firstPosition[motorname]=caget(self.motors[motorname]['PV']+'.RBV')
+
                         for loop in range(self.NLoops):
                             if self.abort:
                                 break
-                            #Recording the intial starting positions of all the motors involved in the Dynamic scan
                             for i in range(self.measurementCount):
                                 if self.abort:
                                     break
@@ -1301,9 +1326,9 @@ class Data_Collector_Server(QWidget):
                                     self.measurementProgressDialog.setValue(loop*self.measurementCount*self.frameCount+self.frameCount*i+j+1)
                                 #caput('15PIL3:cam1:FileNumber', 1)
                                 #caput('15PIL3:cam1:AutoIncrement', 0)
-                                
+
                         #Moving back the motors to the staring position
-                        
+
                         for motorname in self.measurementList.keys():
                             if motorname=='Energy':
                                 caput(self.motors[motorname]['PV']+'AO.VAL',firstPosition[motorname],wait=False)
@@ -1415,7 +1440,7 @@ class Data_Collector_Server(QWidget):
             1) Setting up the count_time for all the detectors and scalars
             2) Collecting transmission if collectTransmissionCheckBox is checked
         """
-        #camonitor(self.scalers['15IDC_scaler_start']['PV'], callback=self.changeCountingState_15IDC)
+        camonitor(self.scalers['15IDC_scaler_start']['PV'], callback=self.changeCountingState_15IDC)
         camonitor(self.scalers['15IDD_scaler_start']['PV'], callback=self.changeCountingState_15IDD)
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
@@ -1425,22 +1450,25 @@ class Data_Collector_Server(QWidget):
             shutterTime=0.0
             QMessageBox.warning(self,'Value error','Please check the shutter time. It should be a floating point number.',QMessageBox.Ok)
         self.instrumentStatus.setText('<font color="Red">Counting. Please wait...</font>')
-        #caput(self.scalers['15IDC_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
+        caput(self.scalers['15IDC_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
         caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True) #Setting the counter to one-shot mode
-        #caput(self.scalers['15IDC_scaler_count_time']['PV'], self.expTime + 2.0 * shutterTime, wait=True)
-        caput(self.scalers['15IDD_scaler_count_time']['PV'], self.expTime + 2.0 * shutterTime, wait=True)
+        caput(self.scalers['15IDC_scaler_count_time']['PV'], self.expTime, wait=True)
+        caput(self.scalers['15IDD_scaler_count_time']['PV'], self.expTime, wait=True)
         for detname in self.usedDetectors:
-            caput(self.detectors[detname]['PV']+'AcquireTime', self.expTime+2.0*shutterTime, wait=True)
-            caput(self.detectors[detname]['PV'] +'AcquirePeriod', self.expTime + 2.0 * shutterTime+0.1, wait=True)
+            caput(self.detectors[detname]['PV']+'AcquireTime', self.expTime, wait=True)
+            caput(self.detectors[detname]['PV'] +'AcquirePeriod', self.expTime + 0.1, wait=True)
             self.detectorWidgets[detname].imageFlag=0
         if self.collectTransmissionCheckBox.isChecked() and not self.darkImage:
-            self.bringPDIn()
+            #self.bringPDIn()
             self.collect_transmission()
-            self.bringBeamIn()
+            #self.bringBeamIn()
         else:
-            self.bringBeamIn()
-            self.trans_diode_counts=0.0
+            #self.bringBeamIn()
+            self.direct_diode_counts=1.0
+            self.direct_monitor_counts=1.0
+            self.trans_diode_counts=1.0
             self.trans_monitor_counts=1.0
+            self.transmission_value=1.0
 
             
     def shutter_ON(self):
@@ -1448,6 +1476,8 @@ class Data_Collector_Server(QWidget):
         Put the shutter ON
         """
         caput(self.motors['shutter']['PV'],0)
+        shutterTime = float(self.shutterTimeLineEdit.text())
+        QtTest.QTest.qWait(shutterTime * 1000)  # waiting for 0.3 seconds to open the shutter
         
     def shutter_OFF(self):
         """
@@ -1463,8 +1493,6 @@ class Data_Collector_Server(QWidget):
         if self.autoShutterCheckBox.checkState()>0:
             if not self.darkImage:
                 self.shutter_ON()
-                shutterTime=float(self.shutterTimeLineEdit.text())
-                QtTest.QTest.qWait(shutterTime*1000) #waiting for 0.3 seconds to open the shutter
             else:
                 self.shutter_OFF()
         for detname in self.usedDetectors:
@@ -1481,7 +1509,7 @@ class Data_Collector_Server(QWidget):
         for detname in self.usedDetectors:
             caput(self.detectors[detname]['PV'] + 'Acquire', 1)
         self.counting=True
-        #caput(self.scalers['15IDC_scaler_start']['PV'], 1, wait=False)
+        caput(self.scalers['15IDC_scaler_start']['PV'], 1, wait=False)
         caput(self.scalers['15IDD_scaler_start']['PV'], 1, wait=False)
         QtTest.QTest.qWait(10)
         while self.counting:
@@ -1541,7 +1569,7 @@ class Data_Collector_Server(QWidget):
             2) Reads the images and put all the necessary information together to generate an EDF file to store in correct locations
             3) Advance the image counter by 1
         """
-        #camonitor_clear(self.scalers['15IDC_scaler_start']['PV'])
+        camonitor_clear(self.scalers['15IDC_scaler_start']['PV'])
         camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
@@ -1573,20 +1601,27 @@ class Data_Collector_Server(QWidget):
             file.data=self.detectorWidgets[detname].imgData
             #file.header=img.header
             #file.data=random.random((100,100))
-            self.monB_counts=caget(self.scalers['monitorB']['PV'])
-            self.monitor_counts=caget(self.scalers['monitor']['PV'])
-            self.count_time=caget(self.scalers['15IDD_scaler_count_time']['PV'])
-            self.diode_counts=caget(self.scalers['diode']['PV'])
-            self.BSdiode_counts=caget(self.scalers['bs_diode']['PV'])
-            file.header['Time']=time.asctime()
-            file.header['MonB']=self.monB_counts
-            file.header['Monitor']=self.monitor_counts#1000#caget(self.scalers['Monitor']['PV'])
-            file.header['count_time']=self.count_time#1.0#caget(self.scalers['count_time']['PV'])
-            file.header['Diode']=self.diode_counts#300#caget(self.scalers['Diode']['PV'])
-            file.header['BSDiode']=self.BSdiode_counts#300#caget(self.scalers['BSDiode']['PV'])
-            file.header['transDiode']=self.trans_diode_counts
-            file.header['transMonitor']=self.trans_monitor_counts
-            file.header['xcradle']=0.0
+            self.monB_counts = caget(self.scalers['monitorB']['PV'])
+            self.monitor_counts = caget(self.scalers['monitor']['PV'])
+            self.count_time = caget(self.scalers['15IDD_scaler_count_time']['PV'])
+            self.BSdiode_counts = caget(self.scalers['bs_diode']['PV'])
+            if self.darkImage:
+                self.direct_diode_counts = caget(self.scalers['monitor_diode']['PV'])
+                self.direct_monitor_counts = caget(self.scalers['monitor']['PV'])
+                self.trans_diode_counts = caget(self.scalers['trans_diode']['PV'])
+                self.trans_monitor_counts = caget(self.scalers['monitor']['PV'])
+                self.transmission_value=1.0
+            file.header['Time'] = time.time()
+            file.header['MonB'] = self.monB_counts
+            file.header['Monitor'] = self.monitor_counts#1000#caget(self.scalers['Monitor']['PV'])
+            file.header['count_time'] = self.count_time#1.0#caget(self.scalers['count_time']['PV'])
+            file.header['BSDiode'] = self.BSdiode_counts#300#caget(self.scalers['BSDiode']['PV'])
+            file.header['directDiode'] = self.direct_diode_counts
+            file.header['directMonitor'] = self.direct_monitor_counts
+            file.header['transDiode'] = self.trans_diode_counts
+            file.header['transMonitor'] = self.trans_monitor_counts
+            file.header['Transmission'] = self.transmission_value
+            file.header['xcradle'] = 0.0
             for key in self.motors.keys():
                 if key != 'Energy' and key != 'Undulator_ID15Energy' and key != 'Undulator_Energy':
                     file.header[key]=caget(self.motors[key]['PV']+'.RBV')
@@ -1620,7 +1655,6 @@ class Data_Collector_Server(QWidget):
             #self.palette.setColor(QPalette.Foreground,Qt.red)
             #self.instrumentStatus.setPalette(self.palette)
             self.instrumentStatus.setText('<font color="Green">Done</font>')
-            
             
             
         

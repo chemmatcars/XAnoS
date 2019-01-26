@@ -15,7 +15,7 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 class MultiPeaks: #Please put the class name same as the function name
     def __init__(self,x=0,power=1,N=0.0,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cN=0.0,cexp=0.0,lexp=1.0,mpar={'type':[0],'pos':[0.5],'wid':[0.1],'norm':[1.0]}):
         """
-        Documentation
+        Provides multipeak function with different background function
         x          : independent variable in ter form of a scalar or an array
         power      : 1 for c0+c1*x+c2x**2+c3*x**3+cN*x**N, -1 for c0+c1/x+c2/x**2+c3/x**3+cN/x**N
         N          : exponent of arbitrary degree polynomial i.e x**N or 1/x**N
@@ -61,7 +61,7 @@ class MultiPeaks: #Please put the class name same as the function name
         self.params.add('lexp',value=self.lexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         for key in self.__mpar__.keys():
             for i in range(len(self.__mpar__[key])):
-                self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
 
     def gau(self,x,pos,wid,norm):
         """
@@ -89,7 +89,7 @@ class MultiPeaks: #Please put the class name same as the function name
         self.output_params={}
         res=np.zeros_like(self.x)
         for i in range(len(self.__mpar__['type'])):
-            peak=self.params['__type__%03d'%i].value
+            peak=self.__mpar__['type'][i]
             pos=self.params['__pos__%03d'%i].value
             wid=self.params['__wid__%03d'%i].value
             norm=self.params['__norm__%03d'%i].value

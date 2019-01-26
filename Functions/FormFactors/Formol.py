@@ -16,24 +16,26 @@ from itertools import combinations
 import os
 
 class Formol: #Please put the class name same as the function name
-    def __init__(self,x=0,E=12.0,fname1='C:/Users/Mrinal Bera/Documents/MA-Collab/XTal_data/K8P8W48.xyz',eta1=1.0,fname2='C:/Users/Mrinal Bera/Documents/MA-Collab/XTal_data/P8W48.xyz',eta2=0.0,rmin=0.0,rmax=10.0,Nr=100, qoff=0.0,sol=18.0,sig=0.0,norm=1,bkg=0.0,mpar={}):
+    re=2.818e-5 #Classical electron radius in Angstroms
+    No=6.023e23 #Avagadro's number
+    def __init__(self,x=0,E=12.0,fname1='W:/Tianbo_Collab/Mo132.xyz',eta1=1.0,fname2='/media/sf_Mrinal_Bera/Documents/MA-Collab/XTal_data/P2W12.xyz',eta2=0.0,rmin=0.0,rmax=10.0,Nr=100, qoff=0.0,sol=18.0,sig=0.0,norm=1,bkg=0.0,mpar={}):
         """
-        Calculates the form factor for two different kinds of  molecules for which the XYZ coordinates of the all the atoms composing the molecules are known
+        Calculates the form factor for two different kinds of  molecules in cm^-1 for which the XYZ coordinates of the all the atoms composing the molecules are known
 
         =======   =======================================================================
         x         scalar or array of reciprocal wave vectors
         E         Energy of the X-rays at which the scattering pattern is measured
         fname1    Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the molecule of type 1
-        eta 1     Fraction of molecule type 1
+        eta1      Fraction of molecule type 1
         fname2    Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the moleucule of type 2
-        eta 2     Fraction of molecule type 2
+        eta2     Fraction of molecule type 2
         rmin      Minimum radial distance for calculating electron density
         rmax      Maximum radial distance for calculating electron density
         Nr        Number of points at which electron density will be calculated
         qoff      Q-offset may be required due to uncertainity in Q-calibration
         sol       No of electrons in solvent molecule (Ex: H2O has 18 electrons)
         sig       Debye-waller factor
-        norm      Normalization constant
+        norm      Normalization constant which can be the molar concentration of the particles
         bkg       Background
         =======   ========================================================================
         """
@@ -111,11 +113,11 @@ class Formol: #Please put the class name same as the function name
             atoms[i]['pos']=atoms[i]['pos']-cen
             atoms[i]['distance']=np.sqrt(np.sum(atoms[i]['pos']**2))
         return atoms
-
-    def calc_xtal_rho(self, fname,rmin=0,rmax=10,Nr=101,energy=None):
+    
+    def calc_xtal_rho(self, fname,rmin=0,rmax=10,Nr=81,energy=None):
         """
-        Calculates radially averaged complex electron density of a molecule from the co-ordinates obtained from X-ray crystallography.
-
+        Calculates radially averaged complex electron density in el/Angs^3 of a molecule from the co-ordinates obtained from X-ray crystallography.
+        
         fname   :: .xyz file having all the X, Y, Z coordinates of atoms of the molecule in Angstroms
         rmin    :: Minimum radial distance in Angstroms (If rmin=0 then calculaiton will be done with rmin=1e-3 to avoid r=0 in the density calculation)
         rmax    :: Maximum radial distance in Angstroms
@@ -138,12 +140,12 @@ class Formol: #Please put the class name same as the function name
                 f2=self.__xdb__.f2_chantler(element=ele,energy=energy*1e3,smoothing=0)
                 rho=rho+Nrho*(self.__xdb__.f0(ele,0.0)+f1+1.0j*f2)
     #print(r[:-1]+(),rho)
-        return r,rho/4/np.pi/r**2/dr
-
+        return r,rho/4/np.pi/r**2/dr+self.sol*np.where(rho<1e-6,1.0,0.0)
+    
     def calc_form(self,q,r,rho):
         """
-        Calculates the isotropic form factor using the isotropic electron density as a funciton of radial distance
-
+        Calculates the isotropic form factor in cm^-1 using the isotropic electron density as a funciton of radial distance
+        
         q       :: scaler or array of reciprocal reciprocal wave vector in inv. Angstroms at which the form factor needs to be calculated in
         r       :: array of radial distances at which he electron density in known in Angstroms
         rho     :: array of electron densities as a funciton of radial distance in el/Angstroms^3. Note: The electron density should decay to zero at the last radial distance
@@ -152,7 +154,7 @@ class Formol: #Please put the class name same as the function name
         form=np.zeros_like(q)
         for r1, rho1 in zip(r,rho):
             form=form+4*np.pi*r1*rho1*np.sin(q*r1)/q
-        form=np.absolute(form)**2*dr**2
+        form=self.No*self.re**2*np.absolute(form)**2*dr**2*1e-16/1e3 # in cm^-1/moles
         return form
 
     def y(self):
@@ -160,7 +162,6 @@ class Formol: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         self.output_params={}
-
         #if self.__fnames__!=[None,None]:
         #Contribution from first molecule
         if self.fname1 is not None:
@@ -171,7 +172,7 @@ class Formol: #Please put the class name same as the function name
         #Contribution from second molecule
         if self.fname2 is not None:
             if self.__fnames__[1]!=self.fname2 or self.__E__!=self.E or len(self.__x__)!=len(self.x) or self.__x__[-1]!=self.x[-1] or self.__qoff__!=self.qoff or self.__Nr__!=self.Nr or self.__rmin__!=self.rmin or self.__rmax__!=self.rmax:
-                self.__r2__,self.__rho2__=self.calc_xtal_rho(self.fname2,rmin=self.rmin,rmax=self.rmax,Nr=self.Nr,energy=self.E)
+                self._r2__,self.__rho2__=self.calc_xtal_rho(self.fname2,rmin=self.rmin,rmax=self.rmax,Nr=self.Nr,energy=self.E)
             form2=self.calc_form(self.x,self.__r2__,self.__rho2__)
             self.output_params['rho_2']={'x':self.__r2__,'y':np.real(self.__rho2__)}
 

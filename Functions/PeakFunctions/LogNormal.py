@@ -21,7 +21,6 @@ class LogNormal:
         self.bkg=bkg
         self.__mpar__=mpar
         self.choices=None
-        self.output_params={}
         self.init_params()
 
     def init_params(self):
@@ -39,6 +38,7 @@ class LogNormal:
 
 
     def y(self):
+        self.output_params={}
         self.update_params()
         return self.norm*np.exp(-(np.log(self.x)-np.log(self.pos))**2/2.0/self.wid**2)/self.x/self.wid/2.5066+self.bkg
 

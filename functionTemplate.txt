@@ -16,7 +16,7 @@ class <*>: #Please put the class name same as the function name
     def __init__(self,x=0,mpar={}):
         """
         Documentation
-        x           : independent variable in ter form of a scalar or an array 
+        x           : Independent variable in the form of a scalar or an array
         """
         if type(x)==list:
             self.x=np.array(x)

@@ -217,18 +217,18 @@ class Data_Reduction_Client(QWidget):
             self.clientStatusLabel.setText('<font color="red">Connected</font>')
             
     def stopClient(self):
-#        try:
-        self.clientRunning=False
-        self.clientFree=False
-        self.zeromq_listener.messageReceived.disconnect()
-        self.zeromq_listener.running=False
-        self.listenerThread.quit()
-        self.listenerThread.wait()        
-        self.listenerThread.deleteLater()
-        self.zeromq_listener.deleteLater()
-        self.clientStatusLabel.setText('<font color="green">Idle</font>')
-#        except:
-#            QMessageBox.warning(self,'Client Error', 'Please start the client first before closing.',QMessageBox.Ok)
+        try:
+            self.clientRunning=False
+            self.clientFree=False
+            self.zeromq_listener.messageReceived.disconnect()
+            self.zeromq_listener.running=False
+            self.listenerThread.quit()
+            self.listenerThread.wait()
+            self.listenerThread.deleteLater()
+            self.zeromq_listener.deleteLater()
+            self.clientStatusLabel.setText('<font color="green">Idle</font>')
+        except:
+            QMessageBox.warning(self,'Client Error', 'Please start the client first before closing.',QMessageBox.Ok)
         
         
     def serverAddressChanged(self):
@@ -560,11 +560,15 @@ class Data_Reduction_Client(QWidget):
                     try:
                         self.header['BSDiode_corr']=float(imageData.header['BSDiode'])
                         self.header['Monitor_corr']=float(imageData.header['Monitor'])
+                        self.header['Transmission'] = float(imageData.header['Transmission'])
                     except:
                         self.normComboBox.setCurrentText('None')
                     print("No dark correction done")
                 if str(self.normComboBox.currentText())=='BSDiode':
-                    norm_factor=self.header['BSDiode_corr']#/float(self.header['count_time'])
+                    norm_factor=self.header['BSDiode_corr']#/self.header['Monitor_corr']#float(self.header[
+                    # 'count_time'])
+                elif str(self.normComboBox.currentText())=='TransDiode':
+                    norm_factor=self.header['Transmission']*self.header['Monitor_corr']
                 elif str(self.normComboBox.currentText())=='Monitor':
                     norm_factor=self.header['Monitor_corr']
                 elif str(self.normComboBox.currentText())=='Image Sum':
@@ -615,22 +619,22 @@ class Data_Reduction_Client(QWidget):
         """
         Reduce multiple files
         """
-        #try:
-        i=0
-        self.progressBar.setRange(0,len(self.dataFiles))
-        self.progressBar.setValue(i)
-        self.statusLabel.setText('<font color="red">Busy</font>')
-        for file in self.dataFiles:
-            self.dataFile=file
-            QApplication.processEvents()
-            self.reduceData()
-            i=i+1
+        try:
+            i=0
+            self.progressBar.setRange(0,len(self.dataFiles))
             self.progressBar.setValue(i)
-            QApplication.processEvents()
-        self.statusLabel.setText('<font color="green">Idle</font>')
-        self.progressBar.setValue(0)
-        #except:
-        #    QMessageBox.warning(self,'File error','No data files to reduce',QMessageBox.Ok)
+            self.statusLabel.setText('<font color="red">Busy</font>')
+            for file in self.dataFiles:
+                self.dataFile=file
+                QApplication.processEvents()
+                self.reduceData()
+                i=i+1
+                self.progressBar.setValue(i)
+                QApplication.processEvents()
+            self.statusLabel.setText('<font color="green">Idle</font>')
+            self.progressBar.setValue(0)
+        except:
+            QMessageBox.warning(self,'File error','No data files to reduce',QMessageBox.Ok)
         
     def saveData(self):
         """

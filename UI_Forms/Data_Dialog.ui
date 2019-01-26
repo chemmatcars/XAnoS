@@ -170,7 +170,7 @@
                <item>
                 <widget class="QPushButton" name="removeColumnPushButton">
                  <property name="text">
-                  <string>Remove Column</string>
+                  <string>Remove Columns</string>
                  </property>
                 </widget>
                </item>

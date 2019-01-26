@@ -1,1 +1,1 @@
-{"poniFile": "C:/Users/Mrinal Bera/Desktop/India_collab/AgBh/SAXS/AgBh_SAXS_0000.poni", "maskFile": "C:/Users/Mrinal Bera/Desktop/India_collab/mask.msk"}
+{"poniFile": "V:/2018-11/Tianbo/AgBH_short_tube_11252018.poni", "maskFile": "V:/2018-11/Tianbo/mask_short_tube_11252018.msk"}

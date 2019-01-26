@@ -1,1 +1,1 @@
-__all__=['PowerLaw']
+__all__=['Gaussian', 'PowerLaw']

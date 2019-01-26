@@ -1,0 +1,1240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.ipynb_checkpoints/ASAXS_Batch_Processor-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fortran_routines/xr_ref.cpython-37m-darwin.so" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/.doctrees/ASAXS_Widget.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/.doctrees/Acknowledgements.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/.doctrees/Fit_Widget.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/.doctrees/Introduction.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/.doctrees/License.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/.doctrees/environment.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/.doctrees/index.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/ASAXS_Widget.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/Acknowledgements.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/Fit_Widget.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/Introduction.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/License.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/ASAXS_Widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Column_Dialog_with_columns.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Column_Dialog_with_i.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog_Plot_Setup.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog_Plot_tab.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Data_Dialog_w_Data_File.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Fit_Progress.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Fit_Results.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Fit_Widget_in_Action.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_images/Function_Editor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_sources/ASAXS_Widget.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_sources/Acknowledgements.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_sources/Fit_Widget.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_sources/Introduction.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_sources/License.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_static/Fit_Widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_static/documentation_options.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/_static/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/objects.inv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/searchindex.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/ASAXS_Widget.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/Acknowledgements.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/Fit_widget.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/Introduction.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/License.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/environment.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/doctrees/index.doctree" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/ASAXS_Widget.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/Fit_widget.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/Introduction.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/License.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/ASAXS_Widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Column_Dialog_with_columns.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Column_Dialog_with_i.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog_Plot_Setup.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog_Plot_tab.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Data_Dialog_w_Data_File.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_Progress.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_Results.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_Widget_in_Action.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Fit_widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_images/Function_Editor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/ASAXS_Widget.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/Acknowledgements.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/Fit_widget.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/Introduction.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/License.rst.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/Fit_Widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/contents.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/documentation_options.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/navigation.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/sphinxdoc.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/genindex.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/objects.inv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.build/html/searchindex.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/.static/Fit_Widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/ASAXS_Widget.rst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Acknowledgements.rst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Data/data_file.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/ASAXS_Widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Column_Dialog_with_columns.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Column_Dialog_with_i.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog_Plot_Setup.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog_Plot_tab.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Data_Dialog_w_Data_File.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Progress.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Results.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Widget.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Fit_Widget_in_Action.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Figures/Function_Editor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/License.rst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc_source/data_file.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SAXS_Drive.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SAXS_Drive.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASAXS_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Collector_Server.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Collector_Server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Dialog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Reduction_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Reduction_Client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Detector_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Detector_Widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fit_Routines.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Routines.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fit_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/Backgrounds/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/Backgrounds/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/XRR/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/INSTALL.txt" beforeDir="false" afterPath="$PROJECT_DIR$/INSTALL.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PlotWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README" beforeDir="false" afterPath="$PROJECT_DIR$/README" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SAXS_Drive.rst" beforeDir="false" afterPath="$PROJECT_DIR$/SAXS_Drive.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SetupData/detector_params.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SetupData/detector_params.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SetupData/reducer_setup.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SetupData/reducer_setup.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SetupData/scaler_params.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SetupData/scaler_params.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI_Forms/Data_Dialog.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/Data_Dialog.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI_Forms/Data_Reduction_Client.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/Data_Reduction_Client.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.buildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.doctrees/environment.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.doctrees/index.doctree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/.nojekyll" beforeDir="false" afterPath="$PROJECT_DIR$/doc/.nojekyll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_sources/index.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/ajax-loader.gif" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/ajax-loader.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/alabaster.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/basic.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment-bright.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/comment-bright.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment-close.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/comment-close.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/comment.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/comment.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/custom.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/doctools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/down-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/down-pressed.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/down.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/down.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/file.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/file.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/jquery-3.1.0.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/jquery-3.2.1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/minus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/minus.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/plus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/plus.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/pygments.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/pygments.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/searchtools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/underscore-1.3.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/underscore-1.3.1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/underscore.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/underscore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/up-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/up-pressed.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/up.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/up.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/websupport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/Fit_widget.doctree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/SAXS_Drive_link.doctree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/environment.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/doctrees/index.doctree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/genindex.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/.buildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/.nojekyll" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/.nojekyll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/Fit_widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/Acknowledgements.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/SAXS_Drive_link.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/Fit_widget.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_modules/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/Fit_widget.rst.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/SAXS_Drive_link.rst.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_sources/index.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/ajax-loader.gif" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/ajax-loader.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/alabaster.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/basic.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/comment-bright.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/comment-bright.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/comment-close.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/comment-close.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/comment.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/comment.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/contents.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/contents.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/custom.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/doctools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/down-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/down-pressed.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/down.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/down.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/file.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/file.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/jquery-3.1.0.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/jquery-3.2.1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/minus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/minus.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/navigation.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/navigation.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/plus.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/plus.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/pygments.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/pygments.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/searchtools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/sphinxdoc.css" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/sphinxdoc.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/underscore-1.3.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/underscore-1.3.1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/underscore.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/underscore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/up-pressed.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/up-pressed.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/up.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/_static/up.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/doc/_static/websupport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/genindex.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/objects.inv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/py-modindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/genindex.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/html/searchindex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/SAXS_Drive.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/footnotehyper-sphinx.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/latexmkjarc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/latexmkrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/python.ist" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinx.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxhighlight.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxhowto.cls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxmanual.cls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/latex/sphinxmulticell.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/objects.inv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/.build/html/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/.build/searchindex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/SAXS_Drive_link.rst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/index.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/make.bat" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/make.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/energySteps.py" beforeDir="false" afterPath="$PROJECT_DIR$/energySteps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functionTemplate.txt" beforeDir="false" afterPath="$PROJECT_DIR$/functionTemplate.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img_0001.tif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img_Mar_CCD_0001.tif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img_Pilatus_100K_0001.tif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/license" beforeDir="false" afterPath="$PROJECT_DIR$/license" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/positionerFile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/positionerFile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readData.py" beforeDir="false" afterPath="$PROJECT_DIR$/readData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scanner.py" beforeDir="false" afterPath="$PROJECT_DIR$/scanner.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Cylinder.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1394">
+              <caret line="85" column="33" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="1607" column="30" lean-forward="true" selection-start-line="1607" selection-start-column="30" selection-end-line="1607" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#220#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="33" column="71" selection-start-line="17" selection-start-column="8" selection-end-line="33" selection-end-column="71" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="1274" column="8" lean-forward="true" selection-start-line="1274" selection-start-column="8" selection-end-line="1274" selection-end-column="8" />
+              <folding>
+                <element signature="e#0#328#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1037">
+              <caret line="64" selection-start-line="62" selection-end-line="64" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="8" column="16" selection-start-line="7" selection-start-column="8" selection-end-line="12" selection-end-column="37" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="11" column="10" selection-start-line="11" selection-start-column="8" selection-end-line="20" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Formol.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="578">
+              <caret line="37" column="11" selection-start-line="37" selection-start-column="11" selection-end-line="37" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>self.data['data']</find>
+      <find>self.dataTableWidget</find>
+      <find>sort</find>
+      <find>external</find>
+      <find>readData</find>
+      <find>openDataDialog</find>
+      <find>functionCalled</find>
+      <find>conf_interv_status</find>
+      <find>self.fit.callback</find>
+      <find>self.fit=</find>
+      <find>self.callback</find>
+      <find>self.sfnames</find>
+      <find>Data_dialog</find>
+      <find>acceptWidget</find>
+      <find>remove</find>
+      <find>removeRow</find>
+      <find>Data_Dia</find>
+      <find>removePlot</find>
+      <find>self.parentWidget</find>
+      <find>As the</find>
+      <find>self.legendItem</find>
+      <find>update_plot</find>
+      <find>xchanged</find>
+      <find>xchanged(self</find>
+      <find>auto</find>
+      <find>html</find>
+      <find>choices</find>
+      <find>self.fixedParamTableWidget</find>
+      <find>self.genParamListWidget.clear</find>
+      <find>self.fit.params['output_params']</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>15IDD_scaler_start</replace>
+      <replace>15IDD_scaler_count_time</replace>
+      <replace>15IDD_scaler_mode</replace>
+      <replace>self.u</replace>
+      <replace>self.undulatorChanging</replace>
+      <replace>bs_diode</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/MCA_Widget.py" />
+        <option value="$PROJECT_DIR$/yap_window_scan.py" />
+        <option value="$PROJECT_DIR$/pyepics_Qt.py" />
+        <option value="$PROJECT_DIR$/positionerFile.txt" />
+        <option value="$PROJECT_DIR$/Energy_Widget.py" />
+        <option value="$PROJECT_DIR$/energySteps.py" />
+        <option value="$PROJECT_DIR$/Image_Widget.py" />
+        <option value="$PROJECT_DIR$/fileWatcher.py" />
+        <option value="$PROJECT_DIR$/SetupData/detector_params.txt" />
+        <option value="$PROJECT_DIR$/Detector_Widget.py" />
+        <option value="$PROJECT_DIR$/SetupData/scaler_params.txt" />
+        <option value="$PROJECT_DIR$/scanner.py" />
+        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor.py" />
+        <option value="$PROJECT_DIR$/INSTALL.txt" />
+        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor.ipynb" />
+        <option value="$PROJECT_DIR$/batch_settings.txt" />
+        <option value="$PROJECT_DIR$/readData.py" />
+        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" />
+        <option value="$PROJECT_DIR$/Fit_widget.py" />
+        <option value="$PROJECT_DIR$/doc/SAXS_Drive_link.rst" />
+        <option value="$PROJECT_DIR$/SAXS_Drive.rst" />
+        <option value="$PROJECT_DIR$/Fit_Routines.py" />
+        <option value="$PROJECT_DIR$/doc/data_file.txt" />
+        <option value="$PROJECT_DIR$/doc/Acknowledgements.rst" />
+        <option value="$PROJECT_DIR$/license" />
+        <option value="$PROJECT_DIR$/doc/License.rst" />
+        <option value="$PROJECT_DIR$/PlotWidget.py" />
+        <option value="$PROJECT_DIR$/Data_Dialog.py" />
+        <option value="$PROJECT_DIR$/doc/Introduction.rst" />
+        <option value="$PROJECT_DIR$/doc/index.rst" />
+        <option value="$PROJECT_DIR$/doc/ASAXS_Widget.rst" />
+        <option value="$PROJECT_DIR$/ASAXS_widget.py" />
+        <option value="$PROJECT_DIR$/doc/conf.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" />
+        <option value="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" />
+        <option value="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" />
+        <option value="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" />
+        <option value="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" />
+        <option value="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/Formol.py" />
+        <option value="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" />
+        <option value="$PROJECT_DIR$/doc/Fit_Widget.rst" />
+        <option value="$PROJECT_DIR$/doc/GIT_Token.txt" />
+        <option value="$PROJECT_DIR$/functionTemplate.txt" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
+        <option value="$PROJECT_DIR$/Data_Collector_Server.py" />
+        <option value="$PROJECT_DIR$/Fit_Widget.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-15" />
+    <option name="y" value="-15" />
+    <option name="width" value="3875" />
+    <option name="height" value="2195" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="doc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="Backgrounds" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="DLS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="FormFactors" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="GISAXS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="PeakFunctions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="XRR" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Mrinal Bera\PycharmProjects" />
+      <recent name="C:\Users\Mrinal Bera\PycharmProjects\SAXS_Drive\doc" />
+      <recent name="C:\Users\Mrinal Bera\PycharmProjects\SAXS_Drive\doc\Data" />
+      <recent name="C:\Users\Mrinal Bera\PycharmProjects\SAXS_Drive" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.Fit_Widget">
+    <configuration name="ASAXS_widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SAXS_Drive" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ASAXS_widget.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Data_Dialog" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SAXS_Drive" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data_Dialog.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Data_Reduction_Client" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SAXS_Drive" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data_Reduction_Client.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Fit_Widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SAXS_Drive" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fit_Widget.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Fit_widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SAXS_Drive" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fit_widget.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.ASAXS_widget" />
+      <item itemvalue="Python.Data_Dialog" />
+      <item itemvalue="Python.Data_Reduction_Client" />
+      <item itemvalue="Python.Fit_Widget" />
+      <item itemvalue="Python.Fit_widget" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Fit_Widget" />
+        <item itemvalue="Python.Fit_widget" />
+        <item itemvalue="Python.Data_Reduction_Client" />
+        <item itemvalue="Python.Data_Dialog" />
+        <item itemvalue="Python.ASAXS_widget" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="" />
+      <created>1530041973623</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1530041973623</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Added Energy_Widget.py">
+      <created>1530101219869</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1530101219869</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Updated INSTALL.txt">
+      <created>1530101543711</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1530101543711</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated all the modules and functions during the July 2018 beamtime">
+      <created>1531320939762</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1531320939762</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Updated all the modules and functions during the July 2018 beamtime">
+      <created>1535385664302</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1535385664302</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files">
+      <created>1538685842938</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1538685842938</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Merge branch 'SAXS_Drive_Beta' of https://github.com/nayanbera/SAXS_Drive into SAXS_Drive_Beta&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
+      <created>1543732483918</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1543732483918</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Updated Fit_widget and loaded a new ASAXS_Batch_Processor_2.py">
+      <created>1543953990897</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1543953990897</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix some bugs in Data_Dailog and Fit_widget">
+      <created>1543957163011</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1543957163011</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Fix from factor functions in Fit_widget.py">
+      <created>1544632284538</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1544632284538</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Fix from factor functions in Fit_widget.py">
+      <created>1544632454931</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1544632454931</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fix the bug of importing two column data">
+      <created>1547320272790</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1547320272790</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Fix from factor functions in Fit_widget.py">
+      <created>1547325348776</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1547325348776</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Updated the documentation">
+      <created>1547331826825</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1547331826825</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Updated the documentation">
+      <created>1547331994454</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1547331994454</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Updated Data_Dialog.py and the documentation">
+      <created>1547357037503</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1547357037503</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Updated Fit_Widget">
+      <created>1547385827500</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1547385827500</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Updated Fit_Widget">
+      <created>1547385858537</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1547385858537</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Updated Fit_Widget">
+      <created>1547434985697</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1547434985697</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Updated Fit_Widget, Data_Dialog and its documentation">
+      <created>1547911555505</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1547911555505</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Updated Fit_Widget, Data_Dialog and its documentation">
+      <created>1547911653008</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1547911653008</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Updated Fit_Widget, Data_Dialog and its documentation">
+      <created>1547911802052</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1547911802052</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Updated Fit_Widget, Data_Dialog and their documentation">
+      <created>1548340794777</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1548340794777</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py">
+      <created>1548461246709</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1548461246709</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.167107" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" visible="true" weight="0.19660537" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5063291" side_tool="true" weight="0.35085714" />
+      <window_info anchor="bottom" id="Python Console" order="8" weight="0.3064972" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32909605" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12114286" />
+      <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1961691" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.19887166" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5063291" side_tool="true" weight="0.35085714" />
+      <window_info anchor="bottom" id="Python Console" order="8" weight="0.3064972" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32909605" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12114286" />
+      <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added Energy_Widget.py" />
+    <MESSAGE value="Updated INSTALL.txt" />
+    <MESSAGE value="Updated all the modules and functions during the July 2018 beamtime" />
+    <MESSAGE value="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files" />
+    <MESSAGE value="Merge branch 'SAXS_Drive_Beta' of https://github.com/nayanbera/SAXS_Drive into SAXS_Drive_Beta&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <MESSAGE value="Updated Fit_widget and loaded a new ASAXS_Batch_Processor_2.py" />
+    <MESSAGE value="Fix some bugs in Data_Dailog and Fit_widget" />
+    <MESSAGE value="Fix the bug of importing two column data" />
+    <MESSAGE value="Fix from factor functions in Fit_widget.py" />
+    <MESSAGE value="Updated the documentation" />
+    <MESSAGE value="Updated Data_Dialog.py and the documentation" />
+    <MESSAGE value="Updated Fit_Widget" />
+    <MESSAGE value="Updated Fit_Widget, Data_Dialog and its documentation" />
+    <MESSAGE value="Updated Fit_Widget, Data_Dialog and their documentation" />
+    <MESSAGE value="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Detector_Widget.py</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Setup.py</url>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/batch" />
+    <entry file="file://$PROJECT_DIR$/batch_settings.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calc_cf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2040">
+          <caret line="129" column="125" selection-start-line="129" selection-start-column="125" selection-end-line="129" selection-end-column="125" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="468" column="24" lean-forward="true" selection-start-line="468" selection-start-column="24" selection-end-line="468" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#267#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/.build/html/Fit_widget.html" />
+    <entry file="file://$PROJECT_DIR$/doc/SAXS_Drive_link.rst" />
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.rst" />
+    <entry file="file://$PROJECT_DIR$/SAXS_Drive.rst">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/.build/index.html" />
+    <entry file="file://$PROJECT_DIR$/doc/License.rst" />
+    <entry file="file://$PROJECT_DIR$/doc/data_file.txt" />
+    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1309">
+          <caret line="87" column="32" selection-start-line="87" selection-start-column="32" selection-end-line="87" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/license">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="15" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17697">
+          <caret line="1061" column="31" selection-start-line="1061" selection-start-column="31" selection-end-line="1061" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#288#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/ASAXS_Widget.rst" />
+    <entry file="file://$PROJECT_DIR$/doc/Introduction.rst" />
+    <entry file="file://$PROJECT_DIR$/doc/Acknowledgements.rst" />
+    <entry file="file://$PROJECT_DIR$/doc/index.rst" />
+    <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="26" column="14" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/Data/data_file.txt" />
+    <entry file="file://$PROJECT_DIR$/Functions/DLS/FirstCumulant.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="63" column="29" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="31" column="80" selection-start-line="31" selection-start-column="80" selection-end-line="31" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="58" column="29" selection-start-line="58" selection-start-column="29" selection-end-line="58" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-595">
+          <caret line="19" column="37" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/PeakFunctions.py.bak">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-447" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="299" column="49" selection-start-line="299" selection-start-column="49" selection-end-line="299" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="21" column="30" selection-start-line="13" selection-start-column="8" selection-end-line="21" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Sphere.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="74" selection-start-line="12" selection-start-column="8" selection-end-line="19" selection-end-column="74" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="30" column="41" selection-start-line="22" selection-start-column="8" selection-end-line="30" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="32" column="44" selection-start-line="17" selection-start-column="8" selection-end-line="32" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/XRR/Parratt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="23" column="74" selection-start-line="17" selection-start-column="8" selection-end-line="23" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="32" selection-start-line="9" selection-start-column="8" selection-end-line="14" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/GIT_Token.txt" />
+    <entry file="file://$PROJECT_DIR$/../GIT_Token.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="31" lean-forward="true" selection-start-column="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/Fit_Widget.rst" />
+    <entry file="file://$PROJECT_DIR$/functionTemplate.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/conf.py" />
+    <entry file="file://$PROJECT_DIR$/doc/Makefile" />
+    <entry file="file://$PROJECT_DIR$/MCA_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="35" selection-start-line="13" selection-start-column="35" selection-end-line="13" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64/Lib/site-packages/scipy/signal/signaltools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5831">
+          <caret line="368" selection-start-line="368" selection-end-line="368" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Reducer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9231">
+          <caret line="562" column="24" selection-start-line="562" selection-start-column="24" selection-end-line="562" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#267#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Cylinder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1394">
+          <caret line="85" column="33" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="33" column="71" selection-start-line="17" selection-start-column="8" selection-end-line="33" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1037">
+          <caret line="64" selection-start-line="62" selection-end-line="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="8" column="16" selection-start-line="7" selection-start-column="8" selection-end-line="12" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="8" selection-end-line="20" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Formol.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="37" column="11" selection-start-line="37" selection-start-column="11" selection-end-line="37" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="1607" column="30" lean-forward="true" selection-start-line="1607" selection-start-column="30" selection-end-line="1607" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#220#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="1274" column="8" lean-forward="true" selection-start-line="1274" selection-start-column="8" selection-end-line="1274" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

@@ -43,5 +43,6 @@ class Gaussian:
 
 
     def y(self):
+        self.output_params={}
         self.update_params()
         return self.gau(self.x,self.pos,self.wid,self.norm)+self.bkg

@@ -12,16 +12,17 @@ class CoreShellSphere:
     def __init__(self, x=0.001, R=1.0, Rsig=0.0, rhoc=1.0, sh=1.0, shsig=0.0, dist='Gaussian', N=50, rhosh=0.5, rhosol=0.0, norm=1.0, bkg=0.0,mpar={}):
         """
         This class calculates the form factor of a spherical core-shell structure with size and shell thickness distribution
-        x: single or Array of q-values in the reciprocal unit as R and Rsig
-        R: Mean radius of the solid spheres
-        Rsig: Width of the distribution of solid spheres
-        rhoc: Electron density of the core
-        sh: Shell thicknes
-        shsig: Width of distribution of shell thicknesses
-        rhosh: Electron density of the shell
-        dist: Gaussian or LogNormal
-        N: No. of points on which the distribution will be calculated
-        rhosol: Electron density of the surrounding solvent/media
+
+        x			: single or Array of q-values in the reciprocal unit as R and Rsig
+        R			: Mean radius of the solid spheres
+        Rsig		: Width of the distribution of solid spheres
+        rhoc		: Electron density of the core
+        sh			: Shell thickness
+        shsig		: Width of distribution of shell thicknesses
+        rhosh		: Electron density of the shell
+        dist		: Gaussian or LogNormal
+        N			: No. of points on which the distribution will be calculated
+        rhosol		: Electron density of the surrounding solvent/media
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -128,7 +129,7 @@ class CoreShellSphere:
                         ffactor.append(f/sumdist)
                     return self.norm*np.array(ffactor)+self.bkg
                 else:
-                    amp,res=self.coreShell(self.x,self.R,self.rhoc,sh,self.rhosh,self.rhosol)
+                    amp,res=self.coreshell(self.x,self.R,self.rhoc,sh,self.rhosh,self.rhosol)
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
                 lgn=LogNormal.LogNormal(x=0.001,pos=self.sh,wid=self.shsig)
@@ -172,7 +173,7 @@ class CoreShellSphere:
                         ffactor.append(f/sumdist)
                     return self.norm*np.array(ffactor)+self.bkg
                 else:
-                    amp,res=self.coreShell(self.x,R,self.rhoc,Sh,self.rhosh,self.rhosol)
+                    amp,res=self.coreshell(self.x,R,self.rhoc,Sh,self.rhosh,self.rhosol)
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
                 lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
@@ -196,7 +197,7 @@ class CoreShellSphere:
                         ffactor.append(f/sumdist)
                     return self.norm*np.array(ffactor)+self.bkg
                 else:
-                    amp,res=self.coreShell(self.x,R,self.rhoc,Sh,self.rhosh,self.rhosol)
+                    amp,res=self.coreshell(self.x,R,self.rhoc,Sh,self.rhosh,self.rhosol)
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             else:
                 #amp,res=self.coreshell(self.x,self.R,self.rhoc,self.sh,self.rhosh)

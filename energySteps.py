@@ -30,6 +30,8 @@ if len(sys.argv)==7:
     f1=xrdb.f1_chantler(element=element,energy=evals,smoothing=0)
     f1vals=np.linspace(f1[0],f1[-1],steps)
     e1vals=np.interp(f1vals,f1,evals)
+    print(np.diff(f1vals))
+    print(np.diff(e1vals))
     evaltxt=''
     pl.figure()
     pl.plot(evals,f1,'ro',label='Equal Energy Steps')

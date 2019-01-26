@@ -33,7 +33,6 @@ class Sphere:
         self.N=N
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']}
-        self.output_params={}
         self.init_params()
 
     def init_params(self):
@@ -47,6 +46,7 @@ class Sphere:
 
     def y(self):
         rho=self.rhoc-self.rhosol
+        self.output_params={}
         if self.Rsig<1e-3:
             return self.norm*rho**2*(np.sin(self.x*self.R)-self.x*self.R*np.cos(self.x*self.R))**2/self.x**6+self.bkg
         else:

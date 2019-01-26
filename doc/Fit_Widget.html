@@ -1,0 +1,1206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Fit Widget &#8212; SAXS_Drive 0.11 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="License.html" />
+    <link rel="prev" title="ASAXS Widget" href="ASAXS_Widget.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="License.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ASAXS_Widget.html" title="ASAXS Widget"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SAXS_Drive 0.11 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ASAXS_Widget.html"
+                        title="previous chapter">ASAXS Widget</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="License.html"
+                        title="next chapter">License</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="fit-widget">
+<span id="id1"></span><h1><a class="toc-backref" href="#id39">Fit Widget</a><a class="headerlink" href="#fit-widget" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#fit-widget" id="id39">Fit Widget</a><ul>
+<li><a class="reference internal" href="#brief-tutorial" id="id40">Brief Tutorial</a></li>
+<li><a class="reference internal" href="#categories-and-functions" id="id41">Categories and Functions</a></li>
+<li><a class="reference internal" href="#data-dialog" id="id42">Data Dialog</a></li>
+<li><a class="reference internal" href="#function-editor" id="id43">Function Editor</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><a class="reference internal" href="#fit-widget">Fit_Widget</a> provides a platform to simulate and fit a model to 1D data. It uses <a class="reference external" href="https://lmfit.github.io/lmfit-py/">LMFIT</a> python library for fitting.
+Some of the commonly used functions are provided under different categories and the users can develop their own
+categories and fitting functions by using an easy to use template within a <a class="reference internal" href="#function-editor">Function_Editor</a></p>
+<div class="figure" id="id29" style="width: 100%">
+<img alt="_images/Fit_Widget_in_Action.png" src="_images/Fit_Widget_in_Action.png" />
+<p class="caption"><span class="caption-text"><strong>Fit Widget</strong> in action in which a Small Angle X-ray Scattering data is fitted with poly-dispersed <strong>Sphere</strong> model with <strong>Log-Normal</strong> distribution.</span></p>
+<div class="legend">
+<p><strong>Features</strong></p>
+<ol class="arabic simple">
+<li>Read and fit multiple data sets</li>
+<li>Functions are categorized under different types and experimental techniques</li>
+<li>Easy to add new categories and new functions within the categories</li>
+<li>Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.</li>
+<li>An in-built <a class="reference internal" href="#function-editor">Function_Editor</a> is provided with a easy to use template.</li>
+<li>A <a class="reference internal" href="#data-dialog">Data_Dialog</a> is provided for importing and manipulating data files.</li>
+<li>Another cool feature of <a class="reference internal" href="#fit-widget">Fit_Widget</a> is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.</li>
+</ol>
+<p><strong>Usage</strong></p>
+<p><a class="reference internal" href="#fit-widget">Fit_Widget</a> can be used as stand-alone python fitting package by running this in terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">Fit_Widget</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The widget can be used as a widget with any other python application.</p>
+</div>
+</div>
+<div class="section" id="brief-tutorial">
+<span id="id2"></span><h2><a class="toc-backref" href="#id40">Brief Tutorial</a><a class="headerlink" href="#brief-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial is focused on showing a beginner how to use the <a class="reference internal" href="#fit-widget">Fit_Widget</a> to:</p>
+<ol class="arabic simple">
+<li>Simulate an already available function</li>
+<li>Import and fit a data with a simulated model or function</li>
+<li>Write your own model/function using the <a class="reference internal" href="#function-editor">Function_Editor</a></li>
+</ol>
+<div class="section" id="simulate-an-already-available-function">
+<h3>Simulate an already available function<a class="headerlink" href="#simulate-an-already-available-function" title="Permalink to this headline">¶</a></h3>
+<p>The available functions can be simulated by following these steps:</p>
+<ol class="arabic simple">
+<li>In the <a class="reference internal" href="#fit-widget">Fit_Widget</a> window go to a <strong>Function</strong> tab</li>
+<li>Select a categories among the <strong>Function Categories</strong> which will populate the <strong>Functions</strong> lists with functions/models available for that category.</li>
+<li>Click on one of the functions which will create a plot the simulated curve in the <strong>Data and Fit</strong> tab and also it will populates the parameter tables in <strong>Parameters</strong> tab with the parameter values required for the functions.</li>
+<li>The values of <strong>X-axis</strong> of the simulated curve can be changed by changing the <strong>x</strong> parameter located at the to of the <strong>Parameters</strong> tab.</li>
+<li>All the parameters can be changed and on change of each of the parameters the function/model will be re-calculated and the plot will be updated.</li>
+</ol>
+</div>
+<div class="section" id="data-importing-and-fitting">
+<h3>Data Importing and Fitting<a class="headerlink" href="#data-importing-and-fitting" title="Permalink to this headline">¶</a></h3>
+<p>The main objective of <a class="reference internal" href="#fit-widget">Fit_Widget</a> is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using <a class="reference internal" href="#fit-widget">Fit_Widget</a>:</p>
+<ol class="arabic simple">
+<li>Click the <strong>Data</strong> tab.</li>
+<li>Import data file(s) by clicking the <strong>Add Files</strong> button which will prompt for selecting the data files.</li>
+<li>Once imported the data files with their path will be listed in the <strong>Data files</strong> list below the <strong>Add Files</strong> button</li>
+<li>Select the data file in the list which you would like to fit.</li>
+<li>Go to <strong>Functions</strong> tab and select the necessary Category from the <strong>Function Category</strong> list and then select the necessary function from the <strong>Functions</strong> list.</li>
+<li>Now you will have both data and simulated curve/function plotted as symbols and lines, respectively.</li>
+<li>At this point play with the parameters value in the <strong>Parameters</strong> tab to make the simulated curve/function close to the data.</li>
+<li>Once the simulated curve looks very close to the data you can select the parameters available in the <strong>Single fitting parameters</strong> and <strong>Multiple fitting parameters</strong> as fitting parameters by checking out the checkbox (☑) available in box carrying the parameter values.</li>
+<li>Constraints on the <strong>Single fitting parameters</strong> can be implemented by adding values to the cell corresponding to <strong>Min/Max</strong> columns which are kept by default as <strong>-inf/inf</strong>, respectively, for no limits.</li>
+<li>Constraints on the <strong>Multiple fitting parameters</strong> can be implemented by <strong>double-clicking</strong> the cell displaying the value of parameter of interest. This will open a dialog to chose for the <strong>Min/Max</strong> values for the parameters which are also kept as <strong>-inf/inf</strong>, respectively, for no constraints.</li>
+<li>Go back to the <strong>Data</strong> tab and provide the <strong>X-range</strong> of the data in this format <strong>Xmin:Xmax</strong> to perform the fit. By default, the values of <strong>Xmin:Xmax</strong> is taken from the <strong>Xmin</strong> and <strong>Xmax</strong> of the data.</li>
+<li>Select the <strong>Fit Scale</strong>  between the <strong>Linear|Log</strong> option. By default the <strong>Linear</strong> option is selected. <strong>Fit Scale</strong> determines how the <strong>Chi-Square</strong> (<span class="math notranslate nohighlight">\(\chi^2\)</span>) will be calculated i.e.:<ul>
+<li>For <strong>Fit Scale=Log</strong>: <span class="math notranslate nohighlight">\(\chi^2\)</span> is calculated using <span class="math notranslate nohighlight">\(\log{(DataY)}-\log{(SimulatedY)}\)</span></li>
+<li>For <strong>Fit Scale=Linear</strong>: <span class="math notranslate nohighlight">\(\chi^2\)</span> is calculated using <span class="math notranslate nohighlight">\(DataY-SimulatedY\)</span></li>
+</ul>
+</li>
+<li>Click the <strong>Fit</strong> button to start fitting the data which will open up a <a class="reference internal" href="#fit-progress">Fit_Progress</a> dialog showing the number of iterations and the <span class="math notranslate nohighlight">\(\chi^2\)</span> corresponding to the current iterations. The plot of the simulated data will also be updated with the parameters, corresponding to the iteration, as the fit progresses.</li>
+<li>The iterations will continue until either the minimum <span class="math notranslate nohighlight">\(\chi^2\)</span> is obtained or <strong>maximum number of iterations (default=1000)</strong>  are reached.</li>
+<li>Once the fitting concluded a <a class="reference internal" href="#fit-results">Fit_Results</a> dialog will appear showing all the necessary details about the fitting.</li>
+<li>At this point the user has freedom to either <strong>Accept/Reject</strong> the fitting results.<ul>
+<li><strong>Accepting</strong> will update all the fitting parameters with the <span class="math notranslate nohighlight">\(\chi^2\)</span>-minimized parameters</li>
+<li><strong>Rejecting</strong> will keep the parameters unaltered with the values before starting the fit.</li>
+</ul>
+</li>
+</ol>
+<div class="figure" id="id30" style="width: 30%">
+<span id="fit-progress"></span><img alt="_images/Fit_Progress.png" src="_images/Fit_Progress.png" />
+<p class="caption"><span class="caption-text">Fit Progress Dialog</span></p>
+</div>
+<div class="figure" id="id31" style="width: 70%">
+<span id="fit-results"></span><img alt="_images/Fit_Results.png" src="_images/Fit_Results.png" />
+<p class="caption"><span class="caption-text">Fit Results Dialog</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="categories-and-functions">
+<h2><a class="toc-backref" href="#id41">Categories and Functions</a><a class="headerlink" href="#categories-and-functions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#fit-widget">Fit_Widget</a> provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#backgrounds">Backgrounds</a></dt>
+<dd><ol class="first last arabic">
+<li><a class="reference internal" href="#powerlaw">PowerLaw</a></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#dls">DLS</a></dt>
+<dd><ol class="first last arabic">
+<li><a class="reference internal" href="#firstcumulant">FirstCumulant</a></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#formfactors">FormFactors</a></dt>
+<dd><ol class="first last arabic">
+<li><a class="reference internal" href="#continuoussphere">ContinuousSphere</a></li>
+<li><a class="reference internal" href="#coreshellsphere">CoreShellSphere</a></li>
+<li><a class="reference internal" href="#ellipsoid">Ellipsoid</a></li>
+<li><a class="reference internal" href="#formol">Formol</a></li>
+<li><a class="reference internal" href="#sphere">Sphere</a></li>
+<li><a class="reference internal" href="#sphericalshell-expdecay">SphericalShell_expDecay</a></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#gisaxs">GISAXS</a></dt>
+<dd><ol class="first last arabic">
+<li><a class="reference internal" href="#rod-sphere">Rod_Sphere</a></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#peakfunctions">PeakFunctions</a></dt>
+<dd><ol class="first last arabic">
+<li><a class="reference internal" href="#gaussian">Gaussian</a></li>
+<li><a class="reference internal" href="#lognormal">LogNormal</a></li>
+<li><a class="reference internal" href="#multipeaks">MultiPeaks</a></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#xrr">XRR</a></dt>
+<dd><ol class="first last arabic">
+<li><a class="reference internal" href="#multisphereatinterface">MultiSphereAtInterface</a></li>
+<li><a class="reference internal" href="#parratt">Parratt</a></li>
+<li><a class="reference internal" href="#sphereatinterface">SphereAtInterface</a></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="backgrounds">
+<span id="id3"></span><h3>Backgrounds<a class="headerlink" href="#backgrounds" title="Permalink to this headline">¶</a></h3>
+<p>This category includes smooth functions which are generally used as background models/functions for other functions.</p>
+<div class="section" id="powerlaw">
+<span id="id4"></span><h4>PowerLaw<a class="headerlink" href="#powerlaw" title="Permalink to this headline">¶</a></h4>
+<p>The power law function is <span class="math notranslate nohighlight">\(y=Ax^n\)</span> .</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable in ter form of a scalar or an array</td>
+</tr>
+<tr class="row-odd"><td>A</td>
+<td>Amplitude</td>
+</tr>
+<tr class="row-even"><td>n</td>
+<td>Exponent</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="dls">
+<span id="id5"></span><h3>DLS<a class="headerlink" href="#dls" title="Permalink to this headline">¶</a></h3>
+<p>This category includes functions related to analyze Dynamic Light Scattering data.</p>
+<div class="section" id="firstcumulant">
+<span id="id6"></span><h4>FirstCumulant<a class="headerlink" href="#firstcumulant" title="Permalink to this headline">¶</a></h4>
+<p>Calculates auto-correlation function for DLS measurements in water as a solvent</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable in the form of scalar or array of time intervals in microseconds</td>
+</tr>
+<tr class="row-odd"><td>tfac</td>
+<td>factor to change from time units of from data to seconds</td>
+</tr>
+<tr class="row-even"><td>lam</td>
+<td>Wavelength of light in Angstroms</td>
+</tr>
+<tr class="row-odd"><td>n</td>
+<td>Refractive index of solvent</td>
+</tr>
+<tr class="row-even"><td>theta</td>
+<td>Angle of the detector in degrees with respect to the beam direction</td>
+</tr>
+<tr class="row-odd"><td>T</td>
+<td>Temperature of the solvent in kelvin scale</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>Hydrodynamic diameter in Angstroms</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="formfactors">
+<span id="id7"></span><h3>FormFactors<a class="headerlink" href="#formfactors" title="Permalink to this headline">¶</a></h3>
+<p>This category includes Form Factors for Small Angle X-ray Scattering (SAXS) data.</p>
+<div class="section" id="continuoussphere">
+<span id="id8"></span><h4>ContinuousSphere<a class="headerlink" href="#continuoussphere" title="Permalink to this headline">¶</a></h4>
+<p>This calculates the form factor of a sphere with continuous electron density gradient along the radial direction</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as a single or array of q-values in the reciprocal unit as R</td>
+</tr>
+<tr class="row-odd"><td>R</td>
+<td>An array of radial locations</td>
+</tr>
+<tr class="row-even"><td>rho</td>
+<td>Electron density at the locations R</td>
+</tr>
+<tr class="row-odd"><td>Rsig</td>
+<td>Width of the distribution of all the radial locations</td>
+</tr>
+<tr class="row-even"><td>N</td>
+<td>No. of points on which the distribution will be calculated</td>
+</tr>
+<tr class="row-odd"><td>dist</td>
+<td>‘Gaussian’ or ‘LogNormal’</td>
+</tr>
+<tr class="row-even"><td>norm</td>
+<td>Normalization constant</td>
+</tr>
+<tr class="row-odd"><td>bkg</td>
+<td>Constant Bkg</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="coreshellsphere">
+<span id="id9"></span><h4>CoreShellSphere<a class="headerlink" href="#coreshellsphere" title="Permalink to this headline">¶</a></h4>
+<p>This calculates the form factor of a spherical core-shell structure with size and shell thickness distribution</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as single or Array of q-values in the reciprocal unit as R and Rsig</td>
+</tr>
+<tr class="row-odd"><td>R</td>
+<td>Mean radius of the solid spheres</td>
+</tr>
+<tr class="row-even"><td>Rsig</td>
+<td>Width of the distribution of solid spheres</td>
+</tr>
+<tr class="row-odd"><td>rhoc</td>
+<td>Electron density of the core</td>
+</tr>
+<tr class="row-even"><td>sh</td>
+<td>Shell thickness</td>
+</tr>
+<tr class="row-odd"><td>shsig</td>
+<td>Width of distribution of shell thicknesses</td>
+</tr>
+<tr class="row-even"><td>rhosh</td>
+<td>Electron density of the shell</td>
+</tr>
+<tr class="row-odd"><td>dist</td>
+<td>Gaussian or LogNormal</td>
+</tr>
+<tr class="row-even"><td>N</td>
+<td>No. of points on which the distribution will be calculated</td>
+</tr>
+<tr class="row-odd"><td>rhosol</td>
+<td>Electron density of the surrounding solvent/media</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="ellipsoid">
+<span id="id10"></span><h4>Ellipsoid<a class="headerlink" href="#ellipsoid" title="Permalink to this headline">¶</a></h4>
+<p>Calculates the form factor of an ellipsoid</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as single or Array of q-values in the reciprocal unit as R1 and R2</td>
+</tr>
+<tr class="row-odd"><td>R1</td>
+<td>Semi-minor of the ellipsoid</td>
+</tr>
+<tr class="row-even"><td>R2</td>
+<td>Semi-major axis of the ellipsoid</td>
+</tr>
+<tr class="row-odd"><td>rhoc</td>
+<td>Electron density of the ellipsoid</td>
+</tr>
+<tr class="row-even"><td>rhosol</td>
+<td>Electron density of the surrounding media/solvent</td>
+</tr>
+<tr class="row-odd"><td>norm</td>
+<td>Normalization constant</td>
+</tr>
+<tr class="row-even"><td>bkg</td>
+<td>Constant Bkg</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="formol">
+<span id="id11"></span><h4>Formol<a class="headerlink" href="#formol" title="Permalink to this headline">¶</a></h4>
+<p>This calculates the form factor for two different kinds of  molecules in cm^-1 for which the XYZ coordinates of the all the atoms composing the molecules are known</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable scalar or array of reciprocal wave vectors</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>Energy of the X-rays at which the scattering pattern is measured</td>
+</tr>
+<tr class="row-even"><td>fname1</td>
+<td>Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the molecule of type 1</td>
+</tr>
+<tr class="row-odd"><td>eta1</td>
+<td>Fraction of molecule type 1</td>
+</tr>
+<tr class="row-even"><td>fname2</td>
+<td>Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the moleucule of type 2</td>
+</tr>
+<tr class="row-odd"><td>eta2</td>
+<td>Fraction of molecule type 2</td>
+</tr>
+<tr class="row-even"><td>rmin</td>
+<td>Minimum radial distance for calculating electron density</td>
+</tr>
+<tr class="row-odd"><td>rmax</td>
+<td>Maximum radial distance for calculating electron density</td>
+</tr>
+<tr class="row-even"><td>Nr</td>
+<td>Number of points at which electron density will be calculated</td>
+</tr>
+<tr class="row-odd"><td>qoff</td>
+<td>Q-offset may be required due to uncertainity in Q-calibration</td>
+</tr>
+<tr class="row-even"><td>sol</td>
+<td>No of electrons in solvent molecule (Ex: H2O has 18 electrons)</td>
+</tr>
+<tr class="row-odd"><td>sig</td>
+<td>Debye-waller factor</td>
+</tr>
+<tr class="row-even"><td>norm</td>
+<td>Normalization constant which can be the molar concentration of the particles</td>
+</tr>
+<tr class="row-odd"><td>bkg</td>
+<td>Background</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sphere">
+<span id="id12"></span><h4>Sphere<a class="headerlink" href="#sphere" title="Permalink to this headline">¶</a></h4>
+<p>Calculates the form factor of a solid sphere with size distribution</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as array of q-values in the same reciprocal unit as R and Rsig</td>
+</tr>
+<tr class="row-odd"><td>R</td>
+<td>Mean radius of the solid spheres</td>
+</tr>
+<tr class="row-even"><td>Rsig</td>
+<td>Width of the distribution of solid spheres</td>
+</tr>
+<tr class="row-odd"><td>dist</td>
+<td>Gaussian or LogNormal</td>
+</tr>
+<tr class="row-even"><td>N</td>
+<td>No. of points on which the distribution will be calculated</td>
+</tr>
+<tr class="row-odd"><td>rhoc</td>
+<td>Electron density of the particle</td>
+</tr>
+<tr class="row-even"><td>rhosol</td>
+<td>Electron density of the solvent or surrounding environment</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sphericalshell-expdecay">
+<span id="id13"></span><h4>SphericalShell_expDecay<a class="headerlink" href="#sphericalshell-expdecay" title="Permalink to this headline">¶</a></h4>
+<p>Calculates the form factor of exponentially decaying ion distribution around a spherical particle</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable in the form of a scalar or an array</td>
+</tr>
+<tr class="row-odd"><td>Rc</td>
+<td>Radial distance in Angstroms after which the solvent contribution starts</td>
+</tr>
+<tr class="row-even"><td>strho</td>
+<td>Concentration of the ions of interest in the stern layer in Molar</td>
+</tr>
+<tr class="row-odd"><td>tst</td>
+<td>Thickness of stern layer in Angstroms</td>
+</tr>
+<tr class="row-even"><td>lrho</td>
+<td>The maximum concentration of the diffuse layer in Molars</td>
+</tr>
+<tr class="row-odd"><td>lexp</td>
+<td>The decay length of the diffuse layer assuming exponential decay</td>
+</tr>
+<tr class="row-even"><td>rhosol</td>
+<td>The surrounding bulk density</td>
+</tr>
+<tr class="row-odd"><td>norm</td>
+<td>Density of particles in Moles/Liter</td>
+</tr>
+<tr class="row-even"><td>bkg</td>
+<td>Constant background</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="gisaxs">
+<span id="id14"></span><h3>GISAXS<a class="headerlink" href="#gisaxs" title="Permalink to this headline">¶</a></h3>
+<p>This category includes functions which deals with X-ray scattering patterns in Grazing incidence university.</p>
+<div class="section" id="rod-sphere">
+<span id="id15"></span><h4>Rod_Sphere<a class="headerlink" href="#rod-sphere" title="Permalink to this headline">¶</a></h4>
+<p>This Provides rod scan from spherical objects dispersed on a substrate</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as array of Qz values of rod scan</td>
+</tr>
+<tr class="row-odd"><td>R</td>
+<td>Mean radius of spheres in inverse units of Qz</td>
+</tr>
+<tr class="row-even"><td>Rsig</td>
+<td>Width of distribution of spheres in inverse units of Qz</td>
+</tr>
+<tr class="row-odd"><td>dist</td>
+<td>‘Gaussian’ or ‘LogNormal’</td>
+</tr>
+<tr class="row-even"><td>qc</td>
+<td>Critical wave-vector for the substrate on which sphere are aranged</td>
+</tr>
+<tr class="row-odd"><td>qpar</td>
+<td>In-plane wave-vector at which the rod was measured</td>
+</tr>
+<tr class="row-even"><td>qparsig:</td>
+<td>The width of the peak at which the rod was measured</td>
+</tr>
+<tr class="row-odd"><td>norm</td>
+<td>Normalization constant</td>
+</tr>
+<tr class="row-even"><td>bkg:</td>
+<td>Constant background</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="peakfunctions">
+<span id="id16"></span><h3>PeakFunctions<a class="headerlink" href="#peakfunctions" title="Permalink to this headline">¶</a></h3>
+<p>This category includes peak related functions</p>
+<div class="section" id="gaussian">
+<span id="id17"></span><h4>Gaussian<a class="headerlink" href="#gaussian" title="Permalink to this headline">¶</a></h4>
+<p>Provides Gaussian function`</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as scalar or array of values</td>
+</tr>
+<tr class="row-odd"><td>pos</td>
+<td>Peak position</td>
+</tr>
+<tr class="row-even"><td>wid</td>
+<td>Width of the peak</td>
+</tr>
+<tr class="row-odd"><td>norm</td>
+<td>Normalization constant</td>
+</tr>
+<tr class="row-even"><td>bkg</td>
+<td>Constant background</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="lognormal">
+<span id="id18"></span><h4>LogNormal<a class="headerlink" href="#lognormal" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Provides log-normal function <span class="math notranslate nohighlight">\(y=norm\exp{\left[\frac{-(\log{x}-\log{pos})^2}{2wid^2}\right]/\sqrt{2\pi}}/wid/x+bkg\)</span></dt>
+<dd><table border="1" class="first last docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as scalar or array of values</td>
+</tr>
+<tr class="row-odd"><td>pos</td>
+<td>Peak position of the Gaussian part of the distribution</td>
+</tr>
+<tr class="row-even"><td>wid</td>
+<td>Width of the Gaussian part of the distribution</td>
+</tr>
+<tr class="row-odd"><td>norm</td>
+<td>Normalization constant</td>
+</tr>
+<tr class="row-even"><td>bkg</td>
+<td>Constant background</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="multipeaks">
+<span id="id19"></span><h4>MultiPeaks<a class="headerlink" href="#multipeaks" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Provides multipeak function with different background function</dt>
+<dd><table border="1" class="first last docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>independent variable in ter form of a scalar or an array</td>
+</tr>
+<tr class="row-odd"><td>power</td>
+<td>1 for <span class="math notranslate nohighlight">\(c_0+c_1 x+c_2 x^2+c_3 x^3+c_N x^N\)</span>, -1 for <span class="math notranslate nohighlight">\(c0+c1/x+c2/x^2+c3/x^3+c_N/x^N\)</span></td>
+</tr>
+<tr class="row-even"><td>N</td>
+<td>exponent of arbitrary degree polynomial i.e <span class="math notranslate nohighlight">\(x^N\)</span> or <span class="math notranslate nohighlight">\(1/x^N\)</span></td>
+</tr>
+<tr class="row-odd"><td>c0</td>
+<td>constant background</td>
+</tr>
+<tr class="row-even"><td>c1</td>
+<td>coefficient of the linear(x) or inverse(1/x) background</td>
+</tr>
+<tr class="row-odd"><td>c2</td>
+<td>coefficient of the quadratic(<span class="math notranslate nohighlight">\(x^2\)</span>) or inverse quadratic (<span class="math notranslate nohighlight">\(1/x^2\)</span>) background</td>
+</tr>
+<tr class="row-even"><td>c3</td>
+<td>coefficient of the cubic bacground</td>
+</tr>
+<tr class="row-odd"><td>cN</td>
+<td>coefficient of the <span class="math notranslate nohighlight">\(x^N\)</span> or inverse <span class="math notranslate nohighlight">\(1/x^N\)</span> background</td>
+</tr>
+<tr class="row-even"><td>cexp</td>
+<td>coefficient of the exponential background</td>
+</tr>
+<tr class="row-odd"><td>lexp</td>
+<td>decay length of the exponential background</td>
+</tr>
+<tr class="row-even"><td>mpar</td>
+<td>The peak parameters where ‘type’: (0: Gaussian, 1: Lorenzian, 2: Step)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="xrr">
+<span id="id20"></span><h3>XRR<a class="headerlink" href="#xrr" title="Permalink to this headline">¶</a></h3>
+<p>This category includes X-ray Reflectivity (XRR) related functions</p>
+<div class="section" id="multisphereatinterface">
+<span id="id21"></span><h4>MultiSphereAtInterface<a class="headerlink" href="#multisphereatinterface" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface</dt>
+<dd><table border="1" class="first last docutils">
+<colgroup>
+<col width="5%" />
+<col width="95%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as array of wave-vector transfer along z-direction</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>Energy of x-rays in inverse units of x</td>
+</tr>
+<tr class="row-even"><td>Rc</td>
+<td>Radius of the core of the nanoparticles</td>
+</tr>
+<tr class="row-odd"><td>rhoc</td>
+<td>Electron density of the core</td>
+</tr>
+<tr class="row-even"><td>Tsh</td>
+<td>Thickness of the outer shell</td>
+</tr>
+<tr class="row-odd"><td>rhosh</td>
+<td>Electron Density of the outer shell. If 0, the electron density the shell region will be assumed to be filled by the bulk phases depending upon the position of the nanoparticles</td>
+</tr>
+<tr class="row-even"><td>rhoup</td>
+<td>Electron density of the upper bulk phase</td>
+</tr>
+<tr class="row-odd"><td>rhodown</td>
+<td>Electron density of the lower bulk phase</td>
+</tr>
+<tr class="row-even"><td>sig</td>
+<td>Roughness of the interface</td>
+</tr>
+<tr class="row-odd"><td>mpar</td>
+<td>The layer parameters where, <strong>Z0</strong> : position of the layer, <strong>cov</strong> : coverage of the nanoparticles in the layer, <strong>Z0sig</strong> : Width of distribution of the nanoparticles in the layer</td>
+</tr>
+<tr class="row-even"><td>rrf</td>
+<td>1 for Fresnel normalized reflectivity and 0 for just reflectivity</td>
+</tr>
+<tr class="row-odd"><td>qoff</td>
+<td>q-offset to correct the zero q of the instrument</td>
+</tr>
+<tr class="row-even"><td>zmin</td>
+<td>Minimum depth for electron density calculation</td>
+</tr>
+<tr class="row-odd"><td>zmax</td>
+<td>Maximum depth for electron density calculation</td>
+</tr>
+<tr class="row-even"><td>dz</td>
+<td>Minimum slab thickness</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="parratt">
+<span id="id22"></span><h4>Parratt<a class="headerlink" href="#parratt" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Calculates X-ray reflectivity from a system of multiple layers using Parratt formalism</dt>
+<dd><table border="1" class="first last docutils">
+<colgroup>
+<col width="3%" />
+<col width="97%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Indpendendent variable as array of wave-vector transfer along z-direction</td>
+</tr>
+<tr class="row-odd"><td>E</td>
+<td>Energy of x-rays in invers units of x</td>
+</tr>
+<tr class="row-even"><td>mpar</td>
+<td>The layer parameters where, d: thickness of each layer, rho:Electron ensity of each layer, beta: Absorption coefficient of each layer, sig: roughness of interface separating each layer. The upper and lower thickness should be always  fixed. The roughness of the topmost layer should be always kept 0.</td>
+</tr>
+<tr class="row-odd"><td>Nlayers</td>
+<td>The number of layers in which the layers will be subdivided for applying Parratt formalism</td>
+</tr>
+<tr class="row-even"><td>rrf</td>
+<td>1 for Frensnel normalized refelctivity and 0 for just reflectivity</td>
+</tr>
+<tr class="row-odd"><td>qoff</td>
+<td>q-offset to correct the zero q of the instrument</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="sphereatinterface">
+<span id="id23"></span><h4>SphereAtInterface<a class="headerlink" href="#sphereatinterface" title="Permalink to this headline">¶</a></h4>
+<dl class="docutils">
+<dt>Calculates X-ray reflectivity from a system of nanoparticle at an interface between two media</dt>
+<dd><table border="1" class="first last docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x</td>
+<td>Independent variable as array of wave-vector transfer along z-direction</td>
+</tr>
+<tr class="row-odd"><td>lam</td>
+<td>Wavelength of x-rays in invers units of x</td>
+</tr>
+<tr class="row-even"><td>Rc</td>
+<td>Radius of nanoparticles in inverse units of x</td>
+</tr>
+<tr class="row-odd"><td>rhoc</td>
+<td>Electron density of the nanoparticles</td>
+</tr>
+<tr class="row-even"><td>cov</td>
+<td>Coverate of the nanoparticles in %</td>
+</tr>
+<tr class="row-odd"><td>D</td>
+<td>The lattice constant of the two dimensional hcp structure formed by the particles</td>
+</tr>
+<tr class="row-even"><td>Zo</td>
+<td>Average distance between the center of the nanoparticles and the interface</td>
+</tr>
+<tr class="row-odd"><td>decay</td>
+<td>Assuming exponential decay of the distribution of nanoparticles away from the interface</td>
+</tr>
+<tr class="row-even"><td>rho_up</td>
+<td>Electron density of the upper medium</td>
+</tr>
+<tr class="row-odd"><td>rho_down</td>
+<td>Electron density of the lower medium</td>
+</tr>
+<tr class="row-even"><td>zmin</td>
+<td>Minimum z value for the electron density profile</td>
+</tr>
+<tr class="row-odd"><td>zmin</td>
+<td>Maximum z value for the electron density profile</td>
+</tr>
+<tr class="row-even"><td>dz</td>
+<td>Minimum slab thickness</td>
+</tr>
+<tr class="row-odd"><td>roughness</td>
+<td>Roughness of the interface</td>
+</tr>
+<tr class="row-even"><td>rrf</td>
+<td>1 for Frensnel normalized refelctivity and 0 for just reflectivity</td>
+</tr>
+<tr class="row-odd"><td>qoff</td>
+<td>Offset in the value of qz due to alignment errors</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="section" id="data-dialog">
+<span id="id24"></span><h2><a class="toc-backref" href="#id42">Data Dialog</a><a class="headerlink" href="#data-dialog" title="Permalink to this headline">¶</a></h2>
+<p>The dialog provides an interface to import and manipulate data for the <a class="reference internal" href="#fit-widget">Fit_Widget</a>.</p>
+<div class="figure" id="id32" style="width: 70%">
+<img alt="_images/Data_Dialog.png" src="_images/Data_Dialog.png" />
+<p class="caption"><span class="caption-text">Data Dialog in action as a stand-alone data viewer where a file <strong>trial.txt</strong> is imported.</span></p>
+<div class="legend">
+<p><strong>Features</strong></p>
+<p>Data Dialog has several cool features:</p>
+<ol class="arabic simple">
+<li>It can import any ascii file with tabulated data with the file extensions (<strong>.txt</strong>, <strong>.dat</strong>).</li>
+<li>It can show both the meta-data and the data present in the file provided that the data file is written in this particular format as mentioned in <a class="reference internal" href="#data-file-format">Data_File_Format</a>.</li>
+<li>After loading the file, both meta-data and the data can be added or removed or modified.</li>
+<li>New rows and columns can be added or removed for the data.</li>
+<li>Mathematical calculations can be done on the existing columns of the data which will be added as new columns. For data manipulations please follow the instructions in <a class="reference internal" href="#data-manipulation">Data_Manipulation</a>.</li>
+<li>Provides 1D plots of all/some of the columns of the data. See <a class="reference internal" href="#plotting-with-data-dialog">Plotting_With_Data_Dialog</a></li>
+<li>If the <strong>☐Auto Update</strong> is checked, any change in the data file will update the data automatically in the <a class="reference internal" href="#data-dialog">Data_Dialog</a> along with <strong>Plots</strong>.</li>
+<li>Using the <strong>☐Auto Update</strong> feature a datafile can be visualized dynamically on change in the data within the file.</li>
+</ol>
+<p><strong>Usage</strong></p>
+<p>The dialog can be used as a dialog to import data in any other widgets like the <a class="reference internal" href="#fit-widget">Fit_Widget</a>. For example, within the <a class="reference internal" href="#fit-widget">Fit_Widget</a> the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is used to manipulate the data by opening the dialog using the following function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Data_Dialog</span> <span class="k">import</span> <span class="n">Data_Dialog</span>
+
+<span class="k">def</span> <span class="nf">openDataDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">fnum</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&lt;&gt;&#39;</span><span class="p">)</span>
+    <span class="n">data_dlg</span><span class="o">=</span><span class="n">Data_Dialog</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">fname</span><span class="p">],</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span><span class="n">plotIndex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">plotColIndex</span><span class="p">[</span><span class="n">fname</span><span class="p">])</span>
+    <span class="n">data_dlg</span><span class="o">.</span><span class="n">dataFileLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data_dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">():</span>
+        <span class="n">newFname</span><span class="o">=</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">dataFileLineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="o">==</span><span class="n">newFname</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotColIndex</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">=</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">plotColIndex</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">externalData</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotWidget</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span><span class="n">yerr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fname</span><span class="p">][</span><span class="s1">&#39;yerr&#39;</span><span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="n">fnum</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_plot</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&lt;&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">fnum</span><span class="p">,</span><span class="n">newFname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dlg_data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">externalData</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotColIndex</span><span class="p">[</span><span class="n">newFname</span><span class="p">]</span><span class="o">=</span><span class="n">data_dlg</span><span class="o">.</span><span class="n">plotColIndex</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plotWidget</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">newFname</span><span class="p">][</span>
+                <span class="s1">&#39;yerr&#39;</span><span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="n">fnum</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The dialog can also be used stand-alone to visualize, manipulate a data file with data and meta-data (see <a class="reference internal" href="#data-file-format">Data_File_Format</a>) by running this command in terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">Data_Dialog</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="n">filename</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>where [filename] is an optional argument to provide a file with full path.</p>
+</div>
+</div>
+<div class="section" id="data-file-format">
+<span id="id25"></span><h3>Data File Format<a class="headerlink" href="#data-file-format" title="Permalink to this headline">¶</a></h3>
+<p>The data file must be written in the format as shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Any text about explaining the data</span>
+<span class="c1">#parameter1_name=parameter1_value</span>
+<span class="c1">#parameter2_name=parameter2_value</span>
+<span class="c1">#col_names=[&#39;col1&#39;,&#39;col2&#39;,&#39;col3&#39;]</span>
+<span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>
+<span class="mi">2</span>   <span class="mi">4</span>   <span class="mi">8</span>
+<span class="mi">3</span>   <span class="mi">9</span>   <span class="mi">27</span>
+</pre></div>
+</div>
+<p>The first few lines with ‘#’ can be used for stating the details of the file. Any meta-data needs to be saved should
+follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. When the above file is saved as <strong>data_file.txt</strong> and opened in <a class="reference internal" href="#data-dialog">Data_Dialog</a>, the data looks like this:</p>
+<div class="figure" id="id33" style="width: 70%">
+<img alt="_images/Data_Dialog_w_Data_File.png" src="_images/Data_Dialog_w_Data_File.png" />
+<p class="caption"><span class="caption-text">Data Dialog in action in which it is loaded with <strong>data_fle.txt</strong></span></p>
+</div>
+</div>
+<div class="section" id="data-manipulation">
+<span id="id26"></span><h3>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this headline">¶</a></h3>
+<p>In the <a class="reference internal" href="#data-dialog">Data_Dialog</a> both the meta-data and data can be added/removed and edited with the following conditions:</p>
+<ol class="arabic simple">
+<li>If a file is imported with <strong>col_names</strong> as one of the meta-data, you can edit the values of the <strong>col_names</strong> but cannot remove it.</li>
+<li>If the columns are already set for plotting in the <strong>Plot Setup</strong> tab you cannot remove the last two tabs.</li>
+<li>When the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is not used within any other widgets, all the data columns can be removed.</li>
+<li>When the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is used within any other widgets, one can delete all the columns except the remaining two.</li>
+</ol>
+<div class="section" id="add-new-data-column">
+<h4>Add New Data Column<a class="headerlink" href="#add-new-data-column" title="Permalink to this headline">¶</a></h4>
+<p>You can add new columns by clicking <strong>Add Column</strong> which will open up a <a class="reference internal" href="#data-column-dialog-i">Data_Column_Dialog_i</a>. Then the column values can be either:</p>
+<ol class="arabic">
+<li><p class="first">An expression of <strong>i</strong> which can take integer values from a minimum value (default=0) to a maximum value (default=100). The expression can be any numpy expression like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div>Here <strong>np</strong> is the imported <strong>numpy</strong> module. Please see <a class="reference internal" href="#data-column-dialog-i">Data_Column_Dialog_i</a>.</div></blockquote>
+<ol class="arabic" start="2">
+<li><p class="first">A numpy expression involving the data columns (col_A and col_B in this case) like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="o">+</span><span class="n">col</span><span class="o">.</span><span class="n">col_B</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_B</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div>Here a particular column is used as <strong>col.Column_Name</strong>. Please see <a class="reference internal" href="#data-column-dialog-columns">Data_Column_Dialog_Columns</a>.</div></blockquote>
+<div class="figure" id="id34" style="width: 70%">
+<span id="data-column-dialog-i"></span><img alt="_images/Data_Column_Dialog_with_i.png" src="_images/Data_Column_Dialog_with_i.png" />
+<p class="caption"><span class="caption-text">Data Column Dialog with numpy expression involving i</span></p>
+</div>
+<div class="figure" id="id35" style="width: 70%">
+<span id="data-column-dialog-columns"></span><img alt="_images/Data_Column_Dialog_with_columns.png" src="_images/Data_Column_Dialog_with_columns.png" />
+<p class="caption"><span class="caption-text">Data Column Dialog with numpy expression involving columns</span></p>
+</div>
+</div>
+<div class="section" id="remove-data-columns">
+<h4>Remove Data Columns<a class="headerlink" href="#remove-data-columns" title="Permalink to this headline">¶</a></h4>
+<p>The columns can be removed by:</p>
+<ol class="arabic simple">
+<li>Selecting the entire column either by:<ul>
+<li>Selecting the first row of the column and select the last row with <strong>SHIFT</strong> button pressed.</li>
+<li>Clicking the <strong>Left-Mouse-Button</strong> of the mouse over the first row of the column and keeping the <strong>Left-Mouse-Button</strong> pressed drag all the way to the last column.</li>
+<li>All the columns can be selected by be clicking on a single data cell and press <strong>CTRL-A</strong></li>
+</ul>
+</li>
+<li>Click the <strong>Remove Column</strong> button.</li>
+</ol>
+</div>
+<div class="section" id="add-new-data-rows">
+<h4>Add New Data Rows<a class="headerlink" href="#add-new-data-rows" title="Permalink to this headline">¶</a></h4>
+<p>A new row can be added by selecting a row where you want to add a row and click <strong>Add Row</strong></p>
+</div>
+<div class="section" id="remove-data-rows">
+<h4>Remove Data Rows<a class="headerlink" href="#remove-data-rows" title="Permalink to this headline">¶</a></h4>
+<p>Multiple rows can be removed by selecting multiple rows and click <strong>Remove Rows</strong></p>
+</div>
+<div class="section" id="change-data-column-names">
+<h4>Change Data Column Names<a class="headerlink" href="#change-data-column-names" title="Permalink to this headline">¶</a></h4>
+<p>The column names of the Data can be changed by changing the meta-data <strong>col_names</strong>.</p>
+</div>
+</div>
+<div class="section" id="plotting-with-data-dialog">
+<span id="id27"></span><h3>Plotting with Data Dialog<a class="headerlink" href="#plotting-with-data-dialog" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#data-dialog">Data_Dialog</a> can also be used for visualizing (within the Data Dialog) and selecting the data (for other widgets) to create 1D plots with errorbars. In order to plot the data needs to be at least a two column data. Once a two-column data is opened, in order to to visualize/select the data for plotting one needs to do the following:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Click to the <strong>Plot Setup</strong> tab. See <a class="reference internal" href="#data-dialog-plot-setup">Data_Dialog_Plot_Setup</a>.</li>
+<li>Click <strong>Add</strong> button which will automatically add a row in the table.</li>
+<li>By default the row will be loaded with with <em>Data_0</em> as label, first and second column of the data as <em>X</em> and <em>Y</em> column, respectively.</li>
+<li>By default the <em>Yerr</em> column is selected as <em>None</em>.</li>
+<li>Many rows can be added in this way to visualize the data in <a class="reference internal" href="#data-dialog">Data_Dialog</a> whereas when the <a class="reference internal" href="#data-dialog">Data_Dialog</a> is used within other widgets only one row will be added by default.</li>
+<li>The data rows can be removed from the <strong>Plot Setup</strong> by selecting entire row (by clicking the row numbers at the extreme left) and clicking the <strong>Remove</strong> button.</li>
+<li>When using the <a class="reference internal" href="#data-dialog">Data_Dialog</a> with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.</li>
+<li>All the columns of the data will be available as drop down menu in each of the cells for selecting them as <em>X</em>, <em>Y</em>, and <em>Yerr</em> columns to plot.</li>
+<li>After adding the column, go to <strong>Plots</strong> tab within the <a class="reference internal" href="#data-dialog">Data_Dialog</a> to visualize the data. See <a class="reference internal" href="#data-dialog-plot-tab">Data_Dialog_Plot_tab</a>.</li>
+<li>Both the X- and Y-axis labels will be updated with the column names selected in the <strong>Plot Setup</strong>.</li>
+<li>In order to switch between the log/linear scales of both the axes check/uncheck the <strong>☐LogX</strong> and <strong>☐LogY</strong> checkboxes.</li>
+<li>Line-width and the Symbol sizes can be tweaked by changing the <strong>Line width</strong> and <strong>Point size</strong> options.</li>
+<li>By default, the errorbars are not plotted and can be plotted by checking the <strong>☐Errorbar</strong> checkbox, provided that a column is already selected in <em>Yerr</em> column of the <strong>Plot Setup</strong>.</li>
+</ol>
+</div></blockquote>
+<div class="figure" id="id36" style="width: 70%">
+<span id="data-dialog-plot-setup"></span><img alt="_images/Data_Dialog_Plot_Setup.png" src="_images/Data_Dialog_Plot_Setup.png" />
+<p class="caption"><span class="caption-text">Plot Setup of Data Dialog</span></p>
+</div>
+<div class="figure" id="id37" style="width: 70%">
+<span id="data-dialog-plot-tab"></span><img alt="_images/Data_Dialog_Plot_tab.png" src="_images/Data_Dialog_Plot_tab.png" />
+<p class="caption"><span class="caption-text">Plot tab of Data Dialog</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="function-editor">
+<span id="id28"></span><h2><a class="toc-backref" href="#id43">Function Editor</a><a class="headerlink" href="#function-editor" title="Permalink to this headline">¶</a></h2>
+<p>The editor provides an interface to write new functions to be included
+in the <a class="reference internal" href="#fit-widget">Fit_Widget</a>. The editor is enabled with python syntax highlighting.</p>
+<div class="figure" id="id38" style="width: 100%">
+<img alt="_images/Function_Editor.png" src="_images/Function_Editor.png" />
+<p class="caption"><span class="caption-text">Function Editor</span></p>
+</div>
+<p>The editor starts with a template to write new functions. The template looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>####Please do not remove lines below####
+from lmfit import Parameters
+import numpy as np
+import sys
+import os
+sys.path.append(os.path.abspath(&#39;.&#39;))
+sys.path.append(os.path.abspath(&#39;./Functions&#39;))
+sys.path.append(os.path.abspath(&#39;./Fortran_rountines&#39;))
+####Please do not remove lines above####
+
+####Import your modules below if needed####
+
+
+
+class &lt;*&gt;: #Please put the class name same as the function name
+    def __init__(self,x=0,mpar={}):
+        &quot;&quot;&quot;
+        Documentation
+        x           : independent variable in ter form of a scalar or an array
+        &quot;&quot;&quot;
+        if type(x)==list:
+            self.x=np.array(x)
+        else:
+            self.x=x
+        self.__mpar__=mpar #If there is any multivalued parameter
+        self.choices={} #If there are choices available for any fixed parameters
+        self.init_params()
+
+    def init_params(self):
+        &quot;&quot;&quot;
+        Define all the fitting parameters like
+        self.param.add(&#39;sig&#39;,value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
+        &quot;&quot;&quot;
+        self.params=Parameters()
+
+    def y(self):
+        &quot;&quot;&quot;
+        Define the function in terms of x to return some value
+        &quot;&quot;&quot;
+        self.output_params={}
+        return self.x
+</pre></div>
+</div>
+<p>A new function is basically as a python <strong>class</strong>. The <em>class name</em> determines the name of the function. As per the template there are three essential functions needs to be defined within the <strong>class</strong>:</p>
+<ol class="arabic simple">
+<li><dl class="first docutils">
+<dt><strong>__init__</strong> function</dt>
+<dd>. With this function we initialize all the parameters necessary for the class. The function atleast needs a value of an independent parameter <strong>x</strong> which by default takes scaler value <strong>0</strong>. <strong>x</strong> can take a scaler or array of values. <strong>mfit</strong> is a python dictionary to define multiple fitting parameters. In order to learn how to use <strong>mfit</strong> please look at the functions like: <a class="reference internal" href="#multisphereatinterface">MultiSphereAtInterface</a>, <a class="reference internal" href="#parratt">Parratt</a>, and <a class="reference internal" href="#multipeaks">MultiPeaks</a>.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>init_params</strong> function</dt>
+<dd>. With this function we define among all the parameters which one will be treated as our fitting parameters.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>y</strong> function</dt>
+<dd>. This function actually returns the actual values of the function to be calculated by the <strong>class</strong></dd>
+</dl>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="License.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ASAXS_Widget.html" title="ASAXS Widget"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SAXS_Drive 0.11 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mrinal Kanti Bera@NSF&#39;s ChemMatCARS.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>
