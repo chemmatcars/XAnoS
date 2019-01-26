@@ -39,7 +39,7 @@ Follow the following instructions for installation:
 
    	            cd /home/mrinal/Download/SAXS_Drive-master
 
-    b) Easier way with `GIT <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>` already installed, run the following commands in a terminal with your own folder path::
+    b) Easier way with `GIT <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_ already installed, run the following commands in a terminal with your own folder path::
 
         cd /home/mrinal/Download/
         git clone https://github.com/nayanbera/SAXS_Drive.git
