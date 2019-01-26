@@ -44,9 +44,9 @@ Follow the following instructions for installation:
             cd /home/mrinal/Download/
             git clone https://github.com/nayanbera/SAXS_Drive.git
 
-    This will create **SAXS_Drive** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named **SAXS_Drive** and run the following command to upgrade it::
+        This will create **SAXS_Drive** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named **SAXS_Drive** and run the following command to upgrade it::
 
-        git clone
+            git clone
 
 5) Run the following commands to run different packages:
     i) Data Collection package (Do not run this when not in the beamline!)::
