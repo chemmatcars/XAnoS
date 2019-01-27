@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="updated Documentation">
-      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SAXS_Drive.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/XAnoS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -208,20 +209,21 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
               <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
               <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
               <item name="doc_source" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="SAXS_Drive" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
               <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
               <item name="docs" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -229,7 +231,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -259,7 +260,7 @@
   </component>
   <component name="RunManager" selected="Python.ASAXS_Batch_Processor">
     <configuration name="ASAXS_Batch_Processor" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="SAXS_Drive" />
+      <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -280,7 +281,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Data_Dialog" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="SAXS_Drive" />
+      <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -301,7 +302,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Data_Reduction_Client" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="SAXS_Drive" />
+      <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -322,7 +323,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Fit_Widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="SAXS_Drive" />
+      <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -343,7 +344,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Fit_widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="SAXS_Drive" />
+      <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -748,9 +749,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="18" width="1550" height="878" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1669967" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.34125412" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -1062,6 +1062,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README" />
+    <entry file="file://$PROJECT_DIR$/INSTALL.txt" />
+    <entry file="file://$PROJECT_DIR$/docs/.nojekyll">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1530">
+          <caret line="91" column="23" selection-start-line="91" selection-start-column="23" selection-end-line="91" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1076,47 +1107,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/INSTALL.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/.nojekyll">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Data_Collection_Server.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="91" column="23" selection-start-line="91" selection-start-column="23" selection-end-line="91" selection-end-column="23" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />

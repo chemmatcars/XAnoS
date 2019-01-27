@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SAXS_Drive.iml" filepath="$PROJECT_DIR$/.idea/SAXS_Drive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/XAnoS.iml" filepath="$PROJECT_DIR$/.idea/XAnoS.iml" />
     </modules>
   </component>
 </project>
