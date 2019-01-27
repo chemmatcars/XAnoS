@@ -1,7 +1,7 @@
-XAnoS (X-ray Anomalous Scattering)
-----------------------------------
+XAnoS
+-----
 
-These are collection of python widgets developed at NSF's ChemMatCARS, 15IDD, Advanced Photon Source, for measuring and analyzing Anomalous Small Angle X-ray Scattering (ASAXS) data.
+**XAnoS** stands for **X-ray Anomalous Scattering**. This package provides collection of python widgets developed at NSF's ChemMatCARS, 15IDD, Advanced Photon Source, for measuring and analyzing Anomalous Small Angle X-ray Scattering (ASAXS) data.
 
 The detailed documentation of **XAnoS** is available at: https://nayanbera.github.io/XAnoS/
 
