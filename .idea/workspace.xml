@@ -5,6 +5,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,7 +27,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -43,12 +47,12 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="51">
-                <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
+                <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
               </first_editor>
               <second_editor />
             </state>
@@ -195,8 +199,8 @@
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
-        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
       </list>
     </option>
   </component>
@@ -396,20 +400,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Updated Fit_widget and loaded a new ASAXS_Batch_Processor_2.py">
-      <created>1543953990897</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1543953990897</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Fix some bugs in Data_Dailog and Fit_widget">
-      <created>1543957163011</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1543957163011</updated>
     </task>
     <task id="LOCAL-00009" summary="Fix from factor functions in Fit_widget.py">
       <created>1544632284538</created>
@@ -740,7 +730,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548615786227</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="Updated Documentation">
+      <created>1548616040082</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1548616040082</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Updated Documentation">
+      <created>1548616150485</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1548616150485</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1082,9 +1086,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
@@ -1108,9 +1109,6 @@
     <entry file="file://$PROJECT_DIR$/docs/index.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
@@ -1121,18 +1119,24 @@
     <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="51">
-            <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
+            <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
 </project>
