@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="updated Documentation">
-      <change beforePath="$PROJECT_DIR$/.idea/SAXS_Drive.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/XAnoS.iml" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Changed the name from SAXS_Drive to XAnoS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,15 +13,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
@@ -46,9 +37,21 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="136">
+                <caret line="5" column="90" selection-start-line="5" selection-start-column="90" selection-end-line="5" selection-end-column="90" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -141,7 +144,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/SetupData/detector_params.txt" />
         <option value="$PROJECT_DIR$/Detector_Widget.py" />
         <option value="$PROJECT_DIR$/SetupData/scaler_params.txt" />
         <option value="$PROJECT_DIR$/scanner.py" />
@@ -192,10 +194,11 @@
         <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-15" />
     <option name="y" value="45" />
     <option name="width" value="3875" />
@@ -209,28 +212,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
-              <item name="doc_source" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SAXS_Drive" type="462c0819:PsiDirectoryNode" />
-              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -391,13 +384,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Added Energy_Widget.py">
-      <created>1530101219869</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1530101219869</updated>
     </task>
     <task id="LOCAL-00002" summary="Updated INSTALL.txt">
       <created>1530101543711</created>
@@ -735,7 +721,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548549530966</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Changed the name from SAXS_Drive to XAnoS">
+      <created>1548614694601</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1548614694602</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TodoView">
@@ -748,9 +741,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="18" width="1550" height="878" extended-state="0" />
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.34125412" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3414795" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -810,7 +804,8 @@
     <MESSAGE value="Updated README" />
     <MESSAGE value="removed INSTALL.txt" />
     <MESSAGE value="updated Documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated Documentation" />
+    <MESSAGE value="Changed the name from SAXS_Drive to XAnoS" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed the name from SAXS_Drive to XAnoS" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -834,7 +829,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/doc/.build/index.html" />
     <entry file="file://$PROJECT_DIR$/doc/License.rst" />
     <entry file="file://$PROJECT_DIR$/doc/data_file.txt" />
     <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
@@ -1112,6 +1106,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="136">
+            <caret line="5" column="90" selection-start-line="5" selection-start-column="90" selection-end-line="5" selection-end-column="90" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

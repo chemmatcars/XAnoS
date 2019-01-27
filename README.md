@@ -1,9 +1,9 @@
-SAXS_Drive
-----------
+XAnoS (X-ray Anomalous Scattering)
+----------------------------------
 
-These are collection of python widgets developed at NSF's ChemMatCARS, 15IDD, Advanced Photon Source, for measuring and analyzing SAXS and ASAXS data.
+These are collection of python widgets developed at NSF's ChemMatCARS, 15IDD, Advanced Photon Source, for measuring and analyzing Anomalous Small Angle X-ray Scattering (ASAXS) data.
 
-The detailed documentation of SAXS_Drive is available at: https://nayanbera.github.io/SAXS_Drive/
+The detailed documentation of **XAnoS** is available at: https://nayanbera.github.io/XAnoS/
 
 
 If you are using any part of the software for ASAXS data analysis please use the following acknowledgment line in your publication:
