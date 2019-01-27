@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="updated Documentation">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,10 +26,10 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
+            <state relative-caret-position="1530">
               <caret line="91" column="23" selection-start-line="91" selection-start-column="23" selection-end-line="91" selection-end-column="23" />
             </state>
           </provider>
@@ -46,7 +45,7 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -189,15 +188,15 @@
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
         <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
         <option value="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" />
-        <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
         <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
+        <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-15" />
-    <option name="y" value="-15" />
+    <option name="y" value="45" />
     <option name="width" value="3875" />
     <option name="height" value="2195" />
   </component>
@@ -258,8 +257,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Fit_Widget">
-    <configuration name="ASAXS_widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.ASAXS_Batch_Processor">
+    <configuration name="ASAXS_Batch_Processor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SAXS_Drive" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -271,7 +270,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ASAXS_widget.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ASAXS_Batch_Processor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -365,19 +364,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.ASAXS_widget" />
       <item itemvalue="Python.Data_Dialog" />
       <item itemvalue="Python.Data_Reduction_Client" />
       <item itemvalue="Python.Fit_Widget" />
       <item itemvalue="Python.Fit_widget" />
+      <item itemvalue="Python.ASAXS_Batch_Processor" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ASAXS_Batch_Processor" />
         <item itemvalue="Python.Fit_Widget" />
         <item itemvalue="Python.Fit_widget" />
         <item itemvalue="Python.Data_Reduction_Client" />
         <item itemvalue="Python.Data_Dialog" />
-        <item itemvalue="Python.ASAXS_widget" />
       </list>
     </recent_temporary>
   </component>
@@ -728,7 +727,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548549336852</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="updated Documentation">
+      <created>1548549530966</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1548549530966</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TodoView">
@@ -741,15 +747,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <frame x="-6" y="18" width="1550" height="878" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.167107" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1669967" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.19660537" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.18582888" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1102,18 +1108,18 @@
     <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
+        <state relative-caret-position="1530">
           <caret line="91" column="23" selection-start-line="91" selection-start-column="23" selection-end-line="91" selection-end-column="23" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
 </project>
