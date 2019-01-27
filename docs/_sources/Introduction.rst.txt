@@ -2,10 +2,10 @@
 
 Introduction
 ============
-    SAXS_Drive is a collection of widgets developed for the measurement, visualization, data reduction and analysis
+    **XAnoS** stands for X-ray Anomalous Scattering and the package provides a collection of widgets developed for the measurement, visualization, data reduction and analysis
     of Anomalous Small Angle X-ray Scattering data at `NSF's ChemMatCARS (Sector 15) <https://chemmatcars.uchicago.edu/>`_  at `Advanced Photon Source <https://www.aps.anl.gov/>`_ , USA.
 
-    If you are using any components of SAXS_Drive for your research/work please do not forget to acknowledge (see :ref:`Acknowledgements`).
+    If you are using any components of XAnoS for your research/work please do not forget to acknowledge (see :ref:`Acknowledgements`).
 
 .. _Installation:
 
@@ -37,14 +37,14 @@ Follow the following instructions for installation:
    	    iii) Extract the zip file into a folder
    	    iv) In the Anaconda terminal go the the extracted folder::
 
-   	            cd /home/mrinal/Download/SAXS_Drive-master
+   	            cd /home/mrinal/Download/XAnoS-master
 
     b) Easier way with `GIT <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_ already installed, run the following commands in a terminal with your own folder path::
 
         cd /home/mrinal/Download/
-        git clone https://github.com/nayanbera/SAXS_Drive.git
+        git clone https://github.com/nayanbera/XAnoS.git
 
-    The second method will create **SAXS_Drive** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named **SAXS_Drive** and run the following command to upgrade it::
+    The second method will create **XAnoS** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named **XAnoS** and run the following command to upgrade it::
 
             git pull
 

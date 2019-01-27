@@ -11,7 +11,7 @@ ASAXS data collection involves measurements SAXS data at several energies below 
 1. ASAXS_Batch_Processor_1_
 2. ASAXS_Batch_Processor_2_
 
-.. _ASAXS_Batch_Processor:
+.. _ASAXS_Batch_Processor_1:
 
 ASAXS_Batch_Processor_1
 ***********************
