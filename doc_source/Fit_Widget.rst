@@ -676,7 +676,7 @@ The editor starts with a template to write new functions. The template looks lik
 
 
 
-    class <*>: #Please put the class name same as the function name
+    class FunctionName: #Please put the class name same as the function name
         def __init__(self,x=0,mpar={}):
             """
             Documentation

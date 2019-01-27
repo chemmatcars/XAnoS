@@ -84,6 +84,9 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data_Collection_Server.html">Data_Collection Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data_Reduction_Client.html">Data_Reduction_Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ASAXS_Batch_Processor.html">ASAXS_Batch_Processor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ASAXS_Widget.html">ASAXS Widget</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Fit Widget</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#brief-tutorial">Brief Tutorial</a><ul>
@@ -1260,47 +1263,47 @@ in the <a class="reference internal" href="#fit-widget">Fit_Widget</a>. The edit
 <p class="caption"><span class="caption-text">Function Editor</span></p>
 </div>
 <p>The editor starts with a template to write new functions. The template looks like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>####Please do not remove lines below####
-from lmfit import Parameters
-import numpy as np
-import sys
-import os
-sys.path.append(os.path.abspath(&#39;.&#39;))
-sys.path.append(os.path.abspath(&#39;./Functions&#39;))
-sys.path.append(os.path.abspath(&#39;./Fortran_rountines&#39;))
-####Please do not remove lines above####
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">####Please do not remove lines below####</span>
+<span class="kn">from</span> <span class="nn">lmfit</span> <span class="k">import</span> <span class="n">Parameters</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./Functions&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./Fortran_rountines&#39;</span><span class="p">))</span>
+<span class="c1">####Please do not remove lines above####</span>
 
-####Import your modules below if needed####
+<span class="c1">####Import your modules below if needed####</span>
 
 
 
-class &lt;*&gt;: #Please put the class name same as the function name
-    def __init__(self,x=0,mpar={}):
-        &quot;&quot;&quot;
-        Documentation
-        x           : independent variable in ter form of a scalar or an array
-        &quot;&quot;&quot;
-        if type(x)==list:
-            self.x=np.array(x)
-        else:
-            self.x=x
-        self.__mpar__=mpar #If there is any multivalued parameter
-        self.choices={} #If there are choices available for any fixed parameters
-        self.init_params()
+<span class="k">class</span> <span class="nc">FunctionName</span><span class="p">:</span> <span class="c1">#Please put the class name same as the function name</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">mpar</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Documentation</span>
+<span class="sd">        x           : independent variable in ter form of a scalar or an array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">==</span><span class="nb">list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span><span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__mpar__</span><span class="o">=</span><span class="n">mpar</span> <span class="c1">#If there is any multivalued parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">=</span><span class="p">{}</span> <span class="c1">#If there are choices available for any fixed parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_params</span><span class="p">()</span>
 
-    def init_params(self):
-        &quot;&quot;&quot;
-        Define all the fitting parameters like
-        self.param.add(&#39;sig&#39;,value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
-        &quot;&quot;&quot;
-        self.params=Parameters()
+    <span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define all the fitting parameters like</span>
+<span class="sd">        self.param.add(&#39;sig&#39;,value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">=</span><span class="n">Parameters</span><span class="p">()</span>
 
-    def y(self):
-        &quot;&quot;&quot;
-        Define the function in terms of x to return some value
-        &quot;&quot;&quot;
-        self.output_params={}
-        return self.x
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define the function in terms of x to return some value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_params</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
 </pre></div>
 </div>
 <p>A new function is basically as a python <strong>class</strong>. The <em>class name</em> determines the name of the function. As per the template there are three essential functions needs to be defined within the <strong>class</strong>:</p>
@@ -1369,6 +1372,7 @@ class &lt;*&gt;: #Please put the class name same as the function name
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   
