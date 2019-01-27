@@ -32,10 +32,11 @@ Follow the following instructions for installation:
 
 4) The installation can be done in two different ways:
     a) Universal way which does not need GIT installation:
-	    i) Click the green button named "Clone or download"
-	    ii) Download the zip file
-   	    iii) Extract the zip file into a folder
-   	    iv) In the Anaconda terminal go the the extracted folder::
+	    i) Open a web browser and go to the webpage : https://github.com/nayanbera/XAnoS
+	    ii) Click the green button named "Clone or download"
+	    iii) Download the zip file
+   	    iv) Extract the zip file into a folder
+   	    v) In the Anaconda terminal go the the extracted folder::
 
    	            cd /home/mrinal/Download/XAnoS-master
 

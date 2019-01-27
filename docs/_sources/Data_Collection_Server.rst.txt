@@ -16,3 +16,8 @@ Detector_Widget
 Scanner
 *******
 
+.. _Energy_Widget:
+
+Energy_Widget
+*************
+
