@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Documentation by changing the package name from SAXS_Drive to XAnoS">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +23,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -48,12 +43,12 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="51">
-                <caret line="3" column="59" selection-start-line="3" selection-start-column="59" selection-end-line="3" selection-end-column="59" />
+                <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
               </first_editor>
               <second_editor />
             </state>
@@ -200,8 +195,8 @@
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -401,20 +396,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files">
-      <created>1538685842938</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1538685842938</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Merge branch 'SAXS_Drive_Beta' of https://github.com/nayanbera/SAXS_Drive into SAXS_Drive_Beta&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
-      <created>1543732483918</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1543732483918</updated>
     </task>
     <task id="LOCAL-00007" summary="Updated Fit_widget and loaded a new ASAXS_Batch_Processor_2.py">
       <created>1543953990897</created>
@@ -745,7 +726,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548615350539</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Updated Documentation">
+      <created>1548615688789</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1548615688789</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Updated Documentation">
+      <created>1548615786227</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1548615786227</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TodoView">
@@ -824,7 +819,8 @@
     <MESSAGE value="Changed the name from SAXS_Drive to XAnoS" />
     <MESSAGE value="updated README" />
     <MESSAGE value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
+    <MESSAGE value="Updated Documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1125,18 +1121,18 @@
     <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="51">
-            <caret line="3" column="59" selection-start-line="3" selection-start-column="59" selection-end-line="3" selection-end-column="59" />
+            <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
 </project>
