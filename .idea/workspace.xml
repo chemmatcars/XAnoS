@@ -1,38 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="updated README">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Documentation by changing the package name from SAXS_Drive to XAnoS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/conf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/index.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.buildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Batch_Processor.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Batch_Processor.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Widget.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Widget.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Data_Collection_Server.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Data_Collection_Server.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Data_Reduction_Client.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Data_Reduction_Client.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/License.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/License.doctree" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/index.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/index.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Acknowledgements.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Acknowledgements.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Data_Collection_Server.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Data_Collection_Server.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/License.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/License.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/ASAXS_Batch_Processor.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/ASAXS_Batch_Processor.rst.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/index.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/genindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/docs/objects.inv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/search.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -52,7 +28,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -67,7 +43,7 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -77,7 +53,7 @@
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="51">
-                <caret line="3" column="51" selection-start-line="3" selection-start-column="51" selection-end-line="3" selection-end-column="51" />
+                <caret line="3" column="59" selection-start-line="3" selection-start-column="59" selection-end-line="3" selection-end-column="59" />
               </first_editor>
               <second_editor />
             </state>
@@ -221,11 +197,11 @@
         <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
         <option value="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" />
         <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
-        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
       </list>
     </option>
   </component>
@@ -425,13 +401,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Updated all the modules and functions during the July 2018 beamtime">
-      <created>1535385664302</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1535385664302</updated>
     </task>
     <task id="LOCAL-00005" summary="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files">
       <created>1538685842938</created>
@@ -769,7 +738,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548614982425</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Updated Documentation by changing the package name from SAXS_Drive to XAnoS">
+      <created>1548615350539</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1548615350539</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TodoView">
@@ -847,7 +823,8 @@
     <MESSAGE value="updated Documentation" />
     <MESSAGE value="Changed the name from SAXS_Drive to XAnoS" />
     <MESSAGE value="updated README" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated README" />
+    <MESSAGE value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1135,20 +1112,7 @@
     <entry file="file://$PROJECT_DIR$/docs/index.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="51">
-            <caret line="3" column="51" selection-start-line="3" selection-start-column="51" selection-end-line="3" selection-end-column="51" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
@@ -1159,6 +1123,19 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="51">
+            <caret line="3" column="59" selection-start-line="3" selection-start-column="59" selection-end-line="3" selection-end-column="59" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
