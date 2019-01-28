@@ -12,3 +12,5 @@ ASAXS_Widget_ is developed to provide platform to visualize and analyze Anomalou
     :figwidth: 100%
 
     ASAXS_Widget in action
+
+**More documentation coming soon!**

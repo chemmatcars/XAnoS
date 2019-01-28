@@ -1,6 +1,6 @@
 .. _Data_Collection_Server:
 
-Data_Collection Server
+Data Collection Server
 ======================
 
 .. contents:: Table of Contents
@@ -8,7 +8,7 @@ Data_Collection Server
 
 .. _Detector_Widger:
 
-Detector_Widget
+Detector Widget
 ***************
 
 .. _Scanner:
@@ -18,6 +18,7 @@ Scanner
 
 .. _Energy_Widget:
 
-Energy_Widget
+Energy Widget
 *************
 
+**More documentation coming soon!**

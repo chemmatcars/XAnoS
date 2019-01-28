@@ -1,6 +1,6 @@
 .. _Data_Reduction_Client:
 
-Data_Reduction_Client
+Data Reduction Client
 =====================
 
 .. contents:: Table of Contents
@@ -8,11 +8,12 @@ Data_Reduction_Client
 
 .. _Calibration_Widget:
 
-Calibration_Widget
+Calibration Widget
 ******************
 
 .. _Mask_Widget:
 
-Mask_Widget
+Mask Widget
 ***********
 
+**More documentation coming soon!**
