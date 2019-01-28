@@ -14,9 +14,9 @@ import fabio as fb
 import time
 from numpy import *
 from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
-from maskWidget import MaskWidget
+from Mask_Widget import MaskWidget
 from Image_Widget import Image_Widget
-from calibrationWidget import CalibrationWidget
+from Calibration_Widget import CalibrationWidget
 import json
 from zmqClient import ZeroMQ_Listener
 from zmqServer import ZeroMQ_Server
