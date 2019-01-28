@@ -63,28 +63,74 @@
           <div class="body" role="main">
             
   <div class="section" id="asaxs-batch-processor">
-<span id="id1"></span><h1><a class="toc-backref" href="#id4">ASAXS Batch Processor</a><a class="headerlink" href="#asaxs-batch-processor" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1><a class="toc-backref" href="#id8">ASAXS Batch Processor</a><a class="headerlink" href="#asaxs-batch-processor" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="table-of-contents">
 <p class="topic-title first">Table of Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#asaxs-batch-processor" id="id4">ASAXS Batch Processor</a><ul>
-<li><a class="reference internal" href="#asaxs-batch-processor-1" id="id5">ASAXS Batch Processor 1</a></li>
-<li><a class="reference internal" href="#asaxs-batch-processor-2" id="id6">ASAXS Batch Processor 2</a></li>
+<li><a class="reference internal" href="#asaxs-batch-processor" id="id8">ASAXS Batch Processor</a><ul>
+<li><a class="reference internal" href="#asaxs-batch-processor-1" id="id9">ASAXS Batch Processor 1</a></li>
+<li><a class="reference internal" href="#asaxs-batch-processor-2" id="id10">ASAXS Batch Processor 2</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<p>ASAXS data collection involves measurements of SAXS data at several energies below the energy edge of the element of interest from the sample, background, standard samples (Glassy Carbon, Water etc). Sometimes SAXS data are also collected from empty container holding the sample and air background. After the data collection one needs to perform necessary background subtractions and absolute intensity normalizations for all the data. For this purpose, depending upon the sequence of data collection two batch processing widgets are developed:</p>
+<p>ASAXS data collection involves measurements of SAXS data at several energies below the energy edge of the element of interest from the sample, background, standard samples (Glassy Carbon (GC), Water etc). Sometimes SAXS data are also collected from empty container holding the sample and air background. After the data collection one needs to perform necessary background subtractions and absolute intensity normalizations for all the data. For this purpose, depending upon the sequence of data collection two batch processing widgets are developed:</p>
 <ol class="arabic simple">
 <li><a class="reference internal" href="#asaxs-batch-processor-1">ASAXS_Batch_Processor_1</a></li>
 <li><a class="reference internal" href="#asaxs-batch-processor-2">ASAXS_Batch_Processor_2</a></li>
 </ol>
 <div class="section" id="asaxs-batch-processor-1">
-<span id="id2"></span><h2><a class="toc-backref" href="#id5">ASAXS Batch Processor 1</a><a class="headerlink" href="#asaxs-batch-processor-1" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2><a class="toc-backref" href="#id9">ASAXS Batch Processor 1</a><a class="headerlink" href="#asaxs-batch-processor-1" title="Permalink to this headline">¶</a></h2>
+<p>This batch processor is designed to process (background subtraction and absolute intensity normalization) the SAXS data is collected <strong>Serial mode</strong> from the system of interest, the background, the intensity standard (GC or Water), the empty container and the air background. <strong>Serial mode</strong> means SAXS data will be collected at all the energies of interest for a sample before moving to the next sample. Visually the data is collected in the fashion shown below.</p>
+<div class="figure" id="id4" style="width: 50%">
+<img alt="_images/Serial_mode.png" src="_images/Serial_mode.png" />
+<p class="caption"><span class="caption-text"><strong>Serial mode</strong> of ASAXS data collection. The dashed lines with arrows indicates the steps for measuring <strong>Empty</strong> ad <strong>Air</strong>  are optional.</span></p>
+</div>
+<p><strong>Usage</strong></p>
+<p><a class="reference internal" href="#asaxs-batch-processor-1">ASAXS_Batch_Processor_1</a> can be used stand-alone widget by running the command in terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">ASAXS_Batch_Processor_1</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<div class="figure" id="id5" style="width: 100%">
+<img alt="_images/ASAXS_Batch_Processor_1.png" src="_images/ASAXS_Batch_Processor_1.png" />
+<p class="caption"><span class="caption-text"><strong>ASAXS Batch Processor 1</strong> in action.</span></p>
+</div>
 </div>
 <div class="section" id="asaxs-batch-processor-2">
-<span id="id3"></span><h2><a class="toc-backref" href="#id6">ASAXS Batch Processor 2</a><a class="headerlink" href="#asaxs-batch-processor-2" title="Permalink to this headline">¶</a></h2>
-<p><strong>More documentation coming soon!</strong></p>
+<span id="id3"></span><h2><a class="toc-backref" href="#id10">ASAXS Batch Processor 2</a><a class="headerlink" href="#asaxs-batch-processor-2" title="Permalink to this headline">¶</a></h2>
+<p>This batch processor is designed to process (background subtraction and absolute intensity normalization) the SAXS data is collected <strong>Parallel mode</strong> from the system of interest, the background, the intensity standard (GC or Water), the empty container and the air background. <strong>Parallel mode</strong> means SAXS data will be collected for all the samples at a same energy and then change to different energies. Visually the data is collected in the fashion shown below.</p>
+<div class="figure" id="id6" style="width: 50%">
+<img alt="_images/Parallel_mode.png" src="_images/Parallel_mode.png" />
+<p class="caption"><span class="caption-text"><strong>Parallel mode</strong> of ASAXS data collection. The collection of data from <strong>Empty</strong> and <strong>Air</strong> are optional.</span></p>
+</div>
+<p><strong>Usage</strong></p>
+<p><a class="reference internal" href="#asaxs-batch-processor-2">ASAXS_Batch_Processor_2</a> can be used stand-alone widget by running the command in terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">ASAXS_Batch_Processor_2</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<div class="figure" id="id7" style="width: 100%">
+<img alt="_images/ASAXS_Batch_Processor_2.png" src="_images/ASAXS_Batch_Processor_2.png" />
+<p class="caption"><span class="caption-text"><strong>ASAXS Batch Processor 2</strong> in action.</span></p>
+</div>
+<p>In <strong>Parallel mode</strong>, generally the data are collected within a same folder with same filename and different filenumber such as <strong>filename_0001.txt</strong>, <strong>filename_0002.txt</strong>,…etc, for all the samples, backgrounds, … etc. In order to process the data with <a class="reference internal" href="#asaxs-batch-processor-2">ASAXS_Batch_Processor_2</a> please follow these simples steps:</p>
+<ol class="arabic simple">
+<li>Click <strong>Select</strong> button Open the first filename of the whole ASAXS data series. This will add the <em>Filename</em> with the full <em>FilePath</em> (no file filenumbers) to the <strong>First Sample Name</strong> of the widget.</li>
+<li>Provide file numbers for data files corresponding to the first sample, background and standard sample data in the <strong>First Sample Nums</strong> (Default=1), <strong>First Bkg Num</strong> (Default=2), and <strong>First Std Num</strong> (Default=3), respectively.</li>
+<li>Provide the thicknesses (in <em>centimeters</em>) of the  sample, background, and standard sample in the <strong>Sample Thickness (cm)</strong>, <strong>Background Thickness (cm)</strong>, and <strong>Standard Thickness (cm)</strong>.</li>
+<li>Provide the numbers of Energy points done for each of the sample as <strong>Energy Npts</strong> (Default=20).</li>
+<li>Provide how many times a data is taken per sample per energy in <strong>Repeat</strong> (Default=1)</li>
+<li>Provide which standard sample to use between <strong>GC</strong> and <strong>Water</strong> in <strong>Standard Sample</strong> (Default=GC).</li>
+<li>Provide the <strong>Q-range</strong> in <strong>Xmin:Xmax</strong> (Default=0.1:0.25) in Å<sup>-1</sup> at which the standard sample data will be compared with the absolute intensity values obtained from <a class="reference external" href="https://www-s.nist.gov/srmors/view_detail.cfm?srm=3600">NIST</a> to get the ASAXS data in absolute intensity scale.</li>
+<li>Select the interpolation method between <strong>linear|quadratic|cubic</strong> for interpolating the data as needed to do the batch processing.</li>
+<li>Click <strong>Process</strong> button to start processing.</li>
+<li>After the processing is done the processed ASAXS data from the system of interest will be plotted in plot.</li>
+<li>The processed data will be saved within a new subfolder named <strong>bkgsub</strong>.</li>
+<li>Within the <strong>bkgsub</strong> subfolder two kinds of files will be created in the following format:<ul>
+<li><em>filename_filenumber_bsub.txt</em> : These are background subtracted files of the system of interest</li>
+<li><em>filename_filenumber_bsub_proc.txt</em> : These are background subtracted and absolute scale normalized data obtained after the processing. These files will be used further for ASAXS analysis using <a class="reference internal" href="ASAXS_Widget.html#asaxs-widget"><span class="std std-ref">ASAXS Widget</span></a>.</li>
+</ul>
+</li>
+</ol>
 </div>
 </div>
 
