@@ -1,6 +1,6 @@
 .. _ASAXS_Batch_Processor:
 
-ASAXS_Batch_Processor
+ASAXS Batch Processor
 ======================
 
 .. contents:: Table of Contents
