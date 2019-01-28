@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Documentation">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Reduction_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Reduction_Client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibrationWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Calibration_Widget.py" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Rename calibrationWidget.py to Calibration_Widget.py and maskWidget.py MaskWidget.py. Accordingly changed the imports of Data_Reduction_Client.py">
+      <change beforePath="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/index.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maskWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mask_Widget.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +34,7 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
@@ -93,7 +89,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/Data_Collection_Server.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -207,11 +203,11 @@
         <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
-        <option value="$PROJECT_DIR$/doc_source/index.rst" />
         <option value="$PROJECT_DIR$/Data_Reduction_Client.py" />
+        <option value="$PROJECT_DIR$/doc_source/index.rst" />
+        <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
       </list>
     </option>
   </component>
@@ -411,13 +407,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Fix from factor functions in Fit_widget.py">
-      <created>1547325348776</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1547325348776</updated>
     </task>
     <task id="LOCAL-00013" summary="Updated the documentation">
       <created>1547331826825</created>
@@ -755,7 +744,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548624988589</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Rename calibrationWidget.py to Calibration_Widget.py and maskWidget.py MaskWidget.py. Accordingly changed the imports of Data_Reduction_Client.py">
+      <created>1548648063048</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1548648063048</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TodoView">
@@ -771,12 +767,12 @@
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19682959" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19682959" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.18528996" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" visible="true" weight="0.18528996" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -790,26 +786,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1961691" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.19887166" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5063291" side_tool="true" weight="0.35085714" />
-      <window_info anchor="bottom" id="Python Console" order="8" weight="0.3064972" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32909605" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12114286" />
-      <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added Energy_Widget.py" />
@@ -835,7 +811,8 @@
     <MESSAGE value="updated README" />
     <MESSAGE value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
     <MESSAGE value="Updated Documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated Documentation" />
+    <MESSAGE value="Rename calibrationWidget.py to Calibration_Widget.py and maskWidget.py MaskWidget.py. Accordingly changed the imports of Data_Reduction_Client.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename calibrationWidget.py to Calibration_Widget.py and maskWidget.py MaskWidget.py. Accordingly changed the imports of Data_Reduction_Client.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1095,9 +1072,6 @@
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
@@ -1140,9 +1114,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Data_Collection_Server.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Mask_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1158,6 +1129,12 @@
           <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Data_Collection_Server.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
 </project>

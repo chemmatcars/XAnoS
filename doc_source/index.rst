@@ -12,8 +12,6 @@ Welcome to XAnoS's documentation!
    Introduction
    Data_Collection_Server
    Data_Reduction_Client
-   Calibration_Widget
-   Mask_Widget
    ASAXS_Batch_Processor
    ASAXS_Widget
    Fit_Widget

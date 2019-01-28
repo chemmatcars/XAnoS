@@ -21,3 +21,13 @@ Scanner
 Energy_Widget
 *************
 
+.. _Calibration_Widget:
+
+Calibration_Widget
+******************
+
+.. _Mask_Widget:
+
+Mask_Widget
+***********
+
