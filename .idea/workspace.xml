@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the Documentation">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,6 +20,16 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
+          <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
+          <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Widget.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
@@ -41,23 +51,6 @@
               <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="51">
-                <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
-          <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -151,7 +144,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/SetupData/scaler_params.txt" />
         <option value="$PROJECT_DIR$/scanner.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor.py" />
         <option value="$PROJECT_DIR$/INSTALL.txt" />
@@ -196,12 +188,13 @@
         <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
         <option value="$PROJECT_DIR$/Data_Reduction_Client.py" />
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
-        <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
+        <option value="$PROJECT_DIR$/doc_source/ASAXS_Widget.rst" />
+        <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
         <option value="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" />
+        <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
       </list>
     </option>
   </component>
@@ -401,20 +394,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Updated the documentation">
-      <created>1547331994454</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1547331994454</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Updated Data_Dialog.py and the documentation">
-      <created>1547357037503</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1547357037503</updated>
     </task>
     <task id="LOCAL-00016" summary="Updated Fit_Widget">
       <created>1547385827500</created>
@@ -745,7 +724,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548648307816</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Updated the Documentation">
+      <created>1548648400986</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1548648400986</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Updated the Documentation">
+      <created>1548648774135</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1548648774135</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TodoView">
@@ -831,7 +824,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/doc/ASAXS_Widget.rst" />
     <entry file="file://$PROJECT_DIR$/doc/Introduction.rst" />
     <entry file="file://$PROJECT_DIR$/doc/Acknowledgements.rst" />
     <entry file="file://$PROJECT_DIR$/doc/index.rst" />
@@ -1057,9 +1049,6 @@
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Calibration_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1117,6 +1106,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/Data_Reduction_Client.html">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Widget.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />

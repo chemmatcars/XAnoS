@@ -6,7 +6,7 @@ Data Collection Server
 .. contents:: Table of Contents
    :depth: 2
 
-.. _Detector_Widger:
+.. _Detector_Widget:
 
 Detector Widget
 ***************
