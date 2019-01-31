@@ -50,9 +50,9 @@ Follow the following instructions for installation:
             git pull
 
 5) Run the following commands to run different packages:
-    i) Data Collection package (Do not run this when not in the beamline!)::
+    i) Data Collection package (**Do not run this when not in the beamline!**)::
 
-         python Data_Collector.py
+         python Data_Collector_Server.py
 
     ii) Data Reduction package::
 

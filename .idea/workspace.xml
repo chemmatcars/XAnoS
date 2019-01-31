@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the Documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/Fit_Widget.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Fit_Widget.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/docs/objects.inv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,7 +13,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -36,7 +30,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -95,7 +89,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>readData</find>
       <find>openDataDialog</find>
       <find>functionCalled</find>
       <find>conf_interv_status</find>
@@ -125,6 +118,7 @@
       <find>self.foundError</find>
       <find>Function_Editor_</find>
       <find>self.value</find>
+      <find>Fit_pg</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -189,7 +183,6 @@
         <option value="$PROJECT_DIR$/README" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
         <option value="$PROJECT_DIR$/Data_Reduction_Client.py" />
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Widget.rst" />
@@ -200,6 +193,7 @@
         <option value="$PROJECT_DIR$/Functions/XRR/__init__.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
         <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
+        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
       </list>
     </option>
   </component>
@@ -224,6 +218,11 @@
             <path>
               <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
               <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="doc_source" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
@@ -400,20 +399,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Updated Fit_Widget, Data_Dialog and their documentation">
-      <created>1548340794777</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1548340794777</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py">
-      <created>1548461246709</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1548461246709</updated>
     </task>
     <task id="LOCAL-00024" summary="Merged with SAXS_Drive_Beta">
       <created>1548485539144</created>
@@ -744,7 +729,21 @@
       <option name="project" value="LOCAL" />
       <updated>1548909069743</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Updated the Documentation">
+      <created>1548909807436</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1548909807436</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Updated the Documentation">
+      <created>1548909868327</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1548909868327</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1077,9 +1076,6 @@
     <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/functionTemplate.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -1143,6 +1139,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
