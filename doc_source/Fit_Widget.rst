@@ -24,13 +24,13 @@ categories and fitting functions by using an easy to use template within a :ref:
     3. Easy to add new categories and new functions within the categories
     4. Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.
     5. An in-built :ref:`Function_Editor` is provided with a easy to use template.
-    6. A Data_Dialog_ is provided for importing and manipulating data files.
-    7. Another cool feature of Fit_Widget_ is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
+    6. A :ref:`Data_Dialog` is provided for importing and manipulating data files.
+    7. Another cool feature of :ref:`Fit_Widget` is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
 
 
     **Usage**
 
-    Fit_Widget_ can be used as stand-alone python fitting package by running this in terminal::
+    :ref:`Fit_Widget` can be used as stand-alone python fitting package by running this in terminal::
 
         python Fit_Widget.py
 
@@ -40,7 +40,7 @@ categories and fitting functions by using an easy to use template within a :ref:
 
 Brief Tutorial
 **************
-This tutorial is focused on showing a beginner how to use the Fit_Widget_ to:
+This tutorial is focused on showing a beginner how to use the :ref:`Fit_Widget` to:
 
 1. Simulate an already available function
 2. Import and fit a data with a simulated model or function
@@ -58,7 +58,7 @@ The available functions can be simulated by following these steps:
 
 Data Importing and Fitting
 --------------------------
-The main objective of Fit_Widget_ is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using :ref:`Fit_Widget`:
+The main objective of :ref:`Fit_Widget` is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using :ref:`Fit_Widget`:
 
 1. Click the **Data** tab.
 2. Import data file(s) by clicking the **Add Files** button which will prompt for selecting the data files.
@@ -103,27 +103,27 @@ Categories and Functions
 ************************
 :ref:`Fit_Widget` provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.
 
-* Backgrounds_
-    1. PowerLaw_
-* DLS_
-    1. FirstCumulant_
-* FormFactors_
-    1. ContinuousSphere_
-    2. CoreShellSphere_
-    3. Ellipsoid_
-    4. Formol_
-    5. Sphere_
-    6. SphericalShell_expDecay_
-* GISAXS_
-    1. Rod_Sphere_
-* PeakFunctions_
-    1. Gaussian_
-    2. LogNormal_
-    3. MultiPeaks_
-* XRR_
-    1. MultiSphereAtInterface_
-    2. Parratt_
-    3. SphereAtInterface_
+* :ref:`Backgrounds`
+    1. :ref:`PowerLaw`
+* :ref:`DLS`
+    1. :ref:`FirstCumulant`
+* :ref:`FormFactors`
+    1. :ref:`ContinuousSphere`
+    2. :ref:`CoreShellSphere`
+    3. :ref:`Ellipsoid`
+    4. :ref:`Formol`
+    5. :ref:`Sphere`
+    6. :ref:`SphericalShell_expDecay`
+* :ref:`GISAXS`
+    1. :ref:`Rod_Sphere`
+* :ref:`PeakFunctions`
+    1. :ref:`Gaussian`
+    2. :ref:`LogNormal`
+    3. :ref:`MultiPeaks`
+* :ref:`XRR`
+    1. :ref:`MultiSphereAtInterface`
+    2. :ref:`Parratt`
+    3. :ref:`SphereAtInterface`
 
 
 .. _Backgrounds:
@@ -475,17 +475,17 @@ The dialog provides an interface to import and manipulate data for the :ref:`Fit
     Data Dialog has several cool features:
 
     1. It can import any ascii file with tabulated data with the file extensions (**.txt**, **.dat**).
-    2. It can show both the meta-data and the data present in the file provided that the data file is written in this particular format as mentioned in Data_File_Format_.
+    2. It can show both the meta-data and the data present in the file provided that the data file is written in this particular format as mentioned in :ref:`Data_File_Format`.
     3. After loading the file, both meta-data and the data can be added or removed or modified.
     4. New rows and columns can be added or removed for the data.
-    5. Mathematical calculations can be done on the existing columns of the data which will be added as new columns. For data manipulations please follow the instructions in Data_Manipulation_.
-    6. Provides 1D plots of all/some of the columns of the data. See Plotting_With_Data_Dialog_
-    7. If the **☐Auto Update** is checked, any change in the data file will update the data automatically in the Data_Dialog_ along with **Plots**.
+    5. Mathematical calculations can be done on the existing columns of the data which will be added as new columns. For data manipulations please follow the instructions in :ref:`Data_Manipulation`.
+    6. Provides 1D plots of all/some of the columns of the data. See :ref:`Plotting_With_Data_Dialog`
+    7. If the **☐Auto Update** is checked, any change in the data file will update the data automatically in the :ref:`Data_Dialog` along with **Plots**.
     8. Using the **☐Auto Update** feature a datafile can be visualized dynamically on change in the data within the file.
 
     **Usage**
 
-    The dialog can be used as a dialog to import data in any other widgets like the :ref:`Fit_Widget`. For example, within the :ref:`Fit_Widget` the Data_Dialog_ is used to manipulate the data by opening the dialog using the following function::
+    The dialog can be used as a dialog to import data in any other widgets like the :ref:`Fit_Widget`. For example, within the :ref:`Fit_Widget` the :ref:`Data_Dialog` is used to manipulate the data by opening the dialog using the following function::
 
         from Data_Dialog import Data_Dialog
 
@@ -513,7 +513,7 @@ The dialog provides an interface to import and manipulate data for the :ref:`Fit
                     self.update_plot()
 
 
-    The dialog can also be used stand-alone to visualize, manipulate a data file with data and meta-data (see Data_File_Format_) by running this command in terminal::
+    The dialog can also be used stand-alone to visualize, manipulate a data file with data and meta-data (see :ref:`Data_File_Format`) by running this command in terminal::
 
             python Data_Dialog.py [filename]
 
@@ -537,7 +537,7 @@ The data file must be written in the format as shown below::
     3   9   27
 
 The first few lines with '#' can be used for stating the details of the file. Any meta-data needs to be saved should
-follow the syntax as shown above as '#parameter1_name=parameter1_value'. When the above file is saved as **data_file.txt** and opened in Data_Dialog_, the data looks like this:
+follow the syntax as shown above as '#parameter1_name=parameter1_value'. When the above file is saved as **data_file.txt** and opened in :ref:`Data_Dialog`, the data looks like this:
 
 .. figure:: ./Figures/Data_Dialog_w_Data_File.png
     :figwidth: 70%
@@ -550,16 +550,16 @@ follow the syntax as shown above as '#parameter1_name=parameter1_value'. When th
 
 Data Manipulation
 -----------------
-In the Data_Dialog_ both the meta-data and data can be added/removed and edited with the following conditions:
+In the :ref:`Data_Dialog` both the meta-data and data can be added/removed and edited with the following conditions:
 
 1. If a file is imported with **col_names** as one of the meta-data, you can edit the values of the **col_names** but cannot remove it.
 2. If the columns are already set for plotting in the **Plot Setup** tab you cannot remove the last two tabs.
-3. When the Data_Dialog_ is not used within any other widgets, all the data columns can be removed.
-4. When the Data_Dialog_ is used within any other widgets, one can delete all the columns except the remaining two.
+3. When the :ref:`Data_Dialog` is not used within any other widgets, all the data columns can be removed.
+4. When the :ref:`Data_Dialog` is used within any other widgets, one can delete all the columns except the remaining two.
 
 Add New Data Column
 +++++++++++++++++++
-You can add new columns by clicking **Add Column** which will open up a Data_Column_Dialog_i_. Then the column values can be either:
+You can add new columns by clicking **Add Column** which will open up a :ref:`Data_Column_Dialog_i`. Then the column values can be either:
 
 1. An expression of **i** which can take integer values from a minimum value (default=0) to a maximum value (default=100). The expression can be any numpy expression like::
 
@@ -567,7 +567,7 @@ You can add new columns by clicking **Add Column** which will open up a Data_Col
     np.sin(i)+np.cos(i)
     np.exp(i*2)
 
- Here **np** is the imported **numpy** module. Please see Data_Column_Dialog_i_.
+ Here **np** is the imported **numpy** module. Please see :ref:`Data_Column_Dialog_i`.
 
 2. A numpy expression involving the data columns (col_A and col_B in this case) like::
 
@@ -622,31 +622,33 @@ Plotting with Data Dialog
 -------------------------
 Data_Dialog_ can also be used for visualizing (within the Data Dialog) and selecting the data (for other widgets) to create 1D plots with errorbars. In order to plot the data needs to be at least a two column data. Once a two-column data is opened, in order to to visualize/select the data for plotting one needs to do the following:
 
-    1) Click to the **Plot Setup** tab. See Data_Dialog_Plot_Setup_.
+    1) Click to the **Plot Setup** tab. See :ref:`Data_Dialog_Plot_Setup`.
     2) Click **Add** button which will automatically add a row in the table.
     3) By default the row will be loaded with with *Data_0* as label, first and second column of the data as *X* and *Y* column, respectively.
     4) By default the *Yerr* column is selected as *None*.
-    5) Many rows can be added in this way to visualize the data in Data_Dialog_ whereas when the Data_Dialog_ is used within other widgets only one row will be added by default.
+    5) Many rows can be added in this way to visualize the data in :ref:`Data_Dialog` whereas when the :ref:`Data_Dialog` is used within other widgets only one row will be added by default.
     6) The data rows can be removed from the **Plot Setup** by selecting entire row (by clicking the row numbers at the extreme left) and clicking the **Remove** button.
-    7) When using the Data_Dialog_ with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.
+    7) When using the :ref:`Data_Dialog` with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.
     8) All the columns of the data will be available as drop down menu in each of the cells for selecting them as *X*, *Y*, and *Yerr* columns to plot.
-    9) After adding the column, go to **Plots** tab within the Data_Dialog_ to visualize the data. See Data_Dialog_Plot_tab_.
+    9) After adding the column, go to **Plots** tab within the :ref:`Data_Dialog` to visualize the data. See :ref:`Data_Dialog_Plot_tab`.
     10) Both the X- and Y-axis labels will be updated with the column names selected in the **Plot Setup**.
     11) In order to switch between the log/linear scales of both the axes check/uncheck the **☐LogX** and **☐LogY** checkboxes.
     12) Line-width and the Symbol sizes can be tweaked by changing the **Line width** and **Point size** options.
     13) By default, the errorbars are not plotted and can be plotted by checking the **☐Errorbar** checkbox, provided that a column is already selected in *Yerr* column of the **Plot Setup**.
 
 .. _Data_Dialog_Plot_Setup:
+
 .. figure:: ./Figures/Data_Dialog_Plot_Setup.png
     :figwidth: 70%
 
-    Plot Setup of Data Dialog
+    Plot Setup of the Data Dialog
 
 .. _Data_Dialog_Plot_tab:
+
 .. figure:: ./Figures/Data_Dialog_Plot_tab.png
     :figwidth: 70%
 
-    Plot tab of Data Dialog
+    Plot tab of the Data Dialog
 
 .. _Function_Editor:
 
@@ -707,7 +709,7 @@ The editor starts with a template to write new functions. The template looks lik
 A new function is basically as a python **class**. The *class name* determines the name of the function. As per the template there are three essential functions needs to be defined within the **class**:
 
 1. **__init__** function
-    . With this function we initialize all the parameters necessary for the class. The function atleast needs a value of an independent parameter **x** which by default takes scaler value **0**. **x** can take a scaler or array of values. **mfit** is a python dictionary to define multiple fitting parameters. In order to learn how to use **mfit** please look at the functions like: MultiSphereAtInterface_, Parratt_, and MultiPeaks_.
+    . With this function we initialize all the parameters necessary for the class. The function atleast needs a value of an independent parameter **x** which by default takes scaler value **0**. **x** can take a scaler or array of values. **mfit** is a python dictionary to define multiple fitting parameters. In order to learn how to use **mfit** please look at the functions like: :ref:`MultiSphereAtInterface`, :ref:`Parratt`, and :ref:`MultiPeaks`.
 
 2. **init_params** function
     . With this function we define among all the parameters which one will be treated as our fitting parameters.

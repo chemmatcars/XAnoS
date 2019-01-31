@@ -3,30 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the Documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FunctionEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/FunctionEditor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/Parratt.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/Parratt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Figures/Parallel_mode.svg" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Figures/Parallel_mode.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/_sources/Fit_Widget.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Fit_Widget.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/docs/objects.inv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,7 +36,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -75,7 +57,7 @@
         <entry file="file://$PROJECT_DIR$/FunctionEditor.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-238">
-              <caret line="28" column="33" lean-forward="true" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+              <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -97,7 +79,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -141,8 +123,8 @@
       <find>self.fit.params['output_params']</find>
       <find>SAXS_Drive</find>
       <find>self.foundError</find>
-      <find>self.value</find>
       <find>Function_Editor_</find>
+      <find>self.value</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -214,10 +196,10 @@
         <option value="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" />
         <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_1.py" />
-        <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
         <option value="$PROJECT_DIR$/FunctionEditor.py" />
         <option value="$PROJECT_DIR$/Functions/XRR/__init__.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
+        <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
       </list>
     </option>
   </component>
@@ -418,13 +400,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Updated Fit_Widget, Data_Dialog and its documentation">
-      <created>1547911802052</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1547911802052</updated>
     </task>
     <task id="LOCAL-00022" summary="Updated Fit_Widget, Data_Dialog and their documentation">
       <created>1548340794777</created>
@@ -762,7 +737,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548719364963</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="Updated the Documentation">
+      <created>1548909069743</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1548909069743</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1130,19 +1112,9 @@
     <entry file="file://$PROJECT_DIR$/FunctionEditor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-238">
-          <caret line="28" column="33" lean-forward="true" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1473">
-          <caret line="46" column="18" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1157,10 +1129,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
+    <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1473">
+          <caret line="46" column="18" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
