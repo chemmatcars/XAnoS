@@ -17,12 +17,12 @@ class ContinuousSphere:
 
         x			: single or array of q-values in the reciprocal unit as R
         R			: An array of radial locations
-        rho		    : Electron density at the locations R
+        rho		: Electron density at the locations R
         Rsig		: Width of the distribution of all the radial locations
         N			: No. of points on which the distribution will be calculated
         dist		: 'Gaussian' or 'LogNormal'
         norm		: Normalization constant
-        bkg		    : Constant Bkg
+        bkg		: Constant Bkg
         """
         if type(x)==list:
             self.x=np.array(x)

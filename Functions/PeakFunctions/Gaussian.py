@@ -4,13 +4,13 @@ from lmfit import Parameters
 class Gaussian:
     def __init__(self,x=0.0,pos=0.5,wid=0.1,norm=1.0,bkg=0.0,mpar={}):
         """
-        Documentation:
         Provides Gaussian function
-        x       : Scalar or array of values
-        pos     : Peak position
-        wid     : Width
-        norm    : Normalization constant
-        bkg     : Constant background
+
+        x    	: Scalar or array of values
+        pos  	: Peak position
+        wid  	: Width
+        norm 	: Normalization constant
+        bkg  	: Constant background
         """
         self.x=x
         self.pos=pos
@@ -21,7 +21,7 @@ class Gaussian:
         self.choices={}
         self.output_params={}
         self.init_params()
-    
+
     def gau(self,x,pos,wid,norm):
         """
         Gaussian function
@@ -34,7 +34,7 @@ class Gaussian:
         self.params.add('wid',value=self.wid,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        
+
     def update_params(self):
         self.params['pos'].value=self.pos
         self.params['wid'].value=self.wid

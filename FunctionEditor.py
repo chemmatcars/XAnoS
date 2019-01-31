@@ -19,6 +19,7 @@ class FunctionEditor(QWidget):
         self.curDir=os.getcwd()
         self.create_ui()
         self.fileSaved=True
+        self.foundError=True
         if funcName==None:
             self.funcName='tmpxyz'
             self.funcNameLineEdit.setText(self.funcName)

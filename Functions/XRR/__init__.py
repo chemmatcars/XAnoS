@@ -1,1 +1,1 @@
-__all__=['MultiPeaks', 'MultiSphereAtInterface', 'Parratt', 'SphereAtInterface']
+__all__=['MultiPeaks', 'MultiSphereAtInterface', 'Parratt', 'SphereAtInterface',]

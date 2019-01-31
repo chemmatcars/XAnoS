@@ -8,8 +8,8 @@ ASAXS Batch Processor
 
 ASAXS data collection involves measurements of SAXS data at several energies below the energy edge of the element of interest from the sample, background, standard samples (Glassy Carbon (GC), Water etc). Sometimes SAXS data are also collected from empty container holding the sample and air background. After the data collection one needs to perform necessary background subtractions and absolute intensity normalizations for all the data. For this purpose, depending upon the sequence of data collection two batch processing widgets are developed:
 
-1. ASAXS_Batch_Processor_1_
-2. ASAXS_Batch_Processor_2_
+1. :ref:`ASAXS_Batch_Processor_1`
+2. :ref:`ASAXS_Batch_Processor_2`
 
 .. _ASAXS_Batch_Processor_1:
 
@@ -24,7 +24,7 @@ This batch processor is designed to process (background subtraction and absolute
 
 **Usage**
 
-ASAXS_Batch_Processor_1_ can be used stand-alone widget by running the command in terminal::
+:ref:`ASAXS_Batch_Processor_1` can be used stand-alone widget by running the command in terminal::
 
     python ASAXS_Batch_Processor_1.py
 
@@ -49,7 +49,7 @@ This batch processor is designed to process (background subtraction and absolute
 
 **Usage**
 
-ASAXS_Batch_Processor_2_ can be used stand-alone widget by running the command in terminal::
+:ref:`ASAXS_Batch_Processor_2` can be used stand-alone widget by running the command in terminal::
 
     python ASAXS_Batch_Processor_2.py
 
@@ -58,7 +58,7 @@ ASAXS_Batch_Processor_2_ can be used stand-alone widget by running the command i
 
     **ASAXS Batch Processor 2** in action.
 
-In **Parallel mode**, generally the data are collected within a same folder with same filename and different filenumber such as **filename_0001.txt**, **filename_0002.txt**,...etc, for all the samples, backgrounds, ... etc. In order to process the data with ASAXS_Batch_Processor_2_ please follow these simples steps:
+In **Parallel mode**, generally the data are collected within a same folder with same filename and different filenumber such as **filename_0001.txt**, **filename_0002.txt**,...etc, for all the samples, backgrounds, ... etc. In order to process the data with :ref:`ASAXS_Batch_Processor_2` please follow these simples steps:
 
 1. Click **Select** button Open the first filename of the whole ASAXS data series. This will add the *Filename* with the full *FilePath* (no file filenumbers) to the **First Sample Name** of the widget.
 2. Provide file numbers for data files corresponding to the first sample, background and standard sample data in the **First Sample Nums** (Default=1), **First Bkg Num** (Default=2), and **First Std Num** (Default=3), respectively.

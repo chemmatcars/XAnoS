@@ -6,9 +6,9 @@ Fit Widget
 .. contents:: Table of Contents
    :depth: 2
 
-Fit_Widget_ provides a platform to simulate and fit a model to 1D data. It uses `LMFIT <https://lmfit.github.io/lmfit-py/>`_ python library for fitting.
+:ref:`Fit_Widget` provides a platform to simulate and fit a model to 1D data. It uses `LMFIT <https://lmfit.github.io/lmfit-py/>`_ python library for fitting.
 Some of the commonly used functions are provided under different categories and the users can develop their own
-categories and fitting functions by using an easy to use template within a Function_Editor_
+categories and fitting functions by using an easy to use template within a :ref:`Function_Editor`
 
 
 .. figure:: ./Figures/Fit_Widget_in_Action.png
@@ -23,7 +23,7 @@ categories and fitting functions by using an easy to use template within a Funct
     2. Functions are categorized under different types and experimental techniques
     3. Easy to add new categories and new functions within the categories
     4. Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.
-    5. An in-built Function_Editor_ is provided with a easy to use template.
+    5. An in-built :ref:`Function_Editor` is provided with a easy to use template.
     6. A Data_Dialog_ is provided for importing and manipulating data files.
     7. Another cool feature of Fit_Widget_ is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
 
@@ -44,13 +44,13 @@ This tutorial is focused on showing a beginner how to use the Fit_Widget_ to:
 
 1. Simulate an already available function
 2. Import and fit a data with a simulated model or function
-3. Write your own model/function using the Function_Editor_
+3. Write your own model/function using the :ref:`Function_Editor`
 
 Simulate an already available function
 --------------------------------------
 The available functions can be simulated by following these steps:
 
-1. In the Fit_Widget_ window go to a **Function** tab
+1. In the :ref:`Fit_Widget` window go to a **Function** tab
 2. Select a categories among the **Function Categories** which will populate the **Functions** lists with functions/models available for that category.
 3. Click on one of the functions which will create a plot the simulated curve in the **Data and Fit** tab and also it will populates the parameter tables in **Parameters** tab with the parameter values required for the functions.
 4. The values of **X-axis** of the simulated curve can be changed by changing the **x** parameter located at the to of the **Parameters** tab.
@@ -58,7 +58,7 @@ The available functions can be simulated by following these steps:
 
 Data Importing and Fitting
 --------------------------
-The main objective of Fit_Widget_ is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using Fit_Widget_:
+The main objective of Fit_Widget_ is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using :ref:`Fit_Widget`:
 
 1. Click the **Data** tab.
 2. Import data file(s) by clicking the **Add Files** button which will prompt for selecting the data files.
@@ -101,7 +101,7 @@ The main objective of Fit_Widget_ is to provide a user to fit a model/function t
 
 Categories and Functions
 ************************
-Fit_Widget_ provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.
+:ref:`Fit_Widget` provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.
 
 * Backgrounds_
     1. PowerLaw_
@@ -463,7 +463,7 @@ Calculates X-ray reflectivity from a system of nanoparticle at an interface betw
 
 Data Dialog
 ***********
-The dialog provides an interface to import and manipulate data for the Fit_Widget_.
+The dialog provides an interface to import and manipulate data for the :ref:`Fit_Widget`.
 
 .. figure:: ./Figures/Data_Dialog.png
     :figwidth: 70%
@@ -485,7 +485,7 @@ The dialog provides an interface to import and manipulate data for the Fit_Widge
 
     **Usage**
 
-    The dialog can be used as a dialog to import data in any other widgets like the Fit_Widget_. For example, within the Fit_Widget_ the Data_Dialog_ is used to manipulate the data by opening the dialog using the following function::
+    The dialog can be used as a dialog to import data in any other widgets like the :ref:`Fit_Widget`. For example, within the :ref:`Fit_Widget` the Data_Dialog_ is used to manipulate the data by opening the dialog using the following function::
 
         from Data_Dialog import Data_Dialog
 
@@ -653,7 +653,7 @@ Data_Dialog_ can also be used for visualizing (within the Data Dialog) and selec
 Function Editor
 ***************
 The editor provides an interface to write new functions to be included
-in the Fit_Widget_. The editor is enabled with python syntax highlighting.
+in the :ref:`Fit_Widget`. The editor is enabled with python syntax highlighting.
 
 .. figure:: ./Figures/Function_Editor.png
     :figwidth: 100%

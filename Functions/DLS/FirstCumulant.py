@@ -17,13 +17,13 @@ class FirstCumulant: #Please put the class name same as the function name
         """
         Calculates auto-correlation function for DLS measurements in water as a solvent
 
-        x			: Independent variable in the form of scalar or array of time intervals in microseconds
-        tfac		: factor to change from time units of from data to seconds
-        lam		: Wavelength of light in Angstroms
-        n			: Refractive index of solvent
+        x     	: Independent variable in the form of scalar or array of time intervals in microseconds
+        tfac 	: factor to change from time units of from data to seconds
+        lam  	: Wavelength of light in Angstroms
+        n    	: Refractive index of solvent
         theta	: Angle of the detector in degrees with respect to the beam direction
-        T			: Temperature of the solvent in kelvin scale
-        D			: Hydrodynamic diameter in Angstroms
+        T     	: Temperature of the solvent in kelvin scale
+        D	     	: Hydrodynamic diameter in Angstroms
         """
         if type(x)==list:
             self.x=np.array(x)

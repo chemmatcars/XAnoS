@@ -16,21 +16,21 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
     def __init__(self,x=0.1,E=10.0,Rc=10.0,rhoc=4.68,Tsh=20.0,rhosh=0.0,rhoup=0.333,rhodown=0.38,sig=3.0, mpar={'Z0':[20],'cov':[1.0],'Z0sig':[0.0]},rrf=1,qoff=0.0,zmin=-10,zmax=100,dz=1.0):
         """
         Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface
-        x           : array of wave-vector transfer along z-direction
-        E           : Energy of x-rays in inverse units of x
-        Rc          : Radius of the core of the nanoparticles
-        rhoc        : Electron density of the core
-        Tsh         : Thickness of the outer shell
-        rhosh       : Electron Density of the outer shell. If 0, the electron density the shell region will be assumed to be filled by the bulk phases depending upon the position of the nanoparticles
-        rhoup       : Electron density of the upper bulk phase
-        rhodown     : Electron density of the lower bulk phase
-        sig         : Roughness of the interface
-        mpar        : The layer parameters where, Z0: position of the layer, cov: coverage of the nanoparticles in the layer, Z0sig: Width of distribution of the nanoparticles in the layer
-        rrf         : 1 for Frensnel normalized refelctivity and 0 for just reflectivity
-        qoff        : q-offset to correct the zero q of the instrument
-        zmin        : minimum depth for electron density calculation
-        zmax        : maximum depth for electron density calculation
-        dz          : minimum slab thickness
+        x       	: array of wave-vector transfer along z-direction
+        E      	: Energy of x-rays in inverse units of x
+        Rc     	: Radius of the core of the nanoparticles
+        rhoc   	: Electron density of the core
+        Tsh     	: Thickness of the outer shell
+        rhosh  	: Electron Density of the outer shell. If 0, the electron density the shell region will be assumed to be filled by the bulk phases depending upon the position of the nanoparticles
+        rhoup   	: Electron density of the upper bulk phase
+        rhodown 	: Electron density of the lower bulk phase
+        sig      	: Roughness of the interface
+        mpar     	: The layer parameters where, Z0: position of the layer, cov: coverage of the nanoparticles in the layer, Z0sig: Width of distribution of the nanoparticles in the layer
+        rrf     	: 1 for Frensnel normalized refelctivity and 0 for just reflectivity
+        qoff    	: q-offset to correct the zero q of the instrument
+        zmin    	: minimum depth for electron density calculation
+        zmax    	: maximum depth for electron density calculation
+        dz      	: minimum slab thickness
         ----------- -----------
         """
         if type(x)==list:
@@ -100,7 +100,7 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
                 tsum=np.zeros_like(len(zt))
                 for j in range(len(Z1)):
                     tsum=tsum+self.NpRho(zt,Rc=Rc,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,Z0=Z1[j],rhoup=rhoup,rhodown=rhodown,cov=cov[i])*dist[j]
-                rhosum=rhosum+tsum/norm      
+                rhosum=rhosum+tsum/norm
         rhos=np.where(zt>0,rhodown,rhoup)
         rho=rhosum-(len(Z0)-1)*rhos
         if sig<1e-3:

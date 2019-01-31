@@ -16,17 +16,18 @@ class MultiPeaks: #Please put the class name same as the function name
     def __init__(self,x=0,power=1,N=0.0,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cN=0.0,cexp=0.0,lexp=1.0,mpar={'type':[0],'pos':[0.5],'wid':[0.1],'norm':[1.0]}):
         """
         Provides multipeak function with different background function
-        x          : independent variable in ter form of a scalar or an array
-        power      : 1 for c0+c1*x+c2x**2+c3*x**3+cN*x**N, -1 for c0+c1/x+c2/x**2+c3/x**3+cN/x**N
-        N          : exponent of arbitrary degree polynomial i.e x**N or 1/x**N
-        c0         : constant background
-        c1         : coeffcient of the linear(x) or inverse(1/x) background
-        c2         : coefficient of the quadratic(x**2) or inverse quadratic(1/x**2) background
-        c3         : coefficient of the cubic bacground
-        cN         : coefficient of the x**N or inverse 1/x**N background
-        cexp       : coefficient of the exponential background
-        lexp       : decay length of the exponential background
-        mpar       : The peak parameters where 'type': (0: Gaussian, 1: lorentzian, 2: step)
+
+        x     	: independent variable in ter form of a scalar or an array
+        power 	: 1 for c0+c1*x+c2x**2+c3*x**3+cN*x**N, -1 for c0+c1/x+c2/x**2+c3/x**3+cN/x**N
+        N     	: exponent of arbitrary degree polynomial i.e x**N or 1/x**N
+        c0    	: constant background
+        c1    	: coeffcient of the linear(x) or inverse(1/x) background
+        c2    	: coefficient of the quadratic(x**2) or inverse quadratic(1/x**2) background
+        c3    	: coefficient of the cubic bacground
+        cN    	: coefficient of the x**N or inverse 1/x**N background
+        cexp  	: coefficient of the exponential background
+        lexp  	: decay length of the exponential background
+        mpar  	: The peak parameters where 'type': (0: Gaussian, 1: lorentzian, 2: step)
         """
         if type(x)==list:
             self.x=np.array(x)

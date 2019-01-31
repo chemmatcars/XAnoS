@@ -16,22 +16,22 @@ class SphereAtInterface: #Please put the class name same as the function name
     def __init__(self,x=0.1,lam=1.0,Rc=10,Rsig=0.0,rhoc=4.68,D=60.0, cov=100,Zo=20.0,decay=3.0,rho_up=0.333,rho_down=0.38,zmin=-50,zmax=100,dz=1,roughness=3.0,rrf=1,mpar={},qoff=0):
         """
         Calculates X-ray reflectivity from a system of nanoparticle at an interface between two media
-        x           : array of wave-vector transfer along z-direction
-        lam         : wavelength of x-rays in invers units of x
-        Rc          : Radius of nanoparticles in inverse units of x
-        rhoc        : Electron density of the nanoparticles
-        cov         : Coverate of the nanoparticles in %
-        D           : The lattice constant of the two dimensional hcp structure formed by the particles
-        Zo          : Average distance between the center of the nanoparticles and the interface
-        decay       : Assuming exponential decay of the distribution of nanoparticles away from the interface
-        rho_up      : Electron density of the upper medium
-        rho_down    : Electron density of the lower medium
-        zmin        : Minimum z value for the electron density profile
-        zmin        : Maximum z value for the electron density profile
-        dz          : minimum slab thickness
-        roughness   : Roughness of the interface
-        rrf         : 1 for Frensnel normalized refelctivity and 0 for just reflectivity
-        qoff        : offset in the value of qz due to alignment errors
+        x         	: array of wave-vector transfer along z-direction
+        lam       	: wavelength of x-rays in invers units of x
+        Rc        	: Radius of nanoparticles in inverse units of x
+        rhoc      	: Electron density of the nanoparticles
+        cov       	: Coverate of the nanoparticles in %
+        D         	: The lattice constant of the two dimensional hcp structure formed by the particles
+        Zo        	: Average distance between the center of the nanoparticles and the interface
+        decay     	: Assuming exponential decay of the distribution of nanoparticles away from the interface
+        rho_up    	: Electron density of the upper medium
+        rho_down	: Electron density of the lower medium
+        zmin      	: Minimum z value for the electron density profile
+        zmax      	: Maximum z value for the electron density profile
+        dz       	: minimum slab thickness
+        roughness	: Roughness of the interface
+        rrf      	: 1 for Frensnel normalized refelctivity and 0 for just reflectivity
+        qoff      	: offset in the value of qz due to alignment errors
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -71,7 +71,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         self.params.add('decay',value=self.decay,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('roughness',value=self.roughness,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('qoff',value=self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        
+
 
     def decayNp(self,z,Rc=10,D=30.0,z0=0.0,xi=1.0,cov=100.0,rhoc=4.65,rhos=[0.334,0.38],sig=1.0):
         if sig<1e-3:

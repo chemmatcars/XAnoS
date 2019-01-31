@@ -16,12 +16,13 @@ class Parratt: #Please put the class name same as the function name
     def __init__(self,x=0.1,E=10.0,mpar={'d':[0.0,1.0],'rho':[0.0,0.334],'beta':[0.0,0.0],'sig':[0.0,3.0]},Nlayers=101,rrf=1,qoff=0.0):
         """
         Calculates X-ray reflectivity from a system of multiple layers using Parratt formalism
-        x               : array of wave-vector transfer along z-direction
-        E               : Energy of x-rays in invers units of x
-        mpar            : The layer parameters where, d: thickness of each layer, rho:Electron ensity of each layer, beta: Absorption coefficient of each layer, sig: roughness of interface separating each layer. The upper and lower thickness should be always  fixed. The roughness of the topmost layer should be always kept 0.
-        Nlayers         : The number of layers in which the layers will be subdivided for applying Parratt formalism
-        rrf             : 1 for Frensnel normalized refelctivity and 0 for just reflectivity
-        qoff            : q-offset to correct the zero q of the instrument
+
+        x     	: array of wave-vector transfer along z-direction
+        E     	: Energy of x-rays in invers units of x
+        mpar  	: The layer parameters where, d: thickness of each layer, rho:Electron ensity of each layer, beta: Absorption coefficient of each layer, sig: roughness of interface separating each layer. The upper and lower thickness should be always  fixed. The roughness of the topmost layer should be always kept 0.
+        Nlayers 	: The number of layers in which the layers will be subdivided for applying Parratt formalism
+        rrf   	: 1 for Frensnel normalized refelctivity and 0 for just reflectivity
+        qoff  	: q-offset to correct the zero q of the instrument
         """
         if type(x)==list:
             self.x=np.array(x)

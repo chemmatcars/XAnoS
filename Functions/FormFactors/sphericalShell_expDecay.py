@@ -20,15 +20,15 @@ class sphericalShell_expDecay: #Please put the class name same as the function n
     def __init__(self, x=0, rmin=0.0, rmax=30.0, Nr=31, Rc=10.0, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0, norm=1.0, bkg=0.0, mpar={}):
         """
         Documentation
-        x           : independent variable in the form of a scalar or an array
-        Rc          : Radial distance in Angstroms after which the solvent contribution starts
-        strho       : Concentration of the ions of interest in the stern layer in Molar
-        tst         : Thickness of stern layer in Angstroms
-        lrho        : The maximum concentration of the diffuse layer in Molars
-        lexp        : The decay length of the diffuse layer assuming exponential decay
-        rhosol      : The surrounding bulk density
-        norm        : Density of particles in Moles/Liter
-        bkg         : Constant background
+        x     	: independent variable in the form of a scalar or an array
+        Rc    	: Radial distance in Angstroms after which the solvent contribution starts
+        strho 	: Concentration of the ions of interest in the stern layer in Molar
+        tst   	: Thickness of stern layer in Angstroms
+        lrho  	: The maximum concentration of the diffuse layer in Molars
+        lexp  	: The decay length of the diffuse layer assuming exponential decay
+        rhosol	: The surrounding bulk density
+        norm  	: Density of particles in Moles/Liter
+        bkg  	: Constant background
         """
         if type(x)==list:
             self.x=np.array(x)
