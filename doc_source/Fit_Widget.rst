@@ -75,9 +75,9 @@ The main objective of :ref:`Fit_Widget` is to provide a user to fit a model/func
 
     * For **Fit Scale=Log**: :math:`\chi^2` is calculated using :math:`\log{(DataY)}-\log{(SimulatedY)}`
     * For **Fit Scale=Linear**: :math:`\chi^2` is calculated using :math:`DataY-SimulatedY`
-13. Click the **Fit** button to start fitting the data which will open up a Fit_Progress_ dialog showing the number of iterations and the :math:`\chi^2` corresponding to the current iterations. The plot of the simulated data will also be updated with the parameters, corresponding to the iteration, as the fit progresses.
+13. Click the **Fit** button to start fitting the data which will open up a :ref:`Fit_Progress` dialog showing the number of iterations and the :math:`\chi^2` corresponding to the current iterations. The plot of the simulated data will also be updated with the parameters, corresponding to the iteration, as the fit progresses.
 14. The iterations will continue until either the minimum :math:`\chi^2` is obtained or **maximum number of iterations (default=1000)**  are reached.
-15. Once the fitting concluded a Fit_Results_ dialog will appear showing all the necessary details about the fitting.
+15. Once the fitting concluded a :ref:`Fit_Results` dialog will appear showing all the necessary details about the fitting.
 16. At this point the user has freedom to either **Accept/Reject** the fitting results.
 
     * **Accepting** will update all the fitting parameters with the :math:`\chi^2`-minimized parameters
