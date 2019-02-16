@@ -11,13 +11,12 @@ from PeakFunctions import Gaussian, LogNormal
 
 class ContinuousSphere:
 
-    def __init__(self,x=0.001,Rsig=0.0,dist='Gaussian',N=50,norm=1.0,bkg=0.0,mpar={'R':[10.0,11.0],'rho':[1.0,0.0]}):
+    def __init__(self,x=0.001,Rsig=0.0,dist='Gaussian',N=50,norm=1.0,bkg=0.0,mpar={'Layers':['Layer 1'],'R':[10.0,11.0],'rho':[1.0,0.0]}):
         """
         This calculates the form factor of a sphere with continous electron density gradient along the radial direction
 
         x			: single or array of q-values in the reciprocal unit as R
-        R			: An array of radial locations
-        rho		: Electron density at the locations R
+        mpar		: Layers: Layers, R: An array of radial locations of layers, rho: Electron density at the locations R
         Rsig		: Width of the distribution of all the radial locations
         N			: No. of points on which the distribution will be calculated
         dist		: 'Gaussian' or 'LogNormal'
@@ -34,15 +33,16 @@ class ContinuousSphere:
         self.bkg=bkg
         self.N=N
         self.__mpar__=mpar
-        self.choices={'dist':['Gaussian','LogNormal']}
+        self.choices={'dist':['Gaussian','LogNormal']} #Its not implemented yet
         self.output_params={}
         self.init_params()
 
     def init_params(self):
         self.params=Parameters()
         for key in self.__mpar__.keys():
-            for i in range(len(self.__mpar__[key])):
-                self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+            if key!='Layers':
+                for i in range(len(self.__mpar__[key])):
+                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)

@@ -709,10 +709,10 @@ The editor starts with a template to write new functions. The template looks lik
 A new function is basically as a python **class**. The *class name* determines the name of the function. As per the template there are three essential functions needs to be defined within the **class**:
 
 1. **__init__** function
-    . With this function we initialize all the parameters necessary for the class. The function atleast needs a value of an independent parameter **x** which by default takes scaler value **0**. **x** can take a scaler or array of values. **mfit** is a python dictionary to define multiple fitting parameters. In order to learn how to use **mfit** please look at the functions like: :ref:`MultiSphereAtInterface`, :ref:`Parratt`, and :ref:`MultiPeaks`.
+    . With this function we initialize all the parameters necessary for the class. The function atleast needs a value of an independent parameter **x** which by default takes scaler value **0**. **x** can take a scaler or array of values. **mpar** is a python dictionary to define multiple fitting parameters. The first parameter within **mpar** dictionary should be **list of strings** to provide some information about the nature of other parameters. In order to learn how to use **mpar** please look at the functions like: :ref:`MultiSphereAtInterface`, :ref:`Parratt`, and :ref:`MultiPeaks`.
 
 2. **init_params** function
-    . With this function we define among all the parameters which one will be treated as our fitting parameters.
+    . With this function we define among all the parameters (single and multiple) which one will be treated as our fitting parameters.
 
 3. **y** function
     . This function actually returns the actual values of the function to be calculated by the **class**

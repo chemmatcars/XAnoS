@@ -56,7 +56,7 @@ Follow the following instructions for installation:
 
     ii) Data Reduction package::
 
-         python Data_Reducer.py
+         python Data_Reduction_Client.py
 
     iii) Data viewer and analysis package::
 

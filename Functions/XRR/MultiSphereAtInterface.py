@@ -13,7 +13,7 @@ from xr_ref import parratt
 
 
 class MultiSphereAtInterface: #Please put the class name same as the function name
-    def __init__(self,x=0.1,E=10.0,Rc=10.0,rhoc=4.68,Tsh=20.0,rhosh=0.0,rhoup=0.333,rhodown=0.38,sig=3.0, mpar={'Z0':[20],'cov':[1.0],'Z0sig':[0.0]},rrf=1,qoff=0.0,zmin=-10,zmax=100,dz=1.0):
+    def __init__(self,x=0.1,E=10.0,Rc=10.0,rhoc=4.68,Tsh=20.0,rhosh=0.0,rhoup=0.333,rhodown=0.38,sig=3.0, mpar={'Layers':['Layer 1'],'Z0':[20],'cov':[1.0],'Z0sig':[0.0]},rrf=1,qoff=0.0,zmin=-10,zmax=100,dz=1.0):
         """
         Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface
         x       	: array of wave-vector transfer along z-direction
@@ -67,8 +67,9 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         self.params.add('rhosh',value=self.rhosh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('sig',value=self.sig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         for key in self.__mpar__.keys():
-            for i in range(len(self.__mpar__[key])):
-                self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+            if key !='Layers':
+                for i in range(len(self.__mpar__[key])):
+                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
 
     def NpRho(self,z,Rc=10,rhoc=4.68,Tsh=20,rhosh=0.0,Z0=20,rhoup=0.333,rhodown=0.38,cov=1.0):

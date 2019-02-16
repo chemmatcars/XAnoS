@@ -40,7 +40,7 @@ class CoreShellSphere:
         self.bkg=bkg
         self.N=N
         self.__mpar__=mpar
-        self.choices={'dist':['Gaussian','LogNormal']}
+        self.choices={'dist':['Gaussian','LogNormal']} # Its not implemented yet
         self.output_params={}
         self.init_params()
 

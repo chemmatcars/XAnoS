@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 
 
 class MultiPeaks: #Please put the class name same as the function name
-    def __init__(self,x=0,power=1,N=0.0,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cN=0.0,cexp=0.0,lexp=1.0,mpar={'type':[0],'pos':[0.5],'wid':[0.1],'norm':[1.0]}):
+    def __init__(self,x=0,power=1,N=0.0,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cN=0.0,cexp=0.0,lexp=1.0,mpar={'type':['Gau'],'pos':[0.5],'wid':[0.1],'norm':[1.0]}):
         """
         Provides multipeak function with different background function
 
@@ -27,7 +27,7 @@ class MultiPeaks: #Please put the class name same as the function name
         cN    	: coefficient of the x**N or inverse 1/x**N background
         cexp  	: coefficient of the exponential background
         lexp  	: decay length of the exponential background
-        mpar  	: The peak parameters where 'type': (0: Gaussian, 1: lorentzian, 2: step)
+        mpar  	: The peak parameters where 'type': ('Gau': Gaussian, 'Lor': lorentzian, 'Ste': step)
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -61,8 +61,9 @@ class MultiPeaks: #Please put the class name same as the function name
         self.params.add('cexp',value=self.cexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         self.params.add('lexp',value=self.lexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         for key in self.__mpar__.keys():
-            for i in range(len(self.__mpar__[key])):
-                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+            if key!='type':
+                for i in range(len(self.__mpar__[key])):
+                        self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
 
     def gau(self,x,pos,wid,norm):
         """
@@ -86,7 +87,7 @@ class MultiPeaks: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        func={0:self.gau,1:self.lor,2:self.ste}
+        func={'Gau':self.gau,'Lor':self.lor,'Ste':self.ste}
         self.output_params={}
         res=np.zeros_like(self.x)
         for i in range(len(self.__mpar__['type'])):

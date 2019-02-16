@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/Fit_Widget.py" line="1239" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the Documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/XRR/Parratt.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/Parratt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Fit_Widget.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_sources/Fit_Widget.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Fit_Widget.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,17 +33,24 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-          <provider selected="true" editor-type-id="restructured-text-editor" />
+        <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="167">
+              <caret line="1232" column="42" lean-forward="true" selection-start-line="1232" selection-start-column="42" selection-end-line="1232" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#328#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_1.py">
+        <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="503">
-              <caret line="449" column="45" selection-start-line="449" selection-start-column="45" selection-end-line="449" selection-end-column="45" />
+            <state relative-caret-position="408">
+              <caret line="26" column="25" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
               <folding>
-                <element signature="e#0#28#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -36,46 +62,63 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+        <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1473">
-              <caret line="46" column="18" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="18" />
+            <state relative-caret-position="561">
+              <caret line="36" column="16" selection-start-line="36" selection-start-column="16" selection-end-line="36" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/XRR/Parratt.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="731">
+              <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="884">
+              <caret line="55" selection-start-line="55" selection-end-line="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="35" column="79" selection-start-line="35" selection-start-column="79" selection-end-line="35" selection-end-column="79" />
               <folding>
-                <element signature="e#0#328#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FunctionEditor.py">
+        <entry file="file://$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-238">
-              <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+            <state relative-caret-position="663">
+              <caret line="42" column="80" selection-start-line="42" selection-start-column="80" selection-end-line="42" selection-end-column="80" />
               <folding>
-                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Functions/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py">
+        <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Cylinder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="33" column="71" selection-start-line="17" selection-start-column="8" selection-end-line="33" selection-end-column="71" />
+            <state relative-caret-position="1428">
+              <caret line="87" column="53" selection-start-line="87" selection-start-column="53" selection-end-line="87" selection-end-column="53" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
-          <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
     </leaf>
@@ -89,15 +132,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>openDataDialog</find>
-      <find>functionCalled</find>
-      <find>conf_interv_status</find>
-      <find>self.fit.callback</find>
-      <find>self.fit=</find>
-      <find>self.callback</find>
-      <find>self.sfnames</find>
-      <find>Data_dialog</find>
-      <find>acceptWidget</find>
       <find>remove</find>
       <find>removeRow</find>
       <find>Data_Dia</find>
@@ -119,6 +153,15 @@
       <find>Function_Editor_</find>
       <find>self.value</find>
       <find>Fit_pg</find>
+      <find>Accept</find>
+      <find>self.add_mpar_button</find>
+      <find>add_mpar(</find>
+      <find>syntax</find>
+      <find>print</find>
+      <find>setW</find>
+      <find>self.special_keys</find>
+      <find>setCellWidget</find>
+      <find>'choices'</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -143,9 +186,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor.ipynb" />
-        <option value="$PROJECT_DIR$/batch_settings.txt" />
-        <option value="$PROJECT_DIR$/readData.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
         <option value="$PROJECT_DIR$/Fit_widget.py" />
         <option value="$PROJECT_DIR$/doc/SAXS_Drive_link.rst" />
@@ -162,9 +202,7 @@
         <option value="$PROJECT_DIR$/doc/ASAXS_Widget.rst" />
         <option value="$PROJECT_DIR$/ASAXS_widget.py" />
         <option value="$PROJECT_DIR$/doc/conf.py" />
-        <option value="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" />
-        <option value="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" />
         <option value="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" />
         <option value="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" />
@@ -172,13 +210,10 @@
         <option value="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" />
         <option value="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Formol.py" />
-        <option value="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" />
         <option value="$PROJECT_DIR$/doc/Fit_Widget.rst" />
         <option value="$PROJECT_DIR$/doc/GIT_Token.txt" />
         <option value="$PROJECT_DIR$/functionTemplate.txt" />
-        <option value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
         <option value="$PROJECT_DIR$/Data_Collector_Server.py" />
-        <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" />
         <option value="$PROJECT_DIR$/README" />
         <option value="$PROJECT_DIR$/doc_source/conf.py" />
@@ -192,16 +227,24 @@
         <option value="$PROJECT_DIR$/FunctionEditor.py" />
         <option value="$PROJECT_DIR$/Functions/XRR/__init__.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
-        <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
+        <option value="$USER_HOME$/Desktop/User_Stats/User_Stats.rst" />
+        <option value="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" />
+        <option value="$PROJECT_DIR$/Functions/XRR/Parratt.py" />
+        <option value="$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" />
+        <option value="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" />
+        <option value="$PROJECT_DIR$/doc_source/Fit_Widget.rst" />
+        <option value="$PROJECT_DIR$/Fit_Widget.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-15" />
     <option name="y" value="-15" />
-    <option name="width" value="3873" />
-    <option name="height" value="2193" />
+    <option name="width" value="3875" />
+    <option name="height" value="2195" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -227,7 +270,30 @@
             <path>
               <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
               <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
               <item name="Functions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="Backgrounds" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="FormFactors" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="PeakFunctions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
@@ -242,7 +308,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RecentsManager">
@@ -266,7 +332,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ASAXS_Batch_Processor_2">
+  <component name="RunManager" selected="Python.Cylinder">
     <configuration name="ASAXS_Batch_Processor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -330,6 +396,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Cylinder" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="XAnoS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Functions/FormFactors" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Data_Reduction_Client" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -351,41 +438,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Fit_Widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="XAnoS" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fit_Widget.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.Data_Reduction_Client" />
-      <item itemvalue="Python.Fit_Widget" />
       <item itemvalue="Python.ASAXS_Batch_Processor" />
       <item itemvalue="Python.ASAXS_Batch_Processor_1" />
       <item itemvalue="Python.ASAXS_Batch_Processor_2" />
+      <item itemvalue="Python.Cylinder" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Cylinder" />
         <item itemvalue="Python.ASAXS_Batch_Processor_2" />
         <item itemvalue="Python.ASAXS_Batch_Processor_1" />
         <item itemvalue="Python.Data_Reduction_Client" />
         <item itemvalue="Python.ASAXS_Batch_Processor" />
-        <item itemvalue="Python.Fit_Widget" />
       </list>
     </recent_temporary>
   </component>
@@ -399,13 +465,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Merged with SAXS_Drive_Beta">
-      <created>1548485539144</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1548485539144</updated>
     </task>
     <task id="LOCAL-00025" summary="Merged with SAXS_Drive_Beta">
       <created>1548486129225</created>
@@ -743,7 +802,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548909868327</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="Updated the Documentation">
+      <created>1548939140796</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1548939140796</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TodoView">
@@ -759,20 +825,20 @@
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19682959" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11690885" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.18528996" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.18387553" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5063291" side_tool="true" weight="0.35085714" />
       <window_info anchor="bottom" id="Python Console" order="8" weight="0.3064972" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32909605" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12114286" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3281471" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12022631" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -829,82 +895,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="58" column="29" selection-start-line="58" selection-start-column="29" selection-end-line="58" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-595">
-          <caret line="19" column="37" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/PeakFunctions.py.bak">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-447" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="299" column="49" selection-start-line="299" selection-start-column="49" selection-end-line="299" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="21" column="30" selection-start-line="13" selection-start-column="8" selection-end-line="21" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Sphere.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="74" selection-start-line="12" selection-start-column="8" selection-end-line="19" selection-end-column="74" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="32" column="44" selection-start-line="17" selection-start-column="8" selection-end-line="32" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/XRR/Parratt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="23" column="74" selection-start-line="17" selection-start-column="8" selection-end-line="23" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="32" selection-start-line="9" selection-start-column="8" selection-end-line="14" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc/GIT_Token.txt" />
     <entry file="file://$PROJECT_DIR$/../GIT_Token.txt">
       <provider selected="true" editor-type-id="text-editor">
@@ -943,13 +933,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Cylinder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1394">
-          <caret line="85" column="33" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27030">
@@ -957,13 +940,6 @@
           <folding>
             <element signature="e#0#220#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="64" selection-start-line="62" selection-end-line="64" />
         </state>
       </provider>
     </entry>
@@ -988,9 +964,6 @@
           <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1083,18 +1056,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="33" column="71" selection-start-line="17" selection-start-column="8" selection-end-line="33" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface .py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-153" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface .py" />
     <entry file="file://$PROJECT_DIR$/Functions/XRR/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1102,22 +1064,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FunctionEditor.py">
+    <entry file="file://$USER_HOME$/Desktop/User_Stats/User_Stats.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-238">
-          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-52172">
+          <caret line="296" column="19" lean-forward="true" selection-start-line="296" selection-start-column="19" selection-end-line="296" selection-end-column="19" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Desktop/User_Stats/User_Stats.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="503">
+        <state relative-caret-position="7497">
           <caret line="449" column="45" selection-start-line="449" selection-start-column="45" selection-end-line="449" selection-end-column="45" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
@@ -1125,15 +1087,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/FunctionEditor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="33" column="71" selection-start-line="17" selection-start-column="8" selection-end-line="33" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Energy_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="380" column="49" lean-forward="true" selection-start-line="380" selection-start-column="49" selection-end-line="380" selection-end-column="49" />
+          <folding>
+            <element signature="e#1045#1073#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ImageCutWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-606">
+          <caret line="472" column="49" selection-start-line="472" selection-start-column="36" selection-end-line="472" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1473">
-          <caret line="46" column="18" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="18" />
+        <state relative-caret-position="167">
+          <caret line="1232" column="42" lean-forward="true" selection-start-line="1232" selection-start-column="42" selection-end-line="1232" selection-end-column="42" />
           <folding>
             <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="26" column="25" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1141,8 +1156,53 @@
     <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
+    <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="36" column="16" selection-start-line="36" selection-start-column="16" selection-end-line="36" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/XRR/Parratt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="884">
+          <caret line="55" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="35" column="79" selection-start-line="35" selection-start-column="79" selection-end-line="35" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="42" column="80" selection-start-line="42" selection-start-column="80" selection-end-line="42" selection-end-column="80" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/Cylinder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1428">
+          <caret line="87" column="53" selection-start-line="87" selection-start-column="53" selection-end-line="87" selection-end-column="53" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

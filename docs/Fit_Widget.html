@@ -1160,12 +1160,12 @@ in the <a class="reference internal" href="#fit-widget"><span class="std std-ref
 <ol class="arabic simple">
 <li><dl class="first docutils">
 <dt><strong>__init__</strong> function</dt>
-<dd>. With this function we initialize all the parameters necessary for the class. The function atleast needs a value of an independent parameter <strong>x</strong> which by default takes scaler value <strong>0</strong>. <strong>x</strong> can take a scaler or array of values. <strong>mfit</strong> is a python dictionary to define multiple fitting parameters. In order to learn how to use <strong>mfit</strong> please look at the functions like: <a class="reference internal" href="#multisphereatinterface"><span class="std std-ref">MultiSphereAtInterface</span></a>, <a class="reference internal" href="#parratt"><span class="std std-ref">Parratt</span></a>, and <a class="reference internal" href="#multipeaks"><span class="std std-ref">MultiPeaks</span></a>.</dd>
+<dd>. With this function we initialize all the parameters necessary for the class. The function atleast needs a value of an independent parameter <strong>x</strong> which by default takes scaler value <strong>0</strong>. <strong>x</strong> can take a scaler or array of values. <strong>mpar</strong> is a python dictionary to define multiple fitting parameters. The first parameter within <strong>mpar</strong> dictionary should be <strong>list of strings</strong> to provide some information about the nature of other parameters. In order to learn how to use <strong>mpar</strong> please look at the functions like: <a class="reference internal" href="#multisphereatinterface"><span class="std std-ref">MultiSphereAtInterface</span></a>, <a class="reference internal" href="#parratt"><span class="std std-ref">Parratt</span></a>, and <a class="reference internal" href="#multipeaks"><span class="std std-ref">MultiPeaks</span></a>.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><strong>init_params</strong> function</dt>
-<dd>. With this function we define among all the parameters which one will be treated as our fitting parameters.</dd>
+<dd>. With this function we define among all the parameters (single and multiple) which one will be treated as our fitting parameters.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
