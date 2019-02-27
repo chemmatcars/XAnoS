@@ -17,9 +17,9 @@ class PowerLaw: #Please put the class name same as the function name
         """
         The power law function is y=Ax^n
 
-        x		: Independent variable in the form of a scalar or an array
-        A		: Amplitude
-        n		: Exponent
+        x 	: Independent variable in the form of a scalar or an array
+        A 	: Amplitude
+        n 	: Exponent
         """
 
         if type(x)==list:

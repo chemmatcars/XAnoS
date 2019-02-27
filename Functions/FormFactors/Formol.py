@@ -22,22 +22,20 @@ class Formol: #Please put the class name same as the function name
         """
         Calculates the form factor for two different kinds of  molecules in cm^-1 for which the XYZ coordinates of the all the atoms composing the molecules are known
 
-        =======   =======================================================================
-        x         scalar or array of reciprocal wave vectors
-        E         Energy of the X-rays at which the scattering pattern is measured
-        fname1    Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the molecule of type 1
-        eta1      Fraction of molecule type 1
-        fname2    Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the moleucule of type 2
-        eta2     Fraction of molecule type 2
-        rmin      Minimum radial distance for calculating electron density
-        rmax      Maximum radial distance for calculating electron density
-        Nr        Number of points at which electron density will be calculated
-        qoff      Q-offset may be required due to uncertainity in Q-calibration
-        sol       No of electrons in solvent molecule (Ex: H2O has 18 electrons)
-        sig       Debye-waller factor
-        norm      Normalization constant which can be the molar concentration of the particles
-        bkg       Background
-        =======   ========================================================================
+        x    	scalar or array of reciprocal wave vectors
+        E    	Energy of the X-rays at which the scattering pattern is measured
+        fname1	Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the molecule of type 1
+        eta1 	Fraction of molecule type 1
+        fname2	Name with path of the .xyz file containing X, Y, Z coordinates of all the atoms of the moleucule of type 2
+        eta2 	Fraction of molecule type 2
+        rmin 	Minimum radial distance for calculating electron density
+        rmax 	Maximum radial distance for calculating electron density
+        Nr    	Number of points at which electron density will be calculated
+        qoff 	Q-offset may be required due to uncertainity in Q-calibration
+        sol	 	No of electrons in solvent molecule (Ex: H2O has 18 electrons)
+        sig  	Debye-waller factor
+        norm 	Normalization constant which can be the molar concentration of the particles
+        bkg 	Background
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -113,11 +111,11 @@ class Formol: #Please put the class name same as the function name
             atoms[i]['pos']=atoms[i]['pos']-cen
             atoms[i]['distance']=np.sqrt(np.sum(atoms[i]['pos']**2))
         return atoms
-    
+
     def calc_xtal_rho(self, fname,rmin=0,rmax=10,Nr=81,energy=None):
         """
         Calculates radially averaged complex electron density in el/Angs^3 of a molecule from the co-ordinates obtained from X-ray crystallography.
-        
+
         fname   :: .xyz file having all the X, Y, Z coordinates of atoms of the molecule in Angstroms
         rmin    :: Minimum radial distance in Angstroms (If rmin=0 then calculaiton will be done with rmin=1e-3 to avoid r=0 in the density calculation)
         rmax    :: Maximum radial distance in Angstroms
@@ -141,11 +139,11 @@ class Formol: #Please put the class name same as the function name
                 rho=rho+Nrho*(self.__xdb__.f0(ele,0.0)+f1+1.0j*f2)
     #print(r[:-1]+(),rho)
         return r,rho/4/np.pi/r**2/dr+self.sol*np.where(rho<1e-6,1.0,0.0)
-    
+
     def calc_form(self,q,r,rho):
         """
         Calculates the isotropic form factor in cm^-1 using the isotropic electron density as a funciton of radial distance
-        
+
         q       :: scaler or array of reciprocal reciprocal wave vector in inv. Angstroms at which the form factor needs to be calculated in
         r       :: array of radial distances at which he electron density in known in Angstroms
         rho     :: array of electron densities as a funciton of radial distance in el/Angstroms^3. Note: The electron density should decay to zero at the last radial distance

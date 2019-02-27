@@ -11,13 +11,13 @@ class Sphere:
     def __init__(self, x=0.001, R=1.0, Rsig=0.0, dist='Gaussian', N=50, rhoc=1.0, rhosol=0.0, norm=1.0, bkg=0.0,mpar={}):
         """
         Calculates the form factor of a solid sphere with size distribution
-        x: Array of q-values in the same reciprocal unit as R and Rsig
-        R: Mean radius of the solid spheres
-        Rsig: Width of the distribution of solid spheres
-        dist: Gaussian or LogNormal
-        N: No. of points on which the distribution will be calculated
-        rhoc: Electron density of the particle
-        rhosol: Electron density of the solvent or surrounding environment
+        x     	: Array of q-values in the same reciprocal unit as R and Rsig
+        R     	: Mean radius of the solid spheres
+        Rsig  	: Width of the distribution of solid spheres
+        dist  	: Gaussian or LogNormal
+        N     	: No. of points on which the distribution will be calculated
+        rhoc  	: Electron density of the particle
+        rhosol	: Electron density of the solvent or surrounding environment
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -86,5 +86,7 @@ class Sphere:
                 return np.ones_like(x)
 
 
-
-
+if __name__=='__main__':
+    x=np.arange(0.001,1.0,0.1)
+    fun=Sphere(x=x)
+    print(fun.y())

@@ -10,15 +10,15 @@ class Rod_Sphere: #Please put the class name same as the function name
     def __init__(self,x=0, R=10.0, Rsig=0.0, dist='Gaussian', qc=0.0217, qpar=0.1, qparsig=0.0,norm=1.0, bkg=0.0,mpar={}):
         """
         Provides rod scan from spherical objects dispersed on a substrate
-        x: array of Qz values of rod scan
-        R: Mean radius of spheres in inverse units of Qz
-        Rsig: Width of distribution of spheres in inverse units of Qz
-        dist: 'Gaussian' or 'LogNormal'
-        qc: Critcal wave-vector for the substrate on which sphere are aranged
-        qpar: In-plane wave-vector at which the rod was measured
-        qparsig: The width of the peak at which the rod was measured
-        norm: Normalization constant
-        bkg: Constant background
+        x       	: array of Qz values of rod scan
+        R       	: Mean radius of spheres in inverse units of Qz
+        Rsig   	: Width of distribution of spheres in inverse units of Qz
+        dist   	: 'Gaussian' or 'LogNormal'
+        qc     	: Critcal wave-vector for the substrate on which sphere are aranged
+        qpar   	: In-plane wave-vector at which the rod was measured
+        qparsig	: The width of the peak at which the rod was measured
+        norm   	: Normalization constant
+        bkg    	: Constant background
         """
         if type(x)==list:
             self.x=np.array(x)

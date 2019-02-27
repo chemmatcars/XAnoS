@@ -13,13 +13,13 @@ class Ellipsoid:
         """
         Calculates the form factor of an ellipsoid
 
-        x			: Single or Array of q-values in the reciprocal unit as R1 and R2
-        R1		:  Semi-minor of the ellipsoid
+        x      	: Single or Array of q-values in the reciprocal unit as R1 and R2
+        R1    	:  Semi-minor of the ellipsoid
         R2		: Semi-major axis of the ellipsoid
-        rhoc				: Electron density of the ellipsoid
-        rhosol			: Electron density of the surrounding media/solvent
-        norm		: Normalization constant
-        bkg		: Constant Bkg
+        rhoc  	: Electron density of the ellipsoid
+        rhosol	: Electron density of the surrounding media/solvent
+        norm  	: Normalization constant
+        bkg   	: Constant Bkg
         """
         if type(x)==list:
             self.x=np.array(x)

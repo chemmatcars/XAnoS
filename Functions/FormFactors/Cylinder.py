@@ -15,7 +15,7 @@ from scipy.integrate import quad, romb
 
 
 class Cylinder: #Please put the class name same as the function name
-    def __init__(self,x=0, R=1.0, Rsig=0.0, H=1.0, Hsig=0.0, dist='Gaussian', norm=1.0,bkg=0.0, mpar={}):
+    def __init__(self,x=0, R=1.0, Rsig=0.0, H=1.0, Hsig=0.0, Nsample=101, dist='Gaussian', norm=1.0,bkg=0.0, mpar={}):
         """
         Form factor of a poly-dispersed cylinder
         x           : Independent variable in the form of a scalar or an array of Q-values
@@ -23,6 +23,7 @@ class Cylinder: #Please put the class name same as the function name
         Rsig        : Width of the distribution in R
         H           : Length/Height of the cylinder in the same inverse unit as Q
         Hsig        : Width of the distribution in H
+        Nsample     : No. of points for doing the averging
         dist        : The type of distribution: "Gaussian" or "LogNormal"
         norm        : Normalization constant
         bkg         : Additive constant background
@@ -38,6 +39,7 @@ class Cylinder: #Please put the class name same as the function name
         self.dist=dist
         self.norm=norm
         self.bkg=bkg
+        self.Nsample=Nsample
         self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
         self.init_params()
@@ -48,17 +50,17 @@ class Cylinder: #Please put the class name same as the function name
         self.param.add('sig',value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
         """
         self.params=Parameters()
-        self.params.add('R',value=self.R,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Rsig',value=self.Rsig,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('H',value=self.H,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Hsig',value=self.Hsig,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('R',value=self.R,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('norm',value=self.norm,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('bkg', value=self.bkg, min=-np.inf, max=np.inf, expr=None, brute_step=None)
+        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('H',value=self.H,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('Hsig',value=self.Hsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('bkg', value=self.bkg,vary=0,min=-np.inf, max=np.inf, expr=None, brute_step=None)
 
     def cyl_form(self,mu,q,R,H):
         """
-        Computes the amplitute of cylinderical form factor
+        Computes the amplitute of cylindrical form factor
         """
         x=q*mu*H/2
         y=q*np.sqrt(1-mu**2)*R
@@ -80,11 +82,11 @@ class Cylinder: #Please put the class name same as the function name
         Hsig=self.params['Hsig'].value
         norm=self.params['norm'].value
         bkg=self.params['bkg'].value
-        mu=np.linspace(-1,1,101)
+        mu=np.linspace(-1,1,self.Nsample)
         res=[]
         for q in self.x:
-            res.append(romb(self.cyl_form(mu,q,R,H)))
-        res=np.array(res)/2.0
+            res.append(np.sum([self.cyl_form(m,q,R,H) for m in mu]))
+        res=np.array(res)*(mu[1]-mu[0])/2.0
         return norm*res+bkg
 
 
