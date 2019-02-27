@@ -15,14 +15,14 @@ class ContinuousSphere:
         """
         This calculates the form factor of a sphere with continous electron density gradient along the radial direction
 
-        x			: single or array of q-values in the reciprocal unit as R
-        R			: An array of radial locations
-        rho		    : Electron density at the locations R
-        Rsig		: Width of the distribution of all the radial locations
-        N			: No. of points on which the distribution will be calculated
-        dist		: 'Gaussian' or 'LogNormal'
-        norm		: Normalization constant
-        bkg		    : Constant Bkg
+        x          : single or array of q-values in the reciprocal unit as R
+        R          : An array of radial locations
+        rho        : Electron density at the locations R
+        Rsig       : Width of the distribution of all the radial locations
+        N          : No. of points on which the distribution will be calculated
+        dist       :		: 'Gaussian' or 'LogNormal'
+        norm		     : Normalization constant
+        bkg		      : Constant Bkg
         """
         if type(x)==list:
             self.x=np.array(x)
