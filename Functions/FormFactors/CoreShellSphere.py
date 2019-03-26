@@ -46,15 +46,15 @@ class CoreShellSphere:
 
     def init_params(self):
         self.params=Parameters()
-        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('rhoc',value=self.rhoc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('sh',value=self.sh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('shsig',value=self.shsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('rhosh',value=self.rhosh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('rhosol',value=self.rhosol,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('rhoc',value=self.rhoc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('sh',value=self.sh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('shsig',value=self.shsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('rhosh',value=self.rhosh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('rhosol',value=self.rhosol,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
     def coreshell(self,x,R,rhoc,sh,rhosh,rhosol):
         """
@@ -67,15 +67,23 @@ class CoreShellSphere:
 
     def y(self):
         self.output_params={}
+        self.R=self.params['R'].value
+        self.Rsig=self.params['Rsig'].value
+        self.rhoc=self.params['rhoc'].value
+        self.sh=self.params['sh'].value
+        self.shsig=self.params['shsig'].value
+        self.rhosh=self.params['rhosh']
+        self.rhosol=self.params['rhosol'].value
+        self.norm=self.params['norm'].value
+        self.bkg=self.params['bkg'].value
+
         if self.Rsig<1e-3 and self.shsig<1e-3:
             amp,res= self.coreshell(self.x,self.R,self.rhoc,self.sh,self.rhosh,self.rhosol)
-            self.rdist=None
-            self.sdist=None
             return self.norm*res+self.bkg
         elif self.Rsig>1e-3 and self.shsig<1e-3:
             if self.dist=='Gaussian':
                 gau=Gaussian.Gaussian(x=0.001,pos=self.R,wid=self.Rsig)
-                rmin,rmax=find_minmax(gau,pos=self.R,wid=self.Rsig)
+                rmin,rmax=max(0,self.R-5*self.Rsig),self.R+5*self.Rsig#find_minmax(gau,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
                 gau.x=r
                 dist=gau.y()
@@ -93,7 +101,7 @@ class CoreShellSphere:
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
                 lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
-                rmin,rmax=find_minmax(lgn,pos=self.R,wid=self.Rsig)
+                rmin,rmax=0.001,self.R*(1+np.exp(5*self.Rsig))#find_minmax(lgn,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
                 lgn.x=r
                 dist=lgn.y()
@@ -115,7 +123,7 @@ class CoreShellSphere:
         elif self.Rsig<1e-3 and self.shsig>1e-3:
             if self.dist=='Gaussian':
                 gau=Gaussian.Gaussian(x=0.001,pos=self.sh,wid=self.shsig)
-                shmin,shmax=find_minmax(gau,pos=self.sh,wid=self.shsig)
+                shmin,shmax=max(0,self.sh-5*self.shsig),self.sh+5*self.shsig#find_minmax(gau,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 gau.x=sh
                 dist=gau.y()
@@ -133,7 +141,7 @@ class CoreShellSphere:
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
                 lgn=LogNormal.LogNormal(x=0.001,pos=self.sh,wid=self.shsig)
-                shmin,shmax=find_minmax(lgn,pos=self.sh,wid=self.shsig)
+                shmin,shmax=0.001,self.sh*(1+np.exp(5*self.shsig))#find_minmax(lgn,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 lgn.x=sh
                 dist=lgn.y()
@@ -155,9 +163,9 @@ class CoreShellSphere:
         else:
             if self.dist=='Gaussian':
                 gau=Gaussian.Gaussian(x=0.001,pos=self.R,wid=self.Rsig)
-                rmin,rmax=find_minmax(gau,pos=self.R,wid=self.Rsig)
+                rmin,rmax=max(0,self.R-5*self.Rsig),self.R+5*self.Rsig#find_minmax(gau,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
-                shmin,shmax=find_minmax(gau,pos=self.sh,wid=self.shsig)
+                shmin,shmax=max(0,self.sh-5*self.shsig),self.sh+5*self.shsig#find_minmax(gau,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 R,Sh=np.meshgrid(r,sh)
                 dist=np.exp(-(R-self.R)**2/2.0/self.Rsig**2)*np.exp(-(Sh-self.sh)**2/2.0/self.shsig**2)
@@ -177,9 +185,9 @@ class CoreShellSphere:
                     return self.norm*np.sum(res*dist)/sumdist+self.bkg
             elif self.dist=='LogNormal':
                 lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
-                rmin,rmax=find_minmax(lgn,pos=self.R,wid=self.Rsig)
+                rmin,rmax=0.001,self.R*(1+5*np.exp(self.Rsig))#min(0,self.R-5*self.Rsig),self.R+5*self.Rsig#find_minmax(lgn,pos=self.R,wid=self.Rsig)
                 r=np.linspace(rmin,rmax,self.N)
-                shmin,shmax=find_minmax(lgn,pos=self.sh,wid=self.shsig)
+                shmin, shmax = 0.001, self.sh*(1 + 5*np.exp(self.shsig))#find_minmax(lgn,pos=self.sh,wid=self.shsig)
                 sh=np.linspace(shmin,shmax,self.N)
                 R,Sh=np.meshgrid(r,sh)
                 dist=np.exp(-(np.log(R)-np.log(self.R))**2/2.0/self.Rsig**2)*np.exp(-(np.log(Sh)-np.log(self.sh))**2/2.0/self.shsig**2)/R/Sh
@@ -187,8 +195,7 @@ class CoreShellSphere:
                 self.output_params['Distribution2D']={'x':R,'y':Sh,'z':dist/sumdist}
                 self.output_params['Distribution1D_R']={'x':r,'y':np.exp(-(np.log(r)-np.log(self.R))**2/2.0/self.Rsig**2)/r/sumdist}
                 self.output_params['Distribution1D_sh']={'x':sh,'y':np.exp(-(np.log(sh)-np.log(self.sh))**2/2.0/self.shsig**2)/sh/sumdist}
-                self.rdist,self.shdist=R,Sh
-                self.srshdist=dist/sumdist
+                #self.srshdist=dist/sumdist
                 if type(self.x)==np.ndarray:
                     ffactor=[]
                     for x in self.x:

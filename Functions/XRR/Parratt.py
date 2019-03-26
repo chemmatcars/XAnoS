@@ -47,8 +47,8 @@ class Parratt: #Please put the class name same as the function name
         for key in self.__mpar__.keys():
             if key!='Layers':
                 for i in range(len(self.__mpar__[key])):
-                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-            self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+            self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
     def calcProfile(self):
         """

@@ -61,16 +61,16 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
-        self.params.add('Rc',value=self.Rc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('rhoc',value=self.rhoc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Tsh',value=self.Tsh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('rhosh',value=self.rhosh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('sig',value=self.sig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('Rc',value=self.Rc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('rhoc',value=self.rhoc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('Tsh',value=self.Tsh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('rhosh',value=self.rhosh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('sig',value=self.sig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         for key in self.__mpar__.keys():
             if key !='Layers':
                 for i in range(len(self.__mpar__[key])):
-                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
     def NpRho(self,z,Rc=10,rhoc=4.68,Tsh=20,rhosh=0.0,Z0=20,rhoup=0.333,rhodown=0.38,cov=1.0):
         D=Rc+Tsh

@@ -255,10 +255,10 @@ class Data_Dialog(QDialog):
                     except:
                         try:
                             expr=self.insertColDialog.colExprTextEdit.toPlainText()
-                            expr=expr.replace('col.','self.data[\'data\'].')
-                            self.data['data'][colname]=eval(expr)
+                            cexpr=expr.replace('col','self.data[\'data\']')
+                            self.data['data'][colname]=eval(cexpr)
                         except:
-                            QMessageBox.warning(self,'Column Error','Please check the expression.\n The expression should be in this format:\n col.column_name*5',QMessageBox.Ok)
+                            QMessageBox.warning(self,'Column Error','Please check the expression.\n The expression should be in this format:\n col[column_name]*5',QMessageBox.Ok)
                             self.addDataColumn(colName='colx',expr=expr)
                     self.setData2Table()
                     self.data['meta']['col_names'].append(colname)

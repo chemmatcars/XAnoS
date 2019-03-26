@@ -52,7 +52,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         self.roughness=roughness
         self.rrf=rrf
         self.qoff=qoff
-        self.choices={}
+        self.choices={'rrf':[1,0]}
         self.output_params={}
         self.__mpar__=mpar
 
@@ -63,14 +63,14 @@ class SphereAtInterface: #Please put the class name same as the function name
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
-        self.params.add('Rc',value=self.Rc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('rhoc',value=self.rhoc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Zo',value=self.Zo,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('D',value=self.D,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('cov',value=self.cov,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('decay',value=self.decay,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('roughness',value=self.roughness,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('qoff',value=self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('Rc',value=self.Rc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('rhoc',value=self.rhoc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('Zo',value=self.Zo,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('D',value=self.D,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('cov',value=self.cov,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('decay',value=self.decay,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('roughness',value=self.roughness,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('qoff',value=self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
 
     def decayNp(self,z,Rc=10,D=30.0,z0=0.0,xi=1.0,cov=100.0,rhoc=4.65,rhos=[0.334,0.38],sig=1.0):

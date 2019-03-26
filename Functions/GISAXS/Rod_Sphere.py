@@ -7,16 +7,17 @@ sys.path.append(os.path.abspath('./Functions'))
 from FormFactors import Sphere
 
 class Rod_Sphere: #Please put the class name same as the function name
-    def __init__(self,x=0, R=10.0, Rsig=0.0, dist='Gaussian', qc=0.0217, qpar=0.1, qparsig=0.0,norm=1.0, bkg=0.0,mpar={}):
+    def __init__(self,x=0, R=10.0, Rsig=1.0, dist='Gaussian', qc=0.0217, qpar=0.1, qparsig=0.0,N=50,sig=0.0,norm=1.0, bkg=0.0,mpar={}):
         """
         Provides rod scan from spherical objects dispersed on a substrate
-        x       	: array of Qz values of rod scan
+        x       	: Array of Qz values of rod scan
         R       	: Mean radius of spheres in inverse units of Qz
         Rsig   	: Width of distribution of spheres in inverse units of Qz
         dist   	: 'Gaussian' or 'LogNormal'
         qc     	: Critcal wave-vector for the substrate on which sphere are aranged
         qpar   	: In-plane wave-vector at which the rod was measured
         qparsig	: The width of the peak at which the rod was measured
+        sig         : relative rms fluctuation between two particles
         norm   	: Normalization constant
         bkg    	: Constant background
         """
@@ -32,7 +33,8 @@ class Rod_Sphere: #Please put the class name same as the function name
         self.qparsig=qparsig
         self.norm=norm
         self.bkg=bkg
-        self.N=50
+        self.sig=sig
+        self.N=N
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']}
         self.output_params={}
@@ -44,11 +46,12 @@ class Rod_Sphere: #Please put the class name same as the function name
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
-        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('qc',value=self.qc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('qc',value=self.qc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('sig',value=self.sig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
     def trans(self,qz,qc):
         """
@@ -62,6 +65,12 @@ class Rod_Sphere: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         self.output_params={}
+        R=self.params['R']
+        Rsig=self.params['Rsig']
+        qc=self.params['qc']
+        norm=self.params['norm']
+        sig=self.params['sig']
+        bkg=self.params['bkg']
         if self.qparsig>1e-3:
             qpar=np.linspace(self.qpar-5*self.qparsig,self.qpar+5*self.qparsig,10)
             peak=np.exp(-(qpar-self.qpar)**2/2.0/self.qparsig**2)
@@ -69,15 +78,13 @@ class Rod_Sphere: #Please put the class name same as the function name
             distsum=np.zeros_like(self.x)
             for i in range(len(qpar)):
                 q=np.sqrt(self.x**2+qpar[i]**2)
-                sphere=Sphere.Sphere(x=q,R=self.R,Rsig=self.Rsig,dist=self.dist)
-                sphere.N=self.N
+                sphere=Sphere.Sphere(x=q,R=R,Rsig=Rsig,dist=self.dist,N=self.N)
                 distsum=distsum+sphere.y()*peak[i]
-            res=self.norm*distsum*self.trans(self.x,self.qc)/peaksum+self.bkg
+            res=norm*distsum*self.trans(self.x,qc)*np.exp(-self.x**2*sig**2)/peaksum+bkg
         else:
             q=np.sqrt(self.x**2+self.qpar**2)
-            sphere=Sphere.Sphere(x=q,R=self.R,Rsig=self.Rsig,dist=self.dist)
-            sphere.N=self.N
-            res=self.norm*sphere.y()*self.trans(self.x,self.qc)+self.bkg
+            sphere=Sphere.Sphere(x=q,R=R,Rsig=Rsig,dist=self.dist,N=self.N)
+            res=norm*sphere.y()*self.trans(self.x,qc)*np.exp(-self.x**2*sig**2)+bkg
         if self.Rsig>1e-3:
             self.output_params['Distribution']=sphere.output_params['Distribution']
         return res

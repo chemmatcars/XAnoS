@@ -2,7 +2,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QFileDialog
 from PyQt5.QtGui import QDoubleValidator, QIntValidator
 import sys
-from readData import average1DSAXS, interpolate_data, read1DSAXS, bkgSub1DSAXS
+from readData import average1DSAXS, interpolate_data, read1DSAXS, bkgSub1DSAXS, write1DSAXS
 import copy
 import numpy as np
 from calc_cf import calc_cf
@@ -15,9 +15,11 @@ class ASAXS_Batch_Processor(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self, parent = None)
         loadUi('UI_Forms/ASAXS_Batch_Processor_2.ui',self)
-        self.open_settings()
+#        self.open_settings()
         self.initUI()
         self.init_signals()
+        self.mtNum=0
+        self.airNum=0
 
 
         
@@ -31,8 +33,6 @@ class ASAXS_Batch_Processor(QWidget):
         if self.sampleFileName == '':
             self.sampleFileName = None
         self.sampleNumsChanged()
-        self.firstBkgNumLineEdit.setValidator(self.integerValidator)
-        self.firstStdNumLineEdit.setValidator(self.integerValidator)
         self.bkgNumChanged()
         self.stdNumChanged()
         self.sampleThicknessLineEdit.setValidator(self.doubleValidator)
@@ -58,10 +58,10 @@ class ASAXS_Batch_Processor(QWidget):
         self.selectFileNamePushButton.clicked.connect(self.openSampleFname)
         self.firstSampleNumsLineEdit.returnPressed.connect(self.sampleNumsChanged)
         self.firstSampleNumsLineEdit.textEdited.connect(self.sampleNumsChanged)
-        self.firstBkgNumLineEdit.returnPressed.connect(self.bkgNumChanged)
-        self.firstBkgNumLineEdit.textEdited.connect(self.bkgNumChanged)
-        self.firstStdNumLineEdit.returnPressed.connect(self.stdNumChanged)
-        self.firstStdNumLineEdit.textEdited.connect(self.stdNumChanged)
+        self.bkgSpinBox.valueChanged.connect(self.bkgNumChanged)
+        self.stdSpinBox.valueChanged.connect(self.stdNumChanged)
+        self.mtSpinBox.valueChanged.connect(self.mtNumChanged)
+        self.airSpinBox.valueChanged.connect(self.airNumChanged)
         self.sampleThicknessLineEdit.returnPressed.connect(self.sampleThicknessChanged)
         self.sampleThicknessLineEdit.textEdited.connect(self.sampleThicknessChanged)
         self.stdThicknessLineEdit.returnPressed.connect(self.stdThicknessChanged)
@@ -77,69 +77,122 @@ class ASAXS_Batch_Processor(QWidget):
 
 
     def process(self):
-        if self.sampleFileName is not None:
-            bg_num = self.bkgNum
-            gc_num = self.stdNum
-            fdir = os.path.dirname(self.sampleFileName)
-            mean_dir = os.path.join(fdir, 'Mean')
-            ctimes = 3 * self.repeatNpts
-            data = {}
+        if not self.duplicateNums():
+            if self.sampleFileName is not None:
+                bg_num = self.bkgNum
+                gc_num = self.stdNum
+                air_num = self.airNum
+                mt_num = self.mtNum
+                fdir = os.path.dirname(self.sampleFileName)
+                mean_dir = os.path.join(fdir, 'Mean')
+                ctimes = self.sampleNumSpinBox.value()* self.repeatNpts
+                data = {}
 
-            if not os.path.exists(mean_dir):
-                os.makedirs(os.path.join(fdir, 'Mean'))
-            snames = {}
-            bnames = {}
-            gnames = {}
+                if not os.path.exists(mean_dir):
+                    os.makedirs(os.path.join(fdir, 'Mean'))
+                snames = {}
+                bnames = {}
+                gnames = {}
 
-            self.progressBar.setMaximum(self.energyNpts-1)
-            self.progressBar.setMinimum(0)
-            self.progressBar.setValue(0)
+                self.progressBar.setMaximum(self.energyNpts-1)
+                self.progressBar.setMinimum(0)
+                self.progressBar.setValue(0)
 
-            outputNames=[]
-            self.outputFnames=[]
-            for j in range(0, self.energyNpts):
-                fnum = []
-                for i in range(bg_num + ctimes * j, bg_num + ctimes * j + self.repeatNpts):
-                    fnum.append(i)
-                    bnames[i] = self.sampleFileName + '%04d.txt' % i
-                data, obname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0])
+                outputNames=[]
+                self.outputFnames=[]
+                for j in range(0, self.energyNpts):
+                    # Calculating mean of air scattering if the airNum is other than 0
+                    if air_num != 0:
+                        fnum = []
+                        for i in range(air_num + ctimes * j, air_num + ctimes * j + self.repeatNpts):
+                            fnum.append(i)
+                            bnames[i] = self.sampleFileName + '%04d.txt' % i
+                        data, oaname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data,
+                                                     extra_key=fnum[0])
 
-                # Calculating mean of GC
-                fnum = []
-                for i in range(gc_num + ctimes * j, gc_num + ctimes * j + self.repeatNpts):
-                    fnum.append(i)
-                    gnames[i] = self.sampleFileName + '%04d.txt' % i
-                data, ogname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0])
+                    # Calculating mean of MT capillary if the mtNum is other than 0
+                    if mt_num != 0:
+                        fnum = []
+                        for i in range(mt_num + ctimes * j, mt_num + ctimes * j + self.repeatNpts):
+                            fnum.append(i)
+                            bnames[i] = self.sampleFileName + '%04d.txt' % i
+                        data, omname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data,
+                                                     extra_key=fnum[0])
+                        if air_num != 0:
+                            obsmfname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
+                            data, bsmfname = bkgSub1DSAXS(data, omname, data, oaname, obsmfname, thickness=0.02, cf=1.0,
+                                                          bg_factor=1.0, norm=1.0, data={})
 
-                ene, cf, a, b = calc_cf(ogname, standard=self.normStd, thickness=self.stdThickness, xmin=self.xMin, xmax=self.xMax,
-                                        interpolation_type=self.interpType)
-
-                # Calculating mean of samples
-                for sam_num in self.samNums:
+                    #calculating mean of background
                     fnum = []
-                    for i in range(sam_num + ctimes * j, sam_num + ctimes * j + self.repeatNpts):
+                    for i in range(bg_num + ctimes * j, bg_num + ctimes * j + self.repeatNpts):
                         fnum.append(i)
-                        snames[i] = self.sampleFileName + '%04d.txt' % i
-                    data, ofname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0])
+                        bnames[i] = self.sampleFileName + '%04d.txt' % i
+                    data, obname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0])
+                    if mt_num != 0:
+                        obsbfname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
+                        data, bsbfname = bkgSub1DSAXS(data, obname, data, omname, obsbfname, thickness=self.bkgThickness, cf=1.0,
+                                                      bg_factor=1.0, norm=1.0, data={})
 
-                    # Performing background subtraction
-                    obsname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
+                    # Calculating mean of GC
+                    fnum = []
+                    for i in range(gc_num + ctimes * j, gc_num + ctimes * j + self.repeatNpts):
+                        fnum.append(i)
+                        gnames[i] = self.sampleFileName + '%04d.txt' % i
+                    data, ogname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0])
 
-                    bg_factor= self.sampleThickness/self.bkgThickness
+                    if air_num != 0:
+                        obsgfname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
+                        data, bsgfname = bkgSub1DSAXS(data, ogname, data, oaname, obsgfname, thickness=0.1055, cf=1.0,
+                                                      bg_factor=1.0, norm=1.0, data={})
+                        print(bsgfname)
 
-                    data, bsfname = bkgSub1DSAXS(data, ofname, data, obname, obsname, thickness= self.sampleThickness, cf=cf,
-                                                 bg_factor = bg_factor, norm=1.0, data={})
-                    self.plotWidget.add_data(x=data[bsfname]['x'],y=data[bsfname]['CF']*data[bsfname]['y']/data[bsfname]['Thickness'],\
-                                             yerr=data[bsfname]['CF']*data[bsfname]['yerr']/data[bsfname]['Thickness'],name=str(fnum[0])+'_bsub')
-                    #self.plotWidget.Plot([str(fnum[0])+'_bsub'])
-                    outputNames.append(str(fnum[0])+'_bsub')
-                    self.outputFnames.append(bsfname)
-                    self.progressBar.setValue(j)
-                    self.plotWidget.Plot(outputNames)
-                    QApplication.processEvents()
-            self.data=data
+                        ene, cf, a, b = calc_cf(bsgfname, standard=self.normStd, thickness=self.stdThickness, xmin=self.xMin, xmax=self.xMax,
+                                            interpolation_type=self.interpType)
+                    else:
+                        ene, cf, a, b = calc_cf(ogname, standard=self.normStd, thickness=self.stdThickness,
+                                                xmin=self.xMin, xmax=self.xMax,
+                                                interpolation_type=self.interpType)
+
+                    if air_num!=0:
+                        data[bsgfname]['CF'] = cf
+                    if air_num!=0 and mt_num!=0:
+                        data[bsmfname]['CF'] = cf
+                    if mt_num!=0:
+                        data[bsbfname]['CF'] = cf
+
+                    # Calculating mean of samples
+                    for sam_num in self.samNums:
+                        fnum = []
+                        for i in range(sam_num + ctimes * j, sam_num + ctimes * j + self.repeatNpts):
+                            fnum.append(i)
+                            snames[i] = self.sampleFileName + '%04d.txt' % i
+                        data, ofname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0])
+
+                        # Performing background subtraction
+                        obsname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
+
+                        bg_factor= self.sampleThickness/self.bkgThickness
+
+                        data, bsfname = bkgSub1DSAXS(data, ofname, data, obname, obsname, thickness= self.sampleThickness, cf=cf,
+                                                     bg_factor = bg_factor, norm=1.0, data={})
+                        self.plotWidget.add_data(x=data[bsfname]['x'],y=data[bsfname]['CF']*data[bsfname]['y']/data[bsfname]['Thickness'],\
+                                                 yerr=data[bsfname]['CF']*data[bsfname]['yerr']/data[bsfname]['Thickness'],name=str(fnum[0])+'_bsub')
+                        #self.plotWidget.Plot([str(fnum[0])+'_bsub'])
+                        outputNames.append(str(fnum[0])+'_bsub')
+                        self.outputFnames.append(bsfname)
+                        self.progressBar.setValue(j)
+                        self.plotWidget.Plot(outputNames)
+                        QApplication.processEvents()
+
+
+                self.data=data
+                write1DSAXS(self.data,textEdit=self.infoTextEdit)
+                self.save_settings()
+            else:
+                QMessageBox.warning(self,'File Error','Please select first sample file',QMessageBox.Ok)
         else:
-            QMessageBox.warning(self,'File Error','Please select first sample file',QMessageBox.Ok)
+            QMessageBox.warning(self,'It seems you are using same file number for two different category of samples. Please check!',QMessageBox.Ok)
 
     def openSampleFname(self):
         fname=QFileDialog.getOpenFileName(caption='Select sample file name',filter="Sample Files (*.txt)")[0]
@@ -147,43 +200,78 @@ class ASAXS_Batch_Processor(QWidget):
         self.sampleNameChanged()
 
     def sampleNumsChanged(self):
-        txt=self.firstSampleNumsLineEdit.text().replace(" ","")
+        txt = self.firstSampleNumsLineEdit.text().replace(" ", "")
         samNums=list(map(int, txt.split(",")))
-        if all(isinstance(x, int) for x in samNums):
+        if np.all(isinstance(x,int) for x in samNums):
             self.samNums=samNums
         else:
-            QMessageBox.warning(self,
-                                'Please provide integer values and if multiple seperate them by commas in between',\
-                                QMessageBox.Ok)
-            self.samNums=1
+            QMessageBox.warning(self,'Please provide integer values and if multiple separate them by commas in between.', QMessageBox.Ok)
+            self.samNums=[1]
             self.firstSampleNumsLineEdit.setText('1')
-        self.save_settings()
+        # try:
+        #     txt=self.firstSampleNumsLineEdit.text().replace(" ","")
+        #     samNums=list(map(int, txt.split(",")))
+        #     if all(isinstance(x, int) for x in samNums):
+        #         self.samNums=samNums
+        #     else:
+        #         QMessageBox.warning(self,
+        #                             'Please provide integer values and if multiple separate them by commas in between.',\
+        #                             QMessageBox.Ok)
+        #         self.samNums=[1]
+        #         self.firstSampleNumsLineEdit.setText('1')
+        #     self.save_settings()
+        # except:
+        #     pass
 
     def bkgNumChanged(self):
-        bkgNum = int(self.firstBkgNumLineEdit.text())
-        if bkgNum in self.samNums:
-            response = QMessageBox.question(self, 'As this number also exists as sample number, are you sure this number\
-             belongs to backgroud?', QMessageBox.Yes, QMessageBox.No)
-            if response == QMessageBox.Yes:
-                self.bkgNum = bkgNum
-            else:
-                self.firstBkgNumLineEdit.setText(str(self.bkgNum))
-        else:
-            self.bkgNum = bkgNum
-        self.save_settings()
+        self.bkgNum = self.bkgSpinBox.value()
+        # if bkgNum in self.samNums:
+        #     response = QMessageBox.question(self, 'As this number also exists as sample number, are you sure this number\
+        #      belongs to backgroud?', QMessageBox.Yes, QMessageBox.No)
+        #     if response == QMessageBox.Yes:
+        #         self.bkgNum = bkgNum
+        #     else:
+        #         self.bkgSpinBox.setValue(str(self.bkgNum))
+        # else:
+        #     self.bkgNum = bkgNum
+        # self.save_settings()
 
     def stdNumChanged(self):
-        stdNum = int(self.firstStdNumLineEdit.text())
-        if stdNum in self.samNums or stdNum==self.bkgNum:
-            response = QMessageBox.question(self, 'As this number also exists as sample number, are you sure this number\
-             belongs to background?', QMessageBox.Yes, QMessageBox.No)
-            if response == QMessageBox.Yes:
-                self.stdNum = stdNum
-            else:
-                self.firstStdNumLineEdit.setText(str(self.stdNum))
+        self.stdNum = self.stdSpinBox.value()
+        # if stdNum in self.samNums or stdNum==self.bkgNum:
+        #     response = QMessageBox.question(self, 'As this number also exists as First Sample Nums, are you sure this number\
+        #      belongs to background?', QMessageBox.Yes, QMessageBox.No)
+        #     if response == QMessageBox.Yes:
+        #         self.stdNum = stdNum
+        #     else:
+        #         self.stdSpinBox.setValue(self.stdNum)
+        # elif stdNum == self.bkgNum:
+        #     response = QMessageBox.question(self, 'As this number also exists as First Bkg Num, are you sure this number\
+        #                  belongs to Std Num?', QMessageBox.Yes, QMessageBox.No)
+        #     if response == QMessageBox.Yes:
+        #         self.stdNum = stdNum
+        #     else:
+        #         self.stdSpinBox.setValue(self.stdNum)
+        # else:
+        #     self.stdNum = stdNum
+        # self.save_settings()
+
+    def mtNumChanged(self):
+        self.mtNum=self.mtSpinBox.value()
+
+    def airNumChanged(self):
+        self.airNum=self.airSpinBox.value()
+
+    def duplicateNums(self):
+        txt = self.firstSampleNumsLineEdit.text().replace(" ", "")
+        Nums = list(map(int, txt.split(",")))
+        Nums=Nums+[self.stdNum,self.bkgNum,self.mtNum,self.airNum]
+        print(Nums)
+        if np.unique(Nums).size!=len(Nums):
+            return True
         else:
-            self.stdNum = stdNum
-        self.save_settings()
+            return False
+
 
     def sampleNameChanged(self):
         self.sampleFileName = self.sampleFileNameLineEdit.text()
@@ -232,6 +320,8 @@ class ASAXS_Batch_Processor(QWidget):
         fh.write('samNums='+str(self.samNums)+'\n')
         fh.write('bkgNum='+str(self.bkgNum)+'\n')
         fh.write('stdNum='+str(self.stdNum)+'\n')
+        fh.write('mtNum='+str(self.mtNum)+'\n')
+        fh.write('airNum'+str(self.airNum)+'\n')
         fh.write('sampleThickness='+str(self.sampleThickness)+'\n')
         fh.write('bkgThickness='+str(self.bkgThickness)+'\n')
         fh.write('stdThickness='+str(self.stdThickness)+'\n')
@@ -253,10 +343,9 @@ class ASAXS_Batch_Processor(QWidget):
         self.firstSampleNumsLineEdit.setText(samNums[:-1])
 
         self.bkgNum=int(lines[1].strip().split('=')[1])
-        self.firstBkgNumLineEdit.setText(str(self.bkgNum))
-
+        self.bkgSpinBox.setValue(self.bkgNum)
         self.stdNum=int(lines[2].strip().split('=')[1])
-        self.firstStdNumLineEdit.setText(str(self.stdNum))
+        self.stdSpinBox.setValue(self.stdNum)
 
         self.sampleThickness=float(lines[3].strip().split('=')[1])
         self.sampleThicknessLineEdit.setText(str(self.sampleThickness))

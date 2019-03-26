@@ -50,6 +50,8 @@ class Fit(QObject):
         self.functionCalled.emit(params,iterations,residual,fit_scale)
         if self.fit_abort:
             return True
+        else:
+            return None
     
     
     def perform_fit(self,xmin,xmax,fit_scale='Linear',fit_method='leastsq',maxiter=1):
@@ -61,6 +63,8 @@ class Fit(QObject):
         elif fit_method=='differential_evolution':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,
                                   nan_policy='omit', calc_covar=True, maxiter=maxiter)
+        elif fit_method=='brute':
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback)
         self.result=self.fitter.minimize(method=fit_method)        
         return fit_report(self.result),self.result.message
         

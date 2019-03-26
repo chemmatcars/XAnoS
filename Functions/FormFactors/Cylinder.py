@@ -50,13 +50,13 @@ class Cylinder: #Please put the class name same as the function name
         self.param.add('sig',value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
         """
         self.params=Parameters()
-        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('H',value=self.H,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('Hsig',value=self.Hsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('bkg', value=self.bkg,vary=0,min=-np.inf, max=np.inf, expr=None, brute_step=None)
+        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('Rsig',value=self.Rsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('H',value=self.H,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('Hsig',value=self.Hsig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('R',value=self.R,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('bkg', value=self.bkg,vary=0,min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
 
     def cyl_form(self,mu,q,R,H):
         """
@@ -83,9 +83,18 @@ class Cylinder: #Please put the class name same as the function name
         norm=self.params['norm'].value
         bkg=self.params['bkg'].value
         mu=np.linspace(-1,1,self.Nsample)
+        if Rsig>1e-3:
+            r=np.linspace(max(0.001,R-5*Rsig,R)+5*Rsig,self.Nsample)
+        else:
+            r=np.ones_like(mu)*R
+        if Hsig>1e-3:
+            h=np.linspace(max(0.001,H-Hsig),H+Hsig,self.Nsample)
+        else:
+            h=np.ones_like(mu)*H
+
         res=[]
         for q in self.x:
-            res.append(np.sum([self.cyl_form(m,q,R,H) for m in mu]))
+            res.append(np.sum([self.cyl_form(m,q,r1,h1) for m,r1,h1 in zip(mu,r,h)]))
         res=np.array(res)*(mu[1]-mu[0])/2.0
         return norm*res+bkg
 

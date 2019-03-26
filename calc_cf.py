@@ -47,7 +47,7 @@ def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None,in
             if tmp_dat[i,1]>1e-20:
                 exp_dat.append(tmp_dat[i,:])
         exp_dat=np.array(exp_dat)
-        if xmin is None:    
+        if xmin is None:
             xmin=np.max([np.min(std_dat[:,0]),np.min(exp_dat[:,0])])
         if xmax is None:
             xmax=np.min([np.max(std_dat[:,0]),np.max(exp_dat[:,0])])
