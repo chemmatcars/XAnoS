@@ -1,5 +1,5 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QApplication,QDialog,QMessageBox,QTableWidgetItem,QFileDialog,QComboBox
+from PyQt5.QtWidgets import QApplication,QDialog,QMessageBox,QTableWidgetItem,QFileDialog,QComboBox,QWidget
 from PyQt5.QtCore import QFileSystemWatcher, Qt
 from PyQt5.QtTest import QTest
 import sys
@@ -79,23 +79,27 @@ class Data_Dialog(QDialog):
             self.addPlots(plotIndex=plotIndex)
         self.init_signals()
         self.okPushButton.setAutoDefault(False)
-        self.closePushButton.setAutoDefault(False)
-        self.openDataFilePushButton.setAutoDefault(False)
-        self.okPushButton.setDefault(False)
-        self.closePushButton.setDefault(False)
-        self.openDataFilePushButton.setDefault(False)
+        self.make_default()
         self.setWindowTitle('Data Dialog')
         #self.setWindowSize((600,400))
         if self.parentWidget() is not None:
             self.addPlotPushButton.setEnabled(False)
             self.removePlotPushButton.setEnabled(False)
 
+    def make_default(self):
+        self.okPushButton.setAutoDefault(False)
+        self.closePushButton.setAutoDefault(False)
+        self.openDataFilePushButton.setAutoDefault(False)
+        self.saveDataPushButton.setAutoDefault(False)
+        self.okPushButton.setDefault(False)
+        self.closePushButton.setDefault(False)
+        self.openDataFilePushButton.setDefault(False)
+        self.saveDataPushButton.setDefault(False)
 
-            
+
     def init_signals(self):
         self.closePushButton.clicked.connect(self.closeWidget)
         self.okPushButton.clicked.connect(self.acceptWidget)
-        
         self.openDataFilePushButton.clicked.connect(self.openFile)
         self.autoUpdateCheckBox.stateChanged.connect(self.autoUpdate_ON_OFF)
         self.saveDataPushButton.clicked.connect(self.saveData)
@@ -529,16 +533,16 @@ class Data_Dialog(QDialog):
                 self.plotSetupTableWidget.cellWidget(row,i).clear()
                 self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
                 self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
-                self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updatePlotData)
+                self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updateCellData)
             self.xlabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText())
             self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
             self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.disconnect()
             self.plotSetupTableWidget.cellWidget(row,3).clear()
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
             self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
-            self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
+            self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updateCellData)
             self.plotSetupTableWidget.setCurrentCell(row,3)
-            self.updatePlotData()
+            self.updatePlotData(row,i)
         self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)         
                 
         
@@ -563,24 +567,22 @@ class Data_Dialog(QDialog):
                         self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
                     else:
                         self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
-                    self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updatePlotData)
+                    self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updateCellData)
                 self.xlabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText())
                 self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
                 self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
                 self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
                 if plotIndex is not None:
                     self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(plotIndex[-1])
-                    print('1')
                 else:
                     # try:
                     #     self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(2)
                     # except:
                     #
                     self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
-                self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
-                self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updatePlotData)
+                self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updateCellData)
                 self.plotSetupTableWidget.setCurrentCell(row,3)
-                self.updatePlotData()
+                self.updatePlotData(row,3)
                 self.plotNum+=1
             else:
                 QMessageBox.warning(self,'Data file error','The data file do not have two or more columns to be plotted.',QMessageBox.Ok)
@@ -617,8 +619,8 @@ class Data_Dialog(QDialog):
             
         
         
-    def updatePlotData(self):
-        row=self.plotSetupTableWidget.currentRow()
+    def updatePlotData(self,row,col):
+        #row=self.plotSetupTableWidget.currentRow()
         name=self.plotSetupTableWidget.item(row,0).text()
         if self.dataAltered:
             for i in range(1,4):
@@ -626,7 +628,7 @@ class Data_Dialog(QDialog):
                     self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(self.oldPlotIndex[name][i-1]) 
                 except:
                     pass           
-        xcol,ycol,yerrcol=[self.plotSetupTableWidget.cellWidget(row,i).currentText() for i in range(1,4)] 
+        xcol,ycol,yerrcol=[self.plotSetupTableWidget.cellWidget(row,i).currentText() for i in range(1,4)]
         #ycol=self.plotSetupTableWidget.cellWidget(row,2).currentText()
         #yerrcol=self.plotSetupTableWidget.cellWidget(row,3).currentText()
         if yerrcol!='None':
@@ -643,9 +645,13 @@ class Data_Dialog(QDialog):
         self.ylabel[row]='[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText()
         self.updatePlot()
         self.oldPlotIndex[name]=[self.plotSetupTableWidget.cellWidget(row,i).currentIndex() for i in range(1,4)]
-        
+
+    def updateCellData(self,index):
+        row=self.plotSetupTableWidget.indexAt(self.sender().pos()).row()
+        self.updatePlotData(row,index)
             
     def updatePlot(self):
+        self.make_default()
         names=[self.plotSetupTableWidget.item(i,0).text() for i in range(self.plotSetupTableWidget.rowCount())]
         self.plotColIndex=[self.plotSetupTableWidget.cellWidget(0,i).currentIndex() for i in range(1,4)]
         self.externalData=copy.copy(self.data['meta'])
@@ -665,7 +671,6 @@ if __name__=='__main__':
         fname=sys.argv[1]
     except:
         fname=None
-    print(fname)
     #data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':np.arange(1000),'y':np.arange(1000),'y_err':np.arange(1000)})}
     w=Data_Dialog(fname=fname,data=None,matplotlib=False)
     w.resize(600,400)
