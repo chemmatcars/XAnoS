@@ -1,40 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Commented out 'choices' option in fixedParameters of Fit_Widget">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Fixed Data_Dialog for multiple plotting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fit_Routines.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Routines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FunctionEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/FunctionEditor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/DLS/FirstCumulant.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/sphericalShell_expDecay.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/SphericalShell_expDecay.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/Parratt.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/Parratt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batch_settings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calc_cf.py" beforeDir="false" afterPath="$PROJECT_DIR$/calc_cf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Acknowledgements.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Acknowledgements.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Acknowledgements.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Acknowledgements.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/Acknowledgements.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Acknowledgements.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PlotWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotWidget.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,10 +16,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="1245" column="110" selection-start-line="1245" selection-start-column="110" selection-end-line="1245" selection-end-column="110" />
+            <state relative-caret-position="150">
+              <caret line="476" column="53" selection-start-line="476" selection-start-column="53" selection-end-line="476" selection-end-column="53" />
               <folding>
                 <element signature="e#0#328#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/PlotWidget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="280" column="44" lean-forward="true" selection-start-line="280" selection-start-column="44" selection-end-line="280" selection-end-column="44" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -61,7 +42,7 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -74,6 +55,23 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/docs/Acknowledgements.html">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="214">
+              <caret line="659" column="75" lean-forward="true" selection-start-line="659" selection-start-column="75" selection-end-line="659" selection-end-column="75" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -81,31 +79,6 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/Acknowledgements.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1292">
-              <caret line="78" selection-start-line="78" selection-end-line="78" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/energySteps.py">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -143,23 +116,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>'choices'</find>
-      <find>choices</find>
-      <find>function</find>
-      <find>self.fitParamData</find>
-      <find>perform_fit</find>
-      <find>I m here</find>
-      <find>doFit</find>
-      <find>Please select a function</find>
-      <find>self.pfnames</find>
-      <find>print</find>
-      <find>np.unique</find>
-      <find>f1_chantler</find>
-      <find>edgeplot</find>
-      <find>get_f1_f2</find>
-      <find>update_edgeplot</find>
-      <find>self.edgeplotwidget</find>
-      <find>get_f1_f2(self</find>
       <find>initial</find>
       <find>functionCalled</find>
       <find>open</find>
@@ -173,6 +129,23 @@
       <find>update_fixed_parameters(self</find>
       <find>srshdist</find>
       <find>dofit</find>
+      <find>self.updatePlot</find>
+      <find>updatePlotData</find>
+      <find>acceptWidget</find>
+      <find>self.dataAltered</find>
+      <find>resetPlotSetup</find>
+      <find>updatePlotData(</find>
+      <find>self.updatePlotData</find>
+      <find>row</find>
+      <find>updateC</find>
+      <find>.currentIndexChanged.</find>
+      <find>print</find>
+      <find>plotColIndex</find>
+      <find>add_data</find>
+      <find>self.x</find>
+      <find>self.x[</find>
+      <find>self.x[dname]</find>
+      <find>self.yerr</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -187,6 +160,7 @@
       <replace>smoothing=1</replace>
       <replace>np.</replace>
       <replace>smoothing=0</replace>
+      <replace>index</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -204,7 +178,6 @@
         <option value="$PROJECT_DIR$/doc/Acknowledgements.rst" />
         <option value="$PROJECT_DIR$/license" />
         <option value="$PROJECT_DIR$/doc/License.rst" />
-        <option value="$PROJECT_DIR$/PlotWidget.py" />
         <option value="$PROJECT_DIR$/doc/Introduction.rst" />
         <option value="$PROJECT_DIR$/doc/index.rst" />
         <option value="$PROJECT_DIR$/doc/ASAXS_Widget.rst" />
@@ -246,19 +219,20 @@
         <option value="$PROJECT_DIR$/calc_cf.py" />
         <option value="$PROJECT_DIR$/ASAXS_Widget.py" />
         <option value="$PROJECT_DIR$/Fit_Routines.py" />
-        <option value="$PROJECT_DIR$/Data_Dialog.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" />
         <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/doc_source/Acknowledgements.rst" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Data_Dialog.py" />
+        <option value="$PROJECT_DIR$/PlotWidget.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="5784" />
-    <option name="y" value="47" />
-    <option name="width" value="1535" />
-    <option name="height" value="823" />
+    <option name="x" value="-15" />
+    <option name="y" value="-15" />
+    <option name="width" value="3873" />
+    <option name="height" value="2193" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -274,21 +248,6 @@
             <path>
               <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
               <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
-              <item name="doc_source" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
-              <item name="docs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
-              <item name="Functions" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -322,7 +281,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Fit_Widget">
+  <component name="RunManager" selected="Python.Data_Dialog">
     <configuration name="ASAXS_Batch_Processor_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -365,7 +324,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Cylinder" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Data_Dialog" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -373,11 +332,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Functions/FormFactors" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data_Dialog.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -425,18 +384,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.ASAXS_Batch_Processor_2" />
-      <item itemvalue="Python.Cylinder" />
       <item itemvalue="Python.ASAXS_Widget" />
       <item itemvalue="Python.Fit_Widget" />
       <item itemvalue="Python docs.docutils task in Fit_Widget.rst" />
+      <item itemvalue="Python.Data_Dialog" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Data_Dialog" />
         <item itemvalue="Python.Fit_Widget" />
         <item itemvalue="Python docs.docutils task in Fit_Widget.rst" />
         <item itemvalue="Python.ASAXS_Widget" />
         <item itemvalue="Python.ASAXS_Batch_Processor_2" />
-        <item itemvalue="Python.Cylinder" />
       </list>
     </recent_temporary>
   </component>
@@ -450,13 +409,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Updated README">
-      <created>1548486368334</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1548486368334</updated>
     </task>
     <task id="LOCAL-00027" summary="Updated README">
       <created>1548536270000</created>
@@ -794,7 +746,14 @@
       <option name="project" value="LOCAL" />
       <updated>1550356532333</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Fixed Data_Dialog for multiple plotting">
+      <created>1553631893170</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1553631893171</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TodoView">
@@ -807,22 +766,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="5752" y="-8" width="1936" height="1176" extended-state="6" />
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12434141" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15587847" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.41867045" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.41784704" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.503963" side_tool="true" weight="0.19660537" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49603698" visible="true" weight="0.5215724" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.13902205" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12022631" />
+      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49603698" weight="0.2549575" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.25884017" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.11898017" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -830,7 +790,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated INSTALL.txt" />
     <MESSAGE value="Updated all the modules and functions during the July 2018 beamtime" />
     <MESSAGE value="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files" />
     <MESSAGE value="Merge branch 'SAXS_Drive_Beta' of https://github.com/nayanbera/SAXS_Drive into SAXS_Drive_Beta&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
@@ -855,7 +814,8 @@
     <MESSAGE value="Rename calibrationWidget.py to Calibration_Widget.py and maskWidget.py MaskWidget.py. Accordingly changed the imports of Data_Reduction_Client.py" />
     <MESSAGE value="Updated the Documentation" />
     <MESSAGE value="Commented out 'choices' option in fixedParameters of Fit_Widget" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commented out 'choices' option in fixedParameters of Fit_Widget" />
+    <MESSAGE value="Fixed Data_Dialog for multiple plotting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Data_Dialog for multiple plotting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -879,22 +839,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/doc_source/conf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2856">
-          <caret line="169" column="19" selection-start-line="169" selection-start-column="19" selection-end-line="169" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Calibration_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Data_Collection_Server.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
@@ -1154,16 +1098,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4267">
-          <caret line="261" column="72" selection-start-line="261" selection-start-column="72" selection-end-line="261" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/PeakFunctions/LogNormal.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1203,23 +1137,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="1245" column="110" selection-start-line="1245" selection-start-column="110" selection-end-line="1245" selection-end-column="110" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Acknowledgements.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/Acknowledgements.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Acknowledgements.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -1229,6 +1156,36 @@
             <caret line="5" column="37" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="659" column="75" lean-forward="true" selection-start-line="659" selection-start-column="75" selection-end-line="659" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="476" column="53" selection-start-line="476" selection-start-column="53" selection-end-line="476" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="280" column="44" lean-forward="true" selection-start-line="280" selection-start-column="44" selection-end-line="280" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
