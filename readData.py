@@ -518,8 +518,10 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         diode=0.0
         pDiodeCorr=0.0
         monitorCorr=0.0
+        sumerr=[]
         for fnam in fnames:
             sumdata.append(data[fnam]['yintp'])
+            sumerr.append(data[fnam]['yintperr']**2)
             try:
                 monitor=monitor+data[fnam]['Monitor']
                 pDiode=pDiode+data[fnam]['BSDiode']
@@ -543,7 +545,7 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         trans=trans/tlen
         sumdata=np.array(sumdata)
         meandata=np.mean(sumdata,axis=0)
-        errordata=np.std(sumdata,axis=0)
+        errordata=np.sqrt(np.mean(sumerr,axis=0))
         finaldata=np.vstack((data[fnames[0]]['xintp'],meandata,errordata)).T
         
         fdir=os.path.dirname(fnames[0])

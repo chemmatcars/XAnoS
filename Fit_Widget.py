@@ -19,6 +19,7 @@ import time
 import shutil
 from FunctionEditor import FunctionEditor
 from lmfit import conf_interval, printfuncs
+import traceback
 
 class minMaxDialog(QDialog):
     def __init__(self,value,minimum=None,maximum=None,expr=None,brute_step=None,parent=None):
@@ -97,6 +98,7 @@ class minMaxDialog(QDialog):
                 self.brute_step=None
             self.accept()
         except:
+            print(traceback.format_exc())
             QMessageBox.warning('Value Error','Value, Min, Max should be floating point numbers',QMessageBox.Ok)
 
     def cancelandClose(self):
@@ -321,6 +323,7 @@ class Fit_Widget(QWidget):
             else:
                 QMessageBox.warning(self,'Warning','You cannot edit two functions together',QMessageBox.Ok)
         except:
+            print(traceback.format_exc())
             self.funcEditor=FunctionEditor(funcName=funcName,dirName=dirName)
             self.funcEditor.setWindowTitle('Function editor')
             self.funcEditor.show()
@@ -372,6 +375,7 @@ class Fit_Widget(QWidget):
                     fh.close()
                     self.update_functions()
                 except:
+                    print(traceback.format_exc())
                     QMessageBox.warning(self,'Remove error','Cannot remove the function becuase the function file\
                      might be open elsewhere.',QMessageBox.Ok)
         elif len(self.funcListWidget.selectedItems())>1:
@@ -456,11 +460,11 @@ class Fit_Widget(QWidget):
         self.dataDock.addWidget(self.dataLayoutWidget)
         
     def dataFileSelectionChanged(self):
-        self.sfnames=[item.text().split('<>')[1] for item in self.dataListWidget.selectedItems()]
+        self.sfnames=[item.text() for item in self.dataListWidget.selectedItems()]
         self.pfnames=[item.text().split('<>')[0] for item in self.dataListWidget.selectedItems()]
         if len(self.sfnames)>0:
-            xmin=np.min([np.min(self.data[fname]['x']) for fname in self.sfnames])
-            xmax=np.max([np.max(self.data[fname]['x']) for fname in self.sfnames])
+            xmin=np.min([np.min(self.data[key]['x']) for key in self.sfnames])
+            xmax=np.max([np.max(self.data[key]['x']) for key in self.sfnames])
             self.xminmaxLineEdit.setText('%0.3f:%0.3f'%(xmin,xmax))
             self.xminmaxChanged()
             text='np.linspace(%.3f,%.3f,100)'%(xmin,xmax)
@@ -469,24 +473,25 @@ class Fit_Widget(QWidget):
             
     def openDataDialog(self,item):
         fnum,fname=item.text().split('<>')
-        data_dlg=Data_Dialog(data=self.dlg_data[fname],parent=self,plotIndex=self.plotColIndex[fname])
+        data_dlg=Data_Dialog(data=self.dlg_data[item.text()],parent=self,plotIndex=self.plotColIndex[item.text()])
         data_dlg.dataFileLineEdit.setText(fname)
         if data_dlg.exec_():
             newFname=data_dlg.dataFileLineEdit.text()
             if fname==newFname:
-                self.plotColIndex[fname]=data_dlg.plotColIndex
-                self.dlg_data[fname]=copy.copy(data_dlg.data)
-                self.data[fname]=copy.copy(data_dlg.externalData)
-                self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fnum)
+                self.plotColIndex[item.text()]=data_dlg.plotColIndex
+                self.dlg_data[item.text()]=copy.copy(data_dlg.data)
+                self.data[item.text()]=copy.copy(data_dlg.externalData)
+                self.plotWidget.add_data(self.data[item.text()]['x'],self.data[item.text()]['y'],yerr=self.data[item.text()]['yerr'],name=fnum)
                 self.update_plot()
             else:
-                item.setText('%s<>%s'%(fnum,newFname))
-                self.data[newFname]=self.data.pop(fname)
-                self.dlg_data[newFname]=self.dlg_data.pop(fname)
-                self.dlg_data[newFname]=copy.copy(data_dlg.data)
-                self.data[newFname]=copy.copy(data_dlg.externalData)
-                self.plotColIndex[newFname]=data_dlg.plotColIndex
-                self.plotWidget.add_data(self.data[newFname]['x'], self.data[newFname]['y'], yerr=self.data[newFname][
+                text='%s<>%s'%(fnum,newFname)
+                item.setText(text)
+                self.data[text]=self.data.pop(fname)
+                self.dlg_data[text]=self.dlg_data.pop(fname)
+                self.dlg_data[text]=copy.copy(data_dlg.data)
+                self.data[text]=copy.copy(data_dlg.externalData)
+                self.plotColIndex[text]=data_dlg.plotColIndex
+                self.plotWidget.add_data(self.data[text]['x'], self.data[text]['y'], yerr=self.data[text][
                     'yerr'],name=fnum)
                 self.update_plot()
             
@@ -500,6 +505,7 @@ class Fit_Widget(QWidget):
             self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
             self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         except:
+            print(traceback.format_exc())
             QMessageBox.warning(self,'Function Error','Please select a function first to fit',QMessageBox.Ok)
             return
         self.fit_method=self.fitMethods[self.fitMethodComboBox.currentText()]
@@ -578,7 +584,7 @@ class Fit_Widget(QWidget):
                                                                                         self.fit.result.params[key].stderr))
                                     self.mfitParamData[parkey][row]=self.fit.result.params[key].value
 
-                    ofname=os.path.splitext(fname)[0]
+                    ofname=os.path.splitext(fname.split('<>')[1])[0]
                     header='Data fitted with model: %s on %s\n'%(self.funcListWidget.currentItem().text(),time.asctime())
                     header+='Fixed Parameters\n'
                     header+='----------------\n'
@@ -593,6 +599,7 @@ class Fit_Widget(QWidget):
                 else:
                     self.undoFit()
             except:
+                print(traceback.format_exc())
                 try:
                     self.closeFitInfoDlg()
                 except:
@@ -704,22 +711,22 @@ class Fit_Widget(QWidget):
         if len(fnames)!=0:
             self.curDir=os.path.dirname(fnames[0])
             for fname in fnames:
-                if fname not in self.data.keys():
-                    data_dlg=Data_Dialog(fname=fname,parent=self)
-                    data_dlg.accept()
-                    self.dlg_data[fname]=data_dlg.data
-                    self.plotColIndex[fname]=data_dlg.plotColIndex
-                    self.data[fname]=data_dlg.externalData
-                    self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],\
-                                             yerr=self.data[fname]['yerr'],name='%d'%self.fileNumber)
-                    self.dataListWidget.addItem(str(self.fileNumber)+'<>'+fname)
-                    self.fileNames[self.fileNumber]=fname
-                    self.fileNumber+=1
-                else:
-                    QMessageBox.warning(self,'Import Error','Data file has been imported before.\
-                     Please remove the data file before importing again')
-            #except:
-            #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
+                data_key=str(self.fileNumber)+'<>'+fname
+                data_dlg=Data_Dialog(fname=fname,parent=self)
+                data_dlg.accept()
+                self.dlg_data[data_key]=data_dlg.data
+                self.plotColIndex[data_key]=data_dlg.plotColIndex
+                self.data[data_key]=data_dlg.externalData
+                self.plotWidget.add_data(self.data[data_key]['x'],self.data[data_key]['y'],\
+                                         yerr=self.data[data_key]['yerr'],name='%d'%self.fileNumber)
+                self.dataListWidget.addItem(data_key)
+                self.fileNames[self.fileNumber]=fname
+                self.fileNumber+=1
+            #     else:
+            #         QMessageBox.warning(self,'Import Error','Data file has been imported before.\
+            #          Please remove the data file before importing again')
+            # #except:
+            # #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
                 
                 
@@ -732,9 +739,9 @@ class Fit_Widget(QWidget):
             fnum,fname=item.text().split('<>')
             self.dataListWidget.takeItem(self.dataListWidget.row(item))
             self.plotWidget.remove_data([fnum])
-            del self.data[fname]
-            del self.plotColIndex[fname]
-            del self.dlg_data[fname]
+            del self.data[item.text()]
+            del self.plotColIndex[item.text()]
+            del self.dlg_data[item.text()]
             
         self.dataFileSelectionChanged()
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
@@ -1322,6 +1329,7 @@ class Fit_Widget(QWidget):
                 self.fchanged=False
                 self.update_plot()
             except:
+                print(traceback.format_exc())
                 QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
                 self.fixedParamTableWidget.item(row,col).setText(str(oldVal))
         self.fixedParamTableWidget.resizeRowsToContents()
@@ -1413,6 +1421,7 @@ class Fit_Widget(QWidget):
             self.fchanged=False
             self.update_plot()
         except:
+            print(traceback.format_exc())
             QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
             self.xLineEdit.setText('np.linspace(0.001,0.1,100)')
             

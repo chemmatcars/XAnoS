@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Made the logscale errorbar plotting in PlotWidget to work with pyqtgraph.ErrorBarItem">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem">
+      <change afterPath="$PROJECT_DIR$/XAnoS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PlotWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch_settings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readData.py" beforeDir="false" afterPath="$PROJECT_DIR$/readData.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,23 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="471" column="33" lean-forward="true" selection-start-line="471" selection-start-column="33" selection-end-line="471" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#328#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PlotWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="782">
-              <caret line="159" column="35" lean-forward="true" selection-start-line="159" selection-start-column="35" selection-end-line="159" selection-end-column="35" />
+            <state relative-caret-position="493">
+              <caret line="285" column="38" lean-forward="true" selection-start-line="285" selection-start-column="38" selection-end-line="285" selection-end-column="38" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -37,19 +29,38 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
-          <provider selected="true" editor-type-id="restructured-text-editor" />
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/readData.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="593" column="26" lean-forward="true" selection-start-line="593" selection-start-column="26" selection-end-line="593" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="85">
-                <caret line="5" column="37" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/XAnoS.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="9639">
+              <caret line="589" column="60" selection-start-line="589" selection-start-column="60" selection-end-line="589" selection-end-column="60" />
+              <folding>
+                <element signature="e#0#288#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -62,8 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11237">
-              <caret line="659" column="75" selection-start-line="659" selection-start-column="75" selection-end-line="659" selection-end-column="75" />
+            <state relative-caret-position="11169">
+              <caret line="667" selection-start-line="667" selection-end-line="677" selection-end-column="25" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -116,13 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>stop</find>
-      <find>saveparam</find>
-      <find>smoothing=3</find>
-      <find>saveparameters</find>
-      <find>loadParameters</find>
-      <find>self.rdist</find>
-      <find>pl.</find>
       <find>update_fixed_parameters(self</find>
       <find>srshdist</find>
       <find>dofit</find>
@@ -136,7 +140,6 @@
       <find>row</find>
       <find>updateC</find>
       <find>.currentIndexChanged.</find>
-      <find>print</find>
       <find>plotColIndex</find>
       <find>self.x</find>
       <find>self.x[</find>
@@ -146,6 +149,14 @@
       <find>import</find>
       <find>openDataDialog</find>
       <find>addData</find>
+      <find>self.data</find>
+      <find>self.sfnames</find>
+      <find>self.pfnames</find>
+      <find>except:</find>
+      <find>initialize_metaDataPlotDock(se</find>
+      <find>initialize_metaDataPlotDock(</find>
+      <find>print</find>
+      <find>dataSelectionChanged</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -174,8 +185,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/doc/data_file.txt" />
-        <option value="$PROJECT_DIR$/doc/Acknowledgements.rst" />
         <option value="$PROJECT_DIR$/license" />
         <option value="$PROJECT_DIR$/doc/License.rst" />
         <option value="$PROJECT_DIR$/doc/Introduction.rst" />
@@ -217,22 +226,24 @@
         <option value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
         <option value="$PROJECT_DIR$/calc_cf.py" />
-        <option value="$PROJECT_DIR$/ASAXS_Widget.py" />
         <option value="$PROJECT_DIR$/Fit_Routines.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" />
-        <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/doc_source/Acknowledgements.rst" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Data_Dialog.py" />
+        <option value="$PROJECT_DIR$/Fit_Widget.py" />
+        <option value="$PROJECT_DIR$/XAnoS.py" />
+        <option value="$PROJECT_DIR$/ASAXS_Widget.py" />
         <option value="$PROJECT_DIR$/PlotWidget.py" />
+        <option value="$PROJECT_DIR$/readData.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3912" />
-    <option name="y" value="-12" />
+    <option name="x" value="3831" />
+    <option name="y" value="-9" />
     <option name="width" value="1938" />
-    <option name="height" value="1098" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -242,6 +253,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -253,11 +265,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ChemMat_User_Stats" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RecentsManager">
@@ -281,28 +292,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Data_Dialog">
-    <configuration name="ASAXS_Batch_Processor_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="XAnoS" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.ASAXS_Widget">
     <configuration name="ASAXS_Widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -366,6 +356,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="XAnoS" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="XAnoS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/XAnoS.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="docutils task in Fit_Widget.rst" type="docs" factoryName="Docutils task" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -383,19 +394,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.ASAXS_Batch_Processor_2" />
       <item itemvalue="Python.ASAXS_Widget" />
       <item itemvalue="Python.Fit_Widget" />
       <item itemvalue="Python.Data_Dialog" />
+      <item itemvalue="Python.XAnoS" />
       <item itemvalue="Python docs.docutils task in Fit_Widget.rst" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ASAXS_Widget" />
+        <item itemvalue="Python.XAnoS" />
         <item itemvalue="Python.Data_Dialog" />
         <item itemvalue="Python.Fit_Widget" />
         <item itemvalue="Python docs.docutils task in Fit_Widget.rst" />
-        <item itemvalue="Python.ASAXS_Widget" />
-        <item itemvalue="Python.ASAXS_Batch_Processor_2" />
       </list>
     </recent_temporary>
   </component>
@@ -409,13 +420,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00028" summary="Updated README">
-      <created>1548536378862</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1548536378862</updated>
     </task>
     <task id="LOCAL-00029" summary="removed INSTALL.txt">
       <created>1548536677097</created>
@@ -753,7 +757,14 @@
       <option name="project" value="LOCAL" />
       <updated>1553663675608</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem">
+      <created>1553695604797</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1553695604798</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TodoView">
@@ -769,19 +780,19 @@
     <frame x="3833" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1559815" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15465961" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.41784704" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.39885715" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.41706616" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.3988495" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.503963" side_tool="true" weight="0.19660537" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49603698" weight="0.2549575" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.17847025" />
+      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49603698" weight="0.25407478" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.2266289" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.11898017" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -790,7 +801,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated the modules related to Area Detector in order to used image:ArrayData plugin instead of image files" />
     <MESSAGE value="Merge branch 'SAXS_Drive_Beta' of https://github.com/nayanbera/SAXS_Drive into SAXS_Drive_Beta&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
     <MESSAGE value="Updated Fit_widget and loaded a new ASAXS_Batch_Processor_2.py" />
     <MESSAGE value="Fix some bugs in Data_Dailog and Fit_widget" />
@@ -815,7 +825,8 @@
     <MESSAGE value="Commented out 'choices' option in fixedParameters of Fit_Widget" />
     <MESSAGE value="Fixed Data_Dialog for multiple plotting" />
     <MESSAGE value="Made the logscale errorbar plotting in PlotWidget to work with pyqtgraph.ErrorBarItem" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made the logscale errorbar plotting in PlotWidget to work with pyqtgraph.ErrorBarItem" />
+    <MESSAGE value="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -839,9 +850,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/doc_source/Data_Collection_Server.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/Data_Reduction_Client.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1041,16 +1049,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readData.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="588" selection-start-line="588" selection-end-line="588" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2499">
@@ -1070,16 +1068,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17731">
-          <caret line="1065" column="39" selection-start-line="1065" selection-start-column="39" selection-end-line="1065" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#288#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Functions/XRR/Parratt.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1130,8 +1118,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5712">
+          <caret line="357" column="4" selection-start-line="357" selection-start-column="4" selection-end-line="357" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XAnoS.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9639">
+          <caret line="589" column="60" selection-start-line="589" selection-start-column="60" selection-end-line="589" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#288#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/docs/Acknowledgements.html">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11169">
+          <caret line="667" selection-start-line="667" selection-end-line="677" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
@@ -1161,30 +1189,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="159" column="35" lean-forward="true" selection-start-line="159" selection-start-column="35" selection-end-line="159" selection-end-column="35" />
+        <state relative-caret-position="493">
+          <caret line="285" column="38" lean-forward="true" selection-start-line="285" selection-start-column="38" selection-end-line="285" selection-end-column="38" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+    <entry file="file://$PROJECT_DIR$/readData.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11237">
-          <caret line="659" column="75" selection-start-line="659" selection-start-column="75" selection-end-line="659" selection-end-column="75" />
+        <state relative-caret-position="216">
+          <caret line="593" column="26" lean-forward="true" selection-start-line="593" selection-start-column="26" selection-end-line="593" selection-end-column="26" />
           <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="471" column="33" lean-forward="true" selection-start-line="471" selection-start-column="33" selection-end-line="471" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>

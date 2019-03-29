@@ -1,0 +1,13 @@
+samNums=[1]
+bkgNum=3
+stdNum=6
+mtNum=4
+airNum5
+sampleThickness=0.148
+bkgThickness=0.138
+stdThickness=0.1055
+normStd=GC
+xMinMax=0.0:1.0
+interpType=linear
+energyNpts=20
+repeatNpts=1
