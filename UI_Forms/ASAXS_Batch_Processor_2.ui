@@ -161,14 +161,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="sampleNumLabel">
+      <widget class="QLabel" name="sampleSetLabel">
        <property name="text">
-        <string>No. of Samples</string>
+        <string>Sample set</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="sampleNumSpinBox">
+      <widget class="QSpinBox" name="sampleSetSpinBox">
        <property name="minimum">
         <number>3</number>
        </property>
@@ -314,10 +314,10 @@
        </sizepolicy>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QTextEdit" name="textEdit"/>
+        <widget class="QTextEdit" name="infoTextEdit"/>
        </item>
        <item>
         <widget class="QProgressBar" name="progressBar">

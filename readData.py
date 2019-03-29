@@ -578,10 +578,12 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         np.savetxt(ofname,finaldata,header=header,comments='#')
         print('Averaged data saved in a file named %s'%ofname)
         if textEdit is not None:
-            textEdit.append('Averaged data saved in a file named %s'%ofname)
+            textEdit.append('Averaged data saved in a file named %s\n'%ofname)
+            textEdit.moveCursor(QTextCursor.End)
+            QApplication.processEvents()
         return data,ofname
     
-def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg_sub',norm=1.0,bg_factor=1.0,data={}):
+def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg_sub',norm=1.0,bg_factor=1.0,data={},textEdit=None):
     """
     Subtracting the Background data 'bdata' from the signal data 'sdata' where 'sname' and 'bname' are keys for the specific data to be subtracted
     'ofname' is the output file name
@@ -610,6 +612,10 @@ def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg
     header=header+'Q (A^-1)\tInt\tInt_err\n'
     np.savetxt(ofname,finaldata,header=header,comments='#')
     print('Subtracted filname data save in a file named %s'%ofname)
+    if textEdit is not None:
+        textEdit.append('Subtracted filname data save in a file named %s\n'%ofname)
+        textEdit.moveCursor(QTextCursor.End)
+        QApplication.processEvents()
     return data, ofname
         
         
@@ -642,12 +648,13 @@ def interpolate_data(data,Npt=1000,kind='linear'):
         data[fname]['yintperr']=funerr(qintp)        
     return data
         
-def write1DSAXS(data,textEdit=None):
+def write1DSAXS(data,textEdit=None,fdir=None):
     """
     Writes the data dictionary in the filename provided with full path by 'fname'
     """
     fname=list(data.keys())[0]
-    fdir=os.path.join(os.path.dirname(fname),'Bkg_sub_and_Norm')
+    if fdir is None:
+        fdir=os.path.join(os.path.dirname(fname),'Bkg_sub_and_Norm')
     if not os.path.exists(fdir):
         os.makedirs(fdir)
     for fname in data.keys():
@@ -662,7 +669,7 @@ def write1DSAXS(data,textEdit=None):
         np.savetxt(pfname,np.vstack((data[fname]['x'],data[fname]['y'],data[fname]['yerr'])).T,comments='#',header=header)
         print('Data saved in %s...'%pfname)
         if textEdit is not None:
-            textEdit.append('Data saved in %s...'%pfname)
+            textEdit.append('Data saved in %s...\n'%pfname)
             textEdit.moveCursor(QTextCursor.End)
             QApplication.processEvents()
     return fdir

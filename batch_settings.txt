@@ -1,13 +1,14 @@
-samNums=[1]
+samNums=[1, 2]
 bkgNum=3
 stdNum=6
 mtNum=4
-airNum5
-sampleThickness=0.148
+airNum=5
+sampleThickness=[0.148, 0.138]
 bkgThickness=0.138
 stdThickness=0.1055
 normStd=GC
-xMinMax=0.0:1.0
+xMinMax=0.04:0.07
 interpType=linear
 energyNpts=20
 repeatNpts=1
+sampleSet=6

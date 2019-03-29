@@ -317,34 +317,36 @@ class PlotWidget(QWidget):
                 self.plotWidget.removeItem(self.data[dname])
                 self.legendItem.removeItem(dname)
                 if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
-                    self.plotWidget.removeItem(self.dataErrPos[dname])
-                    self.plotWidget.removeItem(self.dataErrNeg[dname])
+                    self.plotWidget.removeItem(self.dataErr[dname])
+                    # self.plotWidget.removeItem(self.dataErrPos[dname])
+                    # self.plotWidget.removeItem(self.dataErrNeg[dname])
             del self.data[dname]
-            del self.dataErrPos[dname]
-            del self.dataErrNeg[dname]
+            del self.dataErr[dname]
+            # del self.dataErrPos[dname]
+            # del self.dataErrNeg[dname]
             
             
     def updatePlot(self):
-        # try:
-        for dname in self.selDataNames:
-            if self.lineWidthLineEdit.text()=='0' and not self.fit[dname]:
-                self.data[dname].opts['pen']=None
-                self.data[dname].updateItems()
-            else:
-                #try:
-                self.data[dname].setPen(self.data[dname].opts['symbolPen']) #setting the same color as the symbol
-                color=self.data[dname].opts['pen'].color()
-                self.data[dname].setPen(pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text())))
-                #except:
-                #    self.data[dname].setPen(pg.mkPen(color='b',width=float(self.lineWidthLineEdit.text())))
-            self.data[dname].opts['symbol']='o'
-            if self.fit[dname]:
-                self.data[dname].setSymbolSize(0)
-            else:
-                self.data[dname].setSymbolSize(float(self.pointSizeLineEdit.text()))
-        self.Plot(self.selDataNames)
-        # except:
-        #     QMessageBox.warning(self,'Data Error','No data to plot',QMessageBox.Ok)
+        try:
+            for dname in self.selDataNames:
+                if self.lineWidthLineEdit.text()=='0' and not self.fit[dname]:
+                    self.data[dname].opts['pen']=None
+                    self.data[dname].updateItems()
+                else:
+                    #try:
+                    self.data[dname].setPen(self.data[dname].opts['symbolPen']) #setting the same color as the symbol
+                    color=self.data[dname].opts['pen'].color()
+                    self.data[dname].setPen(pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text())))
+                    #except:
+                    #    self.data[dname].setPen(pg.mkPen(color='b',width=float(self.lineWidthLineEdit.text())))
+                self.data[dname].opts['symbol']='o'
+                if self.fit[dname]:
+                    self.data[dname].setSymbolSize(0)
+                else:
+                    self.data[dname].setSymbolSize(float(self.pointSizeLineEdit.text()))
+            self.Plot(self.selDataNames)
+        except:
+            QMessageBox.warning(self,'Data Error','No data to plot',QMessageBox.Ok)
             
     def setXLabel(self,label,fontsize=4):
         """

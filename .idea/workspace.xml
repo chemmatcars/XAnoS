@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem">
-      <change afterPath="$PROJECT_DIR$/XAnoS.py" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PlotWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/batch_settings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readData.py" beforeDir="false" afterPath="$PROJECT_DIR$/readData.py" afterDir="false" />
     </list>
@@ -20,8 +20,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PlotWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="285" column="38" lean-forward="true" selection-start-line="285" selection-start-column="38" selection-end-line="285" selection-end-column="38" />
+            <state relative-caret-position="419">
+              <caret line="262" column="25" lean-forward="true" selection-start-line="262" selection-start-column="25" selection-end-line="262" selection-end-column="25" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -29,11 +29,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/readData.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="593" column="26" lean-forward="true" selection-start-line="593" selection-start-column="26" selection-end-line="593" selection-end-column="26" />
+            <state relative-caret-position="3929">
+              <caret line="498" column="64" lean-forward="true" selection-start-line="498" selection-start-column="64" selection-end-line="498" selection-end-column="64" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -41,11 +41,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/XAnoS.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="17" column="49" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+            <state relative-caret-position="435">
+              <caret line="73" column="9" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -107,8 +107,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/calc_cf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="55" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="-84">
+              <caret line="70" column="16" lean-forward="true" selection-start-line="70" selection-start-column="16" selection-end-line="70" selection-end-column="16" />
               <folding>
                 <element signature="e#201#211#0" expanded="true" />
               </folding>
@@ -127,9 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>update_fixed_parameters(self</find>
-      <find>srshdist</find>
-      <find>dofit</find>
       <find>self.updatePlot</find>
       <find>updatePlotData</find>
       <find>acceptWidget</find>
@@ -157,6 +154,9 @@
       <find>initialize_metaDataPlotDock(</find>
       <find>print</find>
       <find>dataSelectionChanged</find>
+      <find>infotextedit</find>
+      <find>open</find>
+      <find>save</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -224,7 +224,6 @@
         <option value="$PROJECT_DIR$/Functions/PeakFunctions/Gaussian.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Sphere.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Cylinder.py" />
-        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
         <option value="$PROJECT_DIR$/calc_cf.py" />
         <option value="$PROJECT_DIR$/Fit_Routines.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/CoreShellSphere.py" />
@@ -234,8 +233,9 @@
         <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/XAnoS.py" />
         <option value="$PROJECT_DIR$/ASAXS_Widget.py" />
-        <option value="$PROJECT_DIR$/PlotWidget.py" />
         <option value="$PROJECT_DIR$/readData.py" />
+        <option value="$PROJECT_DIR$/PlotWidget.py" />
+        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
       </list>
     </option>
   </component>
@@ -420,13 +420,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00029" summary="removed INSTALL.txt">
-      <created>1548536677097</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1548536677097</updated>
     </task>
     <task id="LOCAL-00030" summary="updated Documentation">
       <created>1548537583322</created>
@@ -764,7 +757,14 @@
       <option name="project" value="LOCAL" />
       <updated>1553695604798</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots.">
+      <created>1553871567075</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1553871567075</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TodoView">
@@ -791,8 +791,8 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.503963" side_tool="true" weight="0.19660537" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49603698" weight="0.25407478" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.2266289" />
+      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49603698" weight="0.25354108" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.22804533" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.11898017" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -801,7 +801,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Merge branch 'SAXS_Drive_Beta' of https://github.com/nayanbera/SAXS_Drive into SAXS_Drive_Beta&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
     <MESSAGE value="Updated Fit_widget and loaded a new ASAXS_Batch_Processor_2.py" />
     <MESSAGE value="Fix some bugs in Data_Dailog and Fit_widget" />
     <MESSAGE value="Fix the bug of importing two column data" />
@@ -826,7 +825,8 @@
     <MESSAGE value="Fixed Data_Dialog for multiple plotting" />
     <MESSAGE value="Made the logscale errorbar plotting in PlotWidget to work with pyqtgraph.ErrorBarItem" />
     <MESSAGE value="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem" />
+    <MESSAGE value="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots." />
+    <option name="LAST_COMMIT_MESSAGE" value="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1049,16 +1049,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2499">
-          <caret line="147" column="39" selection-start-line="147" selection-start-column="39" selection-end-line="147" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64/Lib/site-packages/matplotlib/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -1148,9 +1138,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/Acknowledgements.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11169">
@@ -1179,30 +1166,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/calc_cf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
+        <state relative-caret-position="-84">
+          <caret line="70" column="16" lean-forward="true" selection-start-line="70" selection-start-column="16" selection-end-line="70" selection-end-column="16" />
           <folding>
             <element signature="e#201#211#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/Acknowledgements.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3929">
+          <caret line="498" column="64" lean-forward="true" selection-start-line="498" selection-start-column="64" selection-end-line="498" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="285" column="38" lean-forward="true" selection-start-line="285" selection-start-column="38" selection-end-line="285" selection-end-column="38" />
+        <state relative-caret-position="419">
+          <caret line="262" column="25" lean-forward="true" selection-start-line="262" selection-start-column="25" selection-end-line="262" selection-end-column="25" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readData.py">
+    <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="593" column="26" lean-forward="true" selection-start-line="593" selection-start-column="26" selection-end-line="593" selection-end-column="26" />
+        <state relative-caret-position="435">
+          <caret line="73" column="9" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
