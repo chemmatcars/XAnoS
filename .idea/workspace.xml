@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots.">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated ASAXS_Batch_Processor_2 and readData-Added batch processing for multiple samples with different sample thickness">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlotWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotWidget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batch_settings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readData.py" beforeDir="false" afterPath="$PROJECT_DIR$/readData.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="73" column="9" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
+            <state relative-caret-position="231">
+              <caret line="61" column="59" lean-forward="true" selection-start-line="61" selection-start-column="59" selection-end-line="61" selection-end-column="59" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -53,14 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9639">
-              <caret line="589" column="60" selection-start-line="589" selection-start-column="60" selection-end-line="589" selection-end-column="60" />
-              <folding>
-                <element signature="e#0#288#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="34">
+              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -185,7 +178,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/license" />
         <option value="$PROJECT_DIR$/doc/License.rst" />
         <option value="$PROJECT_DIR$/doc/Introduction.rst" />
         <option value="$PROJECT_DIR$/doc/index.rst" />
@@ -236,6 +228,7 @@
         <option value="$PROJECT_DIR$/readData.py" />
         <option value="$PROJECT_DIR$/PlotWidget.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -420,13 +413,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00030" summary="updated Documentation">
-      <created>1548537583322</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1548537583322</updated>
     </task>
     <task id="LOCAL-00031" summary="updated Documentation">
       <created>1548537652352</created>
@@ -764,7 +750,14 @@
       <option name="project" value="LOCAL" />
       <updated>1553871567075</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Updated ASAXS_Batch_Processor_2 and readData-Added batch processing for multiple samples with different sample thickness">
+      <created>1553895449107</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1553895449107</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TodoView">
@@ -780,7 +773,7 @@
     <frame x="3833" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15465961" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15465961" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -792,7 +785,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.503963" side_tool="true" weight="0.19660537" />
       <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.49603698" weight="0.25354108" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.22804533" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.22804533" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.11898017" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -801,7 +794,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated Fit_widget and loaded a new ASAXS_Batch_Processor_2.py" />
     <MESSAGE value="Fix some bugs in Data_Dailog and Fit_widget" />
     <MESSAGE value="Fix the bug of importing two column data" />
     <MESSAGE value="Fix from factor functions in Fit_widget.py" />
@@ -826,7 +818,8 @@
     <MESSAGE value="Made the logscale errorbar plotting in PlotWidget to work with pyqtgraph.ErrorBarItem" />
     <MESSAGE value="Add the beam in the errorbar plotting within the PlotWidget to work with pyqtgraph.ErrorBarItem" />
     <MESSAGE value="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots." />
-    <option name="LAST_COMMIT_MESSAGE" value="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots." />
+    <MESSAGE value="Updated ASAXS_Batch_Processor_2 and readData-Added batch processing for multiple samples with different sample thickness" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated ASAXS_Batch_Processor_2 and readData-Added batch processing for multiple samples with different sample thickness" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -850,9 +843,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/docs/Data_Reduction_Client.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Mask_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1199,11 +1189,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="73" column="9" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
+        <state relative-caret-position="231">
+          <caret line="61" column="59" lean-forward="true" selection-start-line="61" selection-start-column="59" selection-end-line="61" selection-end-column="59" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
