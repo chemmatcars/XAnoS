@@ -1,10 +1,10 @@
-samNums=[1, 2]
-bkgNum=3
-stdNum=6
-mtNum=4
-airNum=5
-sampleThickness=[0.148, 0.138]
-bkgThickness=0.138
+samNums=[5]
+bkgNum=6
+stdNum=1
+mtNum=0
+airNum=2
+sampleThickness=[0.1]
+bkgThickness=0.1
 stdThickness=0.1055
 normStd=GC
 xMinMax=0.04:0.07

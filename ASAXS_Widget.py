@@ -1275,21 +1275,30 @@ class ASAXS_Widget(QWidget):
         :param B: BMatrix
         :return: residual
         """
-        x=np.array([param['x1'],param['x2'],param['x3']])
+        # x=np.array([param['x1'],param['x2'],param['x3']])
+        x = np.array([param['x1'], param['x2'], param['x2']**2/param['x1']])
         return np.dot(A,x)-B
 
     def lmfit_finderrbars(self,x,A,B):
         param=Parameters()
         param.add('x1',value = x[0])
         param.add('x2',value = x[1])
-        param.add('x3',value = x[2])
+        #param.add('x3',value = x[2])
         out = lmfit_minimize(self.lmfit_residual, param, args=(A,B))
         x1 = out.params['x1'].value
         x1err = out.params['x1'].stderr
         x2 = out.params['x2'].value
         x2err = out.params['x2'].stderr
-        x3 = out.params['x3'].value
-        x3err = out.params['x3'].stderr
+        if x1err is None:
+            x1err=x1*0.1
+        if x2err is None:
+            x2err=x2*0.1
+        #print(x1,x1err)
+        #print(x2,x2err)
+        # x3 = out.params['x3'].value
+        # x3err = out.params['x3'].stderr
+        x3 = x2**2/x1
+        x3err = np.sqrt((2*x2*x2err/x1)**2+(x2**2*x1err/x1**2)**2)
         return x1, x1err, x2, x2err, x3, x3err
 
 
@@ -1303,7 +1312,7 @@ class ASAXS_Widget(QWidget):
             self.XMatrix = []
             self.XMatrixErr = []
             for i in range(len(self.qintp)):
-                x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i])
+                x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
                 x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i])
                 xn=[x1,x2,x3]
                 self.XMatrix.append(xn)
@@ -1343,6 +1352,7 @@ class ASAXS_Widget(QWidget):
             self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
             self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
             self.directComponentListWidget.item(0).setSelected(True)
+            self.directComponentListWidget.item(1).setSelected(True)
             self.crossComponentListWidget.item(0).setSelected(True)
         else:
             # self.saveASAXSPushButton.setEnabled(True)

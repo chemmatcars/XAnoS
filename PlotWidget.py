@@ -194,7 +194,10 @@ class PlotWidget(QWidget):
         """
         Updates the plot checking the Errorbar is checked or not
         """
-        self.Plot(self.selDataNames)
+        try:
+            self.Plot(self.selDataNames)
+        except:
+            pass
             
         
     def Plot(self,datanames):

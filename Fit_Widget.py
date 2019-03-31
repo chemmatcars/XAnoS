@@ -1470,7 +1470,10 @@ class Fit_Widget(QWidget):
                     self.genParamListWidget.addItem(str(key)+':'+str(list(self.fit.params['output_params'][key].keys())))
                 if not self.fchanged:
                     for row in self.gen_rows:
-                        self.genParamListWidget.item(row).setSelected(True)
+                        try:
+                            self.genParamListWidget.item(row).setSelected(True)
+                        except:
+                            pass
             self.plot_extra_param()
             self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
             self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,\
