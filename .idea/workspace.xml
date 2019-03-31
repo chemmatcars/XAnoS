@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated .gitignore">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASAXS_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlotWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotWidget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batch_settings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scans.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="1475" column="32" selection-start-line="1475" selection-start-column="32" selection-end-line="1475" selection-end-column="32" />
+            <state relative-caret-position="4903">
+              <caret line="1347" column="39" lean-forward="true" selection-start-line="1347" selection-start-column="39" selection-end-line="1347" selection-end-column="39" />
               <folding>
                 <element signature="e#0#328#0" expanded="true" />
               </folding>
@@ -32,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PlotWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="31">
-              <caret line="199" column="16" selection-start-line="199" selection-start-column="16" selection-end-line="199" selection-end-column="16" />
+            <state relative-caret-position="273">
+              <caret line="231" column="38" lean-forward="true" selection-start-line="231" selection-start-column="38" selection-end-line="231" selection-end-column="38" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -56,8 +52,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="1340" column="32" lean-forward="true" selection-start-line="1340" selection-start-column="32" selection-end-line="1340" selection-end-column="32" />
+            <state relative-caret-position="214">
+              <caret line="1337" column="29" selection-start-line="1337" selection-start-column="29" selection-end-line="1337" selection-end-column="29" />
               <folding>
                 <element signature="e#0#288#0" expanded="true" />
               </folding>
@@ -122,9 +118,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>acceptWidget</find>
-      <find>self.dataAltered</find>
-      <find>resetPlotSetup</find>
       <find>updatePlotData(</find>
       <find>self.updatePlotData</find>
       <find>row</find>
@@ -152,6 +145,9 @@
       <find>lmfit_minimize</find>
       <find>add_data</find>
       <find>add</find>
+      <find>CrossBy</find>
+      <find>single</find>
+      <find>cons-single</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -415,20 +411,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00032" summary="updated Documentation">
-      <created>1548537777233</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1548537777233</updated>
-    </task>
-    <task id="LOCAL-00033" summary="updated Documentation">
-      <created>1548537838439</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1548537838439</updated>
     </task>
     <task id="LOCAL-00034" summary="updated Documentation">
       <created>1548537944071</created>
@@ -759,7 +741,21 @@
       <option name="project" value="LOCAL" />
       <updated>1553895767306</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err">
+      <created>1554017156722</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1554017156723</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err">
+      <created>1554058043307</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1554058043307</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TodoView">
@@ -773,7 +769,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15455747" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
@@ -796,7 +791,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix the bug of importing two column data" />
     <MESSAGE value="Fix from factor functions in Fit_widget.py" />
     <MESSAGE value="Updated the documentation" />
     <MESSAGE value="Updated Data_Dialog.py and the documentation" />
@@ -821,7 +815,8 @@
     <MESSAGE value="Created a starting app XAnoS.py to start all other widgets within XAnoS. Updated PlotWidget to disable beam in the errorbar plots." />
     <MESSAGE value="Updated ASAXS_Batch_Processor_2 and readData-Added batch processing for multiple samples with different sample thickness" />
     <MESSAGE value="Updated .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated .gitignore" />
+    <MESSAGE value="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1168,30 +1163,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="1475" column="32" selection-start-line="1475" selection-start-column="32" selection-end-line="1475" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31">
-          <caret line="199" column="16" selection-start-line="199" selection-start-column="16" selection-end-line="199" selection-end-column="16" />
+        <state relative-caret-position="273">
+          <caret line="231" column="38" lean-forward="true" selection-start-line="231" selection-start-column="38" selection-end-line="231" selection-end-column="38" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4903">
+          <caret line="1347" column="39" lean-forward="true" selection-start-line="1347" selection-start-column="39" selection-end-line="1347" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="1340" column="32" lean-forward="true" selection-start-line="1340" selection-start-column="32" selection-end-line="1340" selection-end-column="32" />
+        <state relative-caret-position="214">
+          <caret line="1337" column="29" selection-start-line="1337" selection-start-column="29" selection-end-line="1337" selection-end-column="29" />
           <folding>
             <element signature="e#0#288#0" expanded="true" />
           </folding>

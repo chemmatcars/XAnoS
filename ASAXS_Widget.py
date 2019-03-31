@@ -1336,13 +1336,13 @@ class ASAXS_Widget(QWidget):
                 x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
                 x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],constraint=constraint)
                 xn=[x1,x2,x3]
-                print(x,xn)
                 self.XMatrix.append(xn)
                 tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
                 if ans == QMessageBox.Yes:
-                    self.ASAXSCheckPlotWidget.add_data(f1, self.BMatrix[:, i], name='Data(Q=%.5f)'%self.qintp[i])
+                    self.ASAXSCheckPlotWidget.setTitle('Q=%.5f' % self.qintp[i])
+                    self.ASAXSCheckPlotWidget.add_data(f1, self.BMatrix[:, i], name='Data')
                     self.ASAXSCheckPlotWidget.add_data(f1, tot[-1], name='Fit', fit=True)
-                    self.ASAXSCheckPlotWidget.Plot(['Data(Q=%.5f)'%self.qintp[i], 'Fit'])
+                    self.ASAXSCheckPlotWidget.Plot(['Data', 'Fit'])
                     self.raiseDock(self.ASAXSCheckPlotDock)
                     ans = QMessageBox.question(self, 'Question', 'Do you like to see the next Q?', QMessageBox.Yes,
                                                QMessageBox.No)
@@ -1498,6 +1498,7 @@ class ASAXS_Widget(QWidget):
                 X.append(sp.linalg.lstsq(self.AMatrix,self.BMatrix[:,i],lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0])
                 tot.append(np.dot(self.AMatrix,X[-1]))            
                 if ans==QMessageBox.Yes:
+                    self.ASAXSCheckPlotWidget.setTitle('Q=%.5f'%self.qintp[i])
                     self.ASAXSCheckPlotWidget.add_data(f1,self.BMatrix[:,i],name='Data')
                     self.ASAXSCheckPlotWidget.add_data(f1,tot[-1],name='Fit',fit=True)
                     self.ASAXSCheckPlotWidget.Plot(['Data','Fit'])
