@@ -138,7 +138,7 @@ class Formol: #Please put the class name same as the function name
                 f2=self.__xdb__.f2_chantler(element=ele,energy=energy*1e3,smoothing=0)
                 rho=rho+Nrho*(self.__xdb__.f0(ele,0.0)+f1+1.0j*f2)
     #print(r[:-1]+(),rho)
-        return r,rho/4/np.pi/r**2/dr+self.sol*np.where(rho<1e-6,1.0,0.0)
+        return r,rho/4/np.pi/r**2/dr#+self.sol*np.where(rho<1e-6,1.0,0.0)
 
     def calc_form(self,q,r,rho):
         """
@@ -170,7 +170,7 @@ class Formol: #Please put the class name same as the function name
         #Contribution from second molecule
         if self.fname2 is not None:
             if self.__fnames__[1]!=self.fname2 or self.__E__!=self.E or len(self.__x__)!=len(self.x) or self.__x__[-1]!=self.x[-1] or self.__qoff__!=self.qoff or self.__Nr__!=self.Nr or self.__rmin__!=self.rmin or self.__rmax__!=self.rmax:
-                self._r2__,self.__rho2__=self.calc_xtal_rho(self.fname2,rmin=self.rmin,rmax=self.rmax,Nr=self.Nr,energy=self.E)
+                self.__r2__,self.__rho2__=self.calc_xtal_rho(self.fname2,rmin=self.rmin,rmax=self.rmax,Nr=self.Nr,energy=self.E)
             form2=self.calc_form(self.x,self.__r2__,self.__rho2__)
             self.output_params['rho_2']={'x':self.__r2__,'y':np.real(self.__rho2__)}
 

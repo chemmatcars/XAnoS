@@ -1663,7 +1663,7 @@ class Data_Collector_Server(QWidget):
 if __name__=='__main__':
     app=QApplication(sys.argv)
     w=Data_Collector_Server()
-    w.setWindowTitle('Data Collector')
+    w.setWindowTitle('XAnoS Collector')
     w.setGeometry(0,0,800,800)
     
     w.show()

@@ -281,7 +281,7 @@ class Fit_Widget(QWidget):
         self.funcDock.addWidget(self.funcLayoutWidget)
         
     def addCategory(self):
-        tdir=QFileDialog.getExistingDirectory(self,'Select a folder','self.curDir',QFileDialog.ShowDirsOnly)
+        tdir=QFileDialog.getExistingDirectory(self,'Select a folder','./Functions/',QFileDialog.ShowDirsOnly)
         if tdir!='': 
             cdir=os.path.basename(os.path.normpath(tdir))
             fh=open(os.path.join(tdir,'__init__.py'),'w')

@@ -405,7 +405,7 @@ class ASAXS_Batch_Processor(QWidget):
 if __name__=='__main__':
     app=QApplication(sys.argv)
     w=ASAXS_Batch_Processor()
-    w.setWindowTitle('ASAXS Batch Processor 2')
+    w.setWindowTitle('XAnoS Batch Processor 2')
     w.resize(800,600)
     w.show()
     sys.exit(app.exec_())
