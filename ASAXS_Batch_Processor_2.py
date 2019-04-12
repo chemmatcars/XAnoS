@@ -79,6 +79,7 @@ class ASAXS_Batch_Processor(QWidget):
 
     def process(self):
         if not self.duplicateNums():
+            self.infoTextEdit.clear()
             if self.sampleFileName is not None:
                 bg_num = self.bkgNum
                 gc_num = self.stdNum
@@ -278,8 +279,11 @@ class ASAXS_Batch_Processor(QWidget):
         Nums = list(map(int, txt.split(",")))
         Nums=Nums+[self.bkgNum,self.mtNum,self.airNum]
         print(Nums)
-        if np.unique(Nums).size!=len(Nums):
-            return True
+        if self.mtNum!=0 and self.airNum!=0:
+            if np.unique(Nums).size!=len(Nums):
+                return True
+            else:
+                return False
         else:
             return False
 
