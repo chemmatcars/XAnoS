@@ -1613,13 +1613,23 @@ class Data_Collector_Server(QWidget):
                 self.transmission_value=1.0
             file.header['Time'] = time.time()
             file.header['MonB'] = self.monB_counts
+            file.header['MonB_Sens']=caget('15IDB:A1sens_num.VAL',as_string=True)+' '+caget(
+                '15IDB:A1sens_unit.VAL',as_string=True)
             file.header['Monitor'] = self.monitor_counts#1000#caget(self.scalers['Monitor']['PV'])
+            file.header['Monitor_Sens']=caget('15IDD:ionch:sens_num.VAL',as_string=True)+' '+caget(
+                '15IDD:ionch:sens_unit.VAL',as_string=True)
             file.header['count_time'] = self.count_time#1.0#caget(self.scalers['count_time']['PV'])
             file.header['BSDiode'] = self.BSdiode_counts#300#caget(self.scalers['BSDiode']['PV'])
+            file.header['BSDiode_Sens']=caget('15IDD:bpm1:sens_num.VAL',as_string=True)+' '+caget(
+                '15IDD:bpm1:sens_unit.VAL',as_string=True)
             file.header['directDiode'] = self.direct_diode_counts
             file.header['directMonitor'] = self.direct_monitor_counts
             file.header['transDiode'] = self.trans_diode_counts
+            file.header['transDiode_Sens']=caget('15IDD:bpm3:sens_num.VAL',as_string=True)+' '+caget(
+                '15IDD:bpm3:sens_unit.VAL',as_string=True)
             file.header['transMonitor'] = self.trans_monitor_counts
+            file.header['transMonitor_Sens'] = caget('15IDD:bpm2:sens_num.VAL', as_string=True) + ' ' + caget(
+                '15IDD:bpm2:sens_unit.VAL', as_string=True)
             file.header['Transmission'] = self.transmission_value
             file.header['xcradle'] = 0.0
             for key in self.motors.keys():

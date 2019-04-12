@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
+    <width>991</width>
     <height>517</height>
    </rect>
   </property>
@@ -118,6 +118,20 @@
        </property>
        <property name="text">
         <string>1.0</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="sampleNumberLabel">
+       <property name="text">
+        <string>No. of Samples</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="sampleNumberSpinBox">
+       <property name="minimum">
+        <number>3</number>
        </property>
       </widget>
      </item>

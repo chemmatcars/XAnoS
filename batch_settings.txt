@@ -1,11 +1,11 @@
-samNums=[1]
-bkgNum=2
-stdNum=3
-sampleThickness=0.147
-bkgThickness=0.14
+samNums=[4]
+bkgNum=1
+stdNum=7
+sampleThickness=0.125
+bkgThickness=0.16
 stdThickness=0.1055
 normStd=GC
-xMinMax=0.1:0.25
+xMinMax=0.06:0.08
 interpType=linear
 energyNpts=20
 repeatNpts=1

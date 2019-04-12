@@ -30,11 +30,11 @@ class ASAXS_Batch_Processor(QWidget):
         self.integerValidator = QIntValidator()
         if self.sampleFileName == '':
             self.sampleFileName = None
-        self.sampleNumsChanged()
+        self.firstSampleNumChanged()
         self.firstBkgNumLineEdit.setValidator(self.integerValidator)
         self.firstStdNumLineEdit.setValidator(self.integerValidator)
-        self.bkgNumChanged()
-        self.stdNumChanged()
+        self.firstBkgNumChanged()
+        self.firstStdNumChanged()
         self.sampleThicknessLineEdit.setValidator(self.doubleValidator)
         self.bkgThicknessLineEdit.setValidator(self.doubleValidator)
         self.stdThicknessLineEdit.setValidator(self.doubleValidator)
@@ -56,12 +56,12 @@ class ASAXS_Batch_Processor(QWidget):
         :return:
         """
         self.selectFileNamePushButton.clicked.connect(self.openSampleFname)
-        self.firstSampleNumsLineEdit.returnPressed.connect(self.sampleNumsChanged)
-        self.firstSampleNumsLineEdit.textEdited.connect(self.sampleNumsChanged)
-        self.firstBkgNumLineEdit.returnPressed.connect(self.bkgNumChanged)
-        self.firstBkgNumLineEdit.textEdited.connect(self.bkgNumChanged)
-        self.firstStdNumLineEdit.returnPressed.connect(self.stdNumChanged)
-        self.firstStdNumLineEdit.textEdited.connect(self.stdNumChanged)
+        self.firstSampleNumsLineEdit.returnPressed.connect(self.firstSampleNumChanged)
+        self.firstSampleNumsLineEdit.textEdited.connect(self.firstSampleNumChanged)
+        self.firstBkgNumLineEdit.returnPressed.connect(self.firstBkgNumChanged)
+        self.firstBkgNumLineEdit.textEdited.connect(self.firstBkgNumChanged)
+        self.firstStdNumLineEdit.returnPressed.connect(self.firstStdNumChanged)
+        self.firstStdNumLineEdit.textEdited.connect(self.firstStdNumChanged)
         self.sampleThicknessLineEdit.returnPressed.connect(self.sampleThicknessChanged)
         self.sampleThicknessLineEdit.textEdited.connect(self.sampleThicknessChanged)
         self.stdThicknessLineEdit.returnPressed.connect(self.stdThicknessChanged)
@@ -82,7 +82,8 @@ class ASAXS_Batch_Processor(QWidget):
             gc_num = self.stdNum
             fdir = os.path.dirname(self.sampleFileName)
             mean_dir = os.path.join(fdir, 'Mean')
-            ctimes = 3 * self.repeatNpts
+            ctimes = self.sampleNumberSpinBox.value() * self.repeatNpts
+            print(ctimes)
             data = {}
 
             if not os.path.exists(mean_dir):
@@ -146,44 +147,53 @@ class ASAXS_Batch_Processor(QWidget):
         self.sampleFileNameLineEdit.setText(fname[:-9])
         self.sampleNameChanged()
 
-    def sampleNumsChanged(self):
+    def firstSampleNumChanged(self):
         txt=self.firstSampleNumsLineEdit.text().replace(" ","")
-        samNums=list(map(int, txt.split(",")))
-        if all(isinstance(x, int) for x in samNums):
-            self.samNums=samNums
-        else:
-            QMessageBox.warning(self,
-                                'Please provide integer values and if multiple seperate them by commas in between',\
-                                QMessageBox.Ok)
-            self.samNums=1
-            self.firstSampleNumsLineEdit.setText('1')
-        self.save_settings()
+        try:
+            samNums=list(map(int, txt.split(",")))
+            if all(isinstance(x, int) for x in samNums):
+                self.samNums=samNums
+            else:
+                QMessageBox.warning(self,
+                                    'Please provide integer values and if multiple seperate them by commas in between',\
+                                    QMessageBox.Ok)
+                self.samNums=1
+                self.firstSampleNumsLineEdit.setText('1')
+            self.save_settings()
+        except:
+            pass
 
-    def bkgNumChanged(self):
-        bkgNum = int(self.firstBkgNumLineEdit.text())
-        if bkgNum in self.samNums:
-            response = QMessageBox.question(self, 'As this number also exists as sample number, are you sure this number\
-             belongs to backgroud?', QMessageBox.Yes, QMessageBox.No)
-            if response == QMessageBox.Yes:
+    def firstBkgNumChanged(self):
+        try:
+            bkgNum = int(self.firstBkgNumLineEdit.text())
+            if bkgNum in self.samNums:
+                response = QMessageBox.question(self, 'As this number also exists as sample number, are you sure this number\
+                 belongs to backgroud?', QMessageBox.Yes, QMessageBox.No)
+                if response == QMessageBox.Yes:
+                    self.bkgNum = bkgNum
+                else:
+                    self.firstBkgNumLineEdit.setText(str(self.bkgNum))
+            else:
                 self.bkgNum = bkgNum
-            else:
-                self.firstBkgNumLineEdit.setText(str(self.bkgNum))
-        else:
-            self.bkgNum = bkgNum
-        self.save_settings()
+            self.save_settings()
+        except:
+            pass
 
-    def stdNumChanged(self):
-        stdNum = int(self.firstStdNumLineEdit.text())
-        if stdNum in self.samNums or stdNum==self.bkgNum:
-            response = QMessageBox.question(self, 'As this number also exists as sample number, are you sure this number\
-             belongs to background?', QMessageBox.Yes, QMessageBox.No)
-            if response == QMessageBox.Yes:
-                self.stdNum = stdNum
+    def firstStdNumChanged(self):
+        try:
+            stdNum = int(self.firstStdNumLineEdit.text())
+            if stdNum in self.samNums or stdNum==self.bkgNum:
+                response = QMessageBox.question(self, 'As this number also exists as sample number, are you sure this number\
+                 belongs to background?', QMessageBox.Yes, QMessageBox.No)
+                if response == QMessageBox.Yes:
+                    self.stdNum = stdNum
+                else:
+                    self.firstStdNumLineEdit.setText(str(self.stdNum))
             else:
-                self.firstStdNumLineEdit.setText(str(self.stdNum))
-        else:
-            self.stdNum = stdNum
-        self.save_settings()
+                self.stdNum = stdNum
+            self.save_settings()
+        except:
+            pass
 
     def sampleNameChanged(self):
         self.sampleFileName = self.sampleFileNameLineEdit.text()

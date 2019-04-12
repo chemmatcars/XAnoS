@@ -27,25 +27,28 @@ if len(sys.argv)==7:
     
     xrdb=XrayDB()
     evals=np.linspace(edge_energy,min_energy,steps)
-    f1=xrdb.f1_chantler(element=element,energy=evals,smoothing=0)
+    efine=np.linspace(edge_energy,min_energy,1001)
+    f1=xrdb.f1_chantler(element=element,energy=efine,smoothing=0)
     f1vals=np.linspace(f1[0],f1[-1],steps)
-    e1vals=np.interp(f1vals,f1,evals)
+    e1vals=np.interp(f1vals,f1,efine)
     print(np.diff(f1vals))
     print(np.diff(e1vals))
     evaltxt=''
     pl.figure()
-    pl.plot(evals,f1,'ro',label='Equal Energy Steps')
-    print("f_value\tMono_E\tUnd_E")
+    pl.plot(efine,f1,'r-',label='Equal Energy Steps')
+    print("%10s\t%10s\t%10s\t%10s\t%10s"%("Step","f_value","Mono_E","Und_E","f_1"))
     for i in range(steps):
        # print("%.5f\t%.3f"%(f1vals[i],e1vals[i]/1e3))
         evaltxt=evaltxt+'%.3f,'%(e1vals[i]/1e3+eoff)
-        print("%.5f\t%.3f\t%.3f"%(f1vals[i],e1vals[i]/1e3+eoff,e1vals[i]/1e3+0.17+eoff),xrdb.f1_chantler(
-            element=element,energy=e1vals[i],smoothing=0))
+        print("%10d\t%10.7f\t%10.3f\t%10.3f\t%10.7f"%(i,f1vals[i],e1vals[i]/1e3+eoff,e1vals[i]/1e3+0.17+eoff,
+                                                   xrdb.f1_chantler(
+            element=element,energy=e1vals[i],smoothing=0)))
     fh=open(fname,'w')
     txt='Energy ['+evaltxt[:-1]+'] absolute coupled'
     fh.write(txt)
     fh.close()
-    pl.plot(e1vals,xrdb.f1_chantler(element=element,energy=e1vals,smoothing=0),'go',label='Equal f1 steps')
+    #pl.plot(e1vals,xrdb.f1_chantler(element=element,energy=e1vals,smoothing=0),'go',label='Equal f1 steps')
+    pl.plot(e1vals, f1vals, 'go', label='Equal f1 steps')
     pl.legend(loc='best')
     pl.show()
 else:

@@ -88,7 +88,7 @@
             <item>
              <widget class="QLineEdit" name="medm_P_LineEdit">
               <property name="text">
-               <string>dxpSaturn:</string>
+               <string>dp_vortex_xrd74:</string>
               </property>
              </widget>
             </item>
@@ -270,6 +270,13 @@
                <widget class="QLineEdit" name="xmaxLineEdit">
                 <property name="text">
                  <string>1</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="calcStatsPushButton">
+                <property name="text">
+                 <string>Recalculate</string>
                 </property>
                </widget>
               </item>

@@ -1,1 +1,1 @@
-{"poniFile": "V:/2018-11/Tianbo/AgBH_short_tube_11252018.poni", "maskFile": "V:/2018-11/Tianbo/mask_short_tube_11252018.msk"}
+{"poniFile": "/mnt/ChemData/Data/Asax/2019-03/Harrison/AgBH_03062019.poni", "maskFile": "/mnt/ChemData/Data/Asax/2019-03/Hao/mask_03052019.msk"}

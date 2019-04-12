@@ -440,7 +440,7 @@ class Data_Dialog(QDialog):
                     break
             if 'col_names' in self.data['meta'].keys():
                 self.data['data']=pd.read_csv(self.fname,comment=comment,names=self.data['meta']['col_names'],header=None,sep=delimiter)
-                if not np.all(self.data['data'].isnull()):
+                if not np.all(self.data['data'].isnull().values):
                     self.data['data']=pd.DataFrame(np.loadtxt(self.fname,skiprows=skiprows),columns=self.data['meta']['col_names'])
             else:
                 self.data['data']=pd.read_csv(self.fname,comment=comment,header=None,sep=delimiter)

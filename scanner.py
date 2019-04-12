@@ -1055,8 +1055,8 @@ class Scanner(QWidget):
                 self.preScanOK=False
         # else: #For energy scan
         #     self.scanMotorName = self.scanMotorComboBox.currentText()
-        #     high = caget('15IDA:BraggERdbkAO')
-        #     low = caget(self.slitParams[motorname]['PV'] + '.DRVL')
+        #     high = caget('15IDA:BraggEAO.DRVH')
+        #     low = caget('15IDA:BraggEAO.DRVL')
         #     self.plotWidget.setXLabel(self.scanMotorName)
         #     self.plotWidget.setYLabel('Counts')
         #     if low < start < high and low < finish < high:
@@ -1073,9 +1073,9 @@ class Scanner(QWidget):
         #         self.scanfh.write(text)
         #         self.scanfh.write('\n')
         #         print(text + '\n')
-        #         text = '#%s %s\t%s\t%s\t%s\t%s\t%s\t%s' % (
+        #         text = '#%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % (
         #         'Pt', self.scanMotorName, 'count-time', 'monB', 'monP', 'bs_diode', 'monitor_diode','trans_diode',
-        # 'monitor')
+        # 'monitor','mca_roi')
         #         self.scans[self.scanNum]['scanVariables'] = text.split()[1:]
         #         self.scanfh.write(text + '\n')
         #         # self.detectorNum=self.scans[self.scanNum]['scanVariables'].index(self.scanDetector)
@@ -1083,7 +1083,7 @@ class Scanner(QWidget):
         #         self.plotWidget.setTitle(self.scans[self.scanNum]['scanHeader'], fontsize=5)
         #         self.preScanOK = True
         #     else:
-        #         QMessageBox.warning(self, 'Motor Limits',
+        #         QMessageBox.warning(self, 'Energy Limits',
         #                             'Scanning range is ouside the soft limit! Please review your scan range.',
         #                             QMessageBox.Ok)
         #         self.preScanOK = False
