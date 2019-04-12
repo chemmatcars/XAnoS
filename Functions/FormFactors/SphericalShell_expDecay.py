@@ -14,7 +14,7 @@ from xraydb import XrayDB
 #from pyEQL import chemical_formula
 
 
-class sphericalShell_expDecay: #Please put the class name same as the function name
+class SphericalShell_expDecay: #Please put the class name same as the function name
     No = 6.023e23  # Avagadro number
     re2= (2.817e-5)**2 # Square of classical electron radius in Angs^2
     def __init__(self, x=0, rmin=0.0, rmax=30.0, Nr=31, Rc=10.0, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0, norm=1.0, bkg=0.0, mpar={}):
@@ -56,13 +56,13 @@ class sphericalShell_expDecay: #Please put the class name same as the function n
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
-        self.params.add('Rc',value=self.Rc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('strho', value=self.strho, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=None)
-        self.params.add('tst', value=self.tst, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=None)
-        self.params.add('lrho', value=self.lrho, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=None)
-        self.params.add('lexp', value=self.lexp, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=None)
-        self.params.add('norm', value=self.norm, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=None)
-        self.params.add('bkg', value=self.bkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=None)
+        self.params.add('Rc',value=self.Rc,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('strho', value=self.strho, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('tst', value=self.tst, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('lrho', value=self.lrho, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('lexp', value=self.lexp, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('norm', value=self.norm, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('bkg', value=self.bkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
 
 
 
@@ -121,5 +121,5 @@ class sphericalShell_expDecay: #Please put the class name same as the function n
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)
-    fun=sphericalShell_expDecay(x=x)
+    fun=SphericalShell_expDecay(x=x)
     print(fun.y())

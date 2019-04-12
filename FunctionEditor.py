@@ -7,6 +7,8 @@ import tempfile
 import os
 from Highlighter import Highlighter
 import os
+from pylint import epylint as lint
+
 
 class FunctionEditor(QWidget):
     def __init__(self, funcName=None, dirName=None, parent=None):
@@ -147,8 +149,9 @@ class FunctionEditor(QWidget):
             self.process=QProcess()
             self.foundError=False
             self.process.readyReadStandardOutput.connect(self.readTestOutput)
-            self.process.start('pylint -E '+fname)
+            self.process.start('pylint -E --disable=E0611 '+fname)
             self.process.finished.connect(self.finishedTesting)
+
             
     def replaceTabWithSpaces(self):
         text=self.funcTextEdit.toPlainText()
@@ -164,7 +167,7 @@ class FunctionEditor(QWidget):
             
     def readTestOutput(self):
         output=str(self.process.readAllStandardOutput())
-        outputs=output[2:-1].split('\\n')
+        outputs=output[2:-1].split('\\r\\n')
         for text in outputs:
             self.debugTextEdit.appendPlainText(text)
         
@@ -187,7 +190,7 @@ class FunctionEditor(QWidget):
             
     def readRunOutput(self):
         output=str(self.process.readAllStandardOutput())
-        outputs=output[2:-1].split('\\n')
+        outputs=output[2:-1].split('\\r\\n')
         for text in outputs:
             self.debugTextEdit.appendPlainText(text)
             

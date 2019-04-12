@@ -53,13 +53,13 @@ class MultiPeaks: #Please put the class name same as the function name
         self.param.add('sig',value=0,vary=0,,min=-np.inf,max=np.inf,expr=None,brute_step=None)
         """
         self.params=Parameters()
-        self.params.add('c0',value=self.c0,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('c1',value=self.c1,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('c2',value=self.c2,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('c3',value=self.c3,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('cN',value=self.cN,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('cexp',value=self.cexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('lexp',value=self.lexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('c0',value=self.c0,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('c1',value=self.c1,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('c2',value=self.c2,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('c3',value=self.c3,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('cN',value=self.cN,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('cexp',value=self.cexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('lexp',value=self.lexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         for key in self.__mpar__.keys():
             if key!='type':
                 for i in range(len(self.__mpar__[key])):
@@ -100,7 +100,7 @@ class MultiPeaks: #Please put the class name same as the function name
             self.output_params['peak_%03d'%(i+1)]={'x':self.x,'y':fun}
         c=[self.params['c%d'%i].value for i in range(4)]
         cN=self.params['cN'].value
-        bkg=c[0]+c[1]*self.x**self.power+c[2]*self.x**(self.power*2)+c[3]*self.x**(self.power*3)+cN*self.x**(self.power*self.N)+self.params['cexp'].value*np.exp(-self.x/self.params['lexp'].value)
+        bkg=c[0]+c[1]*self.x**self.power+c[2]*self.x**(self.power*2)+c[3]*self.x**(self.power*3)+cN*self.x**(self.power*self.N)+self.params['cexp'].value*np.exp(-self.x*self.params['lexp'].value)
         res=res+bkg
         self.output_params['bkg']={'x':self.x,'y':bkg}
         return res

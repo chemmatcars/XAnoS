@@ -670,7 +670,7 @@ if __name__=='__main__':
     app=QApplication(sys.argv)
     #poniFile='/home/epics/CARS5/Data/Data/saxs/2017-06/Alignment/agbh1.poni'
     w=Data_Reduction_Client()
-    w.setWindowTitle('Data Reduction Client')
+    w.setWindowTitle('XAnos Reducer')
     #w.setGeometry(50,50,800,800)
     
     w.show()

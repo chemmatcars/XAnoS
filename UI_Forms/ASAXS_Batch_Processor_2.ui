@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>991</width>
+    <width>741</width>
     <height>517</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -30,13 +30,6 @@
       <widget class="QPushButton" name="selectFileNamePushButton">
        <property name="text">
         <string>Select</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="processPushButton">
-       <property name="text">
-        <string>Process</string>
        </property>
       </widget>
      </item>
@@ -58,6 +51,10 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QLabel" name="firstBkgNumLabel">
        <property name="text">
@@ -66,9 +63,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="firstBkgNumLineEdit">
-       <property name="text">
-        <string>2</string>
+      <widget class="QSpinBox" name="bkgSpinBox">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100000</number>
+       </property>
+       <property name="value">
+        <number>2</number>
        </property>
       </widget>
      </item>
@@ -80,11 +83,47 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="firstStdNumLineEdit">
-       <property name="text">
-        <string>3</string>
+      <widget class="QSpinBox" name="stdSpinBox">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100000</number>
+       </property>
+       <property name="value">
+        <number>3</number>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="mtNumLabel">
+       <property name="text">
+        <string>First MT Num</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="mtSpinBox">
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>100000</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="airNumLabel">
+       <property name="text">
+        <string>First Air Num</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="airSpinBox"/>
      </item>
     </layout>
    </item>
@@ -122,15 +161,21 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="sampleNumberLabel">
+      <widget class="QLabel" name="sampleSetLabel">
        <property name="text">
-        <string>No. of Samples</string>
+        <string>Sample set</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="sampleNumberSpinBox">
+      <widget class="QSpinBox" name="sampleSetSpinBox">
        <property name="minimum">
+        <number>3</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+       <property name="value">
         <number>3</number>
        </property>
       </widget>
@@ -257,20 +302,39 @@
     </layout>
    </item>
    <item>
-    <widget class="QProgressBar" name="progressBar">
-     <property name="value">
-      <number>24</number>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="PlotWidget" name="plotWidget" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+     <widget class="PlotWidget" name="plotWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QTextEdit" name="infoTextEdit"/>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>24</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="processPushButton">
+         <property name="text">
+          <string>Process</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

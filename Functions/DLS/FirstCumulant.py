@@ -53,9 +53,9 @@ class FirstCumulant: #Please put the class name same as the function name
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
-        self.params.add('D',value=self.D,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('norm',self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
-        self.params.add('bkg',self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        self.params.add('D',value=self.D,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('norm',self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('bkg',self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
     def y(self):
         """

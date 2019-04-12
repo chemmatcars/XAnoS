@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 import numpy as np
 import sys
 from pyqtgraph.widgets.MatplotlibWidget import MatplotlibWidget
-
+import copy
 
 
 class PlotWidget(QWidget):
@@ -29,6 +29,7 @@ class PlotWidget(QWidget):
         self.dataErrPos={}
         self.dataErrNeg={}
         self.dataErr={}
+        self.err={}
         self.data_num=0
         self.yerr={}
         self.fit={}
@@ -146,9 +147,11 @@ class PlotWidget(QWidget):
                 self.data[dname].setData(x,y,pen=pen,symbol=symbol,symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
                 #self.data[dname].setPen(pg.mkPen(color=pg.intColor(np.random.choice(range(0,210),1)[0]),width=int(self.lineWidthLineEdit.text())))
                 #if self.errorbarCheckBox.isChecked():
-                self.dataErrPos[dname].setData(x,np.where(y+yerr/2.0>0,y+yerr/2.0,y))
-                self.dataErrNeg[dname].setData(x,np.where(y-yerr/2.0>0,y-yerr/2.0,y))
-                #self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
+                # self.dataErrPos[dname].setData(x,np.where(y+yerr/2.0>0,y+yerr/2.0,y))
+                # self.dataErrNeg[dname].setData(x,np.where(y-yerr/2.0>0,y-yerr/2.0,y))
+                self.err[dname]= yerr/2.0
+                self.dataErr[dname].setData(x=x, y=y, top=self.err[dname], bottom=self.err[dname], pen='w')# beam=min(np.abs(x))*0.01*float(self.pointSizeLineEdit.text()),pen='w')
+            #self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
             else: 
                 color=pg.intColor(np.random.choice(range(0,210),1)[0])
                 #color=self.data[dname].opts['pen'].color()
@@ -157,12 +160,14 @@ class PlotWidget(QWidget):
                 if self.fit[dname]:
                     symbol=None
                 self.data[dname]=pg.PlotDataItem(x,y,pen=pen,symbol=symbol,symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
-                
+                self.dataErr[dname] = pg.ErrorBarItem()
+                self.err[dname]=yerr/2.0
+                self.dataErr[dname].setData(x=x,y=y,top=self.err[dname],bottom=self.err[dname], pen='w')# beam=min(np.abs(x))*0.01*float(self.pointSizeLineEdit.text()),pen='w')
                 self.data[dname].curve.setClickable(True,width=10)
                 self.data[dname].sigClicked.connect(self.colorChanged)
                 #if self.errorbarCheckBox.isChecked():
-                self.dataErrPos[dname]=pg.PlotDataItem(x,np.where(y+yerr/2.0>0,y+yerr/2.0,y))
-                self.dataErrNeg[dname]=pg.PlotDataItem(x,np.where(y-yerr/2.0>0,y-yerr/2.0,y))
+                # self.dataErrPos[dname]=pg.PlotDataItem(x,np.where(y+yerr/2.0>0,y+yerr/2.0,y))
+                # self.dataErrNeg[dname]=pg.PlotDataItem(x,np.where(y-yerr/2.0>0,y-yerr/2.0,y))
                 #self.dataErr[dname]=pg.FillBetweenItem(curve1=self.dataErrPos[dname],curve2=self.dataErrNeg[dname],brush=pg.mkBrush(color=pg.hsvColor(1.0,sat=0.0,alpha=0.2)))
                 self.data_num+=1
                 #if len(x)>1:
@@ -189,7 +194,10 @@ class PlotWidget(QWidget):
         """
         Updates the plot checking the Errorbar is checked or not
         """
-        self.Plot(self.selDataNames)
+        try:
+            self.Plot(self.selDataNames)
+        except:
+            pass
             
         
     def Plot(self,datanames):
@@ -219,7 +227,7 @@ class PlotWidget(QWidget):
                             del self.mplPlotData[dname]
                         except:
                             pass
-                        ln,err,bar =self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData,xerr=None,yerr=self.dataErrPos[dname].yData-self.dataErrNeg[dname].yData,fmt='.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)                   
+                        ln,err,bar =self.subplot.errorbar(self.data[dname].xData,self.data[dname].yData,xerr=None,yerr=self.dataErr[dname].opts['top']*2,fmt='.-',markersize=int(self.pointSizeLineEdit.text()),linewidth=int(self.lineWidthLineEdit.text()),label=dname)
                         self.mplPlotData[dname]=ln
                         self.mplErrorData[dname],=bar
                 else:
@@ -273,8 +281,20 @@ class PlotWidget(QWidget):
                         self.xLogCheckBox.stateChanged.connect(self.updatePlot)
                 self.plotWidget.addItem(self.data[dname])
                 if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
-                    self.plotWidget.addItem(self.dataErrPos[dname])
-                    self.plotWidget.addItem(self.dataErrNeg[dname])
+                    x=self.data[dname].xData
+                    y=self.data[dname].yData
+                    top=copy.copy(self.err[dname])
+                    bottom= copy.copy(self.err[dname])
+                    if self.xLogCheckBox.checkState() == Qt.Checked:
+                         x=np.log10(x)
+                    if self.yLogCheckBox.checkState() == Qt.Checked:
+                        top=np.log10(1+top/y)
+                        bottom=np.log10(1+bottom/y)
+                        y = np.log10(y)
+                    self.dataErr[dname].setData(x=x,y=y,top=top,bottom=bottom,pen='w')#beam=min(np.abs(x))*0.01*float(self.pointSizeLineEdit.text()),pen='w')
+                    self.plotWidget.addItem(self.dataErr[dname])
+                    # self.plotWidget.addItem(self.dataErrPos[dname])
+                    # self.plotWidget.addItem(self.dataErrNeg[dname])
                     #self.plotWidget.addItem(self.dataErr[dname])
                     #self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
                 self.legendItem.addItem(self.data[dname],dname)
@@ -286,6 +306,7 @@ class PlotWidget(QWidget):
                 self.plotWidget.plotItem.setLogMode(y=True)
             else:
                 self.plotWidget.plotItem.setLogMode(y=False)
+
                 
     def remove_data(self,datanames):
         for dname in datanames:
@@ -299,11 +320,13 @@ class PlotWidget(QWidget):
                 self.plotWidget.removeItem(self.data[dname])
                 self.legendItem.removeItem(dname)
                 if self.errorbarCheckBox.isChecked() and self.yerr[dname]:
-                    self.plotWidget.removeItem(self.dataErrPos[dname])
-                    self.plotWidget.removeItem(self.dataErrNeg[dname])
+                    self.plotWidget.removeItem(self.dataErr[dname])
+                    # self.plotWidget.removeItem(self.dataErrPos[dname])
+                    # self.plotWidget.removeItem(self.dataErrNeg[dname])
             del self.data[dname]
-            del self.dataErrPos[dname]
-            del self.dataErrNeg[dname]
+            del self.dataErr[dname]
+            # del self.dataErrPos[dname]
+            # del self.dataErrNeg[dname]
             
             
     def updatePlot(self):
@@ -379,7 +402,8 @@ if __name__=='__main__':
     w=PlotWidget(matplotlib=False)
     x=np.arange(0,np.pi,0.01)
     y=np.sin(x)
-    w.add_data(x,y,name='sin')
+    yerr=0.1*y
+    w.add_data(x,y,yerr=yerr,name='sin')
     w.setXLabel('x',fontsize=15)
     w.setYLabel('y',fontsize=15)
     w.setTitle('My Plot',fontsize=15)

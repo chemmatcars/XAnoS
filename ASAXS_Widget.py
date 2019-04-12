@@ -20,6 +20,7 @@ import time
 from calc_cf import calc_cf
 from utils import calc_prm
 from readData import read1DSAXS
+from itertools import combinations
 import periodictable as pdt
 
 class ASAXS_Widget(QWidget):
@@ -303,13 +304,19 @@ class ASAXS_Widget(QWidget):
         row+=1
         col=0
         self.ASAXSCalcTypeComboBox=QComboBox()
-        self.ASAXSCalcTypeComboBox.addItems(['single','multiple'])
+        self.ASAXSCalcTypeComboBox.addItems(['single-mono','single-poly','single-free','multiple'])
         self.dataDockLayout.addWidget(self.ASAXSCalcTypeComboBox,row=row,col=col)
         col+=1
         self.calcASAXSPushButton=QPushButton('Calculate scattering components')
         self.calcASAXSPushButton.clicked.connect(self.ASAXS_split)
         self.dataDockLayout.addWidget(self.calcASAXSPushButton,row=row,col=col,colspan=2)
-        
+
+        row+=1
+        col=0
+        self.ASAXSProgressBar=QProgressBar(self)
+        self.ASAXSProgressBar.reset()
+        self.dataDockLayout.addWidget(self.ASAXSProgressBar,row=row,col=col,colspan=3)
+
         #row+=1
         #col=0
         #self.checkComponentsPushButton=QPushButton('Check component ratios')
@@ -440,6 +447,7 @@ class ASAXS_Widget(QWidget):
         if len(self.dataFiles)>0:
             self.dataDir=os.path.dirname(self.dataFiles[0])
             self.progressDialog=QProgressDialog(self)
+            self.progressDialog.setAutoClose(True)
             self.progressDialog.setMinimum(0)
             self.progressDialog.setMaximum(len(self.dataFiles))
             self.progressDialog.open()
@@ -1160,6 +1168,7 @@ class ASAXS_Widget(QWidget):
         element=str(self.elementComboBox.currentText().split(': ')[1])
         self.AMatrix=[]
         self.BMatrix=None
+        self.ErrMatrix=None
         self.EOff=float(self.EOffLineEdit.text())
         #self.calc_XRF_baseline()
         self.minEnergy=np.min([self.data[key]['Energy'] for key in self.data.keys()])
@@ -1173,15 +1182,27 @@ class ASAXS_Widget(QWidget):
             self.AMatrix.append([1.0, 2*self.data[fname]['f1'], self.data[fname]['f1']**2+self.data[fname]['f2']**2])
             if self.BMatrix is not None:
                 self.BMatrix=np.vstack((self.BMatrix, self.data[fname]['yintp']))
+                self.ErrMatrix=np.vstack((self.ErrMatrix,self.data[fname]['yintperr']))
             else:
                 self.BMatrix=self.data[fname]['yintp']
+                self.ErrMatrix=self.data[fname]['yintperr']
         self.AMatrix=np.array(self.AMatrix)
+        energies=np.array([self.data[item.text().split(': ')[1]]['Energy'] for item in self.dataListWidget.selectedItems()])
+        index=np.argsort(energies)
+        self.energies=energies[index]
+        self.AMatrix=self.AMatrix[index]
+        self.BMatrix=self.BMatrix[index]
         
     def ASAXS_split(self):
         #try:
-        if self.ASAXSCalcTypeComboBox.currentText()=='single':
+        self.ASAXSProgressBar.reset()
+        if self.ASAXSCalcTypeComboBox.currentText()=='single-free':
             #self.ASAXS_split_1()
-            self.ASAXS_split_w_errbars()
+            self.ASAXS_split_w_errbars(constraint=False,mono=False)
+        elif self.ASAXSCalcTypeComboBox.currentText()=='single-mono':
+            self.ASAXS_split_w_errbars(constraint=True, mono=True)
+        elif self.ASAXSCalcTypeComboBox.currentText()=='single-poly':
+            self.ASAXS_split_w_errbars(constraint=True, mono=False)
         else:
             self.ASAXS_split_3()
             
@@ -1267,7 +1288,7 @@ class ASAXS_Widget(QWidget):
             QMessageBox.warning(self,'Data Error','Please select three or more data sets to do the calculation',QMessageBox.Ok)
 
 
-    def lmfit_residual(self, param, A, B):
+    def lmfit_residual(self, param, A, B,Err,constraint):
         """
         Calculates the residual for lmfit to obtain the errorbars in the parameters
         :param param:
@@ -1275,26 +1296,64 @@ class ASAXS_Widget(QWidget):
         :param B: BMatrix
         :return: residual
         """
-        x=np.array([param['x1'],param['x2'],param['x3']])
-        return np.dot(A,x)-B
+        if not constraint:
+            x=np.array([param['x1'],param['x2'],param['x3']])
+        else:
+            x=np.array([param['x1'], param['x2'],param['x2']**2/param['x1']+param['x3']])
+        return (np.dot(A,x)-B)
 
-    def lmfit_finderrbars(self,x,A,B):
+    def lmfit_finderrbars(self,x,A,B,Err,constraint=False,mono=False):
+        fac=min(B)
         param=Parameters()
-        param.add('x1',value = x[0])
-        param.add('x2',value = x[1])
-        param.add('x3',value = x[2])
-        out = lmfit_minimize(self.lmfit_residual, param, args=(A,B))
+        param.add('x1',value = x[0]/fac,min=x[0]*1e-3/fac)
+        param.add('x2',value = x[1]/fac)
+        if not constraint:
+            param.add('x3', value=x[2]/fac)
+        else:
+            if not mono:
+                param.add('x3',value=x[2]/fac,min=0.0)
+            else:
+                param.add('x3', value=0.0,vary=False)
+        out = lmfit_minimize(self.lmfit_residual, param, args=(A,B/fac,Err,constraint))
         x1 = out.params['x1'].value
         x1err = out.params['x1'].stderr
         x2 = out.params['x2'].value
         x2err = out.params['x2'].stderr
         x3 = out.params['x3'].value
         x3err = out.params['x3'].stderr
-        return x1, x1err, x2, x2err, x3, x3err
+        if x1err is None:
+            x1err=x1*0.1
+        if x2err is None:
+            x2err=x2*0.1
+        if x3err is None:
+            x3err=x3*0.1
+        if constraint:
+            if not mono:
+                x3err=np.sqrt((2*x2*x2err/x1)**2+(x2**2*x1err/x1**2)**2+x3err**2)
+            else:
+                x3err=np.sqrt((2*x2*x2err/x1)**2+(x2**2*x1err/x1**2)**2)
+        #print(x1,x1err)
+        #print(x2,x2err)
+        # if not constraint:
+        #     x3 = out.params['x3'].value
+        #     x3err = out.params['x3'].stderr
+        # else:
+        #     x3 = x2**2/x1
+        #     x3err = np.sqrt((2*x2*x3*x2err/x1)**2+(x2**2*x3*x1err/x1**2)**2)
+        return x1*fac, x1err*fac, x2*fac, x2err*fac, x3*fac, x3err*fac
 
+    def brute_finderrbars(self,A,B):
+        i,j,k=0,int(A.shape[0]/2),A.shape[0]-1
+        a1,a2,a3=A[i,1],A[j,1],A[k,1]
+        b1,b2,b3=A[i,2],A[j,2],A[k,2]
+        c1,c2,c3=B[i],B[j],B[k]
+        Amat=[[b2-b1, a1*b2-a2*b1],[b3-b2, a2*b3-a3*b2]]
+        Bmat=[c1*b2-c2*b1,c2*b3-c3*b2]
+        [x1,x2]=solve(Amat,Bmat)
+        x3=x2**2/x1
+        return [x1,x2,x3]
 
-
-    def ASAXS_split_w_errbars(self):
+    def ASAXS_split_w_errbars(self,constraint=False,mono=False):
         """
         This calculates scattering compononents out
         """
@@ -1302,13 +1361,39 @@ class ASAXS_Widget(QWidget):
             self.prepareData()
             self.XMatrix = []
             self.XMatrixErr = []
+            ans = QMessageBox.question(self, 'Question', 'Do you like to look at each individual Q for this analysis?',
+                                       QMessageBox.Yes, QMessageBox.No)
+            tot=[]
+            f1 = [self.xrdb.f1_chantler(element=str(self.elementComboBox.currentText().split(': ')[1]), energy=(energy-self.EOff) * 1e3,
+                                        smoothing=0) for energy in self.energies]
+            self.ASAXSProgressBar.setMinimum(0)
+            self.ASAXSProgressBar.setMaximum(len(self.qintp))
             for i in range(len(self.qintp)):
-                x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i])
-                x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i])
-                xn=[x1,x2,x3]
+                x=self.brute_finderrbars(self.AMatrix,self.BMatrix[:,i])
+                #x=[self.BMatrix[0,i],self.BMatrix[0,i]*1e-3,self.BMatrix[0,i]*1e-6]
+                #print(x)
+                #x=[self.BMatrix[0,i],1,0.0]
+                #x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
+                x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],self.ErrMatrix[:,i], constraint=constraint,mono=mono)
+                if constraint:
+                    xn=[x1,x2,x2**2/x1+x3]
+                else:
+                    xn=[x1,x2,x3]
                 self.XMatrix.append(xn)
+                print(x1err,x2err,x3err)
+                tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
+                self.ASAXSCheckPlotWidget.errorbarCheckBox.setChecked(True)
+                if ans == QMessageBox.Yes:
+                    self.ASAXSCheckPlotWidget.setTitle('Point=%d, Q=%.5f' % (i,self.qintp[i]))
+                    self.ASAXSCheckPlotWidget.add_data(f1, self.BMatrix[:, i], yerr=self.ErrMatrix[:,i],name='Data')
+                    self.ASAXSCheckPlotWidget.add_data(f1, tot[-1], name='Fit', fit=True)
+                    self.ASAXSCheckPlotWidget.Plot(['Data', 'Fit'])
+                    self.raiseDock(self.ASAXSCheckPlotDock)
+                    ans = QMessageBox.question(self, 'Question', 'Do you like to see the next Q?', QMessageBox.Yes,
+                                               QMessageBox.No)
                 xnerr=[x1err, x2err, x3err]
                 self.XMatrixErr.append(xnerr)
+                self.ASAXSProgressBar.setValue(i)
             self.XMatrix = np.array(self.XMatrix)
             self.XMatrixErr = np.array(self.XMatrixErr)
 
@@ -1343,11 +1428,14 @@ class ASAXS_Widget(QWidget):
             self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
             self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
             self.directComponentListWidget.item(0).setSelected(True)
+            self.directComponentListWidget.item(1).setSelected(True)
             self.crossComponentListWidget.item(0).setSelected(True)
+            self.ASAXSProgressBar.setValue(len(self.qintp))
         else:
             # self.saveASAXSPushButton.setEnabled(True)
             QMessageBox.warning(self, 'Data Error', 'Please select three or more data sets to do the calculation',
                                 QMessageBox.Ok)
+            self.ASAXSProgressBar.reset()
 
     def residual(self,x,A,B):
         """
@@ -1448,32 +1536,25 @@ class ASAXS_Widget(QWidget):
             self.components={}
             ans=QMessageBox.Yes
             f1=[self.xrdb.f1_chantler(element=self.elements[Np-1],energy=self.data[self.fnames[k]]['Energy']*1e3,smoothing=0) for k in range(Ne)]
-            ans=QMessageBox.question(self,'Question','Do you like to look at each individual Q for this analysis?',QMessageBox.Yes, QMessageBox.No)        
+            ans=QMessageBox.question(self,'Question','Do you like to look at each individual Q for this analysis?',QMessageBox.Yes, QMessageBox.No)
+            self.ASAXSProgressBar.setMinimum(0)
+            self.ASAXSProgressBar.setMaximum(self.BMatrix.shape[1])
             for i in range(self.BMatrix.shape[1]):
                 X.append(sp.linalg.lstsq(self.AMatrix,self.BMatrix[:,i],lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0])
                 tot.append(np.dot(self.AMatrix,X[-1]))            
                 if ans==QMessageBox.Yes:
+                    self.ASAXSCheckPlotWidget.setTitle('Q=%.5f'%self.qintp[i])
                     self.ASAXSCheckPlotWidget.add_data(f1,self.BMatrix[:,i],name='Data')
                     self.ASAXSCheckPlotWidget.add_data(f1,tot[-1],name='Fit',fit=True)
                     self.ASAXSCheckPlotWidget.Plot(['Data','Fit'])
                     self.raiseDock(self.ASAXSCheckPlotDock)
-#                    try:
-#                        sdata.setData(f1,self.BMatrix[:,i],pen=None,symbol='o')
-#                        sline.setData(f1,tot[-1],connect='all')
-#                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])
-#                    except:
-#                        fplot=pg.plot(labels={'left':'Intensity','bottom':self.elements[Np-1]+'_f1'})
-#                        sdata=pg.PlotDataItem(f1,self.BMatrix[:,i],pen=None,symbol='o')
-#                        sline=pg.PlotDataItem(f1,tot[-1],connect='all')
-#                        fplot.addItem(sdata)
-#                        fplot.addItem(sline)
-#                        fplot.setTitle('Q=%.6f'%self.data[self.fnames[0]]['xintp'][i])   
-                    ans=QMessageBox.question(self,'Question','Do you like to see the next Q?',QMessageBox.Yes, QMessageBox.No)                         
+                    ans=QMessageBox.question(self,'Question','Do you like to see the next Q?',QMessageBox.Yes, QMessageBox.No)
                 for key in self.AIndex.keys():
                     try:
                         self.components[key].append(X[-1][self.AIndex[key]]) 
                     except:
                         self.components[key]=[X[-1][self.AIndex[key]]]
+                self.ASAXSProgressBar.setValue(i)
             #try:
             #    fplot.close()
             #except:
@@ -1497,10 +1578,11 @@ class ASAXS_Widget(QWidget):
             self.directComponentListWidget.item(0).setSelected(True)
             self.crossComponentListWidget.item(0).setSelected(True)
             self.saveASAXSPushButton.setEnabled(True)
+            self.ASAXSProgressBar.setValue(self.BMatrix.shape[1])
         else:
             QMessageBox.information(self,"ASAXS Error","Please select three or more data sets to get ASAXS components",QMessageBox.Ok)
-        
-        
+            self.ASAXSProgressBar.reset()
+
     def directComponentSelectionChanged(self):
         items=[item.text() for item in self.directComponentListWidget.selectedItems()]
         self.directComponentPlotWidget.Plot(items)
@@ -1546,20 +1628,21 @@ class ASAXS_Widget(QWidget):
         
     def save_ASAXS(self):
         fname=QFileDialog.getSaveFileName(self,caption='Save as',directory=self.dataDir,filter='Text files (*.txt)')[0]
-        if os.path.splitext(fname)[1]=='':
-            fname=fname+'.txt'
-        #fh=open(fname,'w')
-        header='Scattering components extracted on '+time.asctime()+'\n'
-        header=header+'Data files used for the the scattering components calculations are:\n'
-        for file in self.fnames:
-            header=header+file+'\n'
-        header=header+'col_names='+str(['Q(inv Angs)']+list(self.components.keys()))+'\n'
-        header=header+'Q(inv Angs)\t'
-        data=self.qintp
-        for key in self.components.keys():
-            header=header+key+'\t'
-            data=np.vstack((data,self.components[key]))
-        np.savetxt(fname,data.T,header=header)
+        if fname!='':
+            if os.path.splitext(fname)[1]=='':
+                fname=fname+'.txt'
+            #fh=open(fname,'w')
+            header='Scattering components extracted on '+time.asctime()+'\n'
+            header=header+'Data files used for the the scattering components calculations are:\n'
+            for file in self.fnames:
+                header=header+file+'\n'
+            header=header+'col_names='+str(['Q(inv Angs)']+list(self.components.keys()))+'\n'
+            header=header+'Q(inv Angs)\t'
+            data=self.qintp
+            for key in self.components.keys():
+                header=header+key+'\t'
+                data=np.vstack((data,self.components[key]))
+            np.savetxt(fname,data.T,header=header)
         
     def open_ASAXS(self):
         fname=QFileDialog.getOpenFileName(self,caption='Save as',directory=self.dataDir,filter='Text files (*.txt)')[0]
@@ -1587,7 +1670,7 @@ class ASAXS_Widget(QWidget):
 if __name__=='__main__':
     app=QApplication(sys.argv)
     w=ASAXS_Widget()
-    w.setWindowTitle('ASAXS Widget')
+    w.setWindowTitle('XAnoS Components')
     w.setGeometry(20,20,1000,800)
     
     w.show()

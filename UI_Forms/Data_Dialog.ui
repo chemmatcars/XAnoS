@@ -29,6 +29,9 @@
          <property name="text">
           <string>Open Data</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>

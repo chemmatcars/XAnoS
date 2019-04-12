@@ -19,6 +19,7 @@ import time
 import shutil
 from FunctionEditor import FunctionEditor
 from lmfit import conf_interval, printfuncs
+import traceback
 
 class minMaxDialog(QDialog):
     def __init__(self,value,minimum=None,maximum=None,expr=None,brute_step=None,parent=None):
@@ -97,6 +98,7 @@ class minMaxDialog(QDialog):
                 self.brute_step=None
             self.accept()
         except:
+            print(traceback.format_exc())
             QMessageBox.warning('Value Error','Value, Min, Max should be floating point numbers',QMessageBox.Ok)
 
     def cancelandClose(self):
@@ -279,7 +281,7 @@ class Fit_Widget(QWidget):
         self.funcDock.addWidget(self.funcLayoutWidget)
         
     def addCategory(self):
-        tdir=QFileDialog.getExistingDirectory(self,'Select a folder','self.curDir',QFileDialog.ShowDirsOnly)
+        tdir=QFileDialog.getExistingDirectory(self,'Select a folder','./Functions/',QFileDialog.ShowDirsOnly)
         if tdir!='': 
             cdir=os.path.basename(os.path.normpath(tdir))
             fh=open(os.path.join(tdir,'__init__.py'),'w')
@@ -321,6 +323,7 @@ class Fit_Widget(QWidget):
             else:
                 QMessageBox.warning(self,'Warning','You cannot edit two functions together',QMessageBox.Ok)
         except:
+            print(traceback.format_exc())
             self.funcEditor=FunctionEditor(funcName=funcName,dirName=dirName)
             self.funcEditor.setWindowTitle('Function editor')
             self.funcEditor.show()
@@ -372,6 +375,7 @@ class Fit_Widget(QWidget):
                     fh.close()
                     self.update_functions()
                 except:
+                    print(traceback.format_exc())
                     QMessageBox.warning(self,'Remove error','Cannot remove the function becuase the function file\
                      might be open elsewhere.',QMessageBox.Ok)
         elif len(self.funcListWidget.selectedItems())>1:
@@ -456,11 +460,11 @@ class Fit_Widget(QWidget):
         self.dataDock.addWidget(self.dataLayoutWidget)
         
     def dataFileSelectionChanged(self):
-        self.sfnames=[item.text().split('<>')[1] for item in self.dataListWidget.selectedItems()]
+        self.sfnames=[item.text() for item in self.dataListWidget.selectedItems()]
         self.pfnames=[item.text().split('<>')[0] for item in self.dataListWidget.selectedItems()]
         if len(self.sfnames)>0:
-            xmin=np.min([np.min(self.data[fname]['x']) for fname in self.sfnames])
-            xmax=np.max([np.max(self.data[fname]['x']) for fname in self.sfnames])
+            xmin=np.min([np.min(self.data[key]['x']) for key in self.sfnames])
+            xmax=np.max([np.max(self.data[key]['x']) for key in self.sfnames])
             self.xminmaxLineEdit.setText('%0.3f:%0.3f'%(xmin,xmax))
             self.xminmaxChanged()
             text='np.linspace(%.3f,%.3f,100)'%(xmin,xmax)
@@ -469,24 +473,25 @@ class Fit_Widget(QWidget):
             
     def openDataDialog(self,item):
         fnum,fname=item.text().split('<>')
-        data_dlg=Data_Dialog(data=self.dlg_data[fname],parent=self,plotIndex=self.plotColIndex[fname])
+        data_dlg=Data_Dialog(data=self.dlg_data[item.text()],parent=self,plotIndex=self.plotColIndex[item.text()])
         data_dlg.dataFileLineEdit.setText(fname)
         if data_dlg.exec_():
             newFname=data_dlg.dataFileLineEdit.text()
             if fname==newFname:
-                self.plotColIndex[fname]=data_dlg.plotColIndex
-                self.dlg_data[fname]=copy.copy(data_dlg.data)
-                self.data[fname]=copy.copy(data_dlg.externalData)
-                self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fnum)
+                self.plotColIndex[item.text()]=data_dlg.plotColIndex
+                self.dlg_data[item.text()]=copy.copy(data_dlg.data)
+                self.data[item.text()]=copy.copy(data_dlg.externalData)
+                self.plotWidget.add_data(self.data[item.text()]['x'],self.data[item.text()]['y'],yerr=self.data[item.text()]['yerr'],name=fnum)
                 self.update_plot()
             else:
-                item.setText('%s<>%s'%(fnum,newFname))
-                self.data[newFname]=self.data.pop(fname)
-                self.dlg_data[newFname]=self.dlg_data.pop(fname)
-                self.dlg_data[newFname]=copy.copy(data_dlg.data)
-                self.data[newFname]=copy.copy(data_dlg.externalData)
-                self.plotColIndex[newFname]=data_dlg.plotColIndex
-                self.plotWidget.add_data(self.data[newFname]['x'], self.data[newFname]['y'], yerr=self.data[newFname][
+                text='%s<>%s'%(fnum,newFname)
+                item.setText(text)
+                self.data[text]=self.data.pop(fname)
+                self.dlg_data[text]=self.dlg_data.pop(fname)
+                self.dlg_data[text]=copy.copy(data_dlg.data)
+                self.data[text]=copy.copy(data_dlg.externalData)
+                self.plotColIndex[text]=data_dlg.plotColIndex
+                self.plotWidget.add_data(self.data[text]['x'], self.data[text]['y'], yerr=self.data[text][
                     'yerr'],name=fnum)
                 self.update_plot()
             
@@ -500,10 +505,11 @@ class Fit_Widget(QWidget):
             self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
             self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         except:
+            print(traceback.format_exc())
             QMessageBox.warning(self,'Function Error','Please select a function first to fit',QMessageBox.Ok)
             return
         self.fit_method=self.fitMethods[self.fitMethodComboBox.currentText()]
-        if self.fit_method!='leastsq':
+        if self.fit_method not in ['leastsq','brute']:
             QMessageBox.warning(self,'Fit Method Warning','This method is under development and will be available '
                                                           'soon. Please use only Lavenberg-Marquardt for the time '
                                                           'being.', QMessageBox.Ok)
@@ -522,6 +528,11 @@ class Fit_Widget(QWidget):
                 QMessageBox.warning(self,'Zero Errorbars','Some or all the errorbars of the selected data are zeros.\
                  Please select None for the Errorbar column in the Plot options of the Data_Dialog',QMessageBox.Ok)
                 break
+            if self.fitScaleComboBox.currentText()=='Log' and len(np.where(self.data[fname]['y']<1e-30)[0])>0:
+                posval=np.argwhere(self.fit.y>0)
+                self.fit.y=self.data[fname]['y'][posval].T[0]
+                self.fit.x=self.data[fname]['x'][posval].T[0]
+                self.fit.yerr=self.data[fname]['yerr'][posval].T[0]
             self.oldParams=copy.copy(self.fit.params)
             if self.fit.params['__mpar__']!={}:
                 self.oldmpar=copy.copy(self.mfitParamData)
@@ -542,7 +553,7 @@ class Fit_Widget(QWidget):
                 self.sfitParamTableWidget.resizeRowsToContents()
                 self.sfitParamTableWidget.resizeColumnsToContents()
                 for row in range(self.mfitParamTableWidget.rowCount()):
-                    for col in range(self.mfitParamTableWidget.columnCount()):
+                    for col in range(1,self.mfitParamTableWidget.columnCount()):
                         parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                         key='__%s__%03d'%(parkey,row)
                         self.mfitParamTableWidget.item(row,col).setText('%.6e'%(self.fit.result.params[key].value))
@@ -565,7 +576,7 @@ class Fit_Widget(QWidget):
                             pass
                         if self.fit.params['__mpar__']!={}:
                             for row in range(self.mfitParamTableWidget.rowCount()):
-                                for col in range(self.mfitParamTableWidget.columnCount()):
+                                for col in range(1,self.mfitParamTableWidget.columnCount()):
                                     parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                                     key='__%s__%03d'%(parkey,row)
                                     self.mfitParamTableWidget.item(row,col).setToolTip('%.3e \u00B1 %0.3e'%\
@@ -573,7 +584,7 @@ class Fit_Widget(QWidget):
                                                                                         self.fit.result.params[key].stderr))
                                     self.mfitParamData[parkey][row]=self.fit.result.params[key].value
 
-                    ofname=os.path.splitext(fname)[0]
+                    ofname=os.path.splitext(fname.split('<>')[1])[0]
                     header='Data fitted with model: %s on %s\n'%(self.funcListWidget.currentItem().text(),time.asctime())
                     header+='Fixed Parameters\n'
                     header+='----------------\n'
@@ -588,6 +599,7 @@ class Fit_Widget(QWidget):
                 else:
                     self.undoFit()
             except:
+                print(traceback.format_exc())
                 try:
                     self.closeFitInfoDlg()
                 except:
@@ -639,8 +651,7 @@ class Fit_Widget(QWidget):
         QApplication.processEvents()
         
     def runFit(self):
-        self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale,\
-                                                              fit_method=self.fit_method,maxiter=int(self.fitIterationLineEdit.text()))
+        self.fit_report,self.fit_message=self.fit.perform_fit(self.xmin,self.xmax,fit_scale=self.fit_scale, fit_method=self.fit_method,maxiter=int(self.fitIterationLineEdit.text()))
         
     
     def showFitInfoDlg(self):
@@ -677,7 +688,7 @@ class Fit_Widget(QWidget):
             self.sfitParamTableWidget.item(row,1).setText('%.6e'%(self.oldParams[key]))
         if self.fit.params['__mpar__']!={}:
             for row in range(self.mfitParamTableWidget.rowCount()):
-                for col in range(self.mfitParamTableWidget.columnCount()):
+                for col in range(1,self.mfitParamTableWidget.columnCount()):
                     parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                     key='__%s__%03d'%(parkey,row)
                     self.mfitParamTableWidget.item(row,col).setText('%.6e'%(self.oldmpar[parkey][row]))
@@ -700,22 +711,22 @@ class Fit_Widget(QWidget):
         if len(fnames)!=0:
             self.curDir=os.path.dirname(fnames[0])
             for fname in fnames:
-                if fname not in self.data.keys():
-                    data_dlg=Data_Dialog(fname=fname,parent=self)
-                    data_dlg.accept()
-                    self.dlg_data[fname]=data_dlg.data
-                    self.plotColIndex[fname]=data_dlg.plotColIndex
-                    self.data[fname]=data_dlg.externalData
-                    self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],\
-                                             yerr=self.data[fname]['yerr'],name='%d'%self.fileNumber)
-                    self.dataListWidget.addItem(str(self.fileNumber)+'<>'+fname)
-                    self.fileNames[self.fileNumber]=fname
-                    self.fileNumber+=1
-                else:
-                    QMessageBox.warning(self,'Import Error','Data file has been imported before.\
-                     Please remove the data file before importing again')
-            #except:
-            #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
+                data_key=str(self.fileNumber)+'<>'+fname
+                data_dlg=Data_Dialog(fname=fname,parent=self)
+                data_dlg.accept()
+                self.dlg_data[data_key]=data_dlg.data
+                self.plotColIndex[data_key]=data_dlg.plotColIndex
+                self.data[data_key]=data_dlg.externalData
+                self.plotWidget.add_data(self.data[data_key]['x'],self.data[data_key]['y'],\
+                                         yerr=self.data[data_key]['yerr'],name='%d'%self.fileNumber)
+                self.dataListWidget.addItem(data_key)
+                self.fileNames[self.fileNumber]=fname
+                self.fileNumber+=1
+            #     else:
+            #         QMessageBox.warning(self,'Import Error','Data file has been imported before.\
+            #          Please remove the data file before importing again')
+            # #except:
+            # #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
                 
                 
@@ -728,9 +739,9 @@ class Fit_Widget(QWidget):
             fnum,fname=item.text().split('<>')
             self.dataListWidget.takeItem(self.dataListWidget.row(item))
             self.plotWidget.remove_data([fnum])
-            del self.data[fname]
-            del self.plotColIndex[fname]
-            del self.dlg_data[fname]
+            del self.data[item.text()]
+            del self.plotColIndex[item.text()]
+            del self.dlg_data[item.text()]
             
         self.dataFileSelectionChanged()
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
@@ -985,7 +996,11 @@ class Fit_Widget(QWidget):
             fh.write('#Fixed Parameters:\n')
             fh.write('#param\tvalue\n')
             for row in range(self.fixedParamTableWidget.rowCount()):
-                fh.write(self.fixedParamTableWidget.item(row,0).text()+'\t'+self.fixedParamTableWidget.item(row,1).text()+'\n')
+                txt=self.fixedParamTableWidget.item(row,0).text()
+                if txt in self.fit.params['choices'].keys():
+                    fh.write(txt+'\t'+self.fixedParamTableWidget.cellWidget(row, 1).currentText()+'\n')
+                else:
+                    fh.write(txt+'\t'+self.fixedParamTableWidget.item(row,1).text()+'\n')
             fh.write('#Single fitting parameters:\n')
             fh.write('#param\tvalue\tfit\tmin\tmax\texpr\tbrute_step\n')
             for row in range(self.sfitParamTableWidget.rowCount()):
@@ -1034,107 +1049,110 @@ class Fit_Widget(QWidget):
         """
         loads parameters from a parameter file
         """
-        fname,_=QFileDialog.getOpenFileName(self,caption='Open parameter file',directory=self.curDir,filter='Parameter files (*.par)')
-        if fname!='':
-            fh=open(fname,'r')
-            lines=fh.readlines()
-            func=lines[2].split(': ')[1].strip()
-            if func==self.funcListWidget.currentItem().text():
-                lnum=3
-                sfline=None
-                mfline=None
-                for line in lines[3:]:
-                    if line=='#Fixed Parameters:\n':
-                        fline=lnum+2                        
-                    elif line=='#Single fitting parameters:\n':
-                        sfline=lnum+2
-                    elif line=='#Multiple fitting parameters:\n':
-                        mfline=lnum+2
-                    lnum+=1
-                if sfline is None:
-                    sendnum=lnum
-                else:
-                    sendnum=sfline-2
-                if mfline is None:
-                    mendnum=lnum
-                else:
-                    mendnum=mfline-2
-                for line in lines[fline:sendnum]:
-                    key,val=line.strip().split('\t')
+        if self.funcListWidget.currentItem() is not None:
+            fname,_=QFileDialog.getOpenFileName(self,caption='Open parameter file',directory=self.curDir,filter='Parameter files (*.par)')
+            if fname!='':
+                fh=open(fname,'r')
+                lines=fh.readlines()
+                func=lines[2].split(': ')[1].strip()
+                if func==self.funcListWidget.currentItem().text():
+                    lnum=3
+                    sfline=None
+                    mfline=None
+                    for line in lines[3:]:
+                        if line=='#Fixed Parameters:\n':
+                            fline=lnum+2
+                        elif line=='#Single fitting parameters:\n':
+                            sfline=lnum+2
+                        elif line=='#Multiple fitting parameters:\n':
+                            mfline=lnum+2
+                        lnum+=1
+                    if sfline is None:
+                        sendnum=lnum
+                    else:
+                        sendnum=sfline-2
+                    if mfline is None:
+                        mendnum=lnum
+                    else:
+                        mendnum=mfline-2
+                    for line in lines[fline:sendnum]:
+                        key,val=line.strip().split('\t')
+                        try:
+                            val=eval(val.strip())
+                        except:
+                            val=val.strip()
+                        self.fit.params[key]=val
+                    if sfline is not None:
+                        for line in lines[sfline:mendnum]:
+                            parname,parval,parfit,parmin,parmax,parexpr,parbrute=line.strip().split('\t')
+                            self.fit.params[parname]=float(parval)
+                            self.fit.fit_params[parname].value=float(parval)
+                            self.fit.fit_params[parname].fit=int(parfit)
+                            self.fit.fit_params[parname].min=float(parmin)
+                            self.fit.fit_params[parname].max=float(parmax)
+                            try:
+                                self.fit.fit_params[parname].expr=eval(parexpr)
+                            except:
+                                self.fit.fit_params[parname].expr=str(parexpr)
+                            try:
+                                self.fit.fit_params[parname].brute_step=eval(parbrute)
+                            except:
+                                self.fit.fit_params[parname].brute_step=str(parbrute)
+
+                    if mfline is not None:
+                        for line in lines[mfline:]:
+                            tlist=line.strip().split('\t')
+                            if len(tlist)>2:
+                                parname,parval,parfit,parmin,parmax,parexpr,parbrute=tlist
+                                try:
+                                    expr=eval(parexpr)
+                                except:
+                                    expr=str(parexpr)
+                                try:
+                                    brute_step=eval(parbrute)
+                                except:
+                                    brute_step=str(parbrute)
+                                try:
+                                    self.fit.fit_params[parname].value=float(parval)
+                                    self.fit.fit_params[parname].vary=int(parfit)
+                                    self.fit.fit_params[parname].min=float(parmin)
+                                    self.fit.fit_params[parname].max=float(parmax)
+                                    self.fit.fit_params[parname].expr=expr
+                                    self.fit.fit_params[parname].brute_step=brute_step
+                                except:
+                                    self.fit.fit_params.add(parname,value=float(parval),vary=int(parfit),min=float(parmin),\
+                                                            max=float(parmax),expr=expr,brute_step=brute_step)
+                                _, par, num = parname.split('__')
+                                num = int(num)
+                                try:
+                                    self.fit.params['__mpar__'][par][num] = float(parval)
+                                except:
+                                    self.fit.params['__mpar__'][par].insert(num, float(parval))
+                            else:
+                                parname,parval=tlist
+
+                                _,par,num=parname.split('__')
+                                num=int(num)
+                                try:
+                                    self.fit.params['__mpar__'][par][num]=parval
+                                except:
+                                    self.fit.params['__mpar__'][par].insert(num,parval)
                     try:
-                        val=eval(val.strip())
+                        self.fixedParamTableWidget.cellChanged.disconnect(self.fixedParamChanged)
+                        self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
+                        self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
                     except:
-                        val=val.strip()
-                    self.fit.params[key]=val
-                if sfline is not None:
-                    for line in lines[sfline:mendnum]:
-                        parname,parval,parfit,parmin,parmax,parexpr,parbrute=line.strip().split('\t')
-                        self.fit.params[parname]=float(parval)
-                        self.fit.fit_params[parname].value=float(parval)
-                        self.fit.fit_params[parname].fit=int(parfit)
-                        self.fit.fit_params[parname].min=float(parmin)
-                        self.fit.fit_params[parname].max=float(parmax)
-                        try:
-                            self.fit.fit_params[parname].expr=eval(parexpr)
-                        except:
-                            self.fit.fit_params[parname].expr=str(parexpr)
-                        try:
-                            self.fit.fit_params[parname].brute_step=eval(parbrute)
-                        except:
-                            self.fit.fit_params[parname].brute_step=str(parbrute)
-
-                if mfline is not None:
-                    for line in lines[mfline:]:
-                        tlist=line.strip().split('\t')
-                        if len(tlist)>2:
-                            parname,parval,parfit,parmin,parmax,parexpr,parbrute=tlist
-                            try:
-                                expr=eval(parexpr)
-                            except:
-                                expr=str(parexpr)
-                            try:
-                                brute_step=eval(parbrute)
-                            except:
-                                brute_step=str(parbrute)
-                            try:
-                                self.fit.fit_params[parname].value=float(parval)
-                                self.fit.fit_params[parname].vary=int(parfit)
-                                self.fit.fit_params[parname].min=float(parmin)
-                                self.fit.fit_params[parname].max=float(parmax)
-                                self.fit.fit_params[parname].expr=expr
-                                self.fit.fit_params[parname].brute_step=brute_step
-                            except:
-                                self.fit.fit_params.add(parname,value=float(parval),vary=int(parfit),min=float(parmin),\
-                                                        max=float(parmax),expr=expr,brute_step=brute_step)
-                            _, par, num = parname.split('__')
-                            num = int(num)
-                            try:
-                                self.fit.params['__mpar__'][par][num] = float(parval)
-                            except:
-                                self.fit.params['__mpar__'][par].insert(num, float(parval))
-                        else:
-                            parname,parval=tlist
-
-                            _,par,num=parname.split('__')
-                            num=int(num)
-                            try:
-                                self.fit.params['__mpar__'][par][num]=parval
-                            except:
-                                self.fit.params['__mpar__'][par].insert(num,parval)
-                try:
-                    self.fixedParamTableWidget.cellChanged.disconnect(self.fixedParamChanged)
-                    self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
-                    self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
-                except:
-                    pass
-                self.update_fixed_parameters()
-                self.update_fit_parameters()
-                self.fixedParamTableWidget.cellChanged.connect(self.fixedParamChanged)
-                self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
-                self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
-                self.update_plot()
+                        pass
+                    self.update_fixed_parameters()
+                    self.update_fit_parameters()
+                    self.fixedParamTableWidget.cellChanged.connect(self.fixedParamChanged)
+                    self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
+                    self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
+                    self.update_plot()
+                else:
+                    QMessageBox.warning(self,'File error','This parameter file doesnot belong to function: %s'% func,QMessageBox.Ok)
             else:
-                QMessageBox.warning(self,'File error','This parameter file doesnot belong to function: %s'% func,QMessageBox.Ok)
+                QMessageBox.warning(self,'Function error','Please select a function first before loading parameter file.',QMessageBox.Ok)
         
     def create_plotDock(self):
         self.plotSplitter=QSplitter(Qt.Vertical)
@@ -1225,20 +1243,20 @@ class Fit_Widget(QWidget):
                 fpdata.append((key,str(self.fit.params[key])))
         self.fixedParamData=np.array(fpdata,dtype=[('Params',object),('Value',object)])
         self.fixedParamTableWidget.setData(self.fixedParamData)
-        # for row in range(self.fixedParamTableWidget.rowCount()):
-            # self.fixedParamTableWidget.item(row,0).setFlags(Qt.ItemIsEnabled)
-            # if self.fixedParamTableWidget.item(row, 0).text() in self.fit.params['choices'].keys():
-            #     items=[str(item) for item in self.fit.params['choices'][self.fixedParamTableWidget.item(row,0).text()]]
-            #     combobox=QComboBox()
-            #     combobox.addItems(items)
-            #     self.fixedParamTableWidget.setCellWidget(row,1,combobox)
-            #     combobox.currentIndexChanged.connect(self.choicesChanged)
+        for row in range(self.fixedParamTableWidget.rowCount()):
+            self.fixedParamTableWidget.item(row,0).setFlags(Qt.ItemIsEnabled)
+            if self.fixedParamTableWidget.item(row, 0).text() in self.fit.params['choices'].keys():
+                items=[str(item) for item in self.fit.params['choices'][self.fixedParamTableWidget.item(row,0).text()]]
+                combobox=QComboBox()
+                combobox.addItems(items)
+                self.fixedParamTableWidget.setCellWidget(row,1,combobox)
+                index = combobox.findText(str(self.fit.params[self.fixedParamTableWidget.item(row, 0).text()]))
+                combobox.setCurrentIndex(index)
+                combobox.currentIndexChanged.connect(self.update_plot)
         self.fixedParamTableWidget.resizeRowsToContents()
         self.fixedParamTableWidget.resizeColumnsToContents()
 
-    def choicesChanged(self,index):
-        print(self.fixedParamTableWidget.currentRow(),self.fixedParamTableWidget.currentColumn())
-                
+
     def update_fit_parameters(self):
         self.update_sfit_parameters()
         self.update_mfit_parameters()
@@ -1250,7 +1268,7 @@ class Fit_Widget(QWidget):
                 tpdata.append((key,self.fit.fit_params[key].value,self.fit.fit_params[key].min,\
                                self.fit.fit_params[key].max,self.fit.fit_params[key].expr,self.fit.fit_params[key].brute_step))
         self.fitParamData=np.array(tpdata,dtype=[('Params',object),('Value',object),('Min',object),('Max',object),\
-                                                 ('Expr',object),('Brute step',object)])
+                                                 ('Expr',object),('Brute step',float)])
         self.sfitParamTableWidget.setData(self.fitParamData)
         for row in range(self.sfitParamTableWidget.rowCount()):
             self.sfitParamTableWidget.item(row,0).setFlags(Qt.ItemIsEnabled)
@@ -1296,19 +1314,24 @@ class Fit_Widget(QWidget):
         
     def fixedParamChanged(self,row,col):
         txt=self.fixedParamTableWidget.item(row,0).text()
-        print('I m here')
-        try:
-            val=eval(self.fixedParamTableWidget.item(row,col).text())
-        except:
-            val=self.fixedParamTableWidget.item(row,col).text()
-        try:
-            oldVal=self.fit.params[txt]
-            self.fit.params[txt]=val
-            self.fchanged=False
+        if txt in self.fit.params['choices'].keys():
+            self.fit.params[txt]=eval(self.fixedParamTableWidget.cellWidget(row,1).currentText())
+            self.fchanged = False
             self.update_plot()
-        except:
-            QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
-            self.fixedParamTableWidget.item(row,col).setText(str(oldVal))
+        else:
+            try:
+                val=eval(self.fixedParamTableWidget.item(row,col).text())
+            except:
+                val=self.fixedParamTableWidget.item(row,col).text()
+            try:
+                oldVal=self.fit.params[txt]
+                self.fit.params[txt]=val
+                self.fchanged=False
+                self.update_plot()
+            except:
+                print(traceback.format_exc())
+                QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
+                self.fixedParamTableWidget.item(row,col).setText(str(oldVal))
         self.fixedParamTableWidget.resizeRowsToContents()
         self.fixedParamTableWidget.resizeColumnsToContents()
 
@@ -1398,6 +1421,7 @@ class Fit_Widget(QWidget):
             self.fchanged=False
             self.update_plot()
         except:
+            print(traceback.format_exc())
             QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right',QMessageBox.Ok)
             self.xLineEdit.setText('np.linspace(0.001,0.1,100)')
             
@@ -1405,7 +1429,10 @@ class Fit_Widget(QWidget):
     def update_plot(self):
         for row in range(self.fixedParamTableWidget.rowCount()):
             txt=self.fixedParamTableWidget.item(row,0).text()
-            val=self.fixedParamTableWidget.item(row,1).text()
+            if txt in self.fit.params['choices'].keys():
+                val = self.fixedParamTableWidget.cellWidget(row, 1).currentText()
+            else:
+                val=self.fixedParamTableWidget.item(row,1).text()
             try:
                 self.fit.params[txt]=eval(val)
             except:
@@ -1443,7 +1470,10 @@ class Fit_Widget(QWidget):
                     self.genParamListWidget.addItem(str(key)+':'+str(list(self.fit.params['output_params'][key].keys())))
                 if not self.fchanged:
                     for row in self.gen_rows:
-                        self.genParamListWidget.item(row).setSelected(True)
+                        try:
+                            self.genParamListWidget.item(row).setSelected(True)
+                        except:
+                            pass
             self.plot_extra_param()
             self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
             self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax+1],y=self.fit.yfit,\
