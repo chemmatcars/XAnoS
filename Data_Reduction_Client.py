@@ -657,8 +657,8 @@ class Data_Reduction_Client(QWidget):
             headers+='mask file: None\n'
         for key in self.header.keys():
             headers+=key+'='+str(self.header[key])+'\n'
-        headers+="col_names=['Q (A^-1)','Int','Int_err']\n"
-        headers+='Q (A^-1)\tInt\tInt_err'
+        headers+="col_names=['Q (inv Angs)','Int','Int_err']\n"
+        headers+='Q (inv Angs)\tInt\tInt_err'
         data=vstack((self.q,self.I,self.Ierr)).T
         savetxt(filename,data,header=headers,comments='#')
         

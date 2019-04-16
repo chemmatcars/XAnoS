@@ -1140,6 +1140,7 @@ class ASAXS_Widget(QWidget):
                 data=np.vstack((self.pdata[i][0],self.pdata[i][1],self.pdata[i][2],self.pdata[i][3])).T
                 header='Data extracted at Q=%.6f\n'%self.qintp[i]
                 header+='col_names=["Energy","f1","Intensity","Intensity_err"]'
+                header = header + 'Q (inv Angs)\tInt\tInt_err\n'
                 np.savetxt(fname,data,header=header,comments='#')            
         except:
             QMessageBox.warning(self,'Data error','No checked data to be saved. Please click Check Data button first',QMessageBox.Ok)
