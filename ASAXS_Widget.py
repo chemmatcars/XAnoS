@@ -642,7 +642,7 @@ class ASAXS_Widget(QWidget):
                 self.data[filename]={}
                 header='Background subtracted data obtained from data1-data2 where\n data1=%s \n data2=%s\n'%(self.fnames[0],self.fnames[1])
                 for key in self.data[self.fnames[0]].keys():
-                    if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr':
+                    if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='yraw':
                         self.data[filename][key]=self.data[self.fnames[0]][key]
                         header=header+key+'='+str(self.data[self.fnames[0]][key])+'\n'
                 self.data[filename]['CF']=self.data[self.fnames[0]]['CF']
@@ -719,7 +719,7 @@ class ASAXS_Widget(QWidget):
                 for fname in self.fnames:
                     header=header+fname+'\n'
                 for key in self.data[filename].keys():
-                    if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr':
+                    if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='yraw':
                         header=header+key+'='+str(self.data[filename][key])+'\n'
                     
                 np.savetxt(filename,data,header=header,comments='#')

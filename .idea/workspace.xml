@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err">
-      <change afterPath="$PROJECT_DIR$/Chemical_Formula.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Functions/ASAXS/__init__.py" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Update ASAXS_Batch_Processor_2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASAXS_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/ASAXS_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Collector_Server.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Collector_Server.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data_Reduction_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Reduction_Client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI_Forms/XAnoS.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UI_Forms/XAnoS.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/XAnoS.py" beforeDir="false" afterPath="$PROJECT_DIR$/XAnoS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batch_settings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/batch_settings.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functionTemplate.txt" beforeDir="false" afterPath="$PROJECT_DIR$/functionTemplate.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SetupData/reducer_setup.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SetupData/reducer_setup.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readData.py" beforeDir="false" afterPath="$PROJECT_DIR$/readData.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,8 +19,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4641">
-              <caret line="294" column="8" selection-start-line="294" selection-start-column="8" selection-end-line="294" selection-end-column="8" />
+            <state relative-caret-position="108">
+              <caret line="555" column="80" lean-forward="true" selection-start-line="555" selection-start-column="80" selection-end-line="555" selection-end-column="80" />
               <folding>
                 <element signature="e#0#328#0" expanded="true" />
               </folding>
@@ -38,22 +29,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PlotWidget.py">
+        <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2414">
-              <caret line="148" column="41" selection-start-line="148" selection-start-column="33" selection-end-line="148" selection-end-column="41" />
+            <state relative-caret-position="390">
+              <caret line="71" selection-start-line="71" selection-end-line="71" />
               <folding>
-                <element signature="e#0#22#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="1329" column="10" lean-forward="true" selection-start-line="1329" selection-start-column="10" selection-end-line="1329" selection-end-column="10" />
+            <state relative-caret-position="10982">
+              <caret line="644" column="129" selection-start-line="644" selection-start-column="125" selection-end-line="644" selection-end-column="129" />
               <folding>
                 <element signature="e#0#288#0" expanded="true" />
               </folding>
@@ -62,36 +53,33 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/XAnoS.py">
+        <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+            <state relative-caret-position="113">
+              <caret line="68" column="18" lean-forward="true" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/readData.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="227">
+              <caret line="669" column="43" lean-forward="true" selection-start-line="669" selection-start-column="43" selection-end-line="669" selection-end-column="43" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="125">
+              <caret line="160" column="26" selection-start-line="160" selection-start-column="21" selection-end-line="160" selection-end-column="26" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Chemical_Formula.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
-              <caret line="57" selection-start-line="5" selection-end-line="57" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4556">
-              <caret line="285" column="62" selection-start-line="285" selection-start-column="58" selection-end-line="285" selection-end-column="62" />
-              <folding>
-                <element signature="e#0#220#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -112,8 +100,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6817">
-              <caret line="410" column="25" selection-start-line="410" selection-start-column="25" selection-end-line="410" selection-end-column="25" />
+            <state relative-caret-position="238">
+              <caret line="35" column="28" lean-forward="true" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -121,11 +109,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11050">
-              <caret line="672" column="35" selection-start-line="672" selection-start-column="35" selection-end-line="672" selection-end-column="35" />
+            <state relative-caret-position="210">
+              <caret line="658" column="55" lean-forward="true" selection-start-line="658" selection-start-column="55" selection-end-line="658" selection-end-column="55" />
               <folding>
                 <element signature="e#0#267#0" expanded="true" />
               </folding>
@@ -156,14 +144,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>self.x</find>
-      <find>self.x[</find>
-      <find>self.x[dname]</find>
-      <find>self.yerr</find>
-      <find>import</find>
-      <find>openDataDialog</find>
-      <find>addData</find>
-      <find>self.data</find>
       <find>self.sfnames</find>
       <find>self.pfnames</find>
       <find>except:</find>
@@ -186,6 +166,14 @@
       <find>checkBox</find>
       <find>add_data</find>
       <find>print</find>
+      <find>doFit</find>
+      <find>runFit</find>
+      <find>subtract_bkg</find>
+      <find>col_n</find>
+      <find>col_names</find>
+      <find>mean</find>
+      <find>yraw</find>
+      <find>col_name</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -253,7 +241,6 @@
         <option value="$PROJECT_DIR$/doc_source/Acknowledgements.rst" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Data_Dialog.py" />
-        <option value="$PROJECT_DIR$/readData.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/PlotWidget.py" />
         <option value="$PROJECT_DIR$/functionTemplate.txt" />
@@ -261,12 +248,13 @@
         <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
         <option value="$PROJECT_DIR$/Data_Collector_Server.py" />
-        <option value="$PROJECT_DIR$/Data_Reduction_Client.py" />
         <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_1.py" />
-        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
         <option value="$PROJECT_DIR$/XAnoS.py" />
         <option value="$PROJECT_DIR$/Chemical_Formula.py" />
+        <option value="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
         <option value="$PROJECT_DIR$/ASAXS_Widget.py" />
+        <option value="$PROJECT_DIR$/readData.py" />
+        <option value="$PROJECT_DIR$/Data_Reduction_Client.py" />
       </list>
     </option>
   </component>
@@ -461,20 +449,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00035" summary="updated Documentation">
-      <created>1548538074949</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1548538074949</updated>
-    </task>
-    <task id="LOCAL-00036" summary="updated Documentation">
-      <created>1548538394884</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1548538394884</updated>
     </task>
     <task id="LOCAL-00037" summary="updated Documentation">
       <created>1548538555807</created>
@@ -805,7 +779,21 @@
       <option name="project" value="LOCAL" />
       <updated>1554059048984</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="Updated ASAXS_Widget and Fit_Widget">
+      <created>1555084752166</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1555084752166</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Update ASAXS_Batch_Processor_2">
+      <created>1555092641657</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1555092641657</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="TodoView">
@@ -819,6 +807,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15455747" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
@@ -841,8 +830,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix from factor functions in Fit_widget.py" />
-    <MESSAGE value="Updated the documentation" />
     <MESSAGE value="Updated Data_Dialog.py and the documentation" />
     <MESSAGE value="Updated Fit_Widget" />
     <MESSAGE value="Updated Fit_Widget, Data_Dialog and its documentation" />
@@ -866,7 +853,9 @@
     <MESSAGE value="Updated ASAXS_Batch_Processor_2 and readData-Added batch processing for multiple samples with different sample thickness" />
     <MESSAGE value="Updated .gitignore" />
     <MESSAGE value="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated ASAXS_Widget in which the resonant term is computed using the cross-term and SAXS-term in ASAXS_components_w_err" />
+    <MESSAGE value="Updated ASAXS_Widget and Fit_Widget" />
+    <MESSAGE value="Update ASAXS_Batch_Processor_2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update ASAXS_Batch_Processor_2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1051,13 +1040,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1292">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
@@ -1082,41 +1064,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scans.txt" />
-    <entry file="file://$PROJECT_DIR$/readData.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8296">
-          <caret line="498" column="64" selection-start-line="498" selection-start-column="64" selection-end-line="498" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11169">
-          <caret line="667" selection-start-line="667" selection-end-line="677" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Acknowledgements.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/calc_cf.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1173,16 +1125,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4641">
-          <caret line="294" column="8" selection-start-line="294" selection-start-column="8" selection-end-line="294" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2414">
@@ -1233,26 +1175,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6817">
-          <caret line="410" column="25" selection-start-line="410" selection-start-column="25" selection-end-line="410" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11050">
-          <caret line="672" column="35" selection-start-line="672" selection-start-column="35" selection-end-line="672" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#267#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/energySteps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="714">
@@ -1263,12 +1185,79 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="35" column="28" lean-forward="true" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="555" column="80" lean-forward="true" selection-start-line="555" selection-start-column="80" selection-end-line="555" selection-end-column="80" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="160" column="26" selection-start-line="160" selection-start-column="21" selection-end-line="160" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="1329" column="10" lean-forward="true" selection-start-line="1329" selection-start-column="10" selection-end-line="1329" selection-end-column="10" />
+        <state relative-caret-position="10982">
+          <caret line="644" column="129" selection-start-line="644" selection-start-column="125" selection-end-line="644" selection-end-column="129" />
           <folding>
             <element signature="e#0#288#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="68" column="18" lean-forward="true" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="669" column="43" lean-forward="true" selection-start-line="669" selection-start-column="43" selection-end-line="669" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="658" column="55" lean-forward="true" selection-start-line="658" selection-start-column="55" selection-end-line="658" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#267#0" expanded="true" />
           </folding>
         </state>
       </provider>
