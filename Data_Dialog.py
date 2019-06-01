@@ -352,7 +352,9 @@ class Data_Dialog(QDialog):
         colIndexes.sort(reverse=True)
         if self.dataTableWidget.columnCount()-len(colIndexes)>=2 or self.plotSetupTableWidget.rowCount()==0:
             for index in colIndexes:
+                colname=self.data['meta']['col_names'][index]
                 self.data['meta']['col_names'].pop(index)
+                del self.expressions[colname]
                 self.dataTableWidget.removeColumn(index)
             if self.dataTableWidget.columnCount()!=0:
                 self.getDataFromTable()
@@ -432,6 +434,8 @@ class Data_Dialog(QDialog):
         self.dataTableWidget.setColumnCount(len(self.data['data'].columns))
         self.dataTableWidget.setRowCount(len(self.data['data'].index))
         for j,colname in enumerate(self.data['data'].columns):
+            if colname not in self.expressions.keys():
+                self.expressions[colname]="col['%s']"%colname
             for i in range(len(self.data['data'].index)):
                 #self.dataTableWidget.setItem(i,j,QTableWidgetItem(str(self.data['data'][colname][i])))
                 self.dataTableWidget.setItem(i,j,QCustomTableWidgetItem(self.data['data'][colname][i]))
