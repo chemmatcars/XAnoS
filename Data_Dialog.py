@@ -8,6 +8,7 @@ import os
 import numpy as np
 import time
 from PlotWidget import PlotWidget
+import pyqtgraph as pg
 import copy
 
 class QCustomTableWidgetItem (QTableWidgetItem):
@@ -46,7 +47,7 @@ class InsertCol_Dialog(QDialog):
         
 
 class Data_Dialog(QDialog):
-    def __init__(self,fname=None,data=None,comment='#',skiprows=0,delimiter=' ',autoupdate=False,parent=None,matplotlib=False,plotIndex=None):
+    def __init__(self,fname=None,data=None,comment='#',skiprows=0,delimiter=' ',expressions={},autoupdate=False,parent=None,matplotlib=False,plotIndex=None,colors=None):
         QDialog.__init__(self,parent=parent)
         loadUi('UI_Forms/Data_Dialog.ui',self)
         self.plotWidget=PlotWidget(parent=self,matplotlib=matplotlib)
@@ -60,8 +61,9 @@ class Data_Dialog(QDialog):
         self.xlabel=[]
         self.ylabel=[]
         self.oldPlotIndex={}
+        self.oldColors={}
         self.dataAltered=False
-        self.expressions={}
+        self.expressions=expressions
         if data is not None:
             self.data=data
             self.autoUpdateCheckBox.setEnabled(False)
@@ -78,9 +80,9 @@ class Data_Dialog(QDialog):
             self.setMeta2Table()
             self.setData2Table()
             if plotIndex is None:
-                self.addPlots()
+                self.addPlots(color=None)
             else:
-                self.addMultiPlots(plotIndex=plotIndex)
+                self.addMultiPlots(plotIndex=plotIndex,colors=colors)
         self.init_signals()
         self.okPushButton.setAutoDefault(False)
         self.make_default()
@@ -494,7 +496,6 @@ class Data_Dialog(QDialog):
                     self.data['data']=pd.DataFrame(np.loadtxt(self.fname,skiprows=skiprows))
                 self.data['data'].columns=['Col_%d'%i for i in self.data['data'].columns.values.tolist()]
                 self.data['meta']['col_names']=self.data['data'].columns.values.tolist()
-            #print(self.data['data'])
             self.autoUpdate_ON_OFF()
             self.autoUpdateCheckBox.setEnabled(True)
             self.saveDataPushButton.setEnabled(True)
@@ -584,17 +585,25 @@ class Data_Dialog(QDialog):
             self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(0)
             self.plotSetupTableWidget.cellWidget(row,3).currentIndexChanged.connect(self.updateCellData)
             self.plotSetupTableWidget.setCurrentCell(row,3)
+            color=self.plotSetupTableWidget.cellWidget(row,4).color()
+            self.plotSetupTableWidget.setCellWidget(row, 4, pg.ColorButton(color=color))
+            self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanging.connect(self.updateCellData)
+            self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanged.connect(self.updateCellData)
             self.updatePlotData(row,i)
         self.plotSetupTableWidget.cellChanged.connect(self.updatePlotData)         
                 
 
-    def addMultiPlots(self,plotIndex=None):
+    def addMultiPlots(self,plotIndex=None,colors=None):
         for key in plotIndex.keys():
             pi=plotIndex[key]
-            self.addPlots(plotIndex=pi)
+            if colors is None:
+                color=np.array([np.random.randint(200, high=255),0,0])
+            else:
+                color=colors[key]
+            self.addPlots(plotIndex=pi,color=color)
             
             
-    def addPlots(self,plotIndex=None):
+    def addPlots(self,plotIndex=None,color=None):
         #self.plotSetupTableWidget.clear()
         # if self.parentWidget() is None or self.plotSetupTableWidget.rowCount()==0:
         try:
@@ -610,7 +619,7 @@ class Data_Dialog(QDialog):
                 self.plotSetupTableWidget.setCellWidget(row,i,QComboBox())
                 self.plotSetupTableWidget.cellWidget(row,i).addItems(columns)
                 if plotIndex is not None:
-                        self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
+                    self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(plotIndex[i-1])
                 else:
                     self.plotSetupTableWidget.cellWidget(row,i).setCurrentIndex(i-1)
                 self.plotSetupTableWidget.cellWidget(row,i).currentIndexChanged.connect(self.updateCellData)
@@ -618,6 +627,11 @@ class Data_Dialog(QDialog):
             self.ylabel.append('[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText())
             self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
+            if color is None:
+                color=np.array([np.random.randint(200, high=255),0,0])
+            self.plotSetupTableWidget.setCellWidget(row, 4,pg.ColorButton(color=color))
+            self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanging.connect(self.updateCellData)
+            self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanged.connect(self.updateCellData)
             if plotIndex is not None:
                     self.plotSetupTableWidget.cellWidget(row,3).setCurrentIndex(plotIndex[-1])
             else:
@@ -680,14 +694,14 @@ class Data_Dialog(QDialog):
         #yerrcol=self.plotSetupTableWidget.cellWidget(row,3).currentText()
         if yerrcol!='None':
             if ycol=='fit':
-                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,yerr=self.data['data'][yerrcol].values,name=name,fit=True)
+                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,yerr=self.data['data'][yerrcol].values,name=name,fit=True,color=self.plotSetupTableWidget.cellWidget(row,4).color())
             else:
-                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,yerr=self.data['data'][yerrcol].values,name=name,fit=False)
+                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,yerr=self.data['data'][yerrcol].values,name=name,fit=False,color=self.plotSetupTableWidget.cellWidget(row,4).color())
         else:
             if ycol=='fit':
-                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,name=name,fit=True)
+                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,name=name,fit=True,color=self.plotSetupTableWidget.cellWidget(row,4).color())
             else:
-                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,name=name,fit=False)
+                self.plotWidget.add_data(self.data['data'][xcol].values,self.data['data'][ycol].values,name=name,fit=False,color=self.plotSetupTableWidget.cellWidget(row,4).color())
         self.xlabel[row]='[%s]'%self.plotSetupTableWidget.cellWidget(row,1).currentText()
         self.ylabel[row]='[%s]'%self.plotSetupTableWidget.cellWidget(row,2).currentText()
         self.updatePlot()
@@ -704,9 +718,11 @@ class Data_Dialog(QDialog):
         #self.plotColIndex=[self.plotSetupTableWidget.cellWidget(0,i).currentIndex() for i in range(1,4)]
         self.plotColIndex = {}
         self.externalData = {}
+        self.plotColors={}
         for i in range(self.plotSetupTableWidget.rowCount()):
             key=self.plotSetupTableWidget.cellWidget(i, 2).currentText()
             self.plotColIndex[key] = [self.plotSetupTableWidget.cellWidget(i, j).currentIndex() for j in range(1, 4)]
+            self.plotColors[key]=self.plotSetupTableWidget.cellWidget(i,4).color()
             self.externalData[key]=copy.copy(self.data['meta'])
             self.externalData[key]['x']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(i,1).currentText()].values)
             self.externalData[key]['y']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(i,2).currentText()].values)
@@ -714,6 +730,7 @@ class Data_Dialog(QDialog):
                 self.externalData[key]['yerr']=np.ones_like(self.externalData[key]['x'])
             else:
                 self.externalData[key]['yerr']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(i,3).currentText()].values)
+            self.externalData[key]['color']=self.plotSetupTableWidget.cellWidget(i,4).color()
         self.plotWidget.Plot(names)
         self.plotWidget.setXLabel(' '.join(self.xlabel))
         self.plotWidget.setYLabel(' '.join(self.ylabel))

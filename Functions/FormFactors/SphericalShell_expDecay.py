@@ -66,11 +66,11 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
 
 
 
-    def solrho(self, r, Rc=12.5, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0):
+    def solrho(self, r, Rp=100.0, Rc=12.5, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0):
         """
-        Calculates the electron density for the distribution of ions as a function of radial distance surrouning a spherical particle
+        Calculates the electron density for the distribution of ions as a function of radial distance surrounding a spherical particle
 
-        element  :: Symbol of ion of interest
+        Rp     :: Radius of the sphere in Angstroms enclosing the spherical particle
         Rc     :: Radial distance in Angstroms after which the solvent contribution starts
         strho    :: Concentration of the ions of interest in the stern layer in Molar
         tst      :: Thickness of stern layer in Angstroms
@@ -78,8 +78,14 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
         lexp     :: The decay length of the diffuse layer assuming exponential decay
         rhosol   :: The surrounding bulk density
         """
-        stern = np.where(r > Rc, strho, 0.0) * np.where(r > Rc + tst, 0.0, 1.0)
-        diffuse = np.where(r > Rc + tst, lrho * np.exp(-(r - Rc - tst) / lexp) + rhosol, 0.0)
+        R1=Rc
+        R2=Rc+tst
+        #integral=np.sum([r1**2*np.exp(-(r1-R2)/lexp) for r1 in np.linspace(R2,Rp,1001)])*(Rp-R2)/1000
+        integral=lexp*(R2**2*np.exp(-R2/lexp)-Rp**2*np.exp(-Rp/lexp))+2*lexp**2*(R2*np.exp(-R2/lexp)-Rp*np.exp(-Rp/lexp))+2*lexp**3*(np.exp(-Rp/lexp)-np.exp(-R2/lexp))
+        rhos=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-3*lrho*integral*np.exp(R2/lexp))/(Rp**3-R2**3)
+        self.output_params['scaler_parameters']['rho_bulk']=rhos
+        stern = np.where(r > R1, strho, 0.0) * np.where(r > R2, 0.0, 1.0)
+        diffuse = np.where(r > R2, lrho * np.exp(-(r - R2) / lexp) + rhos, 0.0)
         rho = (stern + diffuse)
         return rho # in Moles/Liter
 
@@ -105,6 +111,7 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
         Define the function in terms of x to return some value
         """
         self.output_params={}
+        self.output_params['scaler_parameters']={}
         r=np.linspace(self.rmin, self.rmax, self.Nr)
         strho=self.params['strho'].value
         tst=self.params['tst'].value
@@ -114,8 +121,10 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
         norm=self.params['norm'].value
         bkg=self.params['bkg'].value
         Rc = self.params['Rc'].value
-        rho=self.solrho(r, Rc=Rc, strho=strho, tst=tst, lrho=lrho, lexp=lexp, rhosol=self.rhosol)
+        Rp=(3/(4*np.pi*norm*6.022e23))**(1.0/3.0)*1e9
+        rho=self.solrho(r, Rp=Rp, Rc=Rc, strho=strho, tst=tst, lrho=lrho, lexp=lexp, rhosol=self.rhosol)
         self.output_params['Electron_Density']={'x':r,'y':rho}
+        self.output_params['scaler_parameters']['Rp']=Rp
         form=norm*self.calc_form(self.x,r,rho)+bkg
         return form
 

@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -153,12 +153,12 @@
          <item>
           <widget class="QLabel" name="extractedFolderLabel">
            <property name="text">
-            <string>Extracted folder</string>
+            <string>Extracted base folder</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="extractedFolderLineEdit">
+          <widget class="QLineEdit" name="extractedBaseFolderLineEdit">
            <property name="text">
             <string>reduced_data</string>
            </property>
@@ -168,6 +168,24 @@
           <widget class="QPushButton" name="extractedFolderPushButton">
            <property name="text">
             <string>Select</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Extracted folder</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="extractedFolderLineEdit">
+           <property name="text">
+            <string>extracted_pyFAI</string>
            </property>
           </widget>
          </item>

@@ -1306,7 +1306,7 @@ class ASAXS_Widget(QWidget):
     def lmfit_finderrbars(self,x,A,B,Err,constraint=False,mono=False):
         fac=min(B)
         param=Parameters()
-        param.add('x1',value = x[0]/fac,min=x[0]*1e-3/fac)
+        param.add('x1',value = x[0]/fac,min=np.abs(x[0]*1e-3/fac))
         param.add('x2',value = x[1]/fac)
         if not constraint:
             param.add('x3', value=x[2]/fac)
@@ -1381,7 +1381,6 @@ class ASAXS_Widget(QWidget):
                 else:
                     xn=[x1,x2,x3]
                 self.XMatrix.append(xn)
-                print(x1err,x2err,x3err)
                 tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
                 self.ASAXSCheckPlotWidget.errorbarCheckBox.setChecked(True)
                 if ans == QMessageBox.Yes:

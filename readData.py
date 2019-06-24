@@ -658,7 +658,7 @@ def write1DSAXS(data,textEdit=None,fdir=None):
     if not os.path.exists(fdir):
         os.makedirs(fdir)
     for fname in data.keys():
-        pfname=os.path.join(fdir,os.path.basename(fname).split('.')[0]+'_bkg_sub_norm.txt')
+        pfname=os.path.join(fdir,os.path.splitext(os.path.basename(fname))[0]+'_bkg_sub_norm.txt')
         header='Processed data on %s\n'%time.asctime()
         #header='Original file=%s\n'%fname
         for key in data[fname].keys():
