@@ -477,7 +477,7 @@ class Fit_Widget(QWidget):
             else:
                 text='np.linspace(%.3f,%.3f,100)'%(xmin,xmax)
             self.xLineEdit.setText(text)
-            #self.update_plot()
+            self.update_plot()
             self.xChanged()
             
     def openDataDialog(self,item):
@@ -767,7 +767,7 @@ class Fit_Widget(QWidget):
                 if len(fnames)>1:
                     data_dlg.accept()
                 else:
-                    data_dlg.show()
+                    data_dlg.exec_()
                 self.dlg_data[data_key]=data_dlg.data
                 self.plotColIndex[data_key]=data_dlg.plotColIndex
                 self.plotColors[data_key]=data_dlg.plotColors
