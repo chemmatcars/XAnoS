@@ -89,7 +89,7 @@ class Data_Reduction_Client(QWidget):
        
         self.curDir=os.getcwd()
         
-        self.extractedFolder=extractedFolder
+        self.extractedBaseFolder=extractedFolder
         self.npt=npt
         self.set_externally=False
         #ai=AIWidget()
@@ -111,7 +111,7 @@ class Data_Reduction_Client(QWidget):
         self.poniFileLineEdit.setText(str(self.poniFile))
         self.maskFileLineEdit.setText(str(self.maskFile))
         self.darkFileLineEdit.setText(str(self.darkFile))
-        self.extractedFolderLineEdit.setText(self.extractedFolder)
+        self.extractedBaseFolderLineEdit.setText(self.extractedBaseFolder)
         self.radialPointsLineEdit.setText(str(self.npt))
         self.openDataPushButton.clicked.connect(self.openDataFiles)
         self.reducePushButton.clicked.connect(self.reduce_multiple)
@@ -122,6 +122,7 @@ class Data_Reduction_Client(QWidget):
         self.openMaskPushButton.clicked.connect(lambda x: self.openMaskFile(file=None))
         self.createMaskPushButton.clicked.connect(self.createMask)
         self.extractedFolderPushButton.clicked.connect(self.openFolder)
+        self.extractedFolderLineEdit.textChanged.connect(self.extractedFolderChanged)
         self.polCorrComboBox.currentIndexChanged.connect(self.polarizationChanged)
         self.polarizationChanged()
         self.radialPointsLineEdit.returnPressed.connect(self.nptChanged)
@@ -249,10 +250,11 @@ class Data_Reduction_Client(QWidget):
                 message=self.files[0]
                 self.dataFiles=[message]
                 self.dataFileLineEdit.setText(str(self.dataFiles))
-                self.extractedFolder=os.path.join(os.path.dirname(message),'extracted_pyFAI')
+                self.extractedBaseFolder=os.path.dirname(message)
+                self.extractedFolder=os.path.join(self.extractedBaseFolder,self.extractedFolderLineEdit.text())
                 if not os.path.exists(self.extractedFolder):
                     os.makedirs(self.extractedFolder)
-                self.extractedFolderLineEdit.setText(self.extractedFolder)
+                self.extractedBaseFolderLineEdit.setText(self.extractedBaseFolder)
                 self.set_externally=True
                 self.reduce_multiple()
                 self.set_externally=False
@@ -426,7 +428,7 @@ class Data_Reduction_Client(QWidget):
             self.imageWidget.setImage(self.data2d,transpose=True)
             self.tabWidget.setCurrentWidget(self.imageWidget)
             if not self.set_externally:
-                self.extractedFolder=os.path.join(self.curDir,'extracted_pyFAI')
+                self.extractedFolder=os.path.join(self.curDir,self.extractedFolderLineEdit.text())
                 if not os.path.exists(self.extractedFolder):
                     os.makedirs(self.extractedFolder)
                     
@@ -441,10 +443,11 @@ class Data_Reduction_Client(QWidget):
             self.imgNumberSpinBox.setMaximum(len(self.dataFiles)-1)
             self.dataFileLineEdit.setText(str(self.dataFiles))
             self.curDir=os.path.dirname(self.dataFiles[0])
-            self.extractedFolder=os.path.abspath(os.path.join(self.curDir,'extracted_pyFAI'))
+            self.extractedBaseFolder=self.curDir
+            self.extractedFolder=os.path.abspath(os.path.join(self.extractedBaseFolder,self.extractedFolderLineEdit.text()))
             if not os.path.exists(self.extractedFolder):
                 os.makedirs(self.extractedFolder)
-            self.extractedFolderLineEdit.setText(self.extractedFolder)
+            self.extractedBaseFolderLineEdit.setText(self.extractedBaseFolder)
             self.imgNumberSpinBox.setValue(0)
             self.imageChanged()
             
@@ -514,10 +517,24 @@ class Data_Reduction_Client(QWidget):
         """
         Select the folder to save the reduce data
         """
-        self.extractedFolder=QFileDialog.getExistingDirectory(self,'Select extracted directory',directory=self.curDir)
-        if self.extractedFolder!='':
-            self.extractedFolderLineEdit.setText(self.extractedFolder)
+        oldfolder=self.extractedBaseFolder.text()
+        folder=QFileDialog.getExistingDirectory(self,'Select extracted directory',directory=self.curDir)
+        if folder!='':
+            self.extractedBaseFolder=folder
+            self.extractedBaseFolderLineEdit.setText(folder)
+            self.extractedFolder=os.path.join(folder,self.extractedFolderLineEdit.text())
             self.set_externally=True
+        else:
+            self.extractedBaseFolder=oldfolder
+            self.extractedBaseFolderLineEdit.setText(oldfolder)
+            self.extractedFolder = os.path.join(oldfolder, self.extractedFolderLineEdit.text())
+            self.set_externally = True
+
+
+    def extractedFolderChanged(self,txt):
+        self.extractedFolder=os.path.join(self.extractedBaseFolder,txt)
+        self.set_externally=True
+
         
         
     def reduceData(self):
@@ -657,8 +674,8 @@ class Data_Reduction_Client(QWidget):
             headers+='mask file: None\n'
         for key in self.header.keys():
             headers+=key+'='+str(self.header[key])+'\n'
-        headers+="col_name=['Q (A^-1)','Int','Int_err']\n"
-        headers+='Q (A^-1)\tInt\tInt_err'
+        headers+="col_names=['Q (inv Angs)','Int','Int_err']\n"
+        headers+='Q (inv Angs)\tInt\tInt_err'
         data=vstack((self.q,self.I,self.Ierr)).T
         savetxt(filename,data,header=headers,comments='#')
         

@@ -117,7 +117,7 @@ class PlotWidget(QWidget):
         #self.crosshairLabel.setText(u'X=%+0.5f, Y=%+0.5e'%(x,y))
         
         
-    def add_data(self,x,y,yerr=None,name=None,fit=False):
+    def add_data(self,x,y,yerr=None,name=None,fit=False,color=None):
         """
         Adds data into the plot where:
         x=Array of x-values
@@ -152,8 +152,9 @@ class PlotWidget(QWidget):
                 self.err[dname]= yerr/2.0
                 self.dataErr[dname].setData(x=x, y=y, top=self.err[dname], bottom=self.err[dname], pen='w')# beam=min(np.abs(x))*0.01*float(self.pointSizeLineEdit.text()),pen='w')
             #self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
-            else: 
-                color=pg.intColor(np.random.choice(range(0,210),1)[0])
+            else:
+                if color is None:
+                    color=pg.intColor(np.random.choice(range(0,210),1)[0])
                 #color=self.data[dname].opts['pen'].color()
                 pen=pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text()))
                 symbol='o'
@@ -258,14 +259,14 @@ class PlotWidget(QWidget):
             self.plotWidget.draw()
                 
         else:
-            self.plotWidget.plotItem.setLogMode(x=False,y=False) #This step is necessary for checking the zero values
+            self.plotWidget.plotItem.setLogMode(x=False,y=False)
             self.plotWidget.clear()
             for names in self.data.keys():
                 self.legendItem.removeItem(names)
             xlog_res=True
             ylog_res=True
             for dname in self.selDataNames:
-                if np.all(self.data[dname].yData==0) and self.yLogCheckBox.checkState()==Qt.Checked:
+                if np.all(self.data[dname].yData==0) and self.yLogCheckBox.checkState()==Qt.Checked: #This step is necessary for checking the zero values
                     QMessageBox.warning(self,'Zero error','All the yData are zeros. So Cannot plot Logarithm of yData for %s'%dname,QMessageBox.Ok)
                     ylog_res=ylog_res and False
                     if not ylog_res:

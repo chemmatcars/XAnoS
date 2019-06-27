@@ -1,1 +1,1 @@
-__all__=['Sphere_Uniform.py']
+__all__=['Sphere_Uniform', 'Sphere_Uniform.py']

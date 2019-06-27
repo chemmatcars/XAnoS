@@ -164,6 +164,13 @@
                 </widget>
                </item>
                <item>
+                <widget class="QPushButton" name="editColumnPushButton">
+                 <property name="text">
+                  <string>Edit Column</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QPushButton" name="addColumnPushButton">
                  <property name="text">
                   <string>Add Column</string>
@@ -250,6 +257,11 @@
              <column>
               <property name="text">
                <string>Yerr</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Plot-Color</string>
               </property>
              </column>
             </widget>

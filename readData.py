@@ -573,7 +573,7 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         for key in data[ofname].keys():
             if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='yraw':
                 header=header+key+'='+str(data[ofname][key])+'\n'
-        header=header+'col_name=["Q (A^-1)", "Int", "Int_err"]\n'
+        header=header+'col_names=["Q (inv Angs)", "Int", "Int_err"]\n'
         header=header+'Q (A^-1)\tInt\tInt_err\n'
         np.savetxt(ofname,finaldata,header=header,comments='#')
         print('Averaged data saved in a file named %s'%ofname)
@@ -608,7 +608,7 @@ def bkgSub1DSAXS(sdata,sname,bdata,bname,ofname,cf=1.0,thickness=1.0,folder='Bkg
     for key in data[ofname].keys():
         if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='yraw':
             header=header+key+'='+str(data[ofname][key])+'\n'
-    header=header+'col_name=["Q (A^-1)", "Int", "Int_err"]\n'
+    header=header+'col_names=["Q (inv Angs)", "Int", "Int_err"]\n'
     header=header+'Q (A^-1)\tInt\tInt_err\n'
     np.savetxt(ofname,finaldata,header=header,comments='#')
     print('Subtracted filname data save in a file named %s'%ofname)
@@ -658,14 +658,14 @@ def write1DSAXS(data,textEdit=None,fdir=None):
     if not os.path.exists(fdir):
         os.makedirs(fdir)
     for fname in data.keys():
-        pfname=os.path.join(fdir,os.path.basename(fname).split('.')[0]+'_bkg_sub_norm.txt')
+        pfname=os.path.join(fdir,os.path.splitext(os.path.basename(fname))[0]+'_bkg_sub_norm.txt')
         header='Processed data on %s\n'%time.asctime()
         #header='Original file=%s\n'%fname
         for key in data[fname].keys():
             if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='y-flb' and key!='yraw':
                 header=header+'%s=%s\n'%(key,data[fname][key])
-        header=header+'col_name=["Q (A^-1)", "Int", "Int_err"]\n'
-        header=header+'Q (A^-1)\tInt\tInt_err\n'
+        header=header+'col_names=["Q (inv Angs)", "Int", "Int_err"]\n'
+        header=header+'Q (inv Angs)\tInt\tInt_err\n'
         np.savetxt(pfname,np.vstack((data[fname]['x'],data[fname]['y'],data[fname]['yerr'])).T,comments='#',header=header)
         print('Data saved in %s...'%pfname)
         if textEdit is not None:
