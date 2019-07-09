@@ -12,6 +12,7 @@ import time
 import os
 from functools import partial
 from Data_Dialog import Data_Dialog
+import pyqtgraph as pg
 
 class MCA_Widget(QWidget):
     """
@@ -30,15 +31,23 @@ class MCA_Widget(QWidget):
         self.mca_y = None
         self.mca_yerr = None
         self.data = {}
+        self.expressions={}
+        self.plotColors={}
         self.dlg_data = {}
         self.plotColIndex = {}
         self.mcaFnames=[]
+        self.mca_MEDM_running = False
+        self.stopMEDMPushButton.setEnabled(False)
 
 
 
     def init_UI(self):
         loadUi('./UI_Forms/MCA_Widget.ui',self)
         self.change_MCA()
+
+    def closeEvent(self,event):
+        if self.mca_MEDM_running:
+            self.medm.close()
 
 
     def init_signals(self):
@@ -87,14 +96,13 @@ class MCA_Widget(QWidget):
         fnames=[item.text() for item in self.mcaScanListWidget.selectedItems()]
         if len(fnames)!=0:
             self.mcaPlotWidget.Plot(fnames)
-            fullfnames=[os.path.join(self.mcaDir,fname) for fname in fnames]
-            self.offsetLineEdit.setText('%.4f'%self.data[fullfnames[0]]['Offset'])
-            self.linearLineEdit.setText('%.4f'%self.data[fullfnames[0]]['Linear'])
-            self.quadraticLineEdit.setText('%.4f'%self.data[fullfnames[0]]['Quadratic'])
+            self.offsetLineEdit.setText('%.4f'%self.data[fnames[0]]['Counts']['Offset'])
+            self.linearLineEdit.setText('%.4f'%self.data[fnames[0]]['Counts']['Linear'])
+            self.quadraticLineEdit.setText('%.4f'%self.data[fnames[0]]['Counts']['Quadratic'])
             stats_data=[]
             keys=['Energy','real_time','live_time','sum','sum_err','corr_sum','corr_sum_err']#self.dlg_data[fullfnames[0]]['meta'].keys()
-            for fname in fullfnames:
-                stats_data.append([self.data[fname][key] for key in keys])
+            for fname in fnames:
+                stats_data.append([self.data[fname]['Counts'][key] for key in keys])
             stats_data=np.array(stats_data)
             self.updateStatisticsTable(stats_data,keys)
 
@@ -118,13 +126,20 @@ class MCA_Widget(QWidget):
 
     def openDataDialog(self,item):
         fname=item.text()
-        data_dlg=Data_Dialog(data=self.dlg_data[os.path.join(self.mcaDir,fname)],parent=self)
+        data_dlg=Data_Dialog(data=self.dlg_data[os.path.join(self.mcaDir,fname)],parent=self,plotIndex=self.plotColIndex[fname],colors=self.plotColors[fname])
         if data_dlg.exec_():
+            self.mcaPlotWidget.remove_data([fname])
             self.plotColIndex[fname]=data_dlg.plotColIndex
             self.dlg_data[fname]=copy.copy(data_dlg.data)
             self.data[fname]=copy.copy(data_dlg.externalData)
-            self.mcaPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fname)
-            #self.update_plot()
+            self.expressions[fname] = data_dlg.expressions
+            self.plotColors[fname] = data_dlg.plotColors
+            for key in self.data[fname].keys():
+                self.mcaPlotWidget.add_data(self.data[fname][key]['x'],self.data[fname][key]['y'],yerr=self.data[
+                    fname][key]['yerr'],name=fname,color=self.plotColors[fname][key])
+            self.mcaPlotWidget.Plot([fname])
+
+
 
     def add_mca_scans(self,fnames=None):
         """
@@ -138,24 +153,40 @@ class MCA_Widget(QWidget):
             self.mcaFnames=fnames
         if self.mcaFnames !=[]:
             self.mcaDir=os.path.dirname(self.mcaFnames[0])
-            self.mcaScanListWidget.addItems([os.path.basename(fname) for fname in self.mcaFnames])
+            # self.mcaScanListWidget.addItems([os.path.basename(fname) for fname in self.mcaFnames])
+            self.mcaScanListWidget.addItems(self.mcaFnames)
             for fname in self.mcaFnames:
-                data_dlg = Data_Dialog(fname=fname, parent=self)
+                data_dlg = Data_Dialog(fname=fname, parent=self,colors=None)
                 data_dlg.accept()
                 self.dlg_data[fname] = data_dlg.data
                 self.plotColIndex[fname] = data_dlg.plotColIndex
                 self.data[fname] = data_dlg.externalData
-                self.mcaPlotWidget.add_data(self.data[fname]['x'], self.data[fname]['y'], yerr=self.data[fname]['yerr'],
-                                            name=os.path.basename(fname))
+                self.expressions[fname] = data_dlg.expressions
+                self.plotColors[fname] = data_dlg.plotColors
+                for key in self.data[fname].keys():
+                    self.mcaPlotWidget.add_data(self.data[fname][key]['x'], self.data[fname][key]['y'], \
+                                             yerr=self.data[fname][key]['yerr'],
+                                             name='%s' % (fname),
+                                             color=self.plotColors[fname][key])
+                    print(self.plotColors[fname][key])
 
     def launch_MEDM(self):
         self.medm=QProcess()
         cmd='medm -x -macro "P=%s,D=%s, M=%s" ./adl/dxpSaturn.adl' % (self.medm_P, self.medm_D, self.medm_M)
         self.medm.start(cmd)
-
+        self.mca_MEDM_running=True
+        self.launchMEDMPushButton.setEnabled(False)
+        self.stopMEDMPushButton.setEnabled(True)
 
     def stop_MEDM(self):
-        self.medm.terminate()
+        if self.mca_MEDM_running:
+            self.medm.close()
+        self.mca_MEDM_running=False
+        self.stopMEDMPushButton.setEnabled(False)
+        self.launchMEDMPushButton.setEnabled(True)
+
+    # def stop_MEDM(self):
+    #     self.medm.terminate()
 
     def readMCA(self):
         self.mca_y=self.mcaPV.value
@@ -180,14 +211,14 @@ class MCA_Widget(QWidget):
         if len(self.mcaFnames)!=0:
             stats_data=[]
             for fname in self.mcaFnames:
-                self.mca_x=self.data[fname]['x']
-                self.mca_y=self.data[fname]['y']
-                self.mca_realtime=self.data[fname]['real_time']
-                self.mca_livetime=self.data[fname]['live_time']
+                self.mca_x=self.data[fname]['Counts']['x']
+                self.mca_y=self.data[fname]['Counts']['y']
+                self.mca_realtime=self.data[fname]['Counts']['real_time']
+                self.mca_livetime=self.data[fname]['Counts']['live_time']
                 self.performStats(fname=fname)
                 keys = ['Energy', 'real_time', 'live_time', 'sum', 'sum_err', 'corr_sum',
                         'corr_sum_err']  # self.dlg_data[fullfnames[0]]['meta'].keys()
-                stats_data.append([self.data[fname][key] for key in keys])
+                stats_data.append([self.data[fname]['Counts'][key] for key in keys])
         else:
             self.performStats(fname=None)
             keys = ['Energy', 'real_time', 'live_time', 'sum', 'sum_err', 'corr_sum',
@@ -209,10 +240,10 @@ class MCA_Widget(QWidget):
         if imax<=imin:
             imax=imin+1
         if fname is not None:
-            self.data[fname]['sum'] = np.sum(self.mca_y[imin:imax+1])
-            self.data[fname]['sum_err'] = np.sqrt(self.data[fname]['sum'])
-            self.data[fname]['corr_sum'] = self.data[fname]['sum']*self.mca_realtime/self.mca_livetime
-            self.data[fname]['corr_sum_err'] = self.data[fname]['sum_err']*self.mca_realtime/self.mca_livetime
+            self.data[fname]['Counts']['sum'] = np.sum(self.mca_y[imin:imax+1])
+            self.data[fname]['Counts']['sum_err'] = np.sqrt(self.data[fname]['Counts']['sum'])
+            self.data[fname]['Counts']['corr_sum'] = self.data[fname]['Counts']['sum']*self.mca_realtime/self.mca_livetime
+            self.data[fname]['Counts']['corr_sum_err'] = self.data[fname]['Counts']['sum_err']*self.mca_realtime/self.mca_livetime
         else:
             self.sum = np.sum(self.mca_y[imin:imax+1])
             self.sum_err = np.sqrt(self.sum)

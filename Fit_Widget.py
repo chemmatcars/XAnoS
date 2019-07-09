@@ -505,9 +505,10 @@ class Fit_Widget(QWidget):
                 self.data[text]=copy.copy(data_dlg.externalData)
                 self.plotColIndex[text]=data_dlg.plotColIndex
                 self.plotColors[text]=data_dlg.plotColors
+                self.expressions[text]=data_dlg.expressions
                 for key in self.data[text].keys():
                     self.plotWidget.add_data(self.data[text][key]['x'], self.data[text][key]['y'], yerr=self.data[text][key][
-                    'yerr'],name='%s:%s'%(fnum,key),color=self.plotColors[text][key]['color'])
+                    'yerr'],name='%s:%s'%(fnum,key),color=self.plotColors[text][key])
         # self.sfnames = []
         # self.pfnames = []
         # for item in self.dataListWidget.selectedItems():

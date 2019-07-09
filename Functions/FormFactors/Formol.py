@@ -149,6 +149,7 @@ class Formol: #Please put the class name same as the function name
         rho     :: array of electron densities as a funciton of radial distance in el/Angstroms^3. Note: The electron density should decay to zero at the last radial distance
         """
         dr=r[1]-r[0]
+        q=q+self.__qoff__
         form=np.zeros_like(q)
         for r1, rho1 in zip(r,rho):
             form=form+4*np.pi*r1*rho1*np.sin(q*r1)/q
@@ -160,6 +161,7 @@ class Formol: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         self.output_params={}
+        self.__qoff__=self.params['qoff']
         #if self.__fnames__!=[None,None]:
         #Contribution from first molecule
         if self.fname1 is not None:
@@ -180,7 +182,7 @@ class Formol: #Please put the class name same as the function name
         self.__rmin__=self.rmin
         self.__rmax__=self.rmax
         self.__Nr__=self.Nr
-        self.__qoff__=self.qoff
+
         if self.__fnames__[0] is not None and self.__fnames__[1] is not None:
             self.output_params[os.path.basename(self.fname1)+'_1']={'x':self.x,'y':self.norm*self.eta1*form1}
             self.output_params[os.path.basename(self.fname2)+'_1']={'x':self.x,'y':self.norm*self.eta2*form2}
