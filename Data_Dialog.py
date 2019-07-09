@@ -659,19 +659,19 @@ class Data_Dialog(QDialog):
         except:
             pass
         rowIndexes=self.plotSetupTableWidget.selectionModel().selectedRows()
+        selectedRows=[index.row() for index in rowIndexes]
+        selectedRows.sort(reverse=True)
         if self.parentWidget() is None:
-            for index in rowIndexes:
-                row=index.row()
+            for row in selectedRows:
                 name=self.plotSetupTableWidget.item(row,0).text()
                 self.plotWidget.remove_data([name])
-                self.plotSetupTableWidget.removeRow(index.row())
+                self.plotSetupTableWidget.removeRow(row)
         else:
             if self.plotSetupTableWidget.rowCount()-len(rowIndexes)>=1:
-                for index in rowIndexes:
-                    row = index.row()
+                for row in selectedRows:
                     name = self.plotSetupTableWidget.item(row, 0).text()
                     self.plotWidget.remove_data([name])
-                    self.plotSetupTableWidget.removeRow(index.row())
+                    self.plotSetupTableWidget.removeRow(row)
             else:
                 QMessageBox.warning(self, 'Warning', 'Cannot remove single plots from Data Dialog because the Data Dialog is used within another widget',
                                 QMessageBox.Ok)

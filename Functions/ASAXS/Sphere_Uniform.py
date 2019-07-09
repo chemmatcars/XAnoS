@@ -121,8 +121,8 @@ class Sphere_Uniform: #Please put the class name same as the function name
                     tdensity=density[i]
                     self.output_params['scaler_parameters']['density[Material_%d]' % i] = tdensity
                 formula = self.__cf__.parse(comb_material)
-                # if self.relement in formula.keys():
-                #     self.__cf__.formula_dict[self.relement]=Rmoles[i]
+                if self.relement in formula.keys():
+                    self.__cf__.formula_dict[self.relement]=Rmoles[i]
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
                 mole_ratio = self.__cf__.element_mole_ratio()
