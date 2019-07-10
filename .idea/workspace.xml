@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Fit_Widget">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Fixed a bug related to Rmoles in Sphere_Uniform.py&#10;Fixed a bug in Data_Dialog.py related to removal of plots">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fit_Widget.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12597">
-              <caret line="762" column="26" selection-start-line="762" selection-start-column="26" selection-end-line="762" selection-end-column="26" />
+            <state relative-caret-position="400">
+              <caret line="788" column="44" selection-start-line="788" selection-start-column="44" selection-end-line="788" selection-end-column="44" />
               <folding>
                 <element signature="e#0#328#0" expanded="true" />
               </folding>
@@ -44,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="668" column="13" lean-forward="true" selection-start-line="668" selection-start-column="13" selection-end-line="668" selection-end-column="13" />
+            <state relative-caret-position="-1929">
+              <caret line="602" column="25" selection-start-line="602" selection-start-column="17" selection-end-line="602" selection-end-column="25" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -83,7 +82,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PlotWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2635">
+            <state relative-caret-position="-2911">
               <caret line="161" column="31" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
@@ -95,7 +94,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Functions/FormFactors/SphericalShell_expDecay.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1462">
+            <state relative-caret-position="506">
               <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
             </state>
           </provider>
@@ -133,8 +132,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>update_plot</find>
-      <find>clear</find>
       <find>update_catagories</find>
       <find>edit</find>
       <find>openData</find>
@@ -149,20 +146,22 @@
       <find>pg.C</find>
       <find>updateCellDat</find>
       <find>updateCellData</find>
-      <find>add_data</find>
       <find>print</find>
       <find>self.data</find>
       <find>self.plotColIndex=</find>
       <find>self.plotColors</find>
       <find>addMultiPlots</find>
       <find>self.plotColIndex</find>
-      <find>addPlots</find>
       <find>color</find>
-      <find>addData</find>
       <find>addDataColumn</find>
       <find>resetPlotSetup</find>
       <find>self.resetPlotSetup</find>
       <find>openDataDialog</find>
+      <find>add_data</find>
+      <find>exec</find>
+      <find>acceptWidget</find>
+      <find>addPlots</find>
+      <find>addData</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -244,17 +243,17 @@
         <option value="$PROJECT_DIR$/Chemical_Formula.py" />
         <option value="$PROJECT_DIR$/Fit_Routines.py" />
         <option value="$PROJECT_DIR$/PlotWidget.py" />
-        <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
         <option value="$PROJECT_DIR$/Data_Dialog.py" />
+        <option value="$PROJECT_DIR$/Fit_Widget.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3832" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="-15" />
+    <option name="y" value="-15" />
+    <option name="width" value="3873" />
+    <option name="height" value="2193" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -465,13 +464,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00043" summary="updated Documentation">
-      <created>1548540553755</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1548540553755</updated>
     </task>
     <task id="LOCAL-00044" summary="updated Documentation">
       <created>1548540901837</created>
@@ -809,7 +801,14 @@
       <option name="project" value="LOCAL" />
       <updated>1561432035276</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Fixed a bug related to Rmoles in Sphere_Uniform.py&#10;Fixed a bug in Data_Dialog.py related to removal of plots">
+      <created>1562702091867</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1562702091868</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TodoView">
@@ -822,9 +821,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="3832" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15542677" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19484809" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -836,36 +836,15 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50462353" side_tool="true" weight="0.36916548" />
       <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.4953765" weight="0.34669557" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.12567714" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.16407356" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.11697028" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13751318" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.34985834" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.3988495" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50462353" side_tool="true" weight="0.36916548" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.4953765" weight="0.24504249" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.29469123" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.11756374" />
-      <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Merged with SAXS_Drive_Beta" />
     <MESSAGE value="Updated README" />
     <MESSAGE value="removed INSTALL.txt" />
     <MESSAGE value="updated Documentation" />
@@ -890,7 +869,8 @@
     <MESSAGE value="Updated Data_Dialog.py to change the expression of a particular column" />
     <MESSAGE value="Updated ASAXS_Widget, Chemical_Formula, Data_Dialog, Data_Reduction_Client, Fit_Routines, Fit_Widget, PlotWidget, readData&#10;Updated functions Sphere_Uniform, SphereicalShell_expDecay&#10;Updated UI_Forms Data_Dialog, Data_Reduction_Client" />
     <MESSAGE value="Updated Fit_Widget" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated Fit_Widget" />
+    <MESSAGE value="Fixed a bug related to Rmoles in Sphere_Uniform.py&#10;Fixed a bug in Data_Dialog.py related to removal of plots" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed a bug related to Rmoles in Sphere_Uniform.py&#10;Fixed a bug in Data_Dialog.py related to removal of plots" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1214,16 +1194,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12597">
-          <caret line="762" column="26" selection-start-line="762" selection-start-column="26" selection-end-line="762" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1173">
@@ -1258,23 +1228,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2635">
-          <caret line="161" column="31" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/SphericalShell_expDecay.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1462">
-          <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Chemical_Formula.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1275">
@@ -1292,12 +1245,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/FormFactors/SphericalShell_expDecay.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="668" column="13" lean-forward="true" selection-start-line="668" selection-start-column="13" selection-end-line="668" selection-end-column="13" />
+        <state relative-caret-position="-1929">
+          <caret line="602" column="25" selection-start-line="602" selection-start-column="17" selection-end-line="602" selection-end-column="25" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2911">
+          <caret line="161" column="31" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="788" column="44" selection-start-line="788" selection-start-column="44" selection-end-line="788" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
           </folding>
         </state>
       </provider>

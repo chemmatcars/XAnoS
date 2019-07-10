@@ -786,6 +786,9 @@ class Fit_Widget(QWidget):
             # #except:
             # #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
+        self.dataListWidget.clearSelection()
+        self.dataListWidget.setCurrentRow(self.fileNumber-1)
+
                 
                 
         
