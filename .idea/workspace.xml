@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated FitWidget to fix a bug related adding data file with multiple columns to be plotted">
-      <change beforePath="$PROJECT_DIR$/.idea/XAnoS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/XAnoS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Compiled fortran files with mingw32 and python 3.7">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fortran_routines/xr_ref.cp36-win_amd64.pyd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/legacycontour/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/legacycontour/_version.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.buildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Widget.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Acknowledgements.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Acknowledgements.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Data_Collection_Server.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Data_Collection_Server.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/License.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/License.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/basic.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/doctools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_static/documentation_options.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/documentation_options.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/searchtools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/websupport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/genindex.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,27 +36,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Fit_Widget.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12954">
-              <caret line="783" column="71" selection-start-line="783" selection-start-column="71" selection-end-line="783" selection-end-column="71" />
-              <folding>
-                <element signature="e#0#328#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="72" column="30" selection-start-line="72" selection-start-column="30" selection-end-line="72" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
@@ -48,6 +45,16 @@
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
+          <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
+          <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -220,7 +227,6 @@
         <option value="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" />
         <option value="$PROJECT_DIR$/Functions/XRR/__init__.py" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
-        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
         <option value="$USER_HOME$/Desktop/User_Stats/User_Stats.rst" />
         <option value="$PROJECT_DIR$/Functions/PeakFunctions/MultiPeaks.py" />
         <option value="$PROJECT_DIR$/Functions/XRR/Parratt.py" />
@@ -253,6 +259,7 @@
         <option value="$PROJECT_DIR$/Data_Dialog.py" />
         <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
+        <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
       </list>
     </option>
   </component>
@@ -270,7 +277,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -278,10 +284,21 @@
               <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
               <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="Fortran_routines" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -442,13 +459,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00045" summary="updated Documentation">
-      <created>1548542219879</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1548542219879</updated>
     </task>
     <task id="LOCAL-00046" summary="updated Documentation">
       <created>1548542382812</created>
@@ -786,7 +796,14 @@
       <option name="project" value="LOCAL" />
       <updated>1562737407298</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="Compiled fortran files with mingw32 and python 3.7">
+      <created>1562999633925</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1562999633925</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="TodoView">
@@ -822,7 +839,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed INSTALL.txt" />
     <MESSAGE value="updated Documentation" />
     <MESSAGE value="Changed the name from SAXS_Drive to XAnoS" />
     <MESSAGE value="updated README" />
@@ -847,7 +863,8 @@
     <MESSAGE value="Updated Fit_Widget" />
     <MESSAGE value="Fixed a bug related to Rmoles in Sphere_Uniform.py&#10;Fixed a bug in Data_Dialog.py related to removal of plots" />
     <MESSAGE value="Updated FitWidget to fix a bug related adding data file with multiple columns to be plotted" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated FitWidget to fix a bug related adding data file with multiple columns to be plotted" />
+    <MESSAGE value="Compiled fortran files with mingw32 and python 3.7" />
+    <option name="LAST_COMMIT_MESSAGE" value="Compiled fortran files with mingw32 and python 3.7" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -929,9 +946,6 @@
     </entry>
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64/Lib/site-packages/numpy/lib/arraysetops.py" />
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64/Lib/site-packages/matplotlib/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/XRR/Parratt.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="697">
@@ -963,9 +977,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scans.txt" />
-    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Acknowledgements.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
@@ -1219,6 +1230,12 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>
 </project>

@@ -17,7 +17,7 @@ Follow the following instructions for installation:
 2) Open a Anaconda terminal the run these two commands::
 
     conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
-    pip install lmfit pyfai periodictable lmdifftools
+    pip install lmfit pyfai periodictable lmdifftools mendeleev
 
 3) Go to the website: https://github.com/scikit-beam/XrayDB
 
