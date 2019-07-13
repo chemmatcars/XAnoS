@@ -271,11 +271,13 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 for q1 in self.x[key]:
                     sq.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity,key=key))
                 sqf[key] = self.norm * np.array(sq) * 6.022e23 / 1e3  # in cm^-1
+                if key=='SAXS-term':
+                    sqf[key]=sqf[key]+self.bkg
             key1='Total'
             sqt=[]
             for q1 in self.x[key]:
                  sqt.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity, key=key1))
-            total = self.norm * np.array(sqt) * 6.022e23 / 1e3  # in cm^-1
+            total = self.norm * np.array(sqt) * 6.022e23 / 1e3 + self.bkg # in cm^-1
             if not self.__fit__:
                 self.output_params['Simulated_total_wo_err']={'x':self.x[key],'y':total}
             #sqf[key1]=total
@@ -294,7 +296,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 asqf.append(asq)
                 eisqf.append(eisq)
                 csqf.append(csq)
-            sqf=self.norm*np.array(sqf)*6.022e23/1e3 #in cm^-1
+            sqf=self.norm*np.array(sqf)*6.022e23/1e3 + self.bkg#in cm^-1
             if not self.__fit__: #Generate all the quantities below while not fitting
                 asqf=self.norm*np.array(asqf)*6.022e23/1e3 #in cm^-1
                 eisqf=self.norm*np.array(eisqf)*6.022e23/1e3 #in cm^-1

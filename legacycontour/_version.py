@@ -9,10 +9,10 @@ import sys
 
 version_json = '''
 {
- "dirty": false,
- "error": null,
- "full-revisionid": "0aa2b43bbf27899b18fc025f427e1d9c89c1c608",
- "version": "0+untagged.2.g0aa2b43"
+ "dirty": null,
+ "error": "unable to compute version",
+ "full-revisionid": null,
+ "version": "0+unknown"
 }
 '''  # END VERSION_JSON
 
