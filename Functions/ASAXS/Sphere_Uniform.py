@@ -115,19 +115,25 @@ class Sphere_Uniform: #Please put the class name same as the function name
                     for ele in solvent_mole_ratio.keys():
                         comb_material+='%s%.6f'%(ele,solvent_mole_ratio[ele]*solvent_mole_fraction)
                     tdensity=density[i]+sol_density[i]*(1-solute_mv*density[i]/solute_mw)
-                    self.output_params['scaler_parameters']['density[Material_%d]'%i]=tdensity
+                    self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
                 else:
-                    comb_material=material[i]
+                    formula=self.__cf__.parse(material[i])
+                    if self.relement in formula.keys():
+                        self.__cf__.formula_dict[self.relement]=Rmoles[i]
+                    mole_ratio=self.__cf__.element_mole_ratio()
+                    comb_material=''
+                    for ele in mole_ratio.keys():
+                        comb_material+='%s%.6f'%(ele,mole_ratio[ele])
+                    #comb_material=material[i]
                     tdensity=density[i]
-                    self.output_params['scaler_parameters']['density[Material_%d]' % i] = tdensity
+                    self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
                 formula = self.__cf__.parse(comb_material)
-                if self.relement in formula.keys():
-                    self.__cf__.formula_dict[self.relement]=Rmoles[i]
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
                 mole_ratio = self.__cf__.element_mole_ratio()
                 # numbers=np.array(chemical_formula.get_element_numbers(material[i]))
                 moles = [mole_ratio[ele] for ele in elements]
+                print(moles)
                 nelectrons = 0.0
                 felectrons = complex(0.0, 0.0)
                 aden=0.0
@@ -152,6 +158,9 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 # else:
                 #     eirho.append(0.6023 * (nelectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0, 0.0) / molwt
                 #     rho.append(0.6023 * (nelectrons + felectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0,0.0) / molwt
+                self.output_params['scaler_parameters']['rho[%s]' % material[i]]=rho[-1]
+                self.output_params['scaler_parameters']['eirho[%s]' % material[i]] = eirho[-1]
+                self.output_params['scaler_parameters']['adensity[%s]' % material[i]] = adensity[-1]
             return rho, eirho, adensity
 
     def calc_form(self, q, r, rho):

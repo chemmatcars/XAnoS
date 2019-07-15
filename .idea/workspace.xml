@@ -1,31 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Compiled fortran files with mingw32 and python 3.7">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.buildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Acknowledgements.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Acknowledgements.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Data_Collection_Server.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Data_Collection_Server.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/License.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/License.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/basic.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/doctools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/documentation_options.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/documentation_options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/searchtools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/websupport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/genindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated documentation">
+      <change beforePath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +29,7 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -60,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10047">
+            <state relative-caret-position="499">
               <caret line="602" column="25" selection-start-line="602" selection-start-column="17" selection-end-line="602" selection-end-column="25" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
@@ -72,7 +49,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
+            <state relative-caret-position="499">
               <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -126,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4352">
-              <caret line="259" column="42" selection-start-line="259" selection-start-column="42" selection-end-line="259" selection-end-column="42" />
+            <state relative-caret-position="193">
+              <caret line="128" column="88" selection-start-line="128" selection-start-column="88" selection-end-line="128" selection-end-column="88" />
             </state>
           </provider>
         </entry>
@@ -258,14 +235,14 @@
         <option value="$PROJECT_DIR$/PlotWidget.py" />
         <option value="$PROJECT_DIR$/Data_Dialog.py" />
         <option value="$PROJECT_DIR$/Fit_Widget.py" />
-        <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
+        <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-15" />
-    <option name="y" value="-15" />
+    <option name="x" value="290" />
+    <option name="y" value="-35" />
     <option name="width" value="3875" />
     <option name="height" value="2095" />
   </component>
@@ -459,13 +436,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00046" summary="updated Documentation">
-      <created>1548542382812</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1548542382812</updated>
     </task>
     <task id="LOCAL-00047" summary="updated Documentation">
       <created>1548544119492</created>
@@ -803,7 +773,14 @@
       <option name="project" value="LOCAL" />
       <updated>1562999633925</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="Updated documentation">
+      <created>1563000073623</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1563000073623</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TodoView">
@@ -818,7 +795,7 @@
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19484809" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19484809" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -830,7 +807,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50462353" side_tool="true" weight="0.36916548" />
       <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.4953765" weight="0.34669557" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.17397454" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.17397454" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.11697028" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -839,7 +816,6 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated Documentation" />
     <MESSAGE value="Changed the name from SAXS_Drive to XAnoS" />
     <MESSAGE value="updated README" />
     <MESSAGE value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
@@ -864,7 +840,8 @@
     <MESSAGE value="Fixed a bug related to Rmoles in Sphere_Uniform.py&#10;Fixed a bug in Data_Dialog.py related to removal of plots" />
     <MESSAGE value="Updated FitWidget to fix a bug related adding data file with multiple columns to be plotted" />
     <MESSAGE value="Compiled fortran files with mingw32 and python 3.7" />
-    <option name="LAST_COMMIT_MESSAGE" value="Compiled fortran files with mingw32 and python 3.7" />
+    <MESSAGE value="Updated documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1157,26 +1134,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10047">
-          <caret line="602" column="25" selection-start-line="602" selection-start-column="17" selection-end-line="602" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22644">
@@ -1214,13 +1171,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4352">
-          <caret line="259" column="42" selection-start-line="259" selection-start-column="42" selection-end-line="259" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/XRR/MultiSphereAtInterface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1236,6 +1186,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fit_Routines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="499">
+          <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="499">
+          <caret line="602" column="25" selection-start-line="602" selection-start-column="17" selection-end-line="602" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="128" column="88" selection-start-line="128" selection-start-column="88" selection-end-line="128" selection-end-column="88" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
