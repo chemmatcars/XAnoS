@@ -571,9 +571,9 @@ You can add new columns by clicking **Add Column** which will open up a :ref:`Da
 
 2. A numpy expression involving the data columns (col_A and col_B in this case) like::
 
-    col.col_A+col.col_B
-    np.sin(col.col_A)+np.cos(col.col_B)
-    np.exp(col.col_A)
+    col['col_A']+col['col_B']
+    np.sin(col['col_A'])+np.cos(col['col_B'])
+    np.exp(col['col_A'])
 
  Here a particular column is used as **col.Column_Name**. Please see Data_Column_Dialog_Columns_.
 
@@ -626,15 +626,16 @@ Data_Dialog_ can also be used for visualizing (within the Data Dialog) and selec
     2) Click **Add** button which will automatically add a row in the table.
     3) By default the row will be loaded with with *Data_0* as label, first and second column of the data as *X* and *Y* column, respectively.
     4) By default the *Yerr* column is selected as *None*.
-    5) Many rows can be added in this way to visualize the data in :ref:`Data_Dialog` whereas when the :ref:`Data_Dialog` is used within other widgets only one row will be added by default.
-    6) The data rows can be removed from the **Plot Setup** by selecting entire row (by clicking the row numbers at the extreme left) and clicking the **Remove** button.
-    7) When using the :ref:`Data_Dialog` with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.
-    8) All the columns of the data will be available as drop down menu in each of the cells for selecting them as *X*, *Y*, and *Yerr* columns to plot.
-    9) After adding the column, go to **Plots** tab within the :ref:`Data_Dialog` to visualize the data. See :ref:`Data_Dialog_Plot_tab`.
-    10) Both the X- and Y-axis labels will be updated with the column names selected in the **Plot Setup**.
-    11) In order to switch between the log/linear scales of both the axes check/uncheck the **☐LogX** and **☐LogY** checkboxes.
-    12) Line-width and the Symbol sizes can be tweaked by changing the **Line width** and **Point size** options.
-    13) By default, the errorbars are not plotted and can be plotted by checking the **☐Errorbar** checkbox, provided that a column is already selected in *Yerr* column of the **Plot Setup**.
+    5) The color of the plotting symbol can be selected by clicking the color button. By default the plots will choose different variants of *Red*.
+    6) Many rows can be added in this way to visualize the data in :ref:`Data_Dialog` whereas when the :ref:`Data_Dialog` is used within other widgets only one row will be added by default.
+    7) The data rows can be removed from the **Plot Setup** by selecting entire row (by clicking the row numbers at the extreme left) and clicking the **Remove** button.
+    8) When using the :ref:`Data_Dialog` with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.
+    9) All the columns of the data will be available as drop down menu in each of the cells for selecting them as *X*, *Y*, and *Yerr* columns to plot.
+    10) After adding the column, go to **Plots** tab within the :ref:`Data_Dialog` to visualize the data. See :ref:`Data_Dialog_Plot_tab`.
+    11) Both the X- and Y-axis labels will be updated with the column names selected in the **Plot Setup**.
+    12) In order to switch between the log/linear scales of both the axes check/uncheck the **☐LogX** and **☐LogY** checkboxes.
+    13) Line-width and the Symbol sizes can be tweaked by changing the **Line width** and **Point size** options.
+    14) By default, the errorbars are not plotted and can be plotted by checking the **☐Errorbar** checkbox, provided that a column is already selected in *Yerr* column of the **Plot Setup**.
 
 .. _Data_Dialog_Plot_Setup:
 

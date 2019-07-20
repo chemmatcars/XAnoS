@@ -1030,9 +1030,9 @@ follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. Whe
 <div>Here <strong>np</strong> is the imported <strong>numpy</strong> module. Please see <a class="reference internal" href="#data-column-dialog-i"><span class="std std-ref">Data Column Dialog with numpy expression involving i</span></a>.</div></blockquote>
 <ol class="arabic" start="2">
 <li><p class="first">A numpy expression involving the data columns (col_A and col_B in this case) like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="o">+</span><span class="n">col</span><span class="o">.</span><span class="n">col_B</span>
-<span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_B</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">col_A</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;col_A&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;col_B&#39;</span><span class="p">]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;col_A&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;col_B&#39;</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;col_A&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </li>
@@ -1083,6 +1083,7 @@ follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. Whe
 <li>Click <strong>Add</strong> button which will automatically add a row in the table.</li>
 <li>By default the row will be loaded with with <em>Data_0</em> as label, first and second column of the data as <em>X</em> and <em>Y</em> column, respectively.</li>
 <li>By default the <em>Yerr</em> column is selected as <em>None</em>.</li>
+<li>The color of the plotting symbol can be selected by clicking the color button. By default the plots will choose different variants of <em>Red</em>.</li>
 <li>Many rows can be added in this way to visualize the data in <a class="reference internal" href="#data-dialog"><span class="std std-ref">Data Dialog</span></a> whereas when the <a class="reference internal" href="#data-dialog"><span class="std std-ref">Data Dialog</span></a> is used within other widgets only one row will be added by default.</li>
 <li>The data rows can be removed from the <strong>Plot Setup</strong> by selecting entire row (by clicking the row numbers at the extreme left) and clicking the <strong>Remove</strong> button.</li>
 <li>When using the <a class="reference internal" href="#data-dialog"><span class="std std-ref">Data Dialog</span></a> with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.</li>
