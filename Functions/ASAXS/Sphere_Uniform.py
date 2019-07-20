@@ -133,7 +133,6 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 mole_ratio = self.__cf__.element_mole_ratio()
                 # numbers=np.array(chemical_formula.get_element_numbers(material[i]))
                 moles = [mole_ratio[ele] for ele in elements]
-                print(moles)
                 nelectrons = 0.0
                 felectrons = complex(0.0, 0.0)
                 aden=0.0

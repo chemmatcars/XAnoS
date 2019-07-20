@@ -148,7 +148,7 @@ class FitResultDialog(QDialog):
         self.reject()
 
 
-class Fit_Widget(QWidget):
+class XAnoS_Fit(QWidget):
     """
     This widget class is developed to provide an end-user a *Graphical User Interface* by which either they can \
     develop their own fitting functions in python or use the existing fitting functions under different categories\
@@ -168,7 +168,7 @@ class Fit_Widget(QWidget):
     
     :class:`Fit_Widget` can be used as stand-alone python fitting package by running it in terminal as::
     
-        $python Fit_Widget.py
+        $python XAnoS_Fit.py
         
     .. figure:: Figures/Fit_widget.png
        :figwidth: 100%
@@ -1683,8 +1683,8 @@ class Fit_Widget(QWidget):
         
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    w=Fit_Widget()
-    w.setWindowTitle('Fit Widget')
+    w=XAnoS_Fit()
+    w.setWindowTitle('XAnoS-Fit')
     w.setGeometry(100,100,1000,800)
     try:
         fname = sys.argv[1]
