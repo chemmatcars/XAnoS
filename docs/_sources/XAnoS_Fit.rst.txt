@@ -23,7 +23,7 @@ categories and fitting functions by using an easy to use template within a :ref:
     2. Functions are categorized under different types and experimental techniques
     3. Easy to add new categories and new functions within the categories
     4. Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.
-    5. An in-built :ref:`Function_Editor` is provided with a easy to use template.
+    5. An in-built :ref:`Function_Editor` is provided with an easy to use template.
     6. A :ref:`Data_Dialog` is provided for importing and manipulating data files.
     7. Another cool feature of :ref:`XAnoS_Fit` is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
 
