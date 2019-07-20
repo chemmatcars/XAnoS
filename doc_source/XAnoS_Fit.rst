@@ -1,12 +1,12 @@
-.. _Fit_Widget:
+.. _XAnoS_Fit:
 
-Fit Widget
-==========
+XAnoS_Fit
+=========
 
 .. contents:: Table of Contents
    :depth: 2
 
-:ref:`Fit_Widget` provides a platform to simulate and fit a model to 1D data. It uses `LMFIT <https://lmfit.github.io/lmfit-py/>`_ python library for fitting.
+:ref:`XAnoS_Fit` provides a platform to simulate and fit a model to 1D data. It uses `LMFIT <https://lmfit.github.io/lmfit-py/>`_ python library for fitting.
 Some of the commonly used functions are provided under different categories and the users can develop their own
 categories and fitting functions by using an easy to use template within a :ref:`Function_Editor`
 
@@ -25,14 +25,14 @@ categories and fitting functions by using an easy to use template within a :ref:
     4. Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.
     5. An in-built :ref:`Function_Editor` is provided with a easy to use template.
     6. A :ref:`Data_Dialog` is provided for importing and manipulating data files.
-    7. Another cool feature of :ref:`Fit_Widget` is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
+    7. Another cool feature of :ref:`XAnoS_Fit` is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
 
 
     **Usage**
 
-    :ref:`Fit_Widget` can be used as stand-alone python fitting package by running this in terminal::
+    :ref:`XAnoS_Fit` can be used as stand-alone python fitting package by running this in terminal::
 
-        python Fit_Widget.py
+        python XAnoS_Fit.py
 
     The widget can be used as a widget with any other python application.
 
@@ -40,7 +40,7 @@ categories and fitting functions by using an easy to use template within a :ref:
 
 Brief Tutorial
 **************
-This tutorial is focused on showing a beginner how to use the :ref:`Fit_Widget` to:
+This tutorial is focused on showing a beginner how to use the :ref:`XAnoS_Fit` to:
 
 1. Simulate an already available function
 2. Import and fit a data with a simulated model or function
@@ -50,7 +50,7 @@ Simulate an already available function
 --------------------------------------
 The available functions can be simulated by following these steps:
 
-1. In the :ref:`Fit_Widget` window go to a **Function** tab
+1. In the :ref:`XAnoS_Fit` window go to a **Function** tab
 2. Select a categories among the **Function Categories** which will populate the **Functions** lists with functions/models available for that category.
 3. Click on one of the functions which will create a plot the simulated curve in the **Data and Fit** tab and also it will populates the parameter tables in **Parameters** tab with the parameter values required for the functions.
 4. The values of **X-axis** of the simulated curve can be changed by changing the **x** parameter located at the to of the **Parameters** tab.
@@ -58,7 +58,7 @@ The available functions can be simulated by following these steps:
 
 Data Importing and Fitting
 --------------------------
-The main objective of :ref:`Fit_Widget` is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using :ref:`Fit_Widget`:
+The main objective of :ref:`XAnoS_Fit` is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using :ref:`XAnoS_Fit`:
 
 1. Click the **Data** tab.
 2. Import data file(s) by clicking the **Add Files** button which will prompt for selecting the data files.
@@ -101,7 +101,7 @@ The main objective of :ref:`Fit_Widget` is to provide a user to fit a model/func
 
 Categories and Functions
 ************************
-:ref:`Fit_Widget` provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.
+:ref:`XAnoS_Fit` provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.
 
 * :ref:`Backgrounds`
     1. :ref:`PowerLaw`
@@ -463,7 +463,7 @@ Calculates X-ray reflectivity from a system of nanoparticle at an interface betw
 
 Data Dialog
 ***********
-The dialog provides an interface to import and manipulate data for the :ref:`Fit_Widget`.
+The dialog provides an interface to import and manipulate data for the :ref:`XAnoS_Fit`.
 
 .. figure:: ./Figures/Data_Dialog.png
     :figwidth: 70%
@@ -485,7 +485,7 @@ The dialog provides an interface to import and manipulate data for the :ref:`Fit
 
     **Usage**
 
-    The dialog can be used as a dialog to import data in any other widgets like the :ref:`Fit_Widget`. For example, within the :ref:`Fit_Widget` the :ref:`Data_Dialog` is used to manipulate the data by opening the dialog using the following function::
+    The dialog can be used as a dialog to import data in any other widgets like the :ref:`XAnoS_Fit`. For example, within the :ref:`XAnoS_Fit` the :ref:`Data_Dialog` is used to manipulate the data by opening the dialog using the following function::
 
         from Data_Dialog import Data_Dialog
 
@@ -655,7 +655,7 @@ Data_Dialog_ can also be used for visualizing (within the Data Dialog) and selec
 Function Editor
 ***************
 The editor provides an interface to write new functions to be included
-in the :ref:`Fit_Widget`. The editor is enabled with python syntax highlighting.
+in the :ref:`XAnoS_Fit`. The editor is enabled with python syntax highlighting.
 
 .. figure:: ./Figures/Function_Editor.png
     :figwidth: 100%

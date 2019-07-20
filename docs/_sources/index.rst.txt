@@ -3,18 +3,18 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to XAnoS's documentation!
+Welcome to XAnoS documentation!
 =================================
 
 .. toctree::
    :maxdepth: 2
    
    Introduction
-   Data_Collection_Server
-   Data_Reduction_Client
-   ASAXS_Batch_Processor
-   ASAXS_Widget
-   Fit_Widget
+   XAnoS_Collector
+   XAnoS_Reducer
+   XAnoS_Batch_Processor
+   XAnoS_Components
+   XAnoS_Fit
    License
    Acknowledgements
 

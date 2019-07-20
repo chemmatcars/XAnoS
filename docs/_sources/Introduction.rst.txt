@@ -45,24 +45,24 @@ Follow the following instructions for installation:
         cd /home/mrinal/Download/
         git clone https://github.com/nayanbera/XAnoS.git
 
-    The second method will create **XAnoS** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named **XAnoS** and run the following command to upgrade it::
+    The second method will create **XAnoS** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package. In order to upgrade just go to the folder named **XAnoS** and run the following command::
 
             git pull
 
 5) Run the following commands to run different packages:
     i) Data Collection package (**Do not run this when not in the beamline!**)::
 
-         python Data_Collector_Server.py
+         python XAnoS_Collector.py
 
     ii) Data Reduction package::
 
-         python Data_Reduction_Client.py
+         python XAnoS_Reducer.py
 
     iii) Data viewer and analysis package::
 
-             python ASAXS_Widget.py
+             python XAnoS_Components.py
 
     iv) Data fitting package::
 
-         python Fit_Widget.py
+         python XAnoS_Fit.py
 

@@ -13,11 +13,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data Collection Server" href="Data_Collection_Server.html" />
+    <link rel="next" title="XAnoS_Collector" href="XAnoS_Collector.html" />
     <link rel="prev" title="Welcome to XAnoS’s documentation!" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -27,7 +26,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="Data_Collection_Server.html" title="Data Collection Server"
+          <a href="XAnoS_Collector.html" title="XAnoS_Collector"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to XAnoS’s documentation!"
@@ -41,8 +40,8 @@
   <p class="topless"><a href="index.html"
                         title="previous chapter">Welcome to XAnoS’s documentation!</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="Data_Collection_Server.html"
-                        title="next chapter">Data Collection Server</a></p>
+  <p class="topless"><a href="XAnoS_Collector.html"
+                        title="next chapter">XAnoS_Collector</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -131,7 +130,7 @@ of Anomalous Small Angle X-ray Scattering data at <a class="reference external" 
 </div>
 </li>
 </ol>
-<p>The second method will create <strong>XAnoS</strong> folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package when there is any update available. Go to the folder named <strong>XAnoS</strong> and run the following command to upgrade it:</p>
+<p>The second method will create <strong>XAnoS</strong> folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package. In order to upgrade just go to the folder named <strong>XAnoS</strong> and run the following command:</p>
 <div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">pull</span>
 </pre></div>
 </div>
@@ -142,22 +141,22 @@ of Anomalous Small Angle X-ray Scattering data at <a class="reference external" 
 <dt>Run the following commands to run different packages:</dt>
 <dd><ol class="first last lowerroman">
 <li><p class="first">Data Collection package (<strong>Do not run this when not in the beamline!</strong>):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">Data_Collector_Server</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">XAnoS_Collector</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Data Reduction package:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">Data_Reduction_Client</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">XAnoS_Reducer</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Data viewer and analysis package:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">ASAXS_Widget</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">XAnoS_Components</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Data fitting package:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">Fit_Widget</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">XAnoS_Fit</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </li>
@@ -182,7 +181,7 @@ of Anomalous Small Angle X-ray Scattering data at <a class="reference external" 
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="Data_Collection_Server.html" title="Data Collection Server"
+          <a href="XAnoS_Collector.html" title="XAnoS_Collector"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to XAnoS’s documentation!"
@@ -192,7 +191,7 @@ of Anomalous Small Angle X-ray Scattering data at <a class="reference external" 
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Mrinal Kanti Bera@NSF&#39;s ChemMatCARS.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>
