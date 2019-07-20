@@ -1,42 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Renamed the following files:&#10;ASAXS_Widget.py to XAnoS_Components.py&#10;Fit_Widget to XAnoS_Fit.py&#10;Data_Collector_Server.py to XAnoS_Collector.py&#10;Data_Reduction_Client.py to XAnoS_Reducer.py&#10;ASAXS_Batch_Processor_1.py to XAnoS_Batch_Processor_1.py&#10;ASAXS_Batch_Processor_2.py to XAnoS_Batch_Processor_2.py">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the Documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/To do list.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Batch_Processor.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Widget.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Components.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Collector.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Reducer.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Fit_Widget.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/index.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.buildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Batch_Processor.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Batch_Processor.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/License.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/License.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/index.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.doctrees/index.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Acknowledgements.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Acknowledgements.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Introduction.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/License.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/License.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/ASAXS_Batch_Processor.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/ASAXS_Batch_Processor.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_sources/index.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/basic.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/doctools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/documentation_options.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/documentation_options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/searchtools.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/searchtools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/sphinxdoc.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/_static/websupport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/genindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/docs/objects.inv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/searchindex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +18,7 @@
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
         </entry>
@@ -67,18 +34,32 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc_source/make.bat">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/PlotWidget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="332" column="18" selection-start-line="332" selection-start-column="8" selection-end-line="332" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build_doc.sh">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Fit.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/XAnoS_Fit.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="510" column="85" lean-forward="true" selection-start-line="483" selection-start-column="8" selection-end-line="510" selection-end-column="85" />
+              <folding>
+                <element signature="e#0#328#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -107,8 +88,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>removeData</find>
-      <find>doFit</find>
       <find>mfitParam</find>
       <find>mfitParamTableWidget</find>
       <find>update_fit_parameters</find>
@@ -126,7 +105,6 @@
       <find>addDataColumn</find>
       <find>resetPlotSetup</find>
       <find>self.resetPlotSetup</find>
-      <find>openDataDialog</find>
       <find>add_data</find>
       <find>exec</find>
       <find>acceptWidget</find>
@@ -134,9 +112,12 @@
       <find>addData</find>
       <find>imsave</find>
       <find>print</find>
-      <find>Fit_Widget</find>
       <find>ASAXS_Batch_Processor</find>
       <find>ASAXS_Widget</find>
+      <find>openDataDialog</find>
+      <find>Fit_Widget</find>
+      <find>update</find>
+      <find>updatePlot</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -157,9 +138,9 @@
       <replace>self.extractedBaseFolderLineEdit</replace>
       <replace>mpar</replace>
       <replace>Energy</replace>
+      <replace>XAnoS_Components</replace>
       <replace>XAnoS_Fit</replace>
       <replace>XAnoS_Batch_Processor</replace>
-      <replace>XAnoS_Components</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -220,10 +201,10 @@
         <option value="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" />
         <option value="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" />
         <option value="$PROJECT_DIR$/doc_source/XAnoS_Reducer.rst" />
-        <option value="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" />
         <option value="$PROJECT_DIR$/doc_source/XAnoS_Collector.rst" />
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
+        <option value="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" />
       </list>
     </option>
   </component>
@@ -424,20 +405,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00049" summary="updated Documentation">
-      <created>1548549530966</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1548549530966</updated>
-    </task>
-    <task id="LOCAL-00050" summary="Changed the name from SAXS_Drive to XAnoS">
-      <created>1548614694601</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1548614694602</updated>
     </task>
     <task id="LOCAL-00051" summary="Changed the name from SAXS_Drive to XAnoS">
       <created>1548614876945</created>
@@ -768,7 +735,21 @@
       <option name="project" value="LOCAL" />
       <updated>1563593668507</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="Updated the Documentation">
+      <created>1563596089517</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1563596089518</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Updated the Documentation">
+      <created>1563596627252</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1563596627252</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="TodoView">
@@ -808,7 +789,6 @@
     <MESSAGE value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
     <MESSAGE value="Updated Documentation" />
     <MESSAGE value="Rename calibrationWidget.py to Calibration_Widget.py and maskWidget.py MaskWidget.py. Accordingly changed the imports of Data_Reduction_Client.py" />
-    <MESSAGE value="Updated the Documentation" />
     <MESSAGE value="Commented out 'choices' option in fixedParameters of Fit_Widget" />
     <MESSAGE value="Fixed Data_Dialog for multiple plotting" />
     <MESSAGE value="Made the logscale errorbar plotting in PlotWidget to work with pyqtgraph.ErrorBarItem" />
@@ -830,7 +810,8 @@
     <MESSAGE value="Updated documentation" />
     <MESSAGE value="Updated Sphere_Uniform.py" />
     <MESSAGE value="Renamed the following files:&#10;ASAXS_Widget.py to XAnoS_Components.py&#10;Fit_Widget to XAnoS_Fit.py&#10;Data_Collector_Server.py to XAnoS_Collector.py&#10;Data_Reduction_Client.py to XAnoS_Reducer.py&#10;ASAXS_Batch_Processor_1.py to XAnoS_Batch_Processor_1.py&#10;ASAXS_Batch_Processor_2.py to XAnoS_Batch_Processor_2.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Renamed the following files:&#10;ASAXS_Widget.py to XAnoS_Components.py&#10;Fit_Widget to XAnoS_Fit.py&#10;Data_Collector_Server.py to XAnoS_Collector.py&#10;Data_Reduction_Client.py to XAnoS_Reducer.py&#10;ASAXS_Batch_Processor_1.py to XAnoS_Batch_Processor_1.py&#10;ASAXS_Batch_Processor_2.py to XAnoS_Batch_Processor_2.py" />
+    <MESSAGE value="Updated the Documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the Documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1044,16 +1025,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2325">
-          <caret line="161" column="31" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/FormFactors/SphericalShell_expDecay.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1290">
@@ -1077,16 +1048,6 @@
           <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
           <folding>
             <element signature="e#0#168#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/XAnoS_Fit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25305">
-          <caret line="1687" column="17" lean-forward="true" selection-start-line="1687" selection-start-column="17" selection-end-line="1687" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1173,9 +1134,6 @@
     <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Reducer.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Fit.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Collector.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
@@ -1189,6 +1147,29 @@
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XAnoS_Fit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="510" column="85" lean-forward="true" selection-start-line="483" selection-start-column="8" selection-end-line="510" selection-end-column="85" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PlotWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="332" column="18" selection-start-line="332" selection-start-column="8" selection-end-line="332" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Fit.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
   </component>

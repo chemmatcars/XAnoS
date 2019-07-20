@@ -491,26 +491,34 @@ The dialog provides an interface to import and manipulate data for the :ref:`XAn
 
         def openDataDialog(self,item):
             fnum,fname=item.text().split('<>')
-            data_dlg=Data_Dialog(data=self.dlg_data[fname],parent=self,plotIndex=self.plotColIndex[fname])
+            data_dlg=Data_Dialog(data=self.dlg_data[item.text()],parent=self,expressions=self.expressions[item.text()],plotIndex=self.plotColIndex[item.text()],colors=self.plotColors[item.text()])
+            data_dlg.tabWidget.setCurrentIndex(1)
             data_dlg.dataFileLineEdit.setText(fname)
             if data_dlg.exec_():
+                self.plotWidget.remove_data(datanames=self.pfnames)
                 newFname=data_dlg.dataFileLineEdit.text()
                 if fname==newFname:
-                    self.plotColIndex[fname]=data_dlg.plotColIndex
-                    self.dlg_data[fname]=copy.copy(data_dlg.data)
-                    self.data[fname]=copy.copy(data_dlg.externalData)
-                    self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fnum)
-                    self.update_plot()
+                    self.plotColIndex[item.text()]=data_dlg.plotColIndex
+                    self.plotColors[item.text()]=data_dlg.plotColors
+                    self.dlg_data[item.text()]=copy.copy(data_dlg.data)
+                    self.data[item.text()]=copy.copy(data_dlg.externalData)
+                    self.expressions[item.text()]=data_dlg.expressions
+                    for key in self.data[item.text()].keys():
+                        self.plotWidget.add_data(self.data[item.text()][key]['x'],self.data[item.text()][key]['y'],yerr=self.data[item.text()][key]['yerr'],name='%s:%s'%(fnum,key),color=self.plotColors[item.text()][key])
                 else:
-                    item.setText('%s<>%s'%(fnum,newFname))
-                    self.data[newFname]=self.data.pop(fname)
-                    self.dlg_data[newFname]=self.dlg_data.pop(fname)
-                    self.dlg_data[newFname]=copy.copy(data_dlg.data)
-                    self.data[newFname]=copy.copy(data_dlg.externalData)
-                    self.plotColIndex[newFname]=data_dlg.plotColIndex
-                    self.plotWidget.add_data(self.data[newFname]['x'], self.data[newFname]['y'], yerr=self.data[newFname][
-                        'yerr'],name=fnum)
-                    self.update_plot()
+                    text='%s<>%s'%(fnum,newFname)
+                    item.setText(text)
+                    self.data[text]=self.data.pop(fname)
+                    self.dlg_data[text]=self.dlg_data.pop(fname)
+                    self.dlg_data[text]=copy.copy(data_dlg.data)
+                    self.data[text]=copy.copy(data_dlg.externalData)
+                    self.plotColIndex[text]=data_dlg.plotColIndex
+                    self.plotColors[text]=data_dlg.plotColors
+                    self.expressions[text]=data_dlg.expressions
+                    for key in self.data[text].keys():
+                        self.plotWidget.add_data(self.data[text][key]['x'], self.data[text][key]['y'], yerr=self.data[text][key][
+                        'yerr'],name='%s:%s'%(fnum,key),color=self.plotColors[text][key])
+            self.plotWidget.updatePlot()
 
 
     The dialog can also be used stand-alone to visualize, manipulate a data file with data and meta-data (see :ref:`Data_File_Format`) by running this command in terminal::
