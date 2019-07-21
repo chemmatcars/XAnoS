@@ -1,12 +1,12 @@
-.. _Fit_Widget:
+.. _XAnoS_Fit:
 
-Fit Widget
-==========
+XAnoS_Fit
+=========
 
 .. contents:: Table of Contents
    :depth: 2
 
-:ref:`Fit_Widget` provides a platform to simulate and fit a model to 1D data. It uses `LMFIT <https://lmfit.github.io/lmfit-py/>`_ python library for fitting.
+:ref:`XAnoS_Fit` provides a platform to simulate and fit a model to 1D data. It uses `LMFIT <https://lmfit.github.io/lmfit-py/>`_ python library for fitting.
 Some of the commonly used functions are provided under different categories and the users can develop their own
 categories and fitting functions by using an easy to use template within a :ref:`Function_Editor`
 
@@ -23,16 +23,16 @@ categories and fitting functions by using an easy to use template within a :ref:
     2. Functions are categorized under different types and experimental techniques
     3. Easy to add new categories and new functions within the categories
     4. Once the function is defined properly all the free and fitting parameters will be available within the GUI as tables.
-    5. An in-built :ref:`Function_Editor` is provided with a easy to use template.
+    5. An in-built :ref:`Function_Editor` is provided with an easy to use template.
     6. A :ref:`Data_Dialog` is provided for importing and manipulating data files.
-    7. Another cool feature of :ref:`Fit_Widget` is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
+    7. Another cool feature of :ref:`XAnoS_Fit` is the ability to view and save other functions/parameters generated during the calculation/evaluation of a user supplied functions.
 
 
     **Usage**
 
-    :ref:`Fit_Widget` can be used as stand-alone python fitting package by running this in terminal::
+    :ref:`XAnoS_Fit` can be used as stand-alone python fitting package by running this in terminal::
 
-        python Fit_Widget.py
+        python XAnoS_Fit.py
 
     The widget can be used as a widget with any other python application.
 
@@ -40,7 +40,7 @@ categories and fitting functions by using an easy to use template within a :ref:
 
 Brief Tutorial
 **************
-This tutorial is focused on showing a beginner how to use the :ref:`Fit_Widget` to:
+This tutorial is focused on showing a beginner how to use the :ref:`XAnoS_Fit` to:
 
 1. Simulate an already available function
 2. Import and fit a data with a simulated model or function
@@ -50,7 +50,7 @@ Simulate an already available function
 --------------------------------------
 The available functions can be simulated by following these steps:
 
-1. In the :ref:`Fit_Widget` window go to a **Function** tab
+1. In the :ref:`XAnoS_Fit` window go to a **Function** tab
 2. Select a categories among the **Function Categories** which will populate the **Functions** lists with functions/models available for that category.
 3. Click on one of the functions which will create a plot the simulated curve in the **Data and Fit** tab and also it will populates the parameter tables in **Parameters** tab with the parameter values required for the functions.
 4. The values of **X-axis** of the simulated curve can be changed by changing the **x** parameter located at the to of the **Parameters** tab.
@@ -58,7 +58,7 @@ The available functions can be simulated by following these steps:
 
 Data Importing and Fitting
 --------------------------
-The main objective of :ref:`Fit_Widget` is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using :ref:`Fit_Widget`:
+The main objective of :ref:`XAnoS_Fit` is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using :ref:`XAnoS_Fit`:
 
 1. Click the **Data** tab.
 2. Import data file(s) by clicking the **Add Files** button which will prompt for selecting the data files.
@@ -101,7 +101,7 @@ The main objective of :ref:`Fit_Widget` is to provide a user to fit a model/func
 
 Categories and Functions
 ************************
-:ref:`Fit_Widget` provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.
+:ref:`XAnoS_Fit` provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.
 
 * :ref:`Backgrounds`
     1. :ref:`PowerLaw`
@@ -463,7 +463,7 @@ Calculates X-ray reflectivity from a system of nanoparticle at an interface betw
 
 Data Dialog
 ***********
-The dialog provides an interface to import and manipulate data for the :ref:`Fit_Widget`.
+The dialog provides an interface to import and manipulate data for the :ref:`XAnoS_Fit`.
 
 .. figure:: ./Figures/Data_Dialog.png
     :figwidth: 70%
@@ -485,32 +485,40 @@ The dialog provides an interface to import and manipulate data for the :ref:`Fit
 
     **Usage**
 
-    The dialog can be used as a dialog to import data in any other widgets like the :ref:`Fit_Widget`. For example, within the :ref:`Fit_Widget` the :ref:`Data_Dialog` is used to manipulate the data by opening the dialog using the following function::
+    The dialog can be used as a dialog to import data in any other widgets like the :ref:`XAnoS_Fit`. For example, within the :ref:`XAnoS_Fit` the :ref:`Data_Dialog` is used to manipulate the data by opening the dialog using the following function::
 
         from Data_Dialog import Data_Dialog
 
         def openDataDialog(self,item):
             fnum,fname=item.text().split('<>')
-            data_dlg=Data_Dialog(data=self.dlg_data[fname],parent=self,plotIndex=self.plotColIndex[fname])
+            data_dlg=Data_Dialog(data=self.dlg_data[item.text()],parent=self,expressions=self.expressions[item.text()],plotIndex=self.plotColIndex[item.text()],colors=self.plotColors[item.text()])
+            data_dlg.tabWidget.setCurrentIndex(1)
             data_dlg.dataFileLineEdit.setText(fname)
             if data_dlg.exec_():
+                self.plotWidget.remove_data(datanames=self.pfnames)
                 newFname=data_dlg.dataFileLineEdit.text()
                 if fname==newFname:
-                    self.plotColIndex[fname]=data_dlg.plotColIndex
-                    self.dlg_data[fname]=copy.copy(data_dlg.data)
-                    self.data[fname]=copy.copy(data_dlg.externalData)
-                    self.plotWidget.add_data(self.data[fname]['x'],self.data[fname]['y'],yerr=self.data[fname]['yerr'],name=fnum)
-                    self.update_plot()
+                    self.plotColIndex[item.text()]=data_dlg.plotColIndex
+                    self.plotColors[item.text()]=data_dlg.plotColors
+                    self.dlg_data[item.text()]=copy.copy(data_dlg.data)
+                    self.data[item.text()]=copy.copy(data_dlg.externalData)
+                    self.expressions[item.text()]=data_dlg.expressions
+                    for key in self.data[item.text()].keys():
+                        self.plotWidget.add_data(self.data[item.text()][key]['x'],self.data[item.text()][key]['y'],yerr=self.data[item.text()][key]['yerr'],name='%s:%s'%(fnum,key),color=self.plotColors[item.text()][key])
                 else:
-                    item.setText('%s<>%s'%(fnum,newFname))
-                    self.data[newFname]=self.data.pop(fname)
-                    self.dlg_data[newFname]=self.dlg_data.pop(fname)
-                    self.dlg_data[newFname]=copy.copy(data_dlg.data)
-                    self.data[newFname]=copy.copy(data_dlg.externalData)
-                    self.plotColIndex[newFname]=data_dlg.plotColIndex
-                    self.plotWidget.add_data(self.data[newFname]['x'], self.data[newFname]['y'], yerr=self.data[newFname][
-                        'yerr'],name=fnum)
-                    self.update_plot()
+                    text='%s<>%s'%(fnum,newFname)
+                    item.setText(text)
+                    self.data[text]=self.data.pop(fname)
+                    self.dlg_data[text]=self.dlg_data.pop(fname)
+                    self.dlg_data[text]=copy.copy(data_dlg.data)
+                    self.data[text]=copy.copy(data_dlg.externalData)
+                    self.plotColIndex[text]=data_dlg.plotColIndex
+                    self.plotColors[text]=data_dlg.plotColors
+                    self.expressions[text]=data_dlg.expressions
+                    for key in self.data[text].keys():
+                        self.plotWidget.add_data(self.data[text][key]['x'], self.data[text][key]['y'], yerr=self.data[text][key][
+                        'yerr'],name='%s:%s'%(fnum,key),color=self.plotColors[text][key])
+            self.plotWidget.updatePlot()
 
 
     The dialog can also be used stand-alone to visualize, manipulate a data file with data and meta-data (see :ref:`Data_File_Format`) by running this command in terminal::
@@ -571,9 +579,9 @@ You can add new columns by clicking **Add Column** which will open up a :ref:`Da
 
 2. A numpy expression involving the data columns (col_A and col_B in this case) like::
 
-    col.col_A+col.col_B
-    np.sin(col.col_A)+np.cos(col.col_B)
-    np.exp(col.col_A)
+    col['col_A']+col['col_B']
+    np.sin(col['col_A'])+np.cos(col['col_B'])
+    np.exp(col['col_A'])
 
  Here a particular column is used as **col.Column_Name**. Please see Data_Column_Dialog_Columns_.
 
@@ -626,15 +634,16 @@ Data_Dialog_ can also be used for visualizing (within the Data Dialog) and selec
     2) Click **Add** button which will automatically add a row in the table.
     3) By default the row will be loaded with with *Data_0* as label, first and second column of the data as *X* and *Y* column, respectively.
     4) By default the *Yerr* column is selected as *None*.
-    5) Many rows can be added in this way to visualize the data in :ref:`Data_Dialog` whereas when the :ref:`Data_Dialog` is used within other widgets only one row will be added by default.
-    6) The data rows can be removed from the **Plot Setup** by selecting entire row (by clicking the row numbers at the extreme left) and clicking the **Remove** button.
-    7) When using the :ref:`Data_Dialog` with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.
-    8) All the columns of the data will be available as drop down menu in each of the cells for selecting them as *X*, *Y*, and *Yerr* columns to plot.
-    9) After adding the column, go to **Plots** tab within the :ref:`Data_Dialog` to visualize the data. See :ref:`Data_Dialog_Plot_tab`.
-    10) Both the X- and Y-axis labels will be updated with the column names selected in the **Plot Setup**.
-    11) In order to switch between the log/linear scales of both the axes check/uncheck the **☐LogX** and **☐LogY** checkboxes.
-    12) Line-width and the Symbol sizes can be tweaked by changing the **Line width** and **Point size** options.
-    13) By default, the errorbars are not plotted and can be plotted by checking the **☐Errorbar** checkbox, provided that a column is already selected in *Yerr* column of the **Plot Setup**.
+    5) The color of the plotting symbol can be selected by clicking the color button. By default the plots will choose different variants of *Red*.
+    6) Many rows can be added in this way to visualize the data in :ref:`Data_Dialog` whereas when the :ref:`Data_Dialog` is used within other widgets only one row will be added by default.
+    7) The data rows can be removed from the **Plot Setup** by selecting entire row (by clicking the row numbers at the extreme left) and clicking the **Remove** button.
+    8) When using the :ref:`Data_Dialog` with any other widget, you cannot add or remove plots set for plotting. Though you can change the columns to plot.
+    9) All the columns of the data will be available as drop down menu in each of the cells for selecting them as *X*, *Y*, and *Yerr* columns to plot.
+    10) After adding the column, go to **Plots** tab within the :ref:`Data_Dialog` to visualize the data. See :ref:`Data_Dialog_Plot_tab`.
+    11) Both the X- and Y-axis labels will be updated with the column names selected in the **Plot Setup**.
+    12) In order to switch between the log/linear scales of both the axes check/uncheck the **☐LogX** and **☐LogY** checkboxes.
+    13) Line-width and the Symbol sizes can be tweaked by changing the **Line width** and **Point size** options.
+    14) By default, the errorbars are not plotted and can be plotted by checking the **☐Errorbar** checkbox, provided that a column is already selected in *Yerr* column of the **Plot Setup**.
 
 .. _Data_Dialog_Plot_Setup:
 
@@ -655,7 +664,7 @@ Data_Dialog_ can also be used for visualizing (within the Data Dialog) and selec
 Function Editor
 ***************
 The editor provides an interface to write new functions to be included
-in the :ref:`Fit_Widget`. The editor is enabled with python syntax highlighting.
+in the :ref:`XAnoS_Fit`. The editor is enabled with python syntax highlighting.
 
 .. figure:: ./Figures/Function_Editor.png
     :figwidth: 100%

@@ -19,7 +19,7 @@ from Energy_Widget import Energy_Widget
 #from Data_Reducer import Data_Reducer
 
 
-class Data_Collector_Server(QWidget):
+class XAnoS_Collector(QWidget):
     """
     This class is developed to collect SAXS/WAXS data using different Area detectors with different experimental conditions
     """
@@ -1672,8 +1672,8 @@ class Data_Collector_Server(QWidget):
         
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    w=Data_Collector_Server()
-    w.setWindowTitle('XAnoS Collector')
+    w=XAnoS_Collector()
+    w.setWindowTitle('XAnoS_Collector')
     w.setGeometry(0,0,800,800)
     
     w.show()

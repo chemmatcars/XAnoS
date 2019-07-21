@@ -4,7 +4,7 @@ from PyQt5.Qt import QProcess
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor
 import sys
-import ASAXS_Widget
+import XAnoS_Components
 
 
 class XAnoS(QMainWindow):
@@ -40,7 +40,7 @@ class XAnoS(QMainWindow):
         if not self.Data_Collector_Server_running:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             self.Data_Collector_Server=QProcess()
-            self.Data_Collector_Server.start('python ./Data_Collector_Server.py')
+            self.Data_Collector_Server.start('python ./XAnoS_Collector.py')
             self.Data_Collector_Server_running=True
             self.Start_Data_Collector_Server_PushButton.setText('Running')
             self.Data_Collector_Server.finished.connect(self.stop_Data_Collector_Server)
@@ -56,7 +56,7 @@ class XAnoS(QMainWindow):
         if not self.Data_Reduction_Client_running:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             self.Data_Reduction_Client=QProcess()
-            self.Data_Reduction_Client.start('python ./Data_Reduction_Client.py')
+            self.Data_Reduction_Client.start('python ./XAnoS_Reducer.py')
             self.Data_Reduction_Client_running=True
             self.Start_Data_Reduction_Client_PushButton.setText('Running')
             self.Data_Reduction_Client.finished.connect(self.stop_Data_Reduction_Client)
@@ -72,7 +72,7 @@ class XAnoS(QMainWindow):
         if not self.ASAXS_Batch_Processor_1_running:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             self.ASAXS_Batch_Processor_1=QProcess()
-            self.ASAXS_Batch_Processor_1.start('python ./ASAXS_Batch_Processor_1.py')
+            self.ASAXS_Batch_Processor_1.start('python ./XAnoS_Batch_Processor_1.py')
             self.ASAXS_Batch_Processor_1_running=True
             self.Start_ASAXS_Batch_Processor_1_PushButton.setText('Running')
             self.ASAXS_Batch_Processor_1.finished.connect(self.stop_ASAXS_Batch_Processor_1)
@@ -88,7 +88,7 @@ class XAnoS(QMainWindow):
         if not self.ASAXS_Batch_Processor_2_running:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             self.ASAXS_Batch_Processor_2=QProcess()
-            self.ASAXS_Batch_Processor_2.start('python ./ASAXS_Batch_Processor_2.py')
+            self.ASAXS_Batch_Processor_2.start('python ./XAnoS_Batch_Processor_2.py')
             self.ASAXS_Batch_Processor_2_running=True
             self.Start_ASAXS_Batch_Processor_2_PushButton.setText('Running')
             self.ASAXS_Batch_Processor_2.finished.connect(self.stop_ASAXS_Batch_Processor_2)
@@ -104,7 +104,7 @@ class XAnoS(QMainWindow):
         if not self.ASAXS_Widget_running:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             self.ASAXS_Widget=QProcess()
-            self.ASAXS_Widget.start('python ./ASAXS_Widget.py')
+            self.ASAXS_Widget.start('python ./XAnoS_Components.py')
             self.ASAXS_Widget_running=True
             self.Start_ASAXS_Reducer_PushButton.setText('Running')
             self.ASAXS_Widget.finished.connect(self.stop_ASAXSWidget)
@@ -121,7 +121,7 @@ class XAnoS(QMainWindow):
         if not self.Fit_Widget_running:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             self.Fit_Widget=QProcess()
-            self.Fit_Widget.start('python ./Fit_Widget.py')
+            self.Fit_Widget.start('python ./XAnoS_Fit.py')
             self.Fit_Widget_running=True
             self.Start_Data_Fitting_PushButton.setText('Running')
             self.Fit_Widget.finished.connect(self.stop_FitWidget)

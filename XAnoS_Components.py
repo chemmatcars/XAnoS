@@ -23,7 +23,7 @@ from readData import read1DSAXS
 from itertools import combinations
 import periodictable as pdt
 
-class ASAXS_Widget(QWidget):
+class XAnoS_Components(QWidget):
     """
     This widget class is developed to perform to decouple various scattering contributions of ASAXS data. The contributions include
     1) Non resonant scattering term
@@ -1669,8 +1669,8 @@ class ASAXS_Widget(QWidget):
         
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    w=ASAXS_Widget()
-    w.setWindowTitle('XAnoS Components')
+    w=XAnoS_Components()
+    w.setWindowTitle('XAnoS_Components')
     w.setGeometry(20,20,1000,800)
     
     w.show()

@@ -61,7 +61,7 @@ class cake(pg.ROI):
             
 
 
-class Data_Reduction_Client(QWidget):
+class XAnoS_Reducer(QWidget):
     """
     This widget is developed to reduce on the fly 2D SAXS data to azimuthally averaged 1D SAXS data
     """
@@ -686,8 +686,8 @@ class Data_Reduction_Client(QWidget):
 if __name__=='__main__':
     app=QApplication(sys.argv)
     #poniFile='/home/epics/CARS5/Data/Data/saxs/2017-06/Alignment/agbh1.poni'
-    w=Data_Reduction_Client()
-    w.setWindowTitle('XAnos Reducer')
+    w=XAnoS_Reducer()
+    w.setWindowTitle('XAnoS_Reducer')
     #w.setGeometry(50,50,800,800)
     
     w.show()

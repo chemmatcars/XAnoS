@@ -180,7 +180,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
 
     def calc_mesh(self,R=[1.0],Rsig=[0.0],Np=100):
         """
-        Computes a multi-dimensional meshgrid of radii (R) of interfaces with a finite widths (Rsig>0.01) of distribution
+        Computes a multi-dimensional meshgrid of radii (R) of interfaces with a finite widths (Rsig>0.001) of distribution
         :param R:
         :param Rsig:
         :return:

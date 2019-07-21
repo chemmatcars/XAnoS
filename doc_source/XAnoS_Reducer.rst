@@ -1,19 +1,19 @@
-.. _Data_Reduction_Client:
+.. _XAnoS_Reducer:
 
-Data Reduction Client
-=====================
+XAnoS_Reducer
+=============
 
 .. contents:: Table of Contents
    :depth: 2
 
 .. _Calibration_Widget:
 
-Calibration Widget
+Calibration_Widget
 ******************
 
 .. _Mask_Widget:
 
-Mask Widget
+Mask_Widget
 ***********
 
 **More documentation coming soon!**

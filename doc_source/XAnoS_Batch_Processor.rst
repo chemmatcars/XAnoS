@@ -1,19 +1,19 @@
-.. _ASAXS_Batch_Processor:
+.. _XAnoS_Batch_Processor:
 
-ASAXS Batch Processor
-======================
+XAnoS_Batch_Processor
+=====================
 
 .. contents:: Table of Contents
    :depth: 2
 
 ASAXS data collection involves measurements of SAXS data at several energies below the energy edge of the element of interest from the sample, background, standard samples (Glassy Carbon (GC), Water etc). Sometimes SAXS data are also collected from empty container holding the sample and air background. After the data collection one needs to perform necessary background subtractions and absolute intensity normalizations for all the data. For this purpose, depending upon the sequence of data collection two batch processing widgets are developed:
 
-1. :ref:`ASAXS_Batch_Processor_1`
-2. :ref:`ASAXS_Batch_Processor_2`
+1. :ref:`XAnoS_Batch_Processor_1`
+2. :ref:`XAnoS_Batch_Processor_2`
 
-.. _ASAXS_Batch_Processor_1:
+.. _XAnoS_Batch_Processor_1:
 
-ASAXS Batch Processor 1
+XAnoS_Batch_Processor_1
 ***********************
 This batch processor is designed to process (background subtraction and absolute intensity normalization) the SAXS data is collected **Serial mode** from the system of interest, the background, the intensity standard (GC or Water), the empty container and the air background. **Serial mode** means SAXS data will be collected at all the energies of interest for a sample before moving to the next sample. Visually the data is collected in the fashion shown below.
 
@@ -24,9 +24,9 @@ This batch processor is designed to process (background subtraction and absolute
 
 **Usage**
 
-:ref:`ASAXS_Batch_Processor_1` can be used stand-alone widget by running the command in terminal::
+:ref:`XAnoS_Batch_Processor_1` can be used stand-alone widget by running the command in terminal::
 
-    python ASAXS_Batch_Processor_1.py
+    python XAnoS_Batch_Processor_1.py
 
 
 .. figure:: ./Figures/ASAXS_Batch_Processor_1.png
@@ -35,9 +35,9 @@ This batch processor is designed to process (background subtraction and absolute
     **ASAXS Batch Processor 1** in action.
 
 
-.. _ASAXS_Batch_Processor_2:
+.. _XAnoS_Batch_Processor_2:
 
-ASAXS Batch Processor 2
+XAnoS_Batch_Processor_2
 ***********************
 This batch processor is designed to process (background subtraction and absolute intensity normalization) the SAXS data is collected **Parallel mode** from the system of interest, the background, the intensity standard (GC or Water), the empty container and the air background. **Parallel mode** means SAXS data will be collected for all the samples at a same energy and then change to different energies. Visually the data is collected in the fashion shown below.
 
@@ -49,16 +49,16 @@ This batch processor is designed to process (background subtraction and absolute
 
 **Usage**
 
-:ref:`ASAXS_Batch_Processor_2` can be used stand-alone widget by running the command in terminal::
+:ref:`XAnoS_Batch_Processor_2` can be used stand-alone widget by running the command in terminal::
 
-    python ASAXS_Batch_Processor_2.py
+    python XAnoS_Batch_Processor_2.py
 
 .. figure:: ./Figures/ASAXS_Batch_Processor_2.png
     :figwidth: 100%
 
-    **ASAXS Batch Processor 2** in action.
+    **XAnoS_Batch_Processor_2** in action.
 
-In **Parallel mode**, generally the data are collected within a same folder with same filename and different filenumber such as **filename_0001.txt**, **filename_0002.txt**,...etc, for all the samples, backgrounds, ... etc. In order to process the data with :ref:`ASAXS_Batch_Processor_2` please follow these simples steps:
+In **Parallel mode**, generally the data are collected within a same folder with same filename and different filenumber such as **filename_0001.txt**, **filename_0002.txt**,...etc, for all the samples, backgrounds, ... etc. In order to process the data with :ref:`XAnoS_Batch_Processor_2` please follow these simples steps:
 
 1. Click **Select** button Open the first filename of the whole ASAXS data series. This will add the *Filename* with the full *FilePath* (no file filenumbers) to the **First Sample Name** of the widget.
 2. Provide file numbers for data files corresponding to the first sample, background and standard sample data in the **First Sample Nums** (Default=1), **First Bkg Num** (Default=2), and **First Std Num** (Default=3), respectively.
