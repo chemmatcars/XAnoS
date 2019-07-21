@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated the Documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" beforeDir="false" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,16 +13,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-          <provider selected="true" editor-type-id="restructured-text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
-          <provider selected="true" editor-type-id="restructured-text-editor" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/index.html">
           <provider selected="true" editor-type-id="text-editor" />
@@ -36,7 +26,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PlotWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
+            <state relative-caret-position="4890">
               <caret line="332" column="18" selection-start-line="332" selection-start-column="8" selection-end-line="332" selection-end-column="18" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
@@ -45,16 +35,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Fit.rst">
           <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1236">
+              <caret line="182" column="103" selection-start-line="182" selection-start-column="103" selection-end-line="182" selection-end-column="103" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/XAnoS_Fit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="510" column="85" lean-forward="true" selection-start-line="483" selection-start-column="8" selection-end-line="510" selection-end-column="85" />
+            <state relative-caret-position="7335">
+              <caret line="510" column="85" selection-start-line="483" selection-start-column="8" selection-end-line="510" selection-end-column="85" />
               <folding>
                 <element signature="e#0#328#0" expanded="true" />
               </folding>
@@ -114,10 +113,10 @@
       <find>print</find>
       <find>ASAXS_Batch_Processor</find>
       <find>ASAXS_Widget</find>
-      <find>openDataDialog</find>
-      <find>Fit_Widget</find>
       <find>update</find>
       <find>updatePlot</find>
+      <find>Fit_Widget</find>
+      <find>openDataDialog</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -190,7 +189,6 @@
         <option value="$PROJECT_DIR$/Detector_Widget.py" />
         <option value="$PROJECT_DIR$/XAnoS.py" />
         <option value="$PROJECT_DIR$/XAnoS_Fit.py" />
-        <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
         <option value="$PROJECT_DIR$/XAnoS_Components.py" />
         <option value="$PROJECT_DIR$/XAnoS_Reducer.py" />
         <option value="$PROJECT_DIR$/XAnoS_Collector.py" />
@@ -205,14 +203,15 @@
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
         <option value="$PROJECT_DIR$/doc_source/index.rst" />
         <option value="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" />
+        <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="240" />
-    <option name="y" value="160" />
-    <option name="width" value="1440" />
-    <option name="height" value="823" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="27" />
+    <option name="y" value="23" />
+    <option name="width" value="1920" />
+    <option name="height" value="1097" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -222,7 +221,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -240,10 +238,22 @@
               <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
               <item name="docs" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="XAnoS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="XAnoS" type="462c0819:PsiDirectoryNode" />
+              <item name="Functions" type="462c0819:PsiDirectoryNode" />
+              <item name="ASAXS" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -380,9 +390,9 @@
     </configuration>
     <list>
       <item itemvalue="Python.ASAXS_Widget" />
-      <item itemvalue="Python.XAnoS" />
-      <item itemvalue="Python.Sphere_Uniform" />
       <item itemvalue="Python.MultiSphereAtInterface" />
+      <item itemvalue="Python.Sphere_Uniform" />
+      <item itemvalue="Python.XAnoS" />
       <item itemvalue="Python.XAnoS_Fit" />
     </list>
     <recent_temporary>
@@ -405,20 +415,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00051" summary="Changed the name from SAXS_Drive to XAnoS">
-      <created>1548614876945</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1548614876945</updated>
-    </task>
-    <task id="LOCAL-00052" summary="updated README">
-      <created>1548614982424</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1548614982425</updated>
     </task>
     <task id="LOCAL-00053" summary="Updated Documentation by changing the package name from SAXS_Drive to XAnoS">
       <created>1548615350539</created>
@@ -749,7 +745,21 @@
       <option name="project" value="LOCAL" />
       <updated>1563596627252</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="Updated the Documentation">
+      <created>1563596993828</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1563596993828</updated>
+    </task>
+    <task id="LOCAL-00101" summary="Updated the Documentation">
+      <created>1563597338844</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1563597338844</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TodoView">
@@ -762,10 +772,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="1097" extended-state="6" />
-    <editor active="true" />
+    <frame x="27" y="23" width="1920" height="1097" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15534492" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15534492" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -777,7 +786,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3283582" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50462353" side_tool="true" weight="0.36916548" />
       <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.4953765" weight="0.34669557" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.48258707" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.46766168" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.11641791" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -835,16 +844,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/FunctionEditor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3043">
-          <caret line="188" column="48" selection-start-line="188" selection-start-column="48" selection-end-line="188" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64/Lib/site-packages/numpy/lib/arraysetops.py" />
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64/Lib/site-packages/matplotlib/__init__.py" />
     <entry file="file://$PROJECT_DIR$/Functions/XRR/Parratt.py">
@@ -910,13 +909,6 @@
       </provider>
     </entry>
     <entry file="file://C:/Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64/Lib/site-packages/pyqtgraph/graphicsItems/PlotCurveItem.py" />
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="68" column="18" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/readData.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11050">
@@ -1052,13 +1044,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="133" column="36" selection-start-line="133" selection-start-column="36" selection-end-line="133" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/XAnoS_Components.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -1119,29 +1104,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/Fit_Widget.html" />
     <entry file="file://$PROJECT_DIR$/doc_source/make.bat">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/build_doc.sh">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Reducer.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Collector.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Batch_Processor.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Components.rst">
-      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
@@ -1149,19 +1117,15 @@
     <entry file="file://$PROJECT_DIR$/doc_source/index.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/XAnoS_Fit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="510" column="85" lean-forward="true" selection-start-line="483" selection-start-column="8" selection-end-line="510" selection-end-column="85" />
-          <folding>
-            <element signature="e#0#328#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/docs/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Batch_Processor.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
+        <state relative-caret-position="4890">
           <caret line="332" column="18" selection-start-line="332" selection-start-column="8" selection-end-line="332" selection-end-column="18" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
@@ -1169,8 +1133,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/XAnoS_Fit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7335">
+          <caret line="510" column="85" selection-start-line="483" selection-start-column="8" selection-end-line="510" selection-end-column="85" />
+          <folding>
+            <element signature="e#0#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Reducer.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Collector.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Components.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/doc_source/XAnoS_Fit.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/profile.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-14607" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="947">
+          <caret line="68" column="18" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1236">
+          <caret line="182" column="103" selection-start-line="182" selection-start-column="103" selection-end-line="182" selection-end-column="103" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
