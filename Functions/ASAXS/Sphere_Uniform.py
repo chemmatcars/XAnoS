@@ -16,7 +16,7 @@ from utils import find_minmax
 
 
 class Sphere_Uniform: #Please put the class name same as the function name
-    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep=1, norm=1.0, bkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
+    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0, bkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
         """
         Documentation
         Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
@@ -25,7 +25,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         relement    : Resonant element of the nanoparticle. Default: 'Au'
         Energy      : Energy of X-rays in keV at which the form-factor is calculated. Default: None
         Np          : No. of points with which the size distribution will be computed. Default: 10
-        NrDep       : Energy dependence of the non-resonant element. Default= 1 (Energy Dependent), 0 (Energy independent)
+        NrDep       : Energy dependence of the non-resonant element. Default= 'True' (Energy Dependent), 'False' (Energy independent)
         dist        : The probablity distribution fucntion for the radii of different interfaces in the nanoparticles. Default: Gaussian
         norm        : The density of the nanoparticles in Molar (Moles/Liter)
         bkg         : Constant incoherent background
@@ -52,7 +52,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         #self.rhosol=rhosol
         self.flux=flux
         self.__mpar__=mpar #If there is any multivalued parameter
-        self.choices={'dist':['Gaussian','LogNormal']} #If there are choices available for any fixed parameters
+        self.choices={'dist':['Gaussian','LogNormal'],'NrDep':['True','False']} #If there are choices available for any fixed parameters
         self.init_params()
         self.__cf__=Chemical_Formula()
         self.__fit__=False
@@ -70,7 +70,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 for i in range(len(self.__mpar__[key])):
                         self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
 
-    def calc_rho(self,material=['Au','H2O'], density=[19.3,1.0], sol_density=[1.0,1.0], Rmoles=[1.0,0.0], Energy=None, NrDep=1):
+    def calc_rho(self,material=['Au','H2O'], density=[19.3,1.0], sol_density=[1.0,1.0], Rmoles=[1.0,0.0], Energy=None, NrDep='True'):
         """
         Calculates the complex electron density of core-shell type multilayered particles in el/Angstroms^3
 
@@ -133,7 +133,6 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 mole_ratio = self.__cf__.element_mole_ratio()
                 # numbers=np.array(chemical_formula.get_element_numbers(material[i]))
                 moles = [mole_ratio[ele] for ele in elements]
-                print(moles)
                 nelectrons = 0.0
                 felectrons = complex(0.0, 0.0)
                 aden=0.0
@@ -142,7 +141,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
                     nelectrons = nelectrons + moles[j] * f0
                     if Energy is not None:
                         if elements[j]!=self.relement:
-                            if NrDep==1:
+                            if NrDep:
                                 f1 = self.__cf__.xdb.f1_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                                 f2 = self.__cf__.xdb.f2_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                                 felectrons = felectrons + moles[j] * complex(f1, f2)

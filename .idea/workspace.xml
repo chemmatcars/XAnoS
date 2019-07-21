@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Sphere_Uniform.py">
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Detector_Widget.py">
+      <change beforePath="$PROJECT_DIR$/.idea/XAnoS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/XAnoS.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Detector_Widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Detector_Widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,11 +14,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
-          <provider selected="true" editor-type-id="restructured-text-editor" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -87,11 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-62">
-              <caret line="128" column="88" selection-start-line="128" selection-start-column="88" selection-end-line="128" selection-end-column="88" />
+            <state relative-caret-position="168">
+              <caret line="143" column="36" selection-start-line="143" selection-start-column="36" selection-end-line="143" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -99,7 +95,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
+            <state relative-caret-position="5542">
               <caret line="343" column="24" selection-start-line="343" selection-start-column="24" selection-end-line="343" selection-end-column="24" />
               <folding>
                 <element signature="e#0#220#0" expanded="true" />
@@ -108,11 +104,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-255">
-              <caret line="9" column="58" lean-forward="true" selection-start-line="9" selection-start-column="58" selection-end-line="9" selection-end-column="58" />
+            <state relative-caret-position="459">
+              <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#168#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -141,7 +140,6 @@
       <find>pg.C</find>
       <find>updateCellDat</find>
       <find>updateCellData</find>
-      <find>print</find>
       <find>self.data</find>
       <find>self.plotColIndex=</find>
       <find>self.plotColors</find>
@@ -158,6 +156,7 @@
       <find>addPlots</find>
       <find>addData</find>
       <find>imsave</find>
+      <find>print</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -240,16 +239,16 @@
         <option value="$PROJECT_DIR$/Data_Dialog.py" />
         <option value="$PROJECT_DIR$/Fit_Widget.py" />
         <option value="$PROJECT_DIR$/doc_source/Introduction.rst" />
-        <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
         <option value="$PROJECT_DIR$/Detector_Widget.py" />
+        <option value="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3832" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="-15" />
+    <option name="y" value="-15" />
+    <option name="width" value="3875" />
+    <option name="height" value="2095" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -259,7 +258,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -281,11 +279,21 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="C:/ProgramData/Anaconda3/envs" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.project" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="XAnoS" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="XAnoS" />
+      </console-settings>
+    </option>
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -416,10 +424,10 @@
     </configuration>
     <list>
       <item itemvalue="Python.ASAXS_Widget" />
-      <item itemvalue="Python.XAnoS" />
       <item itemvalue="Python.Data_Collector_Server" />
-      <item itemvalue="Python.Sphere_Uniform" />
       <item itemvalue="Python.MultiSphereAtInterface" />
+      <item itemvalue="Python.Sphere_Uniform" />
+      <item itemvalue="Python.XAnoS" />
     </list>
     <recent_temporary>
       <list>
@@ -441,13 +449,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00048" summary="updated Documentation">
-      <created>1548549336852</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1548549336852</updated>
     </task>
     <task id="LOCAL-00049" summary="updated Documentation">
       <created>1548549530966</created>
@@ -785,7 +786,14 @@
       <option name="project" value="LOCAL" />
       <updated>1563172991499</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="Updated Detector_Widget.py">
+      <created>1563226141897</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1563226141897</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="TodoView">
@@ -798,9 +806,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="3832" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15542677" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15941058" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -810,18 +818,19 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50462353" side_tool="true" weight="0.36916548" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.4953765" weight="0.34669557" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.1332611" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.11697028" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50462353" side_tool="true" weight="0.36864406" />
+      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.4953765" weight="0.34463277" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.2838983" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.3983051" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="R Graphics" order="3" />
+      <window_info anchor="right" id="R Packages" order="4" />
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated README" />
     <MESSAGE value="Updated Documentation by changing the package name from SAXS_Drive to XAnoS" />
     <MESSAGE value="Updated Documentation" />
     <MESSAGE value="Rename calibrationWidget.py to Calibration_Widget.py and maskWidget.py MaskWidget.py. Accordingly changed the imports of Data_Reduction_Client.py" />
@@ -846,7 +855,8 @@
     <MESSAGE value="Compiled fortran files with mingw32 and python 3.7" />
     <MESSAGE value="Updated documentation" />
     <MESSAGE value="Updated Sphere_Uniform.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated Sphere_Uniform.py" />
+    <MESSAGE value="Updated Detector_Widget.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Detector_Widget.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -870,9 +880,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/docs/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/ImageCutWidget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-606">
@@ -1142,6 +1149,13 @@
     <entry file="file://$PROJECT_DIR$/doc_source/Introduction.rst">
       <provider selected="true" editor-type-id="restructured-text-editor" />
     </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/ssl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="97" selection-start-line="97" selection-end-line="97" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10047">
@@ -1199,16 +1213,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-62">
-          <caret line="128" column="88" selection-start-line="128" selection-start-column="88" selection-end-line="128" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
+        <state relative-caret-position="5542">
           <caret line="343" column="24" selection-start-line="343" selection-start-column="24" selection-end-line="343" selection-end-column="24" />
           <folding>
             <element signature="e#0#220#0" expanded="true" />
@@ -1218,8 +1225,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="9" column="58" lean-forward="true" selection-start-line="9" selection-start-column="58" selection-end-line="9" selection-end-column="58" />
+        <state relative-caret-position="459">
+          <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#168#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="143" column="36" selection-start-line="143" selection-start-column="36" selection-end-line="143" selection-end-column="36" />
         </state>
       </provider>
     </entry>
