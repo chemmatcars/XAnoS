@@ -654,7 +654,10 @@ class XAnoS_Fit(QWidget):
                 break
         self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
-        self.fit.functionCalled.disconnect(self.fitCallback)
+        try:
+            self.fit.functionCalled.disconnect(self.fitCallback)
+        except:
+            pass
         
     def calcConfInterval(self):
         self.autoCICheckBox.setCheckState(Qt.Unchecked)
