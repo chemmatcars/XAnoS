@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Update ASAXS_Widget, readData, Data_Reduction_Client for saving data with correct metadata &quot;col_names&quot; instead of &quot;col_name&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/XAnoS.iml" afterPath="$PROJECT_DIR$/.idea/XAnoS.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Data_Collector_Server.py" afterPath="$PROJECT_DIR$/Data_Collector_Server.py" />
-      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" afterPath="$PROJECT_DIR$/Fit_Widget.py" />
-      <change beforePath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" afterPath="$PROJECT_DIR$/Functions/FormFactors/Formol.py" />
-      <change beforePath="$PROJECT_DIR$/MCA_Widget.py" afterPath="$PROJECT_DIR$/MCA_Widget.py" />
-      <change beforePath="$PROJECT_DIR$/SetupData/reducer_setup.txt" afterPath="$PROJECT_DIR$/SetupData/reducer_setup.txt" />
-      <change beforePath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" afterPath="$PROJECT_DIR$/UI_Forms/ASAXS_Batch_Processor_2.ui" />
-      <change beforePath="$PROJECT_DIR$/batch_settings.txt" afterPath="$PROJECT_DIR$/batch_settings.txt" />
-      <change beforePath="$PROJECT_DIR$/scanner.py" afterPath="$PROJECT_DIR$/scanner.py" />
-    </list>
+    <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -443,13 +431,6 @@
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
     </task>
-    <task id="LOCAL-00041" summary="updated Documentation">
-      <created>1548539270661</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1548539270661</updated>
-    </task>
     <task id="LOCAL-00042" summary="updated Documentation">
       <created>1548540444678</created>
       <option name="number" value="00042" />
@@ -786,7 +767,14 @@
       <option name="project" value="LOCAL" />
       <updated>1559360808440</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="Update after run">
+      <created>1562645759320</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1562645759320</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TodoView">
@@ -824,7 +812,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated Fit_Widget, Data_Dialog and their documentation" />
     <MESSAGE value="Renamed ASAXS_widget.py to ASAXS_Widget.py Fit_widget.py to Fit_Widget.py" />
     <MESSAGE value="Merged with SAXS_Drive_Beta" />
     <MESSAGE value="Updated README" />
@@ -849,7 +836,8 @@
     <MESSAGE value="Update ASAXS_Widget, readData, Data_Reduction_Client for saving data with correct metadata &quot;col_names&quot; instead of &quot;col_name&quot;" />
     <MESSAGE value="Update Data_Dialog.py by including the feature of changing the expression of existing columns" />
     <MESSAGE value="Updated Data_Dialog.py to change the expression of a particular column" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated Data_Dialog.py to change the expression of a particular column" />
+    <MESSAGE value="Update after run" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update after run" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
