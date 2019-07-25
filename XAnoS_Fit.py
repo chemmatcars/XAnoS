@@ -148,7 +148,7 @@ class FitResultDialog(QDialog):
         self.reject()
 
 
-class Fit_Widget(QWidget):
+class XAnoS_Fit(QWidget):
     """
     This widget class is developed to provide an end-user a *Graphical User Interface* by which either they can \
     develop their own fitting functions in python or use the existing fitting functions under different categories\
@@ -168,7 +168,7 @@ class Fit_Widget(QWidget):
     
     :class:`Fit_Widget` can be used as stand-alone python fitting package by running it in terminal as::
     
-        $python Fit_Widget.py
+        $python XAnoS_Fit.py
         
     .. figure:: Figures/Fit_widget.png
        :figwidth: 100%
@@ -654,7 +654,10 @@ class Fit_Widget(QWidget):
                 break
         self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
-        self.fit.functionCalled.disconnect(self.fitCallback)
+        try:
+            self.fit.functionCalled.disconnect(self.fitCallback)
+        except:
+            pass
         
     def calcConfInterval(self):
         self.autoCICheckBox.setCheckState(Qt.Unchecked)
@@ -786,6 +789,9 @@ class Fit_Widget(QWidget):
             # #except:
             # #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
+        self.dataListWidget.clearSelection()
+        self.dataListWidget.setCurrentRow(self.fileNumber-1)
+
                 
                 
         
@@ -1680,8 +1686,8 @@ class Fit_Widget(QWidget):
         
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    w=Fit_Widget()
-    w.setWindowTitle('Fit Widget')
+    w=XAnoS_Fit()
+    w.setWindowTitle('XAnoS-Fit')
     w.setGeometry(100,100,1000,800)
     try:
         fname = sys.argv[1]

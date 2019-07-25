@@ -1,14 +1,14 @@
-.. _Data_Collection_Server:
+.. _XAnoS_Collector:
 
-Data Collection Server
-======================
+XAnoS_Collector
+===============
 
 .. contents:: Table of Contents
    :depth: 2
 
 .. _Detector_Widget:
 
-Detector Widget
+Detector_Widget
 ***************
 
 .. _Scanner:
@@ -18,7 +18,7 @@ Scanner
 
 .. _Energy_Widget:
 
-Energy Widget
+Energy_Widget
 *************
 
 **More documentation coming soon!**

@@ -49,6 +49,13 @@ class MCA_Widget(QWidget):
         if self.mca_MEDM_running:
             self.medm.close()
 
+    def init_pv(self):
+        self.realTimeLineEdit.setPV(self.medm_P + 'mca1.PRTM')
+        self.liveTimeLineEdit.setPV(self.medm_P + 'mca1.PLTM')
+        self.modeComboBox.setPV(self.medm_P+self.medm_D+'PresetMode')
+        self.currentStatusLabel.setPV(self.medm_P+'mca1.ACQG',type='str')
+
+
 
     def init_signals(self):
         #Signals for MCA scans
@@ -66,6 +73,7 @@ class MCA_Widget(QWidget):
         self.stopMEDMPushButton.clicked.connect(self.stop_MEDM)
         self.readMCAPushButton.clicked.connect(self.readMCA)
         self.saveMCAPushButton.clicked.connect(lambda x: self.saveMCA(fname=None))
+        self.countPushButton.clicked.connect(self.startstopCountMCA)
 
         #Signals from MCA Calibration setup
         self.overrideMCACalibCheckBox.stateChanged.connect(self.overrideEpicsCalib)
@@ -327,6 +335,7 @@ class MCA_Widget(QWidget):
             self.mcaStatusPV=epics.PV(BYTES2STR(self.medm_P + self.medm_M+'.ACQG'))
         self.monitorIndex=self.mcaStatusPV.add_callback(self.mcaChanging)
         self.mcaUpdating.connect(self.mcaAutoUpdate)
+        self.init_pv()
 
     def mcaChanging(self,**kwargs):
         value=kwargs['value']
@@ -335,6 +344,18 @@ class MCA_Widget(QWidget):
 
     def mcaAutoUpdate(self,value):
         self.readMCA()
+        self.countPushButton.setText('Count')
+
+    def startstopCountMCA(self):
+        if self.countPushButton.text()=='Count':
+            epics.caput(BYTES2STR(self.medm_P+'mca1EraseStart'),1)
+            self.countPushButton.setText('Stop')
+        else:
+            epics.caput(BYTES2STR(self.medm_P + 'Stop'), 1)
+            self.countPushButton.setText('Count')
+
+
+
 
 
 

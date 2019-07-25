@@ -115,14 +115,19 @@ class Sphere_Uniform: #Please put the class name same as the function name
                     for ele in solvent_mole_ratio.keys():
                         comb_material+='%s%.6f'%(ele,solvent_mole_ratio[ele]*solvent_mole_fraction)
                     tdensity=density[i]+sol_density[i]*(1-solute_mv*density[i]/solute_mw)
-                    self.output_params['scaler_parameters']['density[Material_%d]'%i]=tdensity
+                    self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
                 else:
-                    comb_material=material[i]
+                    formula=self.__cf__.parse(material[i])
+                    if self.relement in formula.keys():
+                        self.__cf__.formula_dict[self.relement]=Rmoles[i]
+                    mole_ratio=self.__cf__.element_mole_ratio()
+                    comb_material=''
+                    for ele in mole_ratio.keys():
+                        comb_material+='%s%.6f'%(ele,mole_ratio[ele])
+                    #comb_material=material[i]
                     tdensity=density[i]
-                    self.output_params['scaler_parameters']['density[Material_%d]' % i] = tdensity
+                    self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
                 formula = self.__cf__.parse(comb_material)
-                # if self.relement in formula.keys():
-                #     self.__cf__.formula_dict[self.relement]=Rmoles[i]
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
                 mole_ratio = self.__cf__.element_mole_ratio()
@@ -152,6 +157,9 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 # else:
                 #     eirho.append(0.6023 * (nelectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0, 0.0) / molwt
                 #     rho.append(0.6023 * (nelectrons + felectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0,0.0) / molwt
+                self.output_params['scaler_parameters']['rho[%s]' % material[i]]=rho[-1]
+                self.output_params['scaler_parameters']['eirho[%s]' % material[i]] = eirho[-1]
+                self.output_params['scaler_parameters']['adensity[%s]' % material[i]] = adensity[-1]
             return rho, eirho, adensity
 
     def calc_form(self, q, r, rho):
@@ -172,7 +180,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
 
     def calc_mesh(self,R=[1.0],Rsig=[0.0],Np=100):
         """
-        Computes a multi-dimensional meshgrid of radii (R) of interfaces with a finite widths (Rsig>0.01) of distribution
+        Computes a multi-dimensional meshgrid of radii (R) of interfaces with a finite widths (Rsig>0.001) of distribution
         :param R:
         :param Rsig:
         :return:
@@ -271,11 +279,13 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 for q1 in self.x[key]:
                     sq.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity,key=key))
                 sqf[key] = self.norm * np.array(sq) * 6.022e23 / 1e3  # in cm^-1
+                if key=='SAXS-term':
+                    sqf[key]=sqf[key]+self.bkg
             key1='Total'
             sqt=[]
             for q1 in self.x[key]:
                  sqt.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity, key=key1))
-            total = self.norm * np.array(sqt) * 6.022e23 / 1e3  # in cm^-1
+            total = self.norm * np.array(sqt) * 6.022e23 / 1e3 + self.bkg # in cm^-1
             if not self.__fit__:
                 self.output_params['Simulated_total_wo_err']={'x':self.x[key],'y':total}
             #sqf[key1]=total
@@ -294,7 +304,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 asqf.append(asq)
                 eisqf.append(eisq)
                 csqf.append(csq)
-            sqf=self.norm*np.array(sqf)*6.022e23/1e3 #in cm^-1
+            sqf=self.norm*np.array(sqf)*6.022e23/1e3 + self.bkg#in cm^-1
             if not self.__fit__: #Generate all the quantities below while not fitting
                 asqf=self.norm*np.array(asqf)*6.022e23/1e3 #in cm^-1
                 eisqf=self.norm*np.array(eisqf)*6.022e23/1e3 #in cm^-1

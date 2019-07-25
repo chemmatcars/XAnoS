@@ -8,7 +8,7 @@ from calc_cf import calc_cf
 import os
 import time
 
-class ASAXS_Batch_Processor(QWidget):
+class XAnoS_Batch_Processor_1(QWidget):
     """
     """
     def __init__(self,parent=None):
@@ -446,8 +446,8 @@ class ASAXS_Batch_Processor(QWidget):
 
 if __name__=='__main__':
     app=QApplication(sys.argv)
-    w=ASAXS_Batch_Processor()
-    w.setWindowTitle('XAnoS Batch Processor 1')
+    w=XAnoS_Batch_Processor_1()
+    w.setWindowTitle('XAnoS_Batch_Processor_1')
     w.resize(800,600)
     w.showMaximized()
     sys.exit(app.exec_())

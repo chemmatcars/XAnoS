@@ -88,7 +88,7 @@
             <item>
              <widget class="QLineEdit" name="medm_P_LineEdit">
               <property name="text">
-               <string>dp_vortex_xrd74:</string>
+               <string>dp_vortex_xrd77:</string>
               </property>
              </widget>
             </item>
@@ -123,7 +123,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QPushButton" name="launchMEDMPushButton">
               <property name="text">
@@ -138,10 +138,6 @@
               </property>
              </widget>
             </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QPushButton" name="readMCAPushButton">
               <property name="text">
@@ -153,6 +149,65 @@
              <widget class="QPushButton" name="saveMCAPushButton">
               <property name="text">
                <string>Save MCA</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="modLabel">
+              <property name="text">
+               <string>Mode</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PVComboBox" name="modeComboBox"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="realTimeLabel">
+              <property name="text">
+               <string>Real time</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PVLineEdit" name="realTimeLineEdit"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Live time</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PVLineEdit" name="liveTimeLineEdit"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="countPushButton">
+              <property name="text">
+               <string>Count</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QLabel" name="statusLabel">
+              <property name="text">
+               <string>Status</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PVText" name="currentStatusLabel">
+              <property name="text">
+               <string>TextLabel</string>
               </property>
              </widget>
             </item>
@@ -307,6 +362,21 @@
    <class>TableWidget</class>
    <extends>QTableWidget</extends>
    <header>pyqtgraph</header>
+  </customwidget>
+  <customwidget>
+   <class>PVComboBox</class>
+   <extends>QComboBox</extends>
+   <header>pyepics_Qt</header>
+  </customwidget>
+  <customwidget>
+   <class>PVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>pyepics_Qt</header>
+  </customwidget>
+  <customwidget>
+   <class>PVText</class>
+   <extends>QLabel</extends>
+   <header>pyepics_Qt</header>
   </customwidget>
  </customwidgets>
  <resources/>

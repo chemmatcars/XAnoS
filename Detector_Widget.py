@@ -11,7 +11,6 @@ from epics import caget, caput, camonitor, camonitor_clear
 import fabio as fb
 import os
 from fileWatcher import FileWatcher
-from scipy.misc import imsave
 from Setup import Setup
 import time
 
