@@ -164,7 +164,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
 
     def calc_form(self, q, r, rho):
         """
-        Calculates the isotropic form factor in cm^-1 using the isotropic electron density as a funciton of radial distance
+        Calculates the isotropic form factor in cm^-1 using the isotropic electron density as a function of radial distance
 
         q       :: scaler or array of reciprocal reciprocal wave vector in inv. Angstroms at which the form factor needs to be calculated in
         r       :: array of radial distances at which he electron density in known in Angstroms
