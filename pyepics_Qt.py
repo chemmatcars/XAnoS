@@ -1,5 +1,5 @@
 import epics
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QComboBox, QMessageBox
+from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QComboBox, QMessageBox, QPushButton
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QDoubleValidator,QIntValidator
 
@@ -105,5 +105,36 @@ class PVComboBox(QComboBox):
         text=self.itemText(index)
         self.pv.put(BYTES2STR(text))
         self.setCurrentIndex(index)
+
+# class PVPushButton(QPushButton):
+#     def __init__(self,parent=None,pvname=None):
+#         QPushButton.__init__(self,parent)
+#         self.pv = None
+#         self.buttonText=None
+#         if pvname is not None:
+#             self.setPV(pvname)
+#
+#     def setPV(self,pvname):
+#         self.pv=epics.PV(BYTES2STR(pvname))
+#         self.clicked.connect(self.changePV)
+#         self.cb_index = self.pv.add_callback(self.onPVChange)
+#         #self.pvChanged.connect(self.updatePushButton)
+#
+#
+#     def changePV(self):
+#         if self.pv.value==1:
+#             self.pv.put(0)
+#         else:
+#             self.pv.put(1)
+
+    def onPVChange(self,pvname=None, value=None, **kws):
+        print(value)
+        if self.pv.value==1:
+            self.setText(self.buttonText)
+        else:
+            self.setText('Stop')
+
+
+
         
     

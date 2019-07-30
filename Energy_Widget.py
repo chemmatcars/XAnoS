@@ -205,7 +205,7 @@ class Energy_Widget(QWidget):
         while epics.caget(BYTES2STR("15IDA:KohzuMoving"))==1:
             QTest.qWait(10)
         print('Undulator Changed')
-        #self.wait_for_stablization(detector='MonB')
+        self.wait_for_stablization(detector='MonB')
         #print("Undulator change stablized")
         if self.trackXtalCheckBox.isChecked():
             print("Scanning 2nd Xtal...")
@@ -298,41 +298,46 @@ class Energy_Widget(QWidget):
 
     def wait_for_stablization(self,detector='MonB'):
         self.auto_count_off()
+        self.countTime_15IDC_PV.put(1)
+        self.countTime_15IDD_PV.put(1)
         if detector=='MonB':
-            self.trigger_scaler()
-            counts=0
-            monbCounts=self.monBCountsLabel.pv.value
-            while np.abs(counts-monbCounts)>np.sqrt(monbCounts) and not self.stoppedTracking:
+            self.trigger_scalers()
+            for i in range(10):
                 QTest.qWait(1000)
-                counts=copy.copy(monbCounts)
-                self.trigger_scaler()
+                counts=0
                 monbCounts=self.monBCountsLabel.pv.value
+                while np.abs(counts-monbCounts)>np.sqrt(monbCounts) and not self.stoppedTracking:
+                    QTest.qWait(100)
+                    print(np.abs(counts-monbCounts),np.sqrt(monbCounts))
+                    counts=copy.copy(monbCounts)
+                    self.trigger_scalers()
+                    monbCounts=self.monBCountsLabel.pv.value
         elif detector=='MonP':
-            self.trigger_scaler()
+            self.trigger_scalers()
             counts = 0
             monpCounts = self.monPCountsLabel.pv.value
             while np.abs(counts-monpCounts) > np.sqrt(monpCounts) and not self.stoppedTracking:
                 QTest.qWait(1000)
                 counts = copy.copy(monpCounts)
-                self.trigger_scaler()
+                self.trigger_scalers()
                 monpCounts = self.monPCountsLabel.pv.value
         elif detector=='MonD':
-            self.trigger_scaler()
+            self.trigger_scalers()
             counts = 0
             mondCounts = self.monDCountsLabel.pv.value
             while np.abs(counts-mondCounts) > np.sqrt(mondCounts) and not self.stoppedTracking:
                 QTest.qWait(1000)
                 counts = copy.copy(mondCounts)
-                self.trigger_scaler()
+                self.trigger_scalers()
                 mondCounts = self.monDCountsLabel.pv.value
         elif detector=='PD':
-            self.trigger_scaler()
+            self.trigger_scalers()
             counts = 0
             pdCounts = self.pdCountsLabel.pv.value
             while np.abs(counts-pdCounts) > np.sqrt(pdCounts):
                 QTest.qWait(1000)
                 counts = copy.copy(pdCounts)
-                self.trigger_scaler()
+                self.trigger_scalers()
                 pdCounts = self.pdCountsLabel.pv.value
         self.auto_count_on()
 
