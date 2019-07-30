@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="Updated Detector_Widget.py">
-      <change beforePath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" beforeDir="false" afterPath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,11 +69,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="408">
               <caret line="27" column="83" selection-start-line="27" selection-start-column="83" selection-end-line="27" selection-end-column="83" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MCA_Widget.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="144" column="11" selection-start-line="144" selection-start-column="11" selection-end-line="144" selection-end-column="11" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -221,8 +233,8 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-15" />
     <option name="y" value="-15" />
-    <option name="width" value="3873" />
-    <option name="height" value="2193" />
+    <option name="width" value="3875" />
+    <option name="height" value="2195" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -290,7 +302,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.MultiSphereAtInterface">
+  <component name="RunManager" selected="Python.MCA_Widget">
     <configuration name="ASAXS_Widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -312,7 +324,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Data_Collector_Server" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="MCA_Widget" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="XAnoS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -324,7 +336,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data_Collector_Server.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MCA_Widget.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -398,18 +410,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.ASAXS_Widget" />
-      <item itemvalue="Python.Data_Collector_Server" />
+      <item itemvalue="Python.MCA_Widget" />
       <item itemvalue="Python.MultiSphereAtInterface" />
       <item itemvalue="Python.Sphere_Uniform" />
       <item itemvalue="Python.XAnoS" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.MCA_Widget" />
         <item itemvalue="Python.MultiSphereAtInterface" />
         <item itemvalue="Python.Sphere_Uniform" />
         <item itemvalue="Python.ASAXS_Widget" />
         <item itemvalue="Python.XAnoS" />
-        <item itemvalue="Python.Data_Collector_Server" />
       </list>
     </recent_temporary>
   </component>
@@ -423,20 +435,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1530041973623</updated>
-    </task>
-    <task id="LOCAL-00049" summary="updated Documentation">
-      <created>1548549530966</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1548549530966</updated>
-    </task>
-    <task id="LOCAL-00050" summary="Changed the name from SAXS_Drive to XAnoS">
-      <created>1548614694601</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1548614694602</updated>
     </task>
     <task id="LOCAL-00051" summary="Changed the name from SAXS_Drive to XAnoS">
       <created>1548614876945</created>
@@ -767,7 +765,21 @@
       <option name="project" value="LOCAL" />
       <updated>1563226141897</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="Updated Detector_Widget.py">
+      <created>1564019439980</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1564019439980</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Updated Detector_Widget.py">
+      <created>1564019551396</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1564019551396</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="TodoView">
@@ -781,21 +793,20 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15941058" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16342933" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24960506" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956153" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.34985834" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367088" weight="0.34887007" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.496875" weight="0.3988495" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32909605" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50462353" side_tool="true" weight="0.36864406" />
       <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.4953765" weight="0.34463277" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" visible="true" weight="0.28248587" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.497358" weight="0.28248587" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.3983051" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32925472" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -855,16 +866,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ImageCutWidget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-606">
-          <caret line="472" column="49" selection-start-line="472" selection-start-column="36" selection-end-line="472" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/FormFactors/ContinuousSphere.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
@@ -1093,6 +1094,8 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py" />
+    <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py" />
     <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10047">
@@ -1113,7 +1116,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ASAXS_Widget.py" />
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2635">
@@ -1141,7 +1143,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py" />
+    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="27" column="83" selection-start-line="27" selection-start-column="83" selection-end-line="27" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Detector_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
@@ -1152,10 +1160,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py">
+    <entry file="file://$PROJECT_DIR$/MCA_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="27" column="83" selection-start-line="27" selection-start-column="83" selection-end-line="27" selection-end-column="83" />
+        <state relative-caret-position="17">
+          <caret line="144" column="11" selection-start-line="144" selection-start-column="11" selection-end-line="144" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
