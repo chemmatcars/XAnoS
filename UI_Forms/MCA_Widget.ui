@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1149</width>
+    <width>1401</width>
     <height>703</height>
    </rect>
   </property>
@@ -158,38 +158,90 @@
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QLabel" name="modLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>Mode</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="PVComboBox" name="modeComboBox"/>
+             <widget class="PVComboBox" name="modeComboBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="realTimeLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>Real time</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="PVLineEdit" name="realTimeLineEdit"/>
+             <widget class="PVLineEdit" name="realTimeLineEdit">
+              <property name="text">
+               <string>1.00000</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PVText" name="readRealTimeLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>0.00000</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>Live time</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="PVLineEdit" name="liveTimeLineEdit"/>
+             <widget class="PVLineEdit" name="liveTimeLineEdit">
+              <property name="text">
+               <string>0.00000</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="countPushButton">
+             <widget class="PVText" name="readLiveTimeLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
-               <string>Count</string>
+               <string>0.00000</string>
               </property>
              </widget>
             </item>
@@ -206,8 +258,34 @@
             </item>
             <item>
              <widget class="PVText" name="currentStatusLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
-               <string>TextLabel</string>
+               <string>Done</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="countPushButton">
+              <property name="text">
+               <string>Count</string>
               </property>
              </widget>
             </item>

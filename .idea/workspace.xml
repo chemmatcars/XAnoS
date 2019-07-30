@@ -2,75 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f11cc62-bff0-4590-9df9-8aaa8ce71f1b" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/Fortran_routines/TwoD_Integrate.cp37-win_amd64.pyd" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Fortran_routines/xr_ref.cp37-win_amd64.pyd" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Components.rst" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Reducer.rst" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/XAnoS_Batch_Processor.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/XAnoS_Collector.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/XAnoS_Components.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/XAnoS_Fit.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/XAnoS_Reducer.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/_sources/XAnoS_Batch_Processor.rst.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/_sources/XAnoS_Collector.rst.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/_sources/XAnoS_Components.rst.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/_sources/XAnoS_Fit.rst.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/docs/_sources/XAnoS_Reducer.rst.txt" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/legacycontour/_cntr.cp37-win_amd64.pyd" />
-      <change beforePath="$PROJECT_DIR$/.idea/XAnoS.iml" afterPath="$PROJECT_DIR$/.idea/XAnoS.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor_1.py" afterPath="$PROJECT_DIR$/XAnoS_Batch_Processor_1.py" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" afterPath="$PROJECT_DIR$/XAnoS_Batch_Processor_2.py" />
-      <change beforePath="$PROJECT_DIR$/ASAXS_Widget.py" afterPath="$PROJECT_DIR$/XAnoS_Components.py" />
-      <change beforePath="$PROJECT_DIR$/Data_Collector_Server.py" afterPath="$PROJECT_DIR$/XAnoS_Collector.py" />
-      <change beforePath="$PROJECT_DIR$/Data_Dialog.py" afterPath="$PROJECT_DIR$/Data_Dialog.py" />
-      <change beforePath="$PROJECT_DIR$/Data_Reduction_Client.py" afterPath="$PROJECT_DIR$/XAnoS_Reducer.py" />
-      <change beforePath="$PROJECT_DIR$/Detector_Widget.py" afterPath="$PROJECT_DIR$/Detector_Widget.py" />
-      <change beforePath="$PROJECT_DIR$/Fit_Widget.py" afterPath="$PROJECT_DIR$/XAnoS_Fit.py" />
-      <change beforePath="$PROJECT_DIR$/Fortran_routines/xr_ref.cp36-win_amd64.pyd" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" afterPath="$PROJECT_DIR$/Functions/ASAXS/Sphere_Uniform.py" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/Energy_Widget.py" afterPath="$PROJECT_DIR$/Energy_Widget.py" />
       <change beforePath="$PROJECT_DIR$/MCA_Widget.py" afterPath="$PROJECT_DIR$/MCA_Widget.py" />
-      <change beforePath="$PROJECT_DIR$/To do list.docx" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/SetupData/reducer_setup.txt" afterPath="$PROJECT_DIR$/SetupData/reducer_setup.txt" />
+      <change beforePath="$PROJECT_DIR$/UI_Forms/Energy_Widget.ui" afterPath="$PROJECT_DIR$/UI_Forms/Energy_Widget.ui" />
       <change beforePath="$PROJECT_DIR$/UI_Forms/MCA_Widget.ui" afterPath="$PROJECT_DIR$/UI_Forms/MCA_Widget.ui" />
-      <change beforePath="$PROJECT_DIR$/XAnoS.py" afterPath="$PROJECT_DIR$/XAnoS.py" />
-      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Batch_Processor.rst" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Batch_Processor.rst" />
-      <change beforePath="$PROJECT_DIR$/doc_source/ASAXS_Widget.rst" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Data_Collection_Server.rst" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Collector.rst" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Data_Reduction_Client.rst" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Fit_Widget.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Fit_Widget.rst" afterPath="$PROJECT_DIR$/doc_source/XAnoS_Fit.rst" />
-      <change beforePath="$PROJECT_DIR$/doc_source/Introduction.rst" afterPath="$PROJECT_DIR$/doc_source/Introduction.rst" />
-      <change beforePath="$PROJECT_DIR$/doc_source/index.rst" afterPath="$PROJECT_DIR$/doc_source/index.rst" />
-      <change beforePath="$PROJECT_DIR$/docs/.buildinfo" afterPath="$PROJECT_DIR$/docs/.buildinfo" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Batch_Processor.doctree" afterPath="$PROJECT_DIR$/docs/.doctrees/ASAXS_Batch_Processor.doctree" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" afterPath="$PROJECT_DIR$/docs/.doctrees/Acknowledgements.doctree" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" afterPath="$PROJECT_DIR$/docs/.doctrees/Introduction.doctree" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/License.doctree" afterPath="$PROJECT_DIR$/docs/.doctrees/License.doctree" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" afterPath="$PROJECT_DIR$/docs/.doctrees/environment.pickle" />
-      <change beforePath="$PROJECT_DIR$/docs/.doctrees/index.doctree" afterPath="$PROJECT_DIR$/docs/.doctrees/index.doctree" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" afterPath="$PROJECT_DIR$/docs/ASAXS_Batch_Processor.html" />
-      <change beforePath="$PROJECT_DIR$/docs/ASAXS_Widget.html" afterPath="$PROJECT_DIR$/docs/ASAXS_Widget.html" />
-      <change beforePath="$PROJECT_DIR$/docs/Acknowledgements.html" afterPath="$PROJECT_DIR$/docs/Acknowledgements.html" />
-      <change beforePath="$PROJECT_DIR$/docs/Data_Collection_Server.html" afterPath="$PROJECT_DIR$/docs/Data_Collection_Server.html" />
-      <change beforePath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" afterPath="$PROJECT_DIR$/docs/Data_Reduction_Client.html" />
-      <change beforePath="$PROJECT_DIR$/docs/Fit_Widget.html" afterPath="$PROJECT_DIR$/docs/Fit_Widget.html" />
-      <change beforePath="$PROJECT_DIR$/docs/Introduction.html" afterPath="$PROJECT_DIR$/docs/Introduction.html" />
-      <change beforePath="$PROJECT_DIR$/docs/License.html" afterPath="$PROJECT_DIR$/docs/License.html" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/ASAXS_Batch_Processor.rst.txt" afterPath="$PROJECT_DIR$/docs/_sources/ASAXS_Batch_Processor.rst.txt" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" afterPath="$PROJECT_DIR$/docs/_sources/Introduction.rst.txt" />
-      <change beforePath="$PROJECT_DIR$/docs/_sources/index.rst.txt" afterPath="$PROJECT_DIR$/docs/_sources/index.rst.txt" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/basic.css" afterPath="$PROJECT_DIR$/docs/_static/basic.css" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/doctools.js" afterPath="$PROJECT_DIR$/docs/_static/doctools.js" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/documentation_options.js" afterPath="$PROJECT_DIR$/docs/_static/documentation_options.js" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/documentation_options.js" afterPath="$PROJECT_DIR$/docs/_static/language_data.js" />
-      <change beforePath="$PROJECT_DIR$/docs/_static/searchtools.js" afterPath="$PROJECT_DIR$/docs/_static/searchtools.js" />
-      <change beforePath="$PROJECT_DIR$/docs/genindex.html" afterPath="$PROJECT_DIR$/docs/genindex.html" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" afterPath="$PROJECT_DIR$/docs/index.html" />
-      <change beforePath="$PROJECT_DIR$/docs/objects.inv" afterPath="$PROJECT_DIR$/docs/objects.inv" />
-      <change beforePath="$PROJECT_DIR$/docs/search.html" afterPath="$PROJECT_DIR$/docs/search.html" />
-      <change beforePath="$PROJECT_DIR$/docs/searchindex.js" afterPath="$PROJECT_DIR$/docs/searchindex.js" />
-      <change beforePath="$PROJECT_DIR$/legacycontour/_version.py" afterPath="$PROJECT_DIR$/legacycontour/_version.py" />
-      <change beforePath="$PROJECT_DIR$/pyepics_Qt.py" afterPath="$PROJECT_DIR$/pyepics_Qt.py" />
+      <change beforePath="$PROJECT_DIR$/XAnoS_Collector.py" afterPath="$PROJECT_DIR$/XAnoS_Collector.py" />
+      <change beforePath="$PROJECT_DIR$/batch_settings.txt" afterPath="$PROJECT_DIR$/batch_settings.txt" />
+      <change beforePath="$PROJECT_DIR$/experiment.log" afterPath="$PROJECT_DIR$/experiment.log" />
+      <change beforePath="$PROJECT_DIR$/scanner.py" afterPath="$PROJECT_DIR$/scanner.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -81,13 +22,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MCA_Widget.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MCA_Widget.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MCA_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="134" column="34" lean-forward="false" selection-start-line="134" selection-start-column="34" selection-end-line="134" selection-end-column="34" />
+            <state relative-caret-position="6156">
+              <caret line="356" column="49" lean-forward="false" selection-start-line="356" selection-start-column="49" selection-end-line="356" selection-end-column="49" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XAnoS_Collector.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/XAnoS_Collector.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="166">
+              <caret line="593" column="65" lean-forward="true" selection-start-line="593" selection-start-column="65" selection-end-line="593" selection-end-column="65" />
+              <folding>
+                <element signature="e#0#220#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,7 +59,7 @@
       <file leaf-file-name="Data_Dialog.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10370">
+            <state relative-caret-position="495">
               <caret line="621" column="72" lean-forward="false" selection-start-line="621" selection-start-column="72" selection-end-line="621" selection-end-column="72" />
               <folding />
             </state>
@@ -116,7 +69,7 @@
       <file leaf-file-name="PlotWidget.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PlotWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2278">
+            <state relative-caret-position="2412">
               <caret line="140" column="41" lean-forward="false" selection-start-line="140" selection-start-column="41" selection-end-line="140" selection-end-column="41" />
               <folding />
             </state>
@@ -126,8 +79,8 @@
       <file leaf-file-name="scanner.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scanner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9656">
-              <caret line="581" column="40" lean-forward="false" selection-start-line="581" selection-start-column="40" selection-end-line="581" selection-end-column="40" />
+            <state relative-caret-position="277">
+              <caret line="571" column="68" lean-forward="false" selection-start-line="571" selection-start-column="68" selection-end-line="571" selection-end-column="68" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -135,11 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Energy_Widget.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Energy_Widget.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Energy_Widget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4556">
-              <caret line="279" column="31" lean-forward="false" selection-start-line="279" selection-start-column="31" selection-end-line="279" selection-end-column="31" />
+            <state relative-caret-position="184">
+              <caret line="282" column="36" lean-forward="true" selection-start-line="282" selection-start-column="36" selection-end-line="282" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -156,9 +109,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>plotSetupTableWidget</find>
-      <find>updatePlotData</find>
-      <find>pg.C</find>
       <find>updateCellDat</find>
       <find>updateCellData</find>
       <find>add_data</find>
@@ -186,6 +136,9 @@
       <find>scalerStatus</find>
       <find>t</find>
       <find>time</find>
+      <find>transmission</find>
+      <find>trigger_scaler</find>
+      <find>collectDarkCheckBox</find>
     </findStrings>
     <replaceStrings>
       <replace>15IDD_scaler_start</replace>
@@ -219,7 +172,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Functions/Backgrounds/PowerLaw.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Ellipsoid.py" />
         <option value="$PROJECT_DIR$/Functions/GISAXS/Rod_Sphere.py" />
         <option value="$PROJECT_DIR$/Functions/FormFactors/Formol.py" />
@@ -269,12 +221,14 @@
         <option value="$PROJECT_DIR$/PlotWidget.py" />
         <option value="$PROJECT_DIR$/MCA_Widget.py" />
         <option value="$PROJECT_DIR$/scanner.py" />
+        <option value="$PROJECT_DIR$/XAnoS_Collector.py" />
         <option value="$PROJECT_DIR$/Energy_Widget.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="8" />
+    <option name="y" value="31" />
     <option name="width" value="1536" />
     <option name="height" value="801" />
   </component>
@@ -422,7 +376,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="XAnoS" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="scanner" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -434,26 +388,26 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="XAnoS" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/XAnoS.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scanner.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.XAnoS" />
-      <item index="1" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Data_Dialog" />
-      <item index="3" class="java.lang.String" itemvalue="Python.MCA_Widget" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Energy_Widget" />
+      <item index="0" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Data_Dialog" />
+      <item index="2" class="java.lang.String" itemvalue="Python.MCA_Widget" />
+      <item index="3" class="java.lang.String" itemvalue="Python.Energy_Widget" />
+      <item index="4" class="java.lang.String" itemvalue="Python.scanner" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.Energy_Widget" />
-        <item index="1" class="java.lang.String" itemvalue="Python.MCA_Widget" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
-        <item index="3" class="java.lang.String" itemvalue="Python.Data_Dialog" />
-        <item index="4" class="java.lang.String" itemvalue="Python.XAnoS" />
+        <item index="1" class="java.lang.String" itemvalue="Python.scanner" />
+        <item index="2" class="java.lang.String" itemvalue="Python.MCA_Widget" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Data_Collector_Server" />
+        <item index="4" class="java.lang.String" itemvalue="Python.Data_Dialog" />
       </list>
     </recent_temporary>
   </component>
@@ -827,18 +781,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1536" height="801" extended-state="0" />
+    <frame x="8" y="31" width="1920" height="1018" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1280528" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10179325" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914287" sideWeight="0.4978903" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37980086" sideWeight="0.52739275" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32685715" sideWeight="0.48312235" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32536975" sideWeight="0.52689874" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27238455" sideWeight="0.49367088" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.49815693" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3257143" sideWeight="0.47310126" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37980086" sideWeight="0.47260725" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37926137" sideWeight="0.469967" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -847,6 +802,25 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914287" sideWeight="0.4978903" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32536975" sideWeight="0.52689874" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27238455" sideWeight="0.49367088" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.49815693" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3257143" sideWeight="0.47310126" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37926137" sideWeight="0.469967" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10179325" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -902,13 +876,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Functions/XRR/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="80" lean-forward="false" selection-start-line="0" selection-start-column="80" selection-end-line="0" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/User_Stats/User_Stats.html" />
     <entry file="file://$USER_HOME$/Desktop/User_Stats/User_Stats.rst" />
     <entry file="file://$PROJECT_DIR$/Functions/XRR/SphereAtInterface.py">
@@ -1096,16 +1063,8 @@
     <entry file="file://$PROJECT_DIR$/Data_Collector_Server.py" />
     <entry file="file://$PROJECT_DIR$/PlotWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2278">
+        <state relative-caret-position="2412">
           <caret line="140" column="41" lean-forward="false" selection-start-line="140" selection-start-column="41" selection-end-line="140" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10370">
-          <caret line="621" column="72" lean-forward="false" selection-start-line="621" selection-start-column="72" selection-end-line="621" selection-end-column="72" />
           <folding />
         </state>
       </provider>
@@ -1113,8 +1072,8 @@
     <entry file="file://$PROJECT_DIR$/Fit_Widget.py" />
     <entry file="file://$PROJECT_DIR$/MCA_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="134" column="34" lean-forward="false" selection-start-line="134" selection-start-column="34" selection-end-line="134" selection-end-column="34" />
+        <state relative-caret-position="6156">
+          <caret line="356" column="49" lean-forward="false" selection-start-line="356" selection-start-column="49" selection-end-line="356" selection-end-column="49" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -1129,22 +1088,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
+    <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py" />
     <entry file="file://$PROJECT_DIR$/scanner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9656">
-          <caret line="581" column="40" lean-forward="false" selection-start-line="581" selection-start-column="40" selection-end-line="581" selection-end-column="40" />
+        <state relative-caret-position="277">
+          <caret line="571" column="68" lean-forward="false" selection-start-line="571" selection-start-column="68" selection-end-line="571" selection-end-column="68" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ASAXS_Batch_Processor_2.py" />
-    <entry file="file://$PROJECT_DIR$/Data_Reduction_Client.py" />
+    <entry file="file://$PROJECT_DIR$/XAnoS_Collector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="593" column="65" lean-forward="true" selection-start-line="593" selection-start-column="65" selection-end-line="593" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#220#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data_Dialog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="621" column="72" lean-forward="false" selection-start-line="621" selection-start-column="72" selection-end-line="621" selection-end-column="72" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Energy_Widget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4556">
-          <caret line="279" column="31" lean-forward="false" selection-start-line="279" selection-start-column="31" selection-end-line="279" selection-end-column="31" />
+        <state relative-caret-position="184">
+          <caret line="282" column="36" lean-forward="true" selection-start-line="282" selection-start-column="36" selection-end-line="282" selection-end-column="36" />
           <folding />
         </state>
       </provider>

@@ -576,7 +576,7 @@ class Scanner(QWidget):
             if self.shutterModeCheckBox.isChecked():
                 self.shutter_ON()
             self.scalerDone = 1
-            caput("pd_state",2)
+            caput("pd_state",1)
             QtTest.QTest.qWait(1000)
             self.triggerAllDetectors()
             # caput(self.scalers['15IDD_scaler_start']['PV'],1,wait=False)

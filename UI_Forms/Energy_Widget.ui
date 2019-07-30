@@ -361,6 +361,11 @@
         <widget class="QComboBox" name="xtalDetectorComboBox">
          <item>
           <property name="text">
+           <string>MonD</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>PD</string>
           </property>
          </item>
@@ -372,11 +377,6 @@
          <item>
           <property name="text">
            <string>MonP</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>MonD</string>
           </property>
          </item>
         </widget>
@@ -419,7 +419,7 @@
        <item>
         <widget class="QLineEdit" name="xtalStepsLineEdit">
          <property name="text">
-          <string>21</string>
+          <string>41</string>
          </property>
         </widget>
        </item>
@@ -523,7 +523,7 @@
        <item>
         <widget class="QLineEdit" name="mirrorStepsLineEdit">
          <property name="text">
-          <string>21</string>
+          <string>41</string>
          </property>
         </widget>
        </item>
@@ -540,7 +540,7 @@
           <string>Track Mirror</string>
          </property>
          <property name="checked">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>

@@ -54,6 +54,8 @@ class MCA_Widget(QWidget):
         self.liveTimeLineEdit.setPV(self.medm_P + 'mca1.PLTM')
         self.modeComboBox.setPV(self.medm_P+self.medm_D+'PresetMode')
         self.currentStatusLabel.setPV(self.medm_P+'mca1.ACQG',type='str')
+        self.readRealTimeLabel.setPV(self.medm_P+'mca1.ERTM')
+        self.readLiveTimeLabel.setPV(self.medm_P+'mca1.ELTM')
 
 
 

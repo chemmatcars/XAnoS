@@ -593,7 +593,7 @@ class XAnoS_Collector(QWidget):
         self.collectTransmissionCheckBox.setTristate(False)        
         self.collectDarkCheckBox=QCheckBox('Collect Dark Images')
         self.collectDarkCheckBox.setTristate(False)
-        self.collectDarkCheckBox.setChecked(True)
+        self.collectDarkCheckBox.setChecked(False)
         self.autoShutterCheckBox=QCheckBox('Auto Shutter')
         self.autoShutterCheckBox.setTristate(False)
         self.autoShutterCheckBox.setChecked(True)
@@ -1155,7 +1155,7 @@ class XAnoS_Collector(QWidget):
         self.direct_diode_counts=caget(self.scalers['monitor_diode']['PV'])
         self.direct_monitor_counts = caget(self.scalers['monitor']['PV'])
 
-        caput('pd_state', 2)
+        caput('pd_state', 1)
         QtTest.QTest.qWait(1000)
         self.shutter_ON()
         QtTest.QTest.qWait(1000)
