@@ -14,9 +14,9 @@ import sys
 import os
 
 _path = os.path.dirname(__file__)
-sys.path.append()
-sys.path.append(os.path.join(_path, '..', 'Functions'))
-sys.path.append(os.path.join(_path, '..', 'Fortran_routines'))
+# sys.path.append(_path)
+sys.path.append(os.path.join(_path, '..', '..', 'Functions'))
+sys.path.append(os.path.join(_path, '..', '..', 'Fortran_routines'))
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
