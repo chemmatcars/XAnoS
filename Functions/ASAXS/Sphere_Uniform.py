@@ -42,9 +42,13 @@ class Sphere_Uniform: #Please put the class name same as the function name
 
         PARAMETERS
         
-        x           : Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
-        relement    : Resonant element of the nanoparticle. Default: 'Au'
-        Energy      : Energy of X-rays in keV at which the form-factor is calculated. Default: None
+        x: float or array
+            Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
+        relement: str
+            Resonant element of the nanoparticle. Default: 'Au'
+        Energy: float
+            Energy of X-rays in keV at which the form-factor is calculated. Default: None
+
         Np          : No. of points with which the size distribution will be computed. Default: 10
         NrDep       : Energy dependence of the non-resonant element. Default= 1 (Energy Dependent), 0 (Energy independent)
         dist        : The probablity distribution fucntion for the radii of different interfaces in the nanoparticles. Default: Gaussian
