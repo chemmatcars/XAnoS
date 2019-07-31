@@ -30,6 +30,15 @@ class Sphere_Uniform: #Please put the class name same as the function name
     """
     Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
 
+    PARAMETERS
+
+    x: float or array
+       Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
+    relement: str
+       Resonant element of the nanoparticle. Default: 'Au'
+    Energy: float
+       Energy of X-rays in keV at which the form-factor is calculated. Default: None
+
     .. autosummary::
 
        ~init_params
@@ -39,15 +48,6 @@ class Sphere_Uniform: #Please put the class name same as the function name
     def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep=1, norm=1.0, bkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
         """
         Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
-
-        PARAMETERS
-        
-        x: float or array
-            Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
-        relement: str
-            Resonant element of the nanoparticle. Default: 'Au'
-        Energy: float
-            Energy of X-rays in keV at which the form-factor is calculated. Default: None
 
         Np          : No. of points with which the size distribution will be computed. Default: 10
         NrDep       : Energy dependence of the non-resonant element. Default= 1 (Energy Dependent), 0 (Energy independent)
