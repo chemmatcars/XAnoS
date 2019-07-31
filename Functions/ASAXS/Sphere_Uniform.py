@@ -219,6 +219,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         return (eval(r1))
 
     def sphere(self,q, R, dist, sdist, rho, eirho, adensity):
+      """ """
         form = np.zeros_like(R[0])
         eiform = np.zeros_like(R[0])
         aform = np.zeros_like(R[0])
@@ -235,6 +236,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         return  np.sum(np.abs(form) ** 2 * dist) / sdist, np.sum(np.abs(eiform) ** 2 * dist) / sdist, np.sum(np.abs(aform) ** 2 * dist) / sdist, np.sum(eiform*aform*dist) / sdist   #in cm^2
 
     def sphere_dict(self,q, R, dist, sdist, rho, eirho, adensity,key='SAXS-term'):
+         """ """
         form = np.zeros_like(R[0])
         eiform = np.zeros_like(R[0])
         aform = np.zeros_like(R[0])
@@ -259,6 +261,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
 
 
     def update_params(self):
+      """ """
         self.norm=self.params['norm'].value
         self.bkg=self.params['bkg'].value
         key='Density'
