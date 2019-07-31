@@ -12,9 +12,11 @@ from lmfit import Parameters
 import numpy as np
 import sys
 import os
-sys.path.append(os.path.abspath('.'))
-sys.path.append(os.path.abspath('./Functions'))
-sys.path.append(os.path.abspath('./Fortran_rountines'))
+
+_path = os.path.dirname(__file__)
+sys.path.append()
+sys.path.append(os.path.join(_path, '..', 'Functions'))
+sys.path.append(os.path.join(_path, '..', 'Fortran_routines'))
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
