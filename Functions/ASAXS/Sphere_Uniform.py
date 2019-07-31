@@ -1,11 +1,22 @@
+
+"""
+Uniform Sphere functions
+
+.. autosummary::
+   
+   ~Sphere_Uniform
+"""
+
 ####Please do not remove lines below####
 from lmfit import Parameters
 import numpy as np
 import sys
 import os
-sys.path.append(os.path.abspath('.'))
-sys.path.append(os.path.abspath('./Functions'))
-sys.path.append(os.path.abspath('./Fortran_rountines'))
+
+_path = os.path.dirname(__file__)
+# sys.path.append(_path)
+sys.path.append(os.path.join(_path, '..', '..', 'Functions'))
+sys.path.append(os.path.join(_path, '..', '..', 'Fortran_routines'))
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
@@ -16,14 +27,28 @@ from utils import find_minmax
 
 
 class Sphere_Uniform: #Please put the class name same as the function name
+    """
+    Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
+
+    PARAMETERS
+
+    x: float or array
+       Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
+    relement: str
+       Resonant element of the nanoparticle. Default: 'Au'
+    Energy: float
+       Energy of X-rays in keV at which the form-factor is calculated. Default: None
+
+    .. autosummary::
+
+       ~init_params
+       ~calc_rho
+    """
+
     def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep=1, norm=1.0, bkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
         """
-        Documentation
         Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
 
-        x           : Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
-        relement    : Resonant element of the nanoparticle. Default: 'Au'
-        Energy      : Energy of X-rays in keV at which the form-factor is calculated. Default: None
         Np          : No. of points with which the size distribution will be computed. Default: 10
         NrDep       : Energy dependence of the non-resonant element. Default= 1 (Energy Dependent), 0 (Energy independent)
         dist        : The probablity distribution fucntion for the radii of different interfaces in the nanoparticles. Default: Gaussian
@@ -31,6 +56,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         bkg         : Constant incoherent background
         flux        : Total X-ray flux to calculate the errorbar to simulate the errorbar for the fitted data
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
+
                         Material ('Materials' using chemical formula),
                         Density ('Density' in gm/cubic-cms),
                         Density of solvent ('Sol_Density' in gm/cubic-cms) of the particular layer
@@ -197,6 +223,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         return (eval(r1))
 
     def sphere(self,q, R, dist, sdist, rho, eirho, adensity):
+        """ """
         form = np.zeros_like(R[0])
         eiform = np.zeros_like(R[0])
         aform = np.zeros_like(R[0])
@@ -213,6 +240,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         return  np.sum(np.abs(form) ** 2 * dist) / sdist, np.sum(np.abs(eiform) ** 2 * dist) / sdist, np.sum(np.abs(aform) ** 2 * dist) / sdist, np.sum(eiform*aform*dist) / sdist   #in cm^2
 
     def sphere_dict(self,q, R, dist, sdist, rho, eirho, adensity,key='SAXS-term'):
+        """ """
         form = np.zeros_like(R[0])
         eiform = np.zeros_like(R[0])
         aform = np.zeros_like(R[0])
@@ -237,6 +265,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
 
 
     def update_params(self):
+        """ """
         self.norm=self.params['norm'].value
         self.bkg=self.params['bkg'].value
         key='Density'
