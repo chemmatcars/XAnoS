@@ -1,3 +1,12 @@
+
+"""
+Uniform Sphere functions
+
+.. autosummary::
+   
+   ~Sphere_Uniform
+"""
+
 ####Please do not remove lines below####
 from lmfit import Parameters
 import numpy as np
@@ -16,11 +25,21 @@ from utils import find_minmax
 
 
 class Sphere_Uniform: #Please put the class name same as the function name
+    """
+    Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
+
+    .. autosummary::
+
+       ~init_params
+       ~calc_rho
+    """
+
     def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep=1, norm=1.0, bkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
         """
-        Documentation
         Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
 
+        PARAMETERS
+        
         x           : Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
         relement    : Resonant element of the nanoparticle. Default: 'Au'
         Energy      : Energy of X-rays in keV at which the form-factor is calculated. Default: None
@@ -31,6 +50,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
         bkg         : Constant incoherent background
         flux        : Total X-ray flux to calculate the errorbar to simulate the errorbar for the fitted data
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
+
                         Material ('Materials' using chemical formula),
                         Density ('Density' in gm/cubic-cms),
                         Density of solvent ('Sol_Density' in gm/cubic-cms) of the particular layer
