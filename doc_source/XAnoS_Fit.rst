@@ -725,3 +725,11 @@ A new function is basically as a python **class**. The *class name* determines t
 
 3. **y** function
     . This function actually returns the actual values of the function to be calculated by the **class**
+
+-----
+
+Source Code Documentation
+*************************
+
+.. automodule:: Functions.ASAXS.Sphere_Uniform
+    :members: 
