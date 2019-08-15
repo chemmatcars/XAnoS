@@ -1,6 +1,6 @@
 subroutine parratt_born(q,lambda,d,rho,beta,sigma,Rgen,Rgenr, M,N)
 !***************************************************************************
-!Subroutine to calculate Specular Reflectivity using Parrat Algorithm with 
+!Subroutine to calculate Specular Reflectivity using Parrat Algorithm with
 !Born Approximation for roughness
 !M = No. of data points
 !N = No. of slabs
@@ -36,7 +36,7 @@ do i = 0,M
    enddo
    Rgenr(i)=r(0)
    Rgen(i)=cdabs(r(0))**2
-enddo   
+enddo
 end subroutine parratt_born
 
 
@@ -78,13 +78,13 @@ do i = 0,M
    enddo
    Rgenr(i)=r(0)
    Rgen(i)=cdabs(r(0))**2
-enddo   
+enddo
 end subroutine parratt
 
 
 subroutine conv_parratt(q,delq,lambda,d,rho,beta,Rgen,M,N)
 !***************************************************************************
-!Calculation of convoluted reflectivity by Parratt Recursion Formula without 
+!Calculation of convoluted reflectivity by Parratt Recursion Formula without
 !any roughness
 
 !M = No. of data points
@@ -118,7 +118,7 @@ do i = 0,M
   ressum=0.0d0
   do k = -(Nres-1)/2,(Nres-1)/2
     qo=q(i)+4*k*delq/(Nres-1)
-      if (qo>=0.0d0) then 
+      if (qo>=0.0d0) then
 	do j=N,0,-1
 	  k1=cdsqrt(dcmplx(qo**2-qc2(j),-32.0d0*beta(j)*pi**2/lambda**2))
 	  k2=cdsqrt(dcmplx(qo**2-qc2(j+1),-32.0d0*beta(j+1)*pi**2/lambda**2))
@@ -136,3 +136,4 @@ do i = 0,M
 enddo
 
 end subroutine conv_parratt
+

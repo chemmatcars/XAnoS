@@ -1,0 +1,27 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module ff_cylinder ! in 
+    interface  ! in :ff_cylinder
+        subroutine ff_cylinder(q,r,l,ff,m) ! in :ff_cylinder:ff_cylinder.f90
+            double precision dimension(m + 1), intent(in) :: q
+            double precision, intent(in) :: r
+            double precision, intent(in) :: l
+            double precision dimension(m + 1),depend(m), intent(out) :: ff
+            integer, optional,check((len(q)-1)>=m),depend(q) :: m=(len(q)-1)
+        end subroutine ff_cylinder
+        subroutine ff_cylinder_dist(q,r,rdist,l,ldist,ff,m,n) ! in :ff_cylinder:ff_cylinder.f90
+            double precision dimension(m + 1), intent(in) :: q
+            double precision dimension(n + 1), intent(in) :: r
+            double precision dimension(n + 1),depend(n), intent(in) :: rdist
+            double precision dimension(n + 1),depend(n), intent(in) :: l
+            double precision dimension(n + 1),depend(n), intent(in) :: ldist
+            double precision dimension(m + 1),depend(m), intent(out) :: ff
+            integer, optional,check((len(q)-1)>=m),depend(q) :: m=(len(q)-1)
+            integer, optional,check((len(r)-1)>=n),depend(r) :: n=(len(r)-1)
+        end subroutine ff_cylinder_dist
+    end interface 
+end python module ff_cylinder
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

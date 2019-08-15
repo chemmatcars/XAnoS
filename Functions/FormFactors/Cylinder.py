@@ -5,17 +5,18 @@ import sys
 import os
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./Functions'))
-sys.path.append(os.path.abspath('./Fortran_rountines'))
+sys.path.append(os.path.abspath('./Fortran_routines'))
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
-from scipy.special import j1
-from scipy.integrate import quad, romb
+from ff_cylinder import ff_cylinder, ff_cylinder_dist
+from PeakFunctions import Gaussian, LogNormal
+from utils import find_minmax
 
 
 
 class Cylinder: #Please put the class name same as the function name
-    def __init__(self,x=0, R=1.0, Rsig=0.0, H=1.0, Hsig=0.0, Nsample=101, dist='Gaussian', norm=1.0,bkg=0.0, mpar={}):
+    def __init__(self,x=0, R=1.0, Rsig=0.0, H=1.0, Hsig=0.0, Nsample=41, dist='Gaussian', norm=1.0,bkg=0.0, mpar={}):
         """
         Form factor of a poly-dispersed cylinder
         x           : Independent variable in the form of a scalar or an array of Q-values
@@ -41,7 +42,7 @@ class Cylinder: #Please put the class name same as the function name
         self.bkg=bkg
         self.Nsample=Nsample
         self.__mpar__=mpar #If there is any multivalued parameter
-        self.choices={} #If there are choices available for any fixed parameters
+        self.choices={'dist':['Gaussian','LogNormal']} #If there are choices available for any fixed parameters
         self.init_params()
 
     def init_params(self):
@@ -58,45 +59,64 @@ class Cylinder: #Please put the class name same as the function name
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('bkg', value=self.bkg,vary=0,min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
 
-    def cyl_form(self,mu,q,R,H):
-        """
-        Computes the amplitute of cylindrical form factor
-        """
-        x=q*mu*H/2
-        y=q*np.sqrt(1-mu**2)*R
-        if mu==0.0:
-            return (2*j1(y)/y)**2
-        elif np.abs(mu)==1.0:
-            return (2*np.sin(x)/x)**2
-        else:
-            return (np.sin(x)/x*2*j1(y)/y)**2
+    def update_parameters(self):
+        self.R = self.params['R'].value
+        self.Rsig = self.params['Rsig'].value
+        self.H = self.params['H'].value
+        self.Hsig = self.params['Hsig'].value
+        self.norm = self.params['norm'].value
+        self.bkg = self.params['bkg'].value
 
     def y(self):
         """
         Define the function in terms of x to return some value
         """
         self.output_params={}
-        R=self.params['R'].value
-        Rsig=self.params['Rsig'].value
-        H=self.params['H'].value
-        Hsig=self.params['Hsig'].value
-        norm=self.params['norm'].value
-        bkg=self.params['bkg'].value
-        mu=np.linspace(-1,1,self.Nsample)
-        if Rsig>1e-3:
-            r=np.linspace(max(0.001,R-5*Rsig,R)+5*Rsig,self.Nsample)
-        else:
-            r=np.ones_like(mu)*R
-        if Hsig>1e-3:
-            h=np.linspace(max(0.001,H-Hsig),H+Hsig,self.Nsample)
-        else:
-            h=np.ones_like(mu)*H
+        if self.dist=='Gaussian':
+            if self.Rsig>1e-3:
+                rdist=Gaussian.Gaussian(x=0.0,pos=self.R, wid=self.Rsig)
+                rmin, rmax = max(0.001, self.R-5*self.Rsig),self.R+5*self.Rsig
+                r = np.linspace(rmin, rmax, self.Nsample)
+                rdist.x = r
+                distr = rdist.y()
+                self.output_params['R_distribution']={'x':r,'y':distr}
+            else:
+                r = np.array([self.R])
+                distr=np.ones_like(r)
+            if self.Hsig>1e-3:
+                hdist=Gaussian.Gaussian(x=0.0,pos=self.H, wid=self.Hsig)
+                hmin, hmax = max(0.001, self.H-5*self.Hsig),self.H+5*self.Hsig
+                h = np.linspace(hmin, hmax, self.Nsample)
+                hdist.x = h
+                disth = hdist.y()
+                self.output_params['H_distribution'] = {'x': h, 'y': disth}
+            else:
+                h = np.ones_like(r) * self.H
+                disth = np.ones_like(h)
+        elif self.dist=='LogNormal':
+            if self.Rsig > 1e-3:
+                rdist = LogNormal.LogNormal(x=0.0, pos=self.R, wid=self.Rsig)
+                rmin, rmax = max(0.001, self.R*(1 - np.exp(self.Rsig))), self.R*(1+2*np.exp(self.Rsig))
+                r = np.linspace(rmin, rmax, self.Nsample)
+                rdist.x = r
+                distr = rdist.y()
+                self.output_params['R_distribution'] = {'x': r, 'y': distr}
+            else:
+                r = np.array([self.R])
+                distr = np.ones_like(r)
+            if self.Hsig > 1e-3:
+                hdist = LogNormal.LogNormal(x=0.0, pos=self.H,wid=self.Hsig)
+                hmin, hmax = max(0.001, self.H*(1 - np.exp(self.Hsig))), self.H*(1 + 2*np.exp(self.Hsig))
+                h = np.linspace(hmin, hmax, self.Nsample)
+                hdist.x = h
+                disth = hdist.y()
+                self.output_params['H_distribution'] = {'x': h, 'y': disth}
+            else:
+                h = np.ones_like(r) * self.H
+                disth = np.ones_like(h)
 
-        res=[]
-        for q in self.x:
-            res.append(np.sum([self.cyl_form(m,q,r1,h1) for m,r1,h1 in zip(mu,r,h)]))
-        res=np.array(res)*(mu[1]-mu[0])/2.0
-        return norm*res+bkg
+        result=ff_cylinder_dist(self.x,r,distr,h,disth)
+        return self.norm*result+self.bkg
 
 
 if __name__=='__main__':

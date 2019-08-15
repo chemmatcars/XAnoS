@@ -1,9 +1,9 @@
-samNums=[11]
+samNums=[4]
 bkgNum=3
 stdNum=1
 mtNum=2
 airNum=12
-sampleThickness=[0.15]
+sampleThickness=[0.136]
 bkgThickness=0.105
 stdThickness=0.1055
 normStd=GC

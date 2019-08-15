@@ -26,7 +26,7 @@ class Gaussian:
         """
         Gaussian function
         """
-        return norm*np.exp(-4.0*np.log(2)*(x-pos)**2/wid**2)
+        return norm*np.exp(-0.69315*(x-pos)**2/wid**2)*0.46972/wid
 
     def init_params(self):
         self.params=Parameters()
