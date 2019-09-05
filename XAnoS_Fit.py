@@ -524,6 +524,14 @@ class XAnoS_Fit(QWidget):
         self.xmax=float(self.xminmaxLineEdit.text().split(':')[1])
     
     def doFit(self):
+        if self.sfnames is None or self.sfnames==[]:
+            QMessageBox.warning(self,'Data Error','Please select a dataset first before fitting',QMessageBox.Ok)
+            return
+        if len(self.fit.fit_params)>0:
+            pass
+        else:
+            QMessageBox.warning(self, 'Fit Warning', 'Please select atleast a single parameter to fit', QMessageBox.Ok)
+            return
         try:
             self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
             self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
@@ -539,9 +547,6 @@ class XAnoS_Fit(QWidget):
         self.fit_scale=self.fitScaleComboBox.currentText()
         self.fit.functionCalled.connect(self.fitCallback)
 
-        if self.sfnames is None or self.sfnames==[]:
-            QMessageBox.warning(self,'Data Error','Please select a dataset first before fitting',QMessageBox.Ok)
-            return
         for fname in self.sfnames:
             if len(self.data[fname].keys())>1:
                 x={}
@@ -929,8 +934,18 @@ class XAnoS_Fit(QWidget):
                 for j in range(1, self.mfitParamTableWidget.columnCount()):
                     header += '%s_%s=%s\n' % (vartxt, self.mfitParamTableWidget.horizontalHeaderItem(j).text(),
                                               self.mfitParamTableWidget.item(i, j).text())
-            header+='col_names=[\'q\',\'I\']'
-            np.savetxt(fname,np.vstack((self.fit.x,self.fit.yfit)).T,header=header,comments='#')
+            if type(self.fit.x)==dict:
+                text='col_names=[\'q\','
+                keys=list(self.fit.x.keys())
+                data=self.fit.x[keys[0]]
+                for key in keys:
+                    text+='\''+key+'\','
+                    data=np.vstack((data,self.fit.yfit[key]))
+                header+=text[:-1]+']\n'
+                np.savetxt(fname,data.T,header=header,comments='#')
+            else:
+                header+='col_names=[\'q\',\'I\']'
+                np.savetxt(fname,np.vstack((self.fit.x,self.fit.yfit)).T,header=header,comments='#')
         else:
             pass
 
@@ -1559,23 +1574,23 @@ class XAnoS_Fit(QWidget):
                                 pass
                     self.plot_extra_param()
                     self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
-                    try:
-                        pfnames=copy.copy(self.pfnames)
-                    except:
-                        pfnames=[]
-                    if type(self.fit.x)==dict:
-                        for key in self.fit.x.keys():
-                            self.plotWidget.add_data(x=self.fit.x[key][self.fit.imin[key]:self.fit.imax[key] + 1], y=self.fit.yfit[key], \
-                                             name=self.funcListWidget.currentItem().text()+':'+key, fit=True)
-                        pfnames = pfnames + [self.funcListWidget.currentItem().text() + ':' + key for key in
-                                                 self.fit.x.keys()]
-                    else:
-                        self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax + 1], y=self.fit.yfit, \
-                                                 name=self.funcListWidget.currentItem().text(), fit=True)
-                        pfnames = pfnames + [self.funcListWidget.currentItem().text()]
+                try:
+                    pfnames=copy.copy(self.pfnames)
+                except:
+                    pfnames=[]
+                if type(self.fit.x)==dict:
+                    for key in self.fit.x.keys():
+                        self.plotWidget.add_data(x=self.fit.x[key][self.fit.imin[key]:self.fit.imax[key] + 1], y=self.fit.yfit[key], \
+                                         name=self.funcListWidget.currentItem().text()+':'+key, fit=True)
+                    pfnames = pfnames + [self.funcListWidget.currentItem().text() + ':' + key for key in
+                                             self.fit.x.keys()]
+                else:
+                    self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax + 1], y=self.fit.yfit, \
+                                             name=self.funcListWidget.currentItem().text(), fit=True)
+                    pfnames = pfnames + [self.funcListWidget.currentItem().text()]
 
-                    self.plotWidget.Plot(pfnames)
-                    pg.QtGui.QApplication.processEvents()
+                self.plotWidget.Plot(pfnames)
+                pg.QtGui.QApplication.processEvents()
         except:
             QMessageBox.warning(self,'Value Error','The value just entered is not seem to be right.\n'+traceback.format_exc(),QMessageBox.Ok)
             self.xLineEdit.setText('np.linspace(0.001,0.1,100)')

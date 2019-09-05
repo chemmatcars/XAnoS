@@ -76,7 +76,7 @@ class Chemical_Formula:
 
 
 if __name__=='__main__':
-    t=Chemical_Formula('NaCl')
+    t=Chemical_Formula('NaCl0.27000000402331353')
     elements=t.elements
     element_mole_ratio=t.element_mole_ratio()
     molar_mass=t.molar_mass()

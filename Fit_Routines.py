@@ -87,6 +87,10 @@ class Fit(QObject):
                 data=self.y[key][self.imin[key]:self.imax[key]+ 1]
                 err=self.yerr[key][self.imin[key]:self.imax[key]+1]
                 fit=yfit[key]
+                maxd=np.max(data)
+                data=data/maxd
+                err=err/maxd
+                fit=fit/maxd
                 dnorm = data[0]
                 fnorm = fit[0]
                 if fit_scale=='Log':

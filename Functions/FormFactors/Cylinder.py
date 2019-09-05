@@ -72,6 +72,7 @@ class Cylinder: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         self.output_params={}
+        q=self.x
         if self.dist=='Gaussian':
             if self.Rsig>1e-3:
                 rdist=Gaussian.Gaussian(x=0.0,pos=self.R, wid=self.Rsig)
@@ -90,13 +91,16 @@ class Cylinder: #Please put the class name same as the function name
                 hdist.x = h
                 disth = hdist.y()
                 self.output_params['H_distribution'] = {'x': h, 'y': disth}
+                if self.Rsig < 1e-3:
+                    r = np.ones_like(h) * self.R
+                    distr=np.ones_like(r)
             else:
                 h = np.ones_like(r) * self.H
                 disth = np.ones_like(h)
         elif self.dist=='LogNormal':
             if self.Rsig > 1e-3:
                 rdist = LogNormal.LogNormal(x=0.0, pos=self.R, wid=self.Rsig)
-                rmin, rmax = max(0.001, self.R*(1 - np.exp(self.Rsig))), self.R*(1+2*np.exp(self.Rsig))
+                rmin, rmax = max(0.001, self.R*(1 - np.exp(self.Rsig))), self.R*(1 + 2*np.exp(self.Rsig))
                 r = np.linspace(rmin, rmax, self.Nsample)
                 rdist.x = r
                 distr = rdist.y()
@@ -111,11 +115,14 @@ class Cylinder: #Please put the class name same as the function name
                 hdist.x = h
                 disth = hdist.y()
                 self.output_params['H_distribution'] = {'x': h, 'y': disth}
+                if self.Rsig < 1e-3:
+                    r = np.ones_like(h) * self.R
+                    distr=np.ones_like(r)
             else:
                 h = np.ones_like(r) * self.H
                 disth = np.ones_like(h)
 
-        result=ff_cylinder_dist(self.x,r,distr,h,disth)
+        result = ff_cylinder_dist(q,r,distr,h,disth)
         return self.norm*result+self.bkg
 
 

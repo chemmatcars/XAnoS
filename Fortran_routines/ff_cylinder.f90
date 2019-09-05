@@ -32,9 +32,9 @@ subroutine ff_cylinder_dist(q,R,Rdist,L,Ldist,ff,M,N)
     !Born Approximation for roughness
     !q = Array of reciprocal wave-vectors at which the form-factor needs to be calculated
     !R = Array of radii of cylinder in Angstroms
-    !Rdist = distribution of radii R
+    !Rdist = Probablity distribution of radii R
     !L = Array of Length of cylinder in Angstroms
-    !Ldist = distributio of lenght L
+    !Ldist = Probablity distribution of length L
     !N = No. of samples R and L
     !ff = Form factor of cylinder
     !M = No. of reciprocal wave-vectors at which the form-factor needs to be calculated

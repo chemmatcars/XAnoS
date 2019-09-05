@@ -16,7 +16,7 @@ from utils import find_minmax
 
 
 class Sphere_Uniform: #Please put the class name same as the function name
-    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0, bkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
+    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0, sbkg=0.0, cbkg=0.0, abkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
         """
         Documentation
         Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
@@ -28,7 +28,9 @@ class Sphere_Uniform: #Please put the class name same as the function name
         NrDep       : Energy dependence of the non-resonant element. Default= 'True' (Energy Dependent), 'False' (Energy independent)
         dist        : The probablity distribution fucntion for the radii of different interfaces in the nanoparticles. Default: Gaussian
         norm        : The density of the nanoparticles in Molar (Moles/Liter)
-        bkg         : Constant incoherent background
+        sbkg        : Constant incoherent background for SAXS-term
+        cbkg        : Constant incoherent background for cross-term
+        abkg        : Constant incoherent background for Resonant-term
         flux        : Total X-ray flux to calculate the errorbar to simulate the errorbar for the fitted data
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
                         Material ('Materials' using chemical formula),
@@ -43,7 +45,9 @@ class Sphere_Uniform: #Please put the class name same as the function name
         else:
             self.x=x
         self.norm=norm
-        self.bkg=bkg
+        self.sbkg=sbkg
+        self.cbkg=cbkg
+        self.abkg=abkg
         self.dist=dist
         self.Np=Np
         self.Energy=Energy
@@ -60,24 +64,26 @@ class Sphere_Uniform: #Please put the class name same as the function name
     def init_params(self):
         """
         Define all the fitting parameters like
-        self.param.add('sig',value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
+        self.params.add('sig',value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
         """
         self.params=Parameters()
         self.params.add('norm',value=self.norm,vary=0, min = -np.inf, max = np.inf, expr = None, brute_step = 0.1)
-        self.params.add('bkg',value=self.bkg,vary=0, min = -np.inf, max = np.inf, expr = None, brute_step = 0.1)
+        self.params.add('sbkg',value=self.sbkg,vary=0, min = -np.inf, max = np.inf, expr = None, brute_step = 0.1)
+        self.params.add('cbkg', value=self.cbkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('abkg', value=self.abkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         for key in self.__mpar__.keys():
             if key!='Material':
                 for i in range(len(self.__mpar__[key])):
-                        self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
-    def calc_rho(self,material=['Au','H2O'], density=[19.3,1.0], sol_density=[1.0,1.0], Rmoles=[1.0,0.0], Energy=None, NrDep='True'):
+    def calc_rho(self,R=[1.0,0.0],material=['Au','H2O'], density=[19.3,1.0], sol_density=[1.0,1.0], Rmoles=[1.0,0.0], Energy=None, NrDep='True'):
         """
         Calculates the complex electron density of core-shell type multilayered particles in el/Angstroms^3
 
         R         :: list of Radii and subsequent shell thicknesses in Angstroms of the nanoparticle system
         material  :: list of material of all the shells starting from the core to outside
         density   :: list of density of all the materials in gm/cm^3 starting from the inner core to outside
-        rmoles    :: mole-fraction of the resonant element in the materials
+        Rmoles    :: mole-fraction of the resonant element in the materials
         Energy    :: Energy in keV
         """
         self.output_params['scaler_parameters']={}
@@ -86,6 +92,10 @@ class Sphere_Uniform: #Please put the class name same as the function name
             rho = []
             adensity = []  # Density of anomalous element
             eirho = []  # Energy independent electron density
+            r=0.0
+            rhor=[]
+            eirhor=[]
+            adensityr=[]
             for i in range(Nl):
                 mat=material[i].split(':')
                 if len(mat)==2:
@@ -111,22 +121,22 @@ class Sphere_Uniform: #Please put the class name same as the function name
                     solute_mole_fraction=solute_moles/total_moles
                     comb_material=''
                     for ele in solute_mole_ratio.keys():
-                        comb_material+='%s%.6f'%(ele,solute_mole_ratio[ele]*solute_mole_fraction)
+                        comb_material+='%s%.10f'%(ele,solute_mole_ratio[ele]*solute_mole_fraction)
                     for ele in solvent_mole_ratio.keys():
-                        comb_material+='%s%.6f'%(ele,solvent_mole_ratio[ele]*solvent_mole_fraction)
+                        comb_material+='%s%.10f'%(ele,solvent_mole_ratio[ele]*solvent_mole_fraction)
                     tdensity=density[i]+sol_density[i]*(1-solute_mv*density[i]/solute_mw)
-                    self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
+                    #self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
                 else:
                     formula=self.__cf__.parse(material[i])
                     if self.relement in formula.keys():
-                        self.__cf__.formula_dict[self.relement]=Rmoles[i]
+                        self.__cf__.formula_dict[self.relement] = Rmoles[i]
                     mole_ratio=self.__cf__.element_mole_ratio()
                     comb_material=''
                     for ele in mole_ratio.keys():
-                        comb_material+='%s%.6f'%(ele,mole_ratio[ele])
+                        comb_material+='%s%.10f'%(ele,mole_ratio[ele])
                     #comb_material=material[i]
                     tdensity=density[i]
-                    self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
+                    #self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
                 formula = self.__cf__.parse(comb_material)
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
@@ -157,10 +167,21 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 # else:
                 #     eirho.append(0.6023 * (nelectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0, 0.0) / molwt
                 #     rho.append(0.6023 * (nelectrons + felectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0,0.0) / molwt
-                self.output_params['scaler_parameters']['rho[%s]' % material[i]]=rho[-1]
-                self.output_params['scaler_parameters']['eirho[%s]' % material[i]] = eirho[-1]
-                self.output_params['scaler_parameters']['adensity[%s]' % material[i]] = adensity[-1]
-            return rho, eirho, adensity
+                #self.output_params['scaler_parameters']['rho[%s]' % material[i]]=rho[-1]
+                #self.output_params['scaler_parameters']['eirho[%s]' % material[i]] = eirho[-1]
+                #self.output_params['scaler_parameters']['adensity[%s]' % material[i]] = adensity[-1]
+                rhor.append([r,np.real(rho[-1])])
+                eirhor.append([r,np.real(eirho[-1])])
+                adensityr.append([r,np.real(adensity[-1])])
+                r=r+R[i]
+                rhor.append([r, np.real(rho[-1])])
+                eirhor.append([r, np.real(eirho[-1])])
+                adensityr.append([r, np.real(adensity[-1])])
+            rhor,eirhor,adensityr=np.array(rhor),np.array(eirhor),np.array(adensityr)
+            rhor[-1,0]=rhor[-1,0]+R[-2]
+            eirhor[-1, 0] = eirhor[-1, 0] + R[-2]
+            adensityr[-1, 0] = adensityr[-1, 0] + R[-2]
+            return rho, eirho, adensity, rhor, eirhor, adensityr
 
     def calc_form(self, q, r, rho):
         """
@@ -190,9 +211,9 @@ class Sphere_Uniform: #Please put the class name same as the function name
             if Rsig[i] > 0.001:
                 lgn = eval(self.dist+'.'+self.dist+'(x=0.001, pos=r, wid=Rsig[i])')
                 rmin, rmax = find_minmax(lgn, r, Rsig[i])
-                r1 = r1 + 'np.linspace(%f,%f,%d),' % (rmin, rmax, Np)
+                r1 = r1 + 'np.linspace(%.10f,%.10f,%d),' % (rmin, rmax, Np)
             else:
-                r1 = r1 + '[%f],' % r
+                r1 = r1 + '[%.10f],' % r
         r1 = r1[:-1] + ')'
         return (eval(r1))
 
@@ -231,14 +252,16 @@ class Sphere_Uniform: #Please put the class name same as the function name
         elif key=='Resonant-term':
             return np.sum(np.abs(aform) ** 2 * dist) / sdist # in cm^2
         elif key=='Cross-term':
-            return np.sum(eiform * aform * dist) / sdist  # in cm^2
+            return np.abs(np.sum(eiform * aform * dist) / sdist)  # in cm^2
         elif key=='Total':
             return np.sum(np.abs(form) ** 2 * dist) / sdist # in cm^2
 
 
     def update_params(self):
         self.norm=self.params['norm'].value
-        self.bkg=self.params['bkg'].value
+        self.sbkg=self.params['sbkg'].value
+        self.cbkg = self.params['cbkg'].value
+        self.abkg = self.params['abkg'].value
         key='Density'
         self.__density__=[self.params['__%s__%03d'%(key,i)].value for i in range(len(self.__mpar__[key]))]
         key='Sol_Density'
@@ -259,11 +282,11 @@ class Sphere_Uniform: #Please put the class name same as the function name
         """
         self.output_params={}
         self.update_params()
-        rho,eirho,adensity=self.calc_rho(material=self.__material__, density=self.__density__, sol_density=self.__sol_density__,Energy=self.Energy, Rmoles= self.__Rmoles__, NrDep=self.NrDep)
+        rho,eirho,adensity,rhor,eirhor,adensityr=self.calc_rho(R=self.__R__,material=self.__material__, density=self.__density__, sol_density=self.__sol_density__,Energy=self.Energy, Rmoles= self.__Rmoles__, NrDep=self.NrDep)
         #rho.append(self.rhosol)
         #eirho.append(self.rhosol)
         #adensity.append(0.0)
-        r=self.calc_mesh(R=self.__R__[:-1],Rsig=self.__Rsig__,Np=self.Np)
+        r=self.calc_mesh(R=self.__R__[:-1],Rsig=self.__Rsig__[:-1],Np=self.Np)
         adist = np.ones_like(r[0])
         for i in range(len(self.__R__)-1):
             if self.__Rsig__[i] > 0.001:
@@ -278,16 +301,23 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 sq=[]
                 for q1 in self.x[key]:
                     sq.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity,key=key))
-                sqf[key] = self.norm * np.array(sq) * 6.022e23 / 1e3  # in cm^-1
+                sqf[key] = self.norm * np.array(sq) * 6.022e20  # in cm^-1
                 if key=='SAXS-term':
-                    sqf[key]=sqf[key]+self.bkg
+                    sqf[key]=sqf[key]+self.sbkg
+                if key=='Cross-term':
+                    sqf[key]=sqf[key]+self.cbkg
+                if key=='Resonant-term':
+                    sqf[key]=sqf[key]+self.abkg
             key1='Total'
             sqt=[]
             for q1 in self.x[key]:
                  sqt.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity, key=key1))
-            total = self.norm * np.array(sqt) * 6.022e23 / 1e3 + self.bkg # in cm^-1
+            total = self.norm * np.array(sqt) * 6.022e20 + self.sbkg # in cm^-1
             if not self.__fit__:
                 self.output_params['Simulated_total_wo_err']={'x':self.x[key],'y':total}
+                self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1]}
+                self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1]}
+                self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]}
             #sqf[key1]=total
             # sqerr = np.sqrt(self.flux * sqf[key] * 1e-5) / self.flux
             # sqwerr = sqf[key] * 1e-5 + 2 * (0.5 - np.random.rand(len(sqf[key]))) * sqerr
@@ -304,18 +334,22 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 asqf.append(asq)
                 eisqf.append(eisq)
                 csqf.append(csq)
-            sqf=self.norm*np.array(sqf)*6.022e23/1e3 + self.bkg#in cm^-1
+            sqf=self.norm*np.array(sqf) * 6.022e20 + self.sbkg#in cm^-1
             if not self.__fit__: #Generate all the quantities below while not fitting
-                asqf=self.norm*np.array(asqf)*6.022e23/1e3 #in cm^-1
-                eisqf=self.norm*np.array(eisqf)*6.022e23/1e3 #in cm^-1
-                csqf = self.norm * np.array(csqf) * 6.022e23 / 1e3  # in cm^-1
-                sqerr=np.sqrt(self.flux*sqf*1e-5)
-                sqwerr=(sqf*1e-5*self.flux+2*(0.5-np.random.rand(len(sqf)))*sqerr)
+                asqf=self.norm*np.array(asqf) * 6.022e20 + self.abkg#in cm^-1
+                eisqf=self.norm*np.array(eisqf) * 6.022e20 + self.sbkg#in cm^-1
+                csqf = self.norm * np.array(csqf) * 6.022e20 + self.cbkg # in cm^-1
+                svol=0.2**2 * 1.5 * 1e-3 # scattering volume in cm^3
+                sqerr=np.sqrt(self.flux*sqf*svol)
+                sqwerr=(sqf * svol * self.flux + 2 * (0.5-np.random.rand(len(sqf))) * sqerr)
                 self.output_params['simulated_total_w_err']={'x':self.x,'y':sqwerr,'yerr':sqerr}
-                self.output_params['simulated_total_wo_err']={'x':self.x,'y':sqf*1e-5*self.flux}
+                self.output_params['simulated_total_wo_err']={'x':self.x,'y':sqf*svol*self.flux}
                 self.output_params['simulated_anomalous'] = {'x': self.x, 'y': asqf}
                 self.output_params['simulated_saxs'] = {'x': self.x, 'y': eisqf}
                 self.output_params['simulated_cross']={'x':self.x,'y':csqf}
+                self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1]}
+                self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1]}
+                self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]}
         return sqf
 
 
