@@ -81,8 +81,9 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
         R1=Rc
         R2=Rc+tst
         #integral=np.sum([r1**2*np.exp(-(r1-R2)/lexp) for r1 in np.linspace(R2,Rp,1001)])*(Rp-R2)/1000
-        integral=lexp*(R2**2*np.exp(-R2/lexp)-Rp**2*np.exp(-Rp/lexp))+2*lexp**2*(R2*np.exp(-R2/lexp)-Rp*np.exp(-Rp/lexp))+2*lexp**3*(np.exp(-Rp/lexp)-np.exp(-R2/lexp))
-        rhos=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-3*lrho*integral*np.exp(R2/lexp))/(Rp**3-R2**3)
+        #integral=lexp*(R2**2*np.exp(-R2/lexp)-Rp**2*np.exp(-Rp/lexp))+2*lexp**2*(R2*np.exp(-R2/lexp)-Rp*np.exp(-Rp/lexp))+2*lexp**3*(np.exp(-Rp/lexp)-np.exp(-R2/lexp))
+        integral=(R2**2*lexp+2*R2*lexp**2+2*lexp**3)*np.exp(-R2/lexp)-(Rp**2*lexp+2*Rp*lexp**2+2*lexp**3)*np.exp(-Rp/lexp)
+        rhos=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-3*lrho*integral)/(Rp**3-R2**3)
         self.output_params['scaler_parameters']['rho_bulk']=rhos
         stern = np.where(r > R1, strho, 0.0) * np.where(r > R2, 0.0, 1.0)
         diffuse = np.where(r > R2, lrho * np.exp(-(r - R2) / lexp) + rhos, 0.0)
@@ -122,6 +123,7 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
         bkg=self.params['bkg'].value
         Rc = self.params['Rc'].value
         Rp=(3/(4*np.pi*norm*6.022e23))**(1.0/3.0)*1e9
+        print(Rp)
         rho=self.solrho(r, Rp=Rp, Rc=Rc, strho=strho, tst=tst, lrho=lrho, lexp=lexp, rhosol=self.rhosol)
         self.output_params['Electron_Density']={'x':r,'y':rho}
         self.output_params['scaler_parameters']['Rp']=Rp

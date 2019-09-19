@@ -8,7 +8,7 @@ from utils import find_minmax
 from PeakFunctions import Gaussian, LogNormal
 
 class Sphere:
-    def __init__(self, x=0.001, R=1.0, Rsig=0.0, dist='Gaussian', N=50, rhoc=1.0, rhosol=0.0, norm=1.0, bkg=0.0,mpar={}):
+    def __init__(self, x=0.001, R=1.0, Rsig=0.0, dist='Gaussian', N=50, integ='Trapezoid', rhoc=1.0, rhosol=0.0, norm=1.0, bkg=0.0,mpar={}):
         """
         Calculates the form factor of a solid sphere with size distribution
         x     	: Array of q-values in the same reciprocal unit as R and Rsig
@@ -16,6 +16,7 @@ class Sphere:
         Rsig  	: Width of the distribution of solid spheres
         dist  	: Gaussian or LogNormal
         N     	: No. of points on which the distribution will be calculated
+        integ   : The type of integration ('Normal' or 'MonteCarlo') Default: 'Normal'
         rhoc  	: Electron density of the particle
         rhosol	: Electron density of the solvent or surrounding environment
         """
@@ -29,10 +30,11 @@ class Sphere:
         self.rhoc=rhoc
         self.rhosol=rhosol
         self.norm=norm
+        self.integ=integ
         self.bkg=bkg
         self.N=N
         self.__mpar__=mpar
-        self.choices={'dist':['Gaussian','LogNormal']}
+        self.choices={'dist':['Gaussian','LogNormal'],'integ':['Trapezoid','MonteCarlo']}
         self.init_params()
 
     def init_params(self):
@@ -44,47 +46,85 @@ class Sphere:
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
+    def update_params(self):
+        self.R=self.params['R'].value
+        self.Rsig=self.params['R'].value
+        self.rhoc=self.params['rhoc'].value
+        self.rhosol=self.params['rhosol'].value
+        self.norm=self.params['norm'].value
+        self.bkg=self.params['bkg'].value
+
     def y(self):
         rho=self.rhoc-self.rhosol
         self.output_params={}
         if self.Rsig<1e-3:
             return self.norm*rho**2*(np.sin(self.x*self.R)-self.x*self.R*np.cos(self.x*self.R))**2/self.x**6+self.bkg
         else:
-            if self.dist=='Gaussian':
-                gau=Gaussian.Gaussian(x=0.001,pos=self.R,wid=self.Rsig)
-                rmin,rmax=find_minmax(gau,self.R,self.Rsig)
-                r=np.linspace(rmin,rmax,self.N)
-                gau.x=r
-                dist=gau.y()
-                sumdist=np.sum(dist)
-                self.output_params['Distribution']={'x':r,'y':dist/sumdist}
-                if type(self.x)==np.ndarray:
-                    ffactor=[]
-                    for x in self.x:
-                        f=np.sum((np.sin(x*r)-x*r*np.cos(x*r))**2*dist/x**6)
-                        ffactor.append(f/sumdist)
-                    return self.norm*rho**2*np.array(ffactor)+self.bkg
-                else:
-                    return self.norm*rho**2*np.sum((np.sin(self.x*r)-self.x*r*np.cos(self.x*r))**2*dist/self.x**6)/sumdist+self.bkg
-            elif self.dist=='LogNormal':
-                lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
-                rmin,rmax=find_minmax(lgn,self.R,self.Rsig)
-                r=np.linspace(rmin,rmax,self.N)
-                lgn.x=r
-                dist=lgn.y()
-                sumdist=np.sum(dist)
-                self.output_params['Distribution']={'x':r,'y':dist/sumdist}
-                if type(self.x)==np.ndarray:
-                    ffactor=[]
-                    for x in self.x:
-                        f=np.sum((np.sin(x*r)-x*r*np.cos(x*r))**2*dist/x**6)
-                        ffactor.append(f/sumdist)
-                    return self.norm*rho**2*np.array(ffactor)+self.bkg
-                else:
-                    return self.norm*rho**2*np.sum((np.sin(self.x*r)-self.x*r*np.cos(self.x*r))**2*dist/self.x**6)/sumdist+self.bkg
+            if self.integ=='Trapezoid':
+                if self.dist=='Gaussian':
+                    gau=Gaussian.Gaussian(x=0.001,pos=self.R,wid=self.Rsig)
+                    rmin, rmax = max(0.001, self.R-5*self.Rsig),self.R+5*self.Rsig
+                    r=np.linspace(rmin,rmax,self.N)
+                    gau.x=r
+                    dist=gau.y()
+                    sumdist=np.sum(dist)
+                    self.output_params['Distribution']={'x':r,'y':dist/sumdist}
+                    if type(self.x)==np.ndarray:
+                        ffactor=[]
+                        for x in self.x:
+                            f=np.sum((np.sin(x*r)-x*r*np.cos(x*r))**2*dist/x**6)
+                            ffactor.append(f/sumdist)
+                        return self.norm*rho**2*np.array(ffactor)+self.bkg
+                    else:
+                        return self.norm*rho**2*np.sum((np.sin(self.x*r)-self.x*r*np.cos(self.x*r))**2*dist/self.x**6)/sumdist+self.bkg
+                elif self.dist=='LogNormal':
+                    lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
+                    rmin,rmax=max(0.001, self.R * (1 - np.exp(self.Rsig))), self.R * (1 + 2 * np.exp(self.Rsig))
+                    r=np.linspace(rmin,rmax,self.N)
+                    lgn.x=r
+                    dist=lgn.y()
+                    sumdist=np.sum(dist)
+                    self.output_params['Distribution']={'x':r,'y':dist/sumdist}
+                    if type(self.x)==np.ndarray:
+                        ffactor=[]
+                        for x in self.x:
+                            f=np.sum((np.sin(x*r)-x*r*np.cos(x*r))**2*dist/x**6)
+                            ffactor.append(f/sumdist)
+                        return self.norm*rho**2*np.array(ffactor)+self.bkg
+                    else:
+                        return self.norm*rho**2*np.sum((np.sin(self.x*r)-self.x*r*np.cos(self.x*r))**2*dist/self.x**6)/sumdist+self.bkg
             else:
-                return np.ones_like(x)
-
+                np.random.seed(100)
+                if self.dist == 'Gaussian':
+                    r=np.sort(np.random.normal(self.R,self.Rsig/2.355,10000))
+                    gau = Gaussian.Gaussian(x=r, pos=self.R, wid=self.Rsig)
+                    dist = gau.y()
+                    sumdist = np.sum(dist)
+                    self.output_params['Distribution'] = {'x': r, 'y': dist / sumdist}
+                    if type(self.x) == np.ndarray:
+                        ffactor = []
+                        for x in self.x:
+                            f = np.sum((np.sin(x * r) - x * r * np.cos(x * r)) ** 2 * dist / x ** 6)
+                            ffactor.append(f / sumdist)
+                        return self.norm * rho ** 2 * np.array(ffactor) + self.bkg
+                    else:
+                        return self.norm * rho ** 2 * np.sum((np.sin(self.x * r) - self.x * r * np.cos(
+                            self.x * r)) ** 2 * dist / self.x ** 6) / sumdist + self.bkg
+                elif self.dist == 'LogNormal':
+                    r = np.sort(np.random.lognormal(np.log(self.R), self.Rsig,10000))
+                    lgn = LogNormal.LogNormal(x=r, pos=self.R, wid=self.Rsig)
+                    dist = lgn.y()
+                    sumdist = np.sum(dist)
+                    self.output_params['Distribution'] = {'x': r, 'y': dist / sumdist}
+                    if type(self.x) == np.ndarray:
+                        ffactor = []
+                        for x in self.x:
+                            f = np.sum((np.sin(x * r) - x * r * np.cos(x * r)) ** 2 * dist / x ** 6)
+                            ffactor.append(f / sumdist)
+                        return self.norm * rho ** 2 * np.array(ffactor) + self.bkg
+                    else:
+                        return self.norm * rho ** 2 * np.sum((np.sin(self.x * r) - self.x * r * np.cos(
+                            self.x * r)) ** 2 * dist / self.x ** 6) / sumdist + self.bkg
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)
