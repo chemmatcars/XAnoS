@@ -529,7 +529,6 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             asqf = []
             eisqf = []
             csqf = []
-            print(r.shape)
             for q1 in self.x:
                 tsq, eisq, asq, csq = self.sphere(q1, r, adist, rho, eirho, adensity)
                 sqf.append(tsq)
@@ -537,7 +536,6 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                 eisqf.append(eisq)
                 csqf.append(csq)
             sqf = self.norm * np.array(sqf) * 6.022e20 + self.sbkg  # in cm^-1
-            print(sqf.shape)
             if not self.__fit__:  # Generate all the quantities below while not fitting
                 asqf = self.norm * np.array(asqf) * 6.022e20 + self.abkg  # in cm^-1
                 eisqf = self.norm * np.array(eisqf) * 6.022e20 + self.sbkg  # in cm^-1
