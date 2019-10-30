@@ -17,6 +17,7 @@ class Fit(QObject):
         self.fit_params=self.func.params
         self.fitter=None
         self.result=None
+        self.Niter=0
 
 
     def sync_param(self):
@@ -119,6 +120,8 @@ class Fit(QObject):
     def callback(self,params,iterations,residual,fit_scale):
         """
         """
+        #self.Niter += 1
+        #print(self.Niter, ': I m here')
         self.functionCalled.emit(params,iterations,residual,fit_scale)
         if self.fit_abort:
             return True
@@ -127,6 +130,7 @@ class Fit(QObject):
     
     
     def perform_fit(self,xmin,xmax,fit_scale='Linear',fit_method='leastsq',maxiter=1):
+        self.Niter=0
         #self.sync_param()
         self.fit_abort=False
         if type(self.x)==dict:
@@ -143,7 +147,12 @@ class Fit(QObject):
                                   nan_policy='raise', calc_covar=True, maxiter=maxiter)
         elif fit_method=='brute':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise')
-        self.result=self.fitter.minimize(method=fit_method)        
+        elif fit_method=='emcee':
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,), iter_cb=self.callback, nan_policy='raise', burn=300, steps=1000, thin=20, is_weighted=True)
+        else:
+            self.fitter = Minimizer(self.residual, self.fit_params, fcn_args=(fit_scale,), iter_cb=self.callback,
+                                    nan_policy='raise')
+        self.result=self.fitter.minimize(method=fit_method)
         return fit_report(self.result),self.result.message
         
         

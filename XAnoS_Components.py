@@ -19,7 +19,7 @@ from lmfit import minimize as lmfit_minimize
 import time
 from calc_cf import calc_cf
 from utils import calc_prm
-from readData import read1DSAXS
+from readData import read1DSAXS, combineFiles
 from itertools import combinations
 import periodictable as pdt
 
@@ -218,7 +218,7 @@ class XAnoS_Components(QWidget):
         row+=1
         col=0
         self.processTypeComboBox=QComboBox()
-        self.processTypeComboBox.addItems(['Mean','Sum'])
+        self.processTypeComboBox.addItems(['Mean','Sum','Combine Files'])
         self.processPushButton=QPushButton('Process')
         self.processPushButton.clicked.connect(self.processData)
         self.dataDockLayout.addWidget(self.processTypeComboBox,row=row,col=col)
@@ -666,6 +666,9 @@ class XAnoS_Components(QWidget):
         """
         Process the selected data for calculating mean and sum
         """
+        if self.processTypeComboBox.currentText()=='Combine Files':
+            combineFiles(fnames=self.fnames)
+            return
         self.interpolate_data(kind='linear')
         tdata=np.zeros_like(self.data[self.fnames[0]]['yintp'])
         tdata_err=np.zeros_like(tdata)
@@ -1120,7 +1123,12 @@ class XAnoS_Components(QWidget):
             self.pdata=[[energy,f1val,dataChk[:,i],errChk[:,i]] for i in range(dataChk.shape[1])]
             #print(self.pdata[0][0],self.pdata[0][1],self.pdata[0][2]/self.pdata[0][2][0])#/self.pdata[0][2][0])
             #print(len(self.pdata[0][0]), len(self.pdata[0][1]), len(self.pdata[0][2]))
-            self.dataCheckWidget=pg.plot(self.pdata[0][1],self.pdata[0][2]/self.pdata[0][2][0],pen=None,symbol='o')
+            x = self.pdata[0][1]
+            y = self.pdata[0][2]
+            y = y[np.argsort(x)]
+            x = x[np.argsort(x)]
+            self.dataCheckWidget=pg.plot(x,y/y[0],pen=None,symbol='o',labels={'left':'Norm Int','bottom':'f1'})
+            self.dataCheckWidget.setTitle('Q=%.4f'%self.qintp[0])
             self.checkDataSpinBox.setMinimum(0)
             self.checkDataSpinBox.setMaximum(dataChk.shape[1]-1)
             self.checkDataSpinBox.setValue(0)            
@@ -1152,7 +1160,12 @@ class XAnoS_Components(QWidget):
         """
         i=self.checkDataSpinBox.value()
         self.dataCheckWidget.clear()
-        self.dataCheckWidget.plot(self.pdata[i][1],self.pdata[i][2]/self.pdata[i][2][0],symbol='o',pen=None)
+        x=self.pdata[i][1]
+        y=self.pdata[i][2]
+        y=y[np.argsort(x)]
+        x=x[np.argsort(x)]
+        self.dataCheckWidget.plot(x,y/y[0],symbol='o',pen=None,labels={'left':'Norm Int','bottom':'f1'})
+        self.dataCheckWidget.setTitle('Q=%.4f' % self.qintp[i])
         if self.dataPlotWidget.plotWidget.getPlotItem().ctrl.logXCheck.isChecked():
             self.checkDataLocLine.setValue(np.log10(self.qintp[i]))
         else:

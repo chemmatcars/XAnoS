@@ -35,7 +35,9 @@ if len(sys.argv)==7:
     print(np.diff(e1vals))
     evaltxt=''
     pl.figure()
-    pl.plot(efine,f1,'r-',label='Equal Energy Steps')
+    etemp=np.linspace(min_energy,edge_energy+(edge_energy-min_energy),1001)
+    f1temp=xrdb.f1_chantler(element=element,energy=etemp,smoothing=0)
+    pl.plot(etemp,f1temp,'r-',label=element+'-Energy Edge')
     print("%10s\t%10s\t%10s\t%10s\t%10s"%("Step","f_value","Mono_E","Und_E","f_1"))
     for i in range(steps):
        # print("%.5f\t%.3f"%(f1vals[i],e1vals[i]/1e3))
@@ -48,8 +50,9 @@ if len(sys.argv)==7:
     fh.write(txt)
     fh.close()
     #pl.plot(e1vals,xrdb.f1_chantler(element=element,energy=e1vals,smoothing=0),'go',label='Equal f1 steps')
-    pl.plot(e1vals, f1vals, 'go', label='Equal f1 steps')
-    pl.legend(loc='best')
+    pl.plot(e1vals, f1vals, 'go', label='Equal f\' steps')
+    leg=pl.legend(loc='best')
+    leg.draggable()
     pl.show()
 else:
     print("Usage: python energySteps.py element_symbol edge_energy min_energy steps energy_offset [file to save the "

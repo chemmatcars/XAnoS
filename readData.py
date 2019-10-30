@@ -647,6 +647,48 @@ def interpolate_data(data,Npt=1000,kind='linear'):
         data[fname]['yintp']=fun(qintp)
         data[fname]['yintperr']=funerr(qintp)        
     return data
+
+def combineFiles(fnames=None,Npt=1000,kind='linear'):
+    """
+    Save all the data in a same file after interpolating with same q-values
+    :param fnames: List of filenames of the data which need to be combined in a file (default: None)
+    :param Npt: Number of points at which the interpolation will be performed for all the data sets (default: 1000)
+    :param kind: Kind of interpolation between either of ['linear', 'quadratic' or 'cubic']  (default: 'linear')
+    :return:
+    """
+    if type(fnames)==list:
+        fdir=os.path.dirname(os.path.abspath(fnames[0]))
+        data={}
+        for fname in fnames:
+            data=read1DSAXS(fname,data=data)
+        data=interpolate_data(data, Npt=Npt, kind=kind)
+        tdata = []
+        comments = "Files combined on %s\n" % time.asctime()
+        comments = comments + "The files combined are:\n"
+        colnames = "col_names=['q',"
+        col = 'q '
+        for fname in fnames:
+            comments=comments+fname+'\n'
+            energy=data[fname]['Energy']
+            colnames += "'dataE_%0.4f','errE_%0.4f'," % (energy,energy)
+            col += 'data_E:%0.4f err_E:%0.4f ' % (energy, energy)
+            if len(tdata) == 0:
+                tdata.append(data[fname]['xintp'])
+                tdata = np.array(tdata)
+                tdata = np.append(tdata, [data[fname]['yintp']*data[fname]['CF']/data[fname]['Thickness']], axis=0)
+                tdata = np.append(tdata, [data[fname]['yintperr']*data[fname]['CF']/data[fname]['Thickness']], axis=0)
+            else:
+                tdata = np.append(tdata, [data[fname]['yintp']*data[fname]['CF']/data[fname]['Thickness']], axis=0)
+                tdata = np.append(tdata, [data[fname]['yintperr']*data[fname]['CF']/data[fname]['Thickness']], axis=0)
+
+        tdata = tdata.T
+        colnames = colnames[:-1] + "]\n"
+        col = col[:-1] + '\n'
+        comments = comments + colnames
+        comments = comments + col
+        np.savetxt(os.path.join(fdir,'combined.txt'), tdata, header=comments,comments='#')
+
+
         
 def write1DSAXS(data,textEdit=None,fdir=None):
     """

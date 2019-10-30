@@ -87,6 +87,7 @@ class Data_Dialog(QDialog):
         self.okPushButton.setAutoDefault(False)
         self.make_default()
         self.setWindowTitle('Data Dialog')
+        self.acceptData=True
         #self.setWindowSize((600,400))
         # if self.parentWidget() is not None:
         #     self.addPlotPushButton.setEnabled(False)
@@ -131,9 +132,11 @@ class Data_Dialog(QDialog):
            
                    
     def closeWidget(self):
+        self.acceptData=False
         self.reject()
         
     def acceptWidget(self):
+        self.acceptData=True
         self.accept()
         
     def addMetaData(self):
@@ -539,7 +542,7 @@ class Data_Dialog(QDialog):
                 header=header+'%s=%s\n'%(key,str(self.data['meta'][key]))
             if 'col_names' not in self.data['meta'].keys():
                 header=header+'col_names=%s\n'%str(self.data['data'].columns.tolist())
-            np.savetxt(fname,self.data['data'].as_matrix(),header=header,comments='#')
+            np.savetxt(fname,self.data['data'].values,header=header,comments='#')
         
             
         

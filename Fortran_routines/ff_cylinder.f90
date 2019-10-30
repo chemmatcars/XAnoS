@@ -1,7 +1,6 @@
 subroutine ff_cylinder(q,R,L,ff,M)
     !***************************************************************************
-    !Subroutine to calculate Specular Reflectivity using Parrat Algorithm with
-    !Born Approximation for roughness
+    !Subroutine to calculate the form factor of cylinder
     !q = Array of reciprocal wave-vectors at which the form-factor needs to be calculated
     !R = Radius of cylinder in Angstroms
     !L = Length of cylinder in Angstroms
@@ -28,8 +27,7 @@ end subroutine ff_cylinder
 
 subroutine ff_cylinder_dist(q,R,Rdist,L,Ldist,ff,M,N)
     !***************************************************************************
-    !Subroutine to calculate Specular Reflectivity using Parrat Algorithm with
-    !Born Approximation for roughness
+    !Subroutine to calculate the form factor of cylinder with disctribution of radius and length
     !q = Array of reciprocal wave-vectors at which the form-factor needs to be calculated
     !R = Array of radii of cylinder in Angstroms
     !Rdist = Probablity distribution of radii R

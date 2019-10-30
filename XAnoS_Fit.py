@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox,\
     QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem,\
-    QAbstractItemView, QSpinBox, QSplitter, QSizePolicy, QAbstractScrollArea, QHBoxLayout, QTextEdit
-from PyQt5.QtGui import QPalette
+    QAbstractItemView, QSpinBox, QSplitter, QSizePolicy, QAbstractScrollArea, QHBoxLayout, QTextEdit, QShortcut
+from PyQt5.QtGui import QPalette, QKeySequence
 from PyQt5.QtCore import Qt, QThread
 import os
 import sys
@@ -14,6 +14,7 @@ from Data_Dialog import Data_Dialog
 from readData import read1DSAXS
 from importlib import import_module, reload
 from Fit_Routines import Fit
+import lmfit, corner
 import numbers
 import time
 import shutil
@@ -208,6 +209,7 @@ class XAnoS_Fit(QWidget):
         self.fchanged=True
 
         self.fitMethods={'Levenberg-Marquardt':'leastsq',
+                         'Scipy-Least-Squares':'least_squares',
                          'Differential-Evolution': 'differential_evolution',
                          'Brute-Force-Method':'brute',
                          'Nelder-Mead':'nelder',
@@ -399,6 +401,8 @@ class XAnoS_Fit(QWidget):
         self.removeDataButton=QPushButton('Remove Files')
         self.dataLayoutWidget.addWidget(self.removeDataButton,col=1)
         self.removeDataButton.clicked.connect(self.removeData)
+        self.removeDataShortCut = QShortcut(QKeySequence.Delete, self)
+        self.removeDataShortCut.activated.connect(self.removeData)
         
         
         
@@ -451,7 +455,7 @@ class XAnoS_Fit(QWidget):
         self.autoCICheckBox.setDisabled(True)
         self.calcConfInterButton=QPushButton('Calculate Confidence Interval')
         self.calcConfInterButton.clicked.connect(self.calcConfInterval)
-        self.calcConfInterButton.setDisabled(True)
+        #self.calcConfInterButton.setDisabled(True)
         self.dataLayoutWidget.addWidget(self.autoCICheckBox)
         self.dataLayoutWidget.addWidget(self.calcConfInterButton,col=1)      
         
@@ -464,6 +468,7 @@ class XAnoS_Fit(QWidget):
             self.sfnames.append(item.text())
             txt=item.text()
             self.pfnames=self.pfnames+[txt.split('<>')[0]+':'+key for key in self.data[txt].keys()]
+        self.curDir=os.path.dirname(self.sfnames[-1].split('<>')[1])
         if len(self.sfnames)>0:
             xmin=np.min([np.min([np.min(self.data[key][k1]['x']) for k1 in self.data[key].keys()]) for key in self.sfnames])
             xmax=np.max([np.max([np.max(self.data[key][k1]['x']) for k1 in self.data[key].keys()]) for key in self.sfnames])
@@ -527,10 +532,14 @@ class XAnoS_Fit(QWidget):
         if self.sfnames is None or self.sfnames==[]:
             QMessageBox.warning(self,'Data Error','Please select a dataset first before fitting',QMessageBox.Ok)
             return
-        if len(self.fit.fit_params)>0:
-            pass
-        else:
-            QMessageBox.warning(self, 'Fit Warning', 'Please select atleast a single parameter to fit', QMessageBox.Ok)
+        try:
+            if len(self.fit.fit_params)>0:
+                pass
+            else:
+                QMessageBox.warning(self, 'Fit Warning', 'Please select atleast a single parameter to fit', QMessageBox.Ok)
+                return
+        except:
+            QMessageBox.warning(self, 'Fit Function Warning', 'Please select a function to fit', QMessageBox.Ok)
             return
         try:
             self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
@@ -539,7 +548,7 @@ class XAnoS_Fit(QWidget):
             QMessageBox.warning(self,'Function Error','Please select a function first to fit.\n'+traceback.format_exc(),QMessageBox.Ok)
             return
         self.fit_method=self.fitMethods[self.fitMethodComboBox.currentText()]
-        if self.fit_method not in ['leastsq','brute','differential_evolution']:
+        if self.fit_method not in ['leastsq','brute','differential_evolution','least_squares']:
             QMessageBox.warning(self,'Fit Method Warning','This method is under development and will be available '
                                                           'soon. Please use only Lavenberg-Marquardt for the time '
                                                           'being.', QMessageBox.Ok)
@@ -666,7 +675,7 @@ class XAnoS_Fit(QWidget):
         
     def calcConfInterval(self):
         self.autoCICheckBox.setCheckState(Qt.Unchecked)
-        self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
+        self.confInterval_emcee(minimizer=self.fit.fitter,fit_result=self.fit.result)
         
     def confInterval(self,minimizer=None,fit_result=None):
         """
@@ -697,6 +706,22 @@ class XAnoS_Fit(QWidget):
         else:
             QMessageBox.warning(self,'Fit warning','Please fit the data first before calculating confidence intervals',\
                                 QMessageBox.Ok)
+
+    def confInterval_emcee(self, minimizer=None, fit_result=None):
+        """
+        """
+        if minimizer is not None and fit_result is not None:
+            self.fit_method='emcee'
+            self.fit.functionCalled.connect(self.fitCallback)
+            self.showFitInfoDlg()
+            self.runFit()
+            self.closeFitInfoDlg()
+        else:
+            QMessageBox.warning(self, 'Fit warning', 'Please fit the data first before calculating confidence intervals', QMessageBox.Ok)
+        try:
+            self.fit.functionCalled.disconnect(self.fitCallback)
+        except:
+            pass
                 
     def conf_interv_status(self,params,iterations,residual,fit_scale):
         self.confIntervalStatus.setText(self.confIntervalStatus.text().split('\n')[0]+'\n\n {:^s} = {:10d}'.format('Iteration',iterations))            
@@ -777,24 +802,25 @@ class XAnoS_Fit(QWidget):
                     data_dlg.accept()
                 else:
                     data_dlg.exec_()
-                self.dlg_data[data_key]=data_dlg.data
-                self.plotColIndex[data_key]=data_dlg.plotColIndex
-                self.plotColors[data_key]=data_dlg.plotColors
-                self.data[data_key]=data_dlg.externalData
-                self.expressions[data_key]=data_dlg.expressions
-                for key in self.data[data_key].keys():
-                    self.plotWidget.add_data(self.data[data_key][key]['x'],self.data[data_key][key]['y'],\
-                                             yerr=self.data[data_key][key]['yerr'],name='%d:%s'%(self.fileNumber,key),color=self.data[data_key][key]['color'])
-                self.dataListWidget.addItem(data_key)
-                self.fileNames[self.fileNumber]=fname
-                self.fileNumber+=1
+                if data_dlg.acceptData:
+                    self.dlg_data[data_key]=data_dlg.data
+                    self.plotColIndex[data_key]=data_dlg.plotColIndex
+                    self.plotColors[data_key]=data_dlg.plotColors
+                    self.data[data_key]=data_dlg.externalData
+                    self.expressions[data_key]=data_dlg.expressions
+                    for key in self.data[data_key].keys():
+                        self.plotWidget.add_data(self.data[data_key][key]['x'],self.data[data_key][key]['y'],\
+                                                 yerr=self.data[data_key][key]['yerr'],name='%d:%s'%(self.fileNumber,key),color=self.data[data_key][key]['color'])
+                    self.dataListWidget.addItem(data_key)
+                    self.fileNames[self.fileNumber]=fname
+                    self.fileNumber+=1
             #     else:
             #         QMessageBox.warning(self,'Import Error','Data file has been imported before.\
             #          Please remove the data file before importing again')
             # #except:
             # #    QMessageBox.warning(self,'File error','The file(s) do(es) not look like a data file. Please format it in x,y[,yerr] column format',QMessageBox.Ok)
-        self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
         self.dataListWidget.clearSelection()
+        self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
         self.dataListWidget.setCurrentRow(self.fileNumber-1)
 
                 
@@ -814,8 +840,9 @@ class XAnoS_Fit(QWidget):
             del self.plotColIndex[item.text()]
             del self.plotColors[item.text()]
             del self.dlg_data[item.text()]
-            
-        self.dataFileSelectionChanged()
+
+        if self.dataListWidget.count()>0:
+            self.dataFileSelectionChanged()
         self.dataListWidget.itemSelectionChanged.connect(self.dataFileSelectionChanged)
             
         
@@ -1459,7 +1486,7 @@ class XAnoS_Fit(QWidget):
         self.fixedParamTableWidget.resizeRowsToContents()
         self.fixedParamTableWidget.resizeColumnsToContents()
 
-            
+
         
         
     def fitParamChanged(self,row,col):

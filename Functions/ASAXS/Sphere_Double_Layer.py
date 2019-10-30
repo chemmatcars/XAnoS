@@ -39,7 +39,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         farIon      : The ionic layer farther from the particle
         ionDensity  : The bulk density of the ions in Moles per liter
         stThickness : Thickness of the stern layer
-        stDensity   : Density of the ions in the stern layer Moles per liter
+        stDensity   : Density of the ions in the stern layer in Moles per liter
         dbLength    : The decay length of the debye layer in Angstroms
         dbDensity   : The maximum density of the debye layer in Moles per liter
         Ndb         : Number of layers used to represent the double layer region
@@ -214,7 +214,8 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             adensityr[-1, 0] = adensityr[-1, 0] + R[-2]
             return np.array(rho), np.array(eirho), np.array(adensity), rhor, eirhor, adensityr
 
-    def solrho(self, Rp=100.0, Rc=12.5, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0):
+    def solrho(self, Rp=100.0, Rc=12.5, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0, R=[1.0],
+                                material=['H2O'],density=[1.0],sol_density=[1.0]):
         """
         Calculates the electron density for the bulk distribution of ions following double layer distribution surrounding a spherical particle
 
@@ -230,13 +231,86 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         R2=Rc+tst
         #integral=np.sum([r1**2*np.exp(-(r1-R2)/lexp) for r1 in np.linspace(R2,Rp,1001)])*(Rp-R2)/1000
         #integral=lexp*(R2**2*np.exp(-R2/lexp)-Rp**2*np.exp(-Rp/lexp))+2*lexp**2*(R2*np.exp(-R2/lexp)-Rp*np.exp(-Rp/lexp))+2*lexp**3*(np.exp(-Rp/lexp)-np.exp(-R2/lexp))
+        r1=0
+        tnear=0.0
+        tfar=0.0
+        nion = self.__cf__.parse(self.nearIon)
+        mwnion = self.__cf__.molecular_weight()
+        fion = self.__cf__.parse(self.farIon)
+        mwfion = self.__cf__.molecular_weight()
+        salt=self.nearIon+self.farIon
+        salt_formula=self.__cf__.parse(salt)
+        saltmw=self.__cf__.molecular_weight()
+        salt_mole_ratio=self.__cf__.element_mole_ratio()
+        for i, tR in enumerate(R):
+            r2=r1+tR
+            mat = material[i].split(':')
+            if len(mat) == 2:
+                print(self.__Rmoles__[i])
+                solute, solvent = mat
+
+                solute_formula = self.__cf__.parse(solute)
+                if self.relement in solute_formula.keys():
+                    self.__cf__.formula_dict[self.relement] = self.__Rmoles__[i]
+                solute_elements = self.__cf__.elements()
+                solute_mw = self.__cf__.molecular_weight()
+                solute_mv = self.__cf__.molar_volume()
+                solute_mole_ratio = self.__cf__.element_mole_ratio()
+
+                solvent_formula = self.__cf__.parse(solvent)
+                solvent_elements = self.__cf__.elements()
+                solvent_mw = self.__cf__.molecular_weight()
+                solvent_mole_ratio = self.__cf__.element_mole_ratio()
+
+                solvent_moles = sol_density[i] / solvent_mw
+                solute_moles = density[i] / solute_mw
+                total_moles = solvent_moles + solute_moles
+                solvent_mole_fraction = solvent_moles / total_moles
+                solute_mole_fraction = solute_moles / total_moles
+                comb_material = ''
+                for ele in solute_mole_ratio.keys():
+                    comb_material += '%s%.10f' % (ele, solute_mole_ratio[ele] * solute_mole_fraction)
+                for ele in solvent_mole_ratio.keys():
+                    comb_material += '%s%.10f' % (ele, solvent_mole_ratio[ele] * solvent_mole_fraction)
+                tdensity = density[i] + sol_density[i] * (1 - solute_mv * density[i] / solute_mw)
+                # self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
+            else:
+                formula = self.__cf__.parse(material[i])
+                if self.relement in formula.keys():
+                    self.__cf__.formula_dict[self.relement] = self.__Rmoles__[i]
+                mole_ratio = self.__cf__.element_mole_ratio()
+                comb_material = ''
+                for ele in mole_ratio.keys():
+                    comb_material += '%s%.10f' % (ele, mole_ratio[ele])
+                # comb_material=material[i]
+                tdensity = density[i]
+                # self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
+            formula = self.__cf__.parse(comb_material)
+            molwt = self.__cf__.molecular_weight()
+            elements = self.__cf__.elements()
+            mole_ratio = self.__cf__.element_mole_ratio()
+            if self.nearIon in material[i]:
+                if len(nion) > 1:
+                    nmratio = 1.0
+                else:
+                    nmratio = mole_ratio[self.nearIon]
+                tnear=tnear+(r2**3-r1**3)*tdensity*1e3*nmratio/mwnion
+            elif self.farIon in material[i]:
+                if len(fion) > 1:
+                    fmratio = 1.0
+                else:
+                    fmratio = mole_ratio[self.farIon]
+                tfar=tfar+(r2**3-r1**3)*tdensity*1e3*fmratio/mwfion
+            r1=r2+0.0
         integral=(R2**2*lexp+2*R2*lexp**2+2*lexp**3)*np.exp(-R2/lexp)-(Rp**2*lexp+2*Rp*lexp**2+2*lexp**3)*np.exp(-Rp/lexp)
-        if 3*lrho*integral>=rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3):
+        if 3*lrho*integral>=rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-tnear:
             near=0.00
-            lrho=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3))/3/integral
+            lrho=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-tnear)/3/integral
         else:
-            near=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-3*lrho*integral)/(Rp**3-R2**3)
-        far=(rhosol*(Rp ** 3 - R1 ** 3)+3*lrho*integral)/(Rp**3 - R2**3)
+            near=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-3*lrho*integral-tnear)/(Rp**3-R2**3)
+        far=(rhosol*(Rp ** 3 - R1 ** 3)+3*lrho*integral-tfar)/(Rp**3 - R2**3)
+        self.output_params['scaler_parameters']['tnear']=tnear
+        self.output_params['scaler_parameters']['tfar']=tfar
         self.output_params['scaler_parameters']['rho_near']=near
         self.output_params['scaler_parameters']['rho_far']=far
         return near, far # in Moles/Liter
@@ -437,8 +511,10 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         tRmoles=self.__Rmoles__[:-1]
         Rp = (3 / (4 * np.pi * self.norm * 6.022e23)) ** (1.0 / 3.0) * 1e9
         Rc=np.sum(tR)
+
         near, far = self.solrho(Rp=Rp, Rc=Rc, strho=self.stDensity, tst=self.stThickness, lrho=self.dbDensity,
-                                lexp=self.dbLength, rhosol=self.ionDensity)
+                                lexp=self.dbLength, rhosol=self.ionDensity, R=tR,
+                                material=tnmaterial,density=tndensity,sol_density=tsoldensity)
         dbr=[self.stThickness]
         dbr=dbr+[(Rp-Rc-self.stThickness)/self.Ndb for i in range(self.Ndb)]
         nden=[self.stDensity]
@@ -446,13 +522,17 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         nden=np.append(nden,self.dbDensity*np.exp(-np.cumsum(dbr[1:])/self.dbLength)+near)
         fden=np.append(fden,far*(1-np.exp(-np.cumsum(dbr[1:])/self.dbLength)))
         self.output_params['scaler_parameters']['Rp']=Rp
-
+        nmf=self.__cf__.parse(self.nearIon)
+        nmw=self.__cf__.molecular_weight()
+        fmf=self.__cf__.parse(self.farIon)
+        fmw=self.__cf__.molecular_weight()
         for i in range(len(dbr)):
             tR.append(dbr[i])
             tRsig.append(self.__Rsig__[-1])
             tsoldensity.append(self.__sol_density__[-1])
-            tndensity.append(2*nden[i])
-            tfdensity.append(2*fden[i])
+
+            tndensity.append(2*nden[i]*nmw/1000) # converting int gms/cubic-cms
+            tfdensity.append(2*fden[i]*fmw/1000) # converting int gms/cubic-cms
             tnmaterial.append('%s:%s'%(self.nearIon,self.__material__[-1]))
             tfmaterial.append('%s:%s' % (self.farIon, self.__material__[-1]))
             if self.relement in self.nearIon:
