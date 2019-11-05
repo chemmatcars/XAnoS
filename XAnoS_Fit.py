@@ -468,8 +468,8 @@ class XAnoS_Fit(QWidget):
             self.sfnames.append(item.text())
             txt=item.text()
             self.pfnames=self.pfnames+[txt.split('<>')[0]+':'+key for key in self.data[txt].keys()]
-        self.curDir=os.path.dirname(self.sfnames[-1].split('<>')[1])
         if len(self.sfnames)>0:
+            self.curDir = os.path.dirname(self.sfnames[-1].split('<>')[1])
             xmin=np.min([np.min([np.min(self.data[key][k1]['x']) for k1 in self.data[key].keys()]) for key in self.sfnames])
             xmax=np.max([np.max([np.max(self.data[key][k1]['x']) for k1 in self.data[key].keys()]) for key in self.sfnames])
             self.xminmaxLineEdit.setText('%0.3f:%0.3f'%(xmin,xmax))
