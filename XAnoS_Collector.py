@@ -647,7 +647,7 @@ class XAnoS_Collector(QWidget):
         self.removePositionerPushButton.clicked.connect(self.removePositioner)
         col+=1
         self.dataColLayout.addWidget(self.openPositionerFilePushButton,row=row,col=col)
-        self.openPositionerFilePushButton.clicked.connect(self.openPositionerFile)
+        self.openPositionerFilePushButton.clicked.connect(lambda x: self.openPositionerFile(fname=None))
         col+=1
         self.dataColLayout.addWidget(self.savePositionerFilePushButton,row=row,col=col)
         self.savePositionerFilePushButton.clicked.connect(self.savePositionerFile)
@@ -730,11 +730,13 @@ class XAnoS_Collector(QWidget):
             self.mirrorInPositionLineEdit.setDisabled(True)
         pg.QtGui.QApplication.processEvents()
     
-    def openPositionerFile(self):
+    def openPositionerFile(self,fname=None):
         """
         Open saved positioner file for dynamic measurements
         """
-        fname=str(QFileDialog.getOpenFileName(self,'Select a positioner file',self.cwd,("Positioner Files (*.txt)"))[0])
+        if fname is None:
+            fname=str(QFileDialog.getOpenFileName(self,'Select a positioner file',self.cwd,("Positioner Files (*.txt)"))[0])
+            self.positionerFile=fname
         if fname!='':
             fh=open(fname,'r')
             lines=fh.readlines()
@@ -1250,6 +1252,8 @@ class XAnoS_Collector(QWidget):
         """
         Collects SAXS with changing PV of either motors or some beamline parameters
         """
+        self.openPositionerFile(fname=self.positionerFile)
+        self.create_measurementList()
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()
         self.NLoops=self.loopSpinBox.value()

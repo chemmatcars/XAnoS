@@ -282,10 +282,13 @@ class Energy_Widget(QWidget):
                 break
         if not self.stoppedTracking:
             maxval=data[dac][data[yaxis].argmax()]
-            print('Moving to Maximum %.4f'%maxval)
             if dac=='xtal':
-                self.xtalDACLineEdit.pv.put(maxval)#Moving DAC to the maximum xtalintensity value
+                # offset of -0.06 is added because we find the
+                # peak position obtained from scan is -0.06 from the real peak position
+                print('Moving to Maximum %.4f' % (maxval - 0.06))
+                self.xtalDACLineEdit.pv.put(maxval-0.06)#Moving DAC to the maximum xtalintensity value
             else:
+                print('Moving to Maximum %.4f' % maxval)
                 self.mirrorDACLineEdit.pv.put(maxval)  # Moving DAC to the maximum mirror intensity value
         else:
             print('Moving to old value')

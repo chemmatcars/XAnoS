@@ -13,6 +13,7 @@ from FormFactors.Sphere import Sphere
 from Chemical_Formula import Chemical_Formula
 from PeakFunctions import LogNormal, Gaussian
 from utils import find_minmax
+import time
 
 
 
@@ -246,7 +247,6 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             r2=r1+tR
             mat = material[i].split(':')
             if len(mat) == 2:
-                print(self.__Rmoles__[i])
                 solute, solvent = mat
 
                 solute_formula = self.__cf__.parse(solute)
@@ -511,7 +511,6 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         tRmoles=self.__Rmoles__[:-1]
         Rp = (3 / (4 * np.pi * self.norm * 6.022e23)) ** (1.0 / 3.0) * 1e9
         Rc=np.sum(tR)
-
         near, far = self.solrho(Rp=Rp, Rc=Rc, strho=self.stDensity, tst=self.stThickness, lrho=self.dbDensity,
                                 lexp=self.dbLength, rhosol=self.ionDensity, R=tR,
                                 material=tnmaterial,density=tndensity,sol_density=tsoldensity)
@@ -553,6 +552,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
 
         r=[]
         adist = []
+
         if np.any(np.array(tRsig)>0.001):
             for i in range(len(tR) - 1):
                 if tRsig[i] > 0.001:
