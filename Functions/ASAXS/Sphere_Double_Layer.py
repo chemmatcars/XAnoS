@@ -294,13 +294,13 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                     nmratio = 1.0
                 else:
                     nmratio = mole_ratio[self.nearIon]
-                tnear=tnear+(r2**3-r1**3)*tdensity*1e3*nmratio/mwnion
+                tnear=tnear+(r2**3-r1**3)*tdensity*1e3*nmratio/molwt#mwnion
             elif self.farIon in material[i]:
                 if len(fion) > 1:
                     fmratio = 1.0
                 else:
                     fmratio = mole_ratio[self.farIon]
-                tfar=tfar+(r2**3-r1**3)*tdensity*1e3*fmratio/mwfion
+                tfar=tfar+(r2**3-r1**3)*tdensity*1e3*fmratio/molwt#mwfion
             r1=r2+0.0
         integral=(R2**2*lexp+2*R2*lexp**2+2*lexp**3)*np.exp(-R2/lexp)-(Rp**2*lexp+2*Rp*lexp**2+2*lexp**3)*np.exp(-Rp/lexp)
         if 3*lrho*integral>=rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-tnear:
@@ -558,7 +558,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                 if tRsig[i] > 0.001:
                     if self.dist == 'LogNormal':
                         r.append(np.abs(np.sort(np.random.lognormal(np.log(tR[i]),tRsig[i],self.Np))))
-                        td=np.exp(-(np.log(r[i]) - np.log(tR[i])) ** 2 / 2 / tR[i] ** 2) / r[i] / 2.5066 / self.tRsig[i]
+                        td=np.exp(-(np.log(r[i]) - np.log(tR[i])) ** 2 / 2 / tR[i] ** 2) / r[i] / 2.5066 / tRsig[i]
                         adist.append(td)
                     else:
                         r.append(np.abs(np.sort(np.random.normal(tR[i], tRsig[i], self.Np))))

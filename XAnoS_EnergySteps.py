@@ -29,7 +29,8 @@ class XAnoS_EnergySteps(QWidget):
             [str(self.xrdb.atomic_number(element)) + ': ' + element for element in self.elements])
         self.element=self.elementComboBox.currentText().split(': ')[1]
         edges = self.xrdb.xray_edges(self.element)
-        self.edgeComboBox.addItems([key + ': %.4f' % (edges[key].edge / 1000) for key in edges.keys()])
+        print(edges)
+        self.edgeComboBox.addItems([key + ': %.4f' % (edges[key].energy / 1000) for key in edges.keys()])
         self.EOffsetLineEdit.setValidator(self.doubleValidator)
         self.minEnergyLineEdit.setValidator(self.doubleValidator)
         self.maxEnergyLineEdit.setValidator(self.doubleValidator)
@@ -53,7 +54,7 @@ class XAnoS_EnergySteps(QWidget):
         self.edgeComboBox.currentTextChanged.disconnect()
         self.edgeComboBox.clear()
         edges = self.xrdb.xray_edges(self.element)
-        self.edgeComboBox.addItems([key + ': %.4f' % (edges[key].edge / 1000) for key in edges.keys()])
+        self.edgeComboBox.addItems([key + ': %.4f' % (edges[key].energy / 1000) for key in edges.keys()])
         self.edgeComboBox.currentTextChanged.connect(self.edgeChanged)
         self.edgeChanged(self.edgeComboBox.currentText())
 

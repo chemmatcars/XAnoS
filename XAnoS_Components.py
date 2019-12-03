@@ -117,7 +117,7 @@ class XAnoS_Components(QWidget):
         self.elementEdgeComboBox=QComboBox()
         element=str(self.elementComboBox.currentText().split(': ')[1])
         edges=self.xrdb.xray_edges(element)
-        self.elementEdgeComboBox.addItems([key+': %.4f'%(edges[key].edge/1000) for key in edges.keys()])
+        self.elementEdgeComboBox.addItems([key+': %.4f'%(edges[key].energy/1000) for key in edges.keys()])
         self.dataDockLayout.addWidget(elementEdge,row=row,col=col)
         col+=1
         self.dataDockLayout.addWidget(self.elementEdgeComboBox,row=row,col=col,colspan=2)
@@ -386,7 +386,7 @@ class XAnoS_Components(QWidget):
         self.elementEdgeComboBox.clear()
         element=str(self.elementComboBox.currentText().split(': ')[1])
         edges=self.xrdb.xray_edges(element)
-        self.elementEdgeComboBox.addItems([key+': %.4f'%(edges[key].edge/1000) for key in edges.keys()])
+        self.elementEdgeComboBox.addItems([key+': %.4f'%(edges[key].energy/1000) for key in edges.keys()])
         self.elementEdgeComboBox.setCurrentIndex(0)
         self.elementEdgeComboBox.currentIndexChanged.connect(self.edgeChanged)
         self.edgeChanged()
@@ -1191,7 +1191,8 @@ class XAnoS_Components(QWidget):
         for item in self.dataListWidget.selectedItems():
             dataname, fname=item.text().split(': ')
             self.data[fname]['f1'], self.data[fname]['f2']=self.get_f1_f2(element,(self.data[fname]['Energy']-self.EOff))
-            self.data[fname]['f1']=self.data[fname]['f1']*(1.0+float(self.linearOffsetLineEdit.text())*(self.data[fname]['Energy']-self.minEnergy))
+            self.data[fname]['f1']= self.data[fname]['f1']*(1.0+float(self.linearOffsetLineEdit.text())*(self.data[
+                                                                                                             fname]['Energy']-self.minEnergy))
             
             #self.data[fname]['f1']=self.xrdb.f1_chantler(element=element,energy=(self.data[fname]['Energy']-self.EOff)*1000)
             #self.data[fname]['f2']=self.xrdb.f2_chantler(element=element,energy=(self.data[fname]['Energy']-self.EOff)*1000)
