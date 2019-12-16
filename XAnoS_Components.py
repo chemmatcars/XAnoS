@@ -13,7 +13,7 @@ import copy
 import numpy as np
 import scipy as sp
 from scipy.signal import fftconvolve, savgol_filter
-from scipy.interpolate import interp1d
+from scipy.interpolate import interp1d, InterpolatedUnivariateSpline
 from scipy.optimize import minimize
 from numpy.linalg import lstsq, solve
 from lmfit import Parameters
@@ -47,6 +47,7 @@ class XAnoS_Components(QWidget):
         self.minEnergy=1000000.0
         self.metaKeys=[]
         self.CF=1.0
+        self.absData={}
         
         self.vblayout=QVBoxLayout(self)
         self.mainDock=DockArea(self,parent)
@@ -95,14 +96,14 @@ class XAnoS_Components(QWidget):
         self.xrayDataBaseComboBox=QComboBox()
         self.dataDockLayout.addWidget(dataBaseLabel,row=row,col=col)
         col+=1
-        self.xrayDataBaseComboBox.addItems(['NIST','Henke'])
+        self.xrayDataBaseComboBox.addItems(['NIST','Henke','Add New'])
         self.dataBase='NIST'
         self.xrayDataBaseComboBox.currentIndexChanged.connect(self.dataBaseChanged)
         self.dataDockLayout.addWidget(self.xrayDataBaseComboBox,row=row,col=col,colspan=2)
         
         row+=1
         col=0        
-        elementLabel=QLabel('Resonant Element')
+        elementLabel=QLabel('Resonant Material')
         self.elementComboBox=QComboBox()        
         self.elements=self.xrdb.atomic_symbols
         self.elementComboBox.addItems([str(self.xrdb.atomic_number(element))+': '+element for element in self.elements])
@@ -365,7 +366,38 @@ class XAnoS_Components(QWidget):
         Selects the X-ray database
         """
         self.dataBase=str(self.xrayDataBaseComboBox.currentText())
-        self.elementChanged()
+        if self.dataBase != 'Add New':
+            self.elementChanged()
+        else:
+            fname=QFileDialog.getOpenFileName(self,'Import energy dependent f1 and f2 file')[0]
+            if fname!='':
+                with open(fname) as f:
+                    lines=f.readlines()
+                    for line in lines:
+                        if line[0]=='#':
+                            if '=' in line:
+                                var,val=line[1:].strip().split('=')
+                                if var.strip()=='Material':
+                                    material=val
+                                    self.absData[material]={}
+                                    self.absData[material]['Energy']=[]
+                                    self.absData[material]['f1']=[]
+                                    self.absData[material]['f2']=[]
+                        else:
+                            e,f1,f2=line.split()
+                            self.absData[material]['Energy'].append(float(e))
+                            self.absData[material]['f1'].append(float(f1))
+                            self.absData[material]['f2'].append(float(f2))
+                    self.absData[material]['Energy']=np.array(self.absData[material]['Energy'])
+                    self.absData[material]['f1'] = np.array(self.absData[material]['f1'])
+                    self.absData[material]['f1'] = np.array(self.absData[material]['f2'])
+                    self.absData[material]['f1func']=InterpolatedUnivariateSpline(self.absData[material]['Energy'],self.absData[material]['f1'])
+                    self.absData[material]['f2func']=InterpolatedUnivariateSpline(self.absData[material]['Energy'],
+                                                                                    self.absData[material]['f2'])
+                    self.elementComboBox.addItem(val)
+
+
+
 
     def apply_calc_factor(self):
         """
