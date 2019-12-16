@@ -626,6 +626,9 @@ class XAnoS_Collector(QWidget):
         self.dataColLayout.addWidget(self.PDTransmissionButton,row=row,col=2)
         self.dataColLayout.addWidget(bsTransLabel,row=row,col=3)
         self.dataColLayout.addWidget(self.BSTransmissionLabel,row=row,col=4)
+        self.shutterStatusLabel=QLabel('Shutter OFF')
+        self.dataColLayout.addWidget(self.shutterStatusLabel,row=row,col=5)
+        
         
         row=row+1
         positionerLabel=QLabel('Positioner')
@@ -660,26 +663,38 @@ class XAnoS_Collector(QWidget):
         self.positionerTable.setHorizontalHeaderLabels(['Positioners','Positoner values','Positioner types','Positioner constraint'])
         self.positionerTable.resizeColumnsToContents()
         row=row+1
-        self.collectDarkButton=QPushButton('Collect Dark')
-        self.collectDarkButton.clicked.connect(self.collect_dark)
+        #self.collectDarkButton=QPushButton('Collect Dark')
+        #self.collectDarkButton.clicked.connect(self.collect_dark)
         self.autoReduceCheckBox=QCheckBox('Auto Reduce')
         self.autoReduceCheckBox.setTristate(False)
         self.staticCollectButton=QPushButton('Collect Static')
         self.staticCollectButton.clicked.connect(self.static_collect)
         self.loopSpinBox=QSpinBox()
+        loopSleepLabel=QLabel('Sleep Time (s)')
+        self.loopSleepTimeLineEdit=QLineEdit('0.0')
+        self.loopSleepTimeLineEdit.returnPressed.connect(self.loopSleepTimeChanged)
         self.loopSpinBox.setRange(1,1000)
         self.loopSpinBox.setValue(1)
         self.dynamicCollectButton=QPushButton('Collect Dynamic')
         self.dynamicCollectButton.clicked.connect(self.dynamic_collect)
-        self.dataColLayout.addWidget(self.collectDarkButton,row=row,col=0)
-        self.dataColLayout.addWidget(self.autoReduceCheckBox,row=row,col=1)
-        self.shutterStatusLabel=QLabel('Shutter OFF')
-        self.dataColLayout.addWidget(self.shutterStatusLabel,row=row,col=2,colspan=1)
-        self.dataColLayout.addWidget(self.staticCollectButton,row=row,col=3,colspan=1)
-        self.dataColLayout.addWidget(self.loopSpinBox,row=row,col=4)
+        #self.dataColLayout.addWidget(self.collectDarkButton,row=row,col=0)
+        self.dataColLayout.addWidget(self.autoReduceCheckBox,row=row,col=0)
+        self.dataColLayout.addWidget(self.staticCollectButton,row=row,col=1)
+        self.dataColLayout.addWidget(self.loopSpinBox,row=row,col=2)
+        self.dataColLayout.addWidget(loopSleepLabel,row=row,col=3)
+        self.dataColLayout.addWidget(self.loopSleepTimeLineEdit,row=row,col=4)
         self.dataColLayout.addWidget(self.dynamicCollectButton,row=row,col=5)        
         
         self.dataColDock.addWidget(self.dataColLayout)
+        
+    def loopSleepTimeChanged(self):
+        try:
+            self.loopSleepTime=float(self.loopSleepTimeLineEdit.text())
+        except:
+            QMessageBox.warning(self,'Value Error', 'Please Enter numbers only')
+            self.loopSleeptTime=0.0
+            self.loopSleepTimeLineEdit.setText('0.0')
+			
         
     def targetVolumeChanged(self):
         try:
@@ -1230,8 +1245,11 @@ class XAnoS_Collector(QWidget):
                 if self.sleepTime>1e-3:
                     #self.palette.setColor(QPalette.Foreground,Qt.red)
                     #self.instrumentStatus.setPalette(self.palette)
+                    caput(self.scalers['15IDD_scaler_mode']['PV'], 1, wait=True)
                     self.instrumentStatus.setText('<font color="Red">Sleeping for %s s. Please wait...</font>'%self.sleepTime)
                     QtTest.QTest.qWait(self.sleepTime*1000)
+                    caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True)
+
                 self.measurementProgressDialog.setValue(i+1)
             #caput('15PIL3:cam1:FileNumber', 1)
             #caput('15PIL3:cam1:AutoIncrement', 0)
@@ -1252,7 +1270,13 @@ class XAnoS_Collector(QWidget):
         """
         Collects SAXS with changing PV of either motors or some beamline parameters
         """
-        self.openPositionerFile(fname=self.positionerFile)
+        try:
+            self.openPositionerFile(fname=self.positionerFile)
+        except:
+            QMessageBox.warning(self,'Positioner File Error','Either you have not opened a positioner file or '
+                                                             'positioner file has some errors.',
+                                QMessageBox.Ok)
+            return
         self.create_measurementList()
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()
@@ -1260,6 +1284,7 @@ class XAnoS_Collector(QWidget):
         try:
             self.frameCount=int(self.frameCountLineEdit.text())
             self.sleepTime=float(self.sleepTimeLineEdit.text())
+            self.loopSleepTime=float(self.loopSleepTimeLineEdit.text())
             if str(self.dynamicCollectButton.text())!='Abort':
                 self.abort=False
                 self.create_measurementList()
@@ -1325,11 +1350,18 @@ class XAnoS_Collector(QWidget):
                                     if self.autoReduceCheckBox.isChecked():
                                         self.redServerSocket.send_string(self.serverFileOut)
                                     if self.sleepTime>1e-3:
+                                        caput(self.scalers['15IDD_scaler_mode']['PV'], 1, wait=True)
                                         self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
                                         QtTest.QTest.qWait(self.sleepTime*1000)
+                                        caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True)
                                     self.measurementProgressDialog.setValue(loop*self.measurementCount*self.frameCount+self.frameCount*i+j+1)
-                                #caput('15PIL3:cam1:FileNumber', 1)
-                                #caput('15PIL3:cam1:AutoIncrement', 0)
+                            if self.loopSleepTime>1e-3:
+                                caput(self.scalers['15IDD_scaler_mode']['PV'], 1, wait=True)
+                                self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.loopSleepTime)
+                                QtTest.QTest.qWait(self.loopSleepTime*1000)
+                                caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True)
+                            #caput('15PIL3:cam1:FileNumber', 1)
+                            #caput('15PIL3:cam1:AutoIncrement', 0)
 
                         #Moving back the motors to the staring position
 
@@ -1636,6 +1668,7 @@ class XAnoS_Collector(QWidget):
                 '15IDD:bpm2:sens_unit.VAL', as_string=True)
             file.header['Transmission'] = self.transmission_value
             file.header['xcradle'] = 0.0
+            file.header['Temperature']=caget(self.scalers['monitor_diode']['PV'])*1.414e-4/self.count_time+20.402
             for key in self.motors.keys():
                 if key != 'Energy' and key != 'Undulator_ID15Energy' and key != 'Undulator_Energy':
                     file.header[key]=caget(self.motors[key]['PV']+'.RBV')

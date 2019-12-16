@@ -1,1 +1,1 @@
-__all__=['class', 'ContinuousSphere', 'CoreShellCylinder', 'CoreShellSphere', 'Cylinder', 'Ellipsoid', 'Formol', 'NewSphere', 'Sphere', 'SphericalShell_expDecay']
+__all__=['class', 'ContinuousSphere', 'CoreShellCylinder', 'CoreShellSphere', 'Cylinder', 'Ellipsoid', 'Formol', 'NewSphere', 'Sphere', 'SphericalShell_expDecay', 'Unified_Guinier']
