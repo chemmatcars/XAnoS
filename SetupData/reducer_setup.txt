@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/2019-11/Tianbo/AgBh_short.poni", "maskFile": "/mnt/ChemData/Data/Asax/2019-11/AgBh/AgBh_30keV/mask_30keV.msk"}
+{"poniFile": "/mnt/ChemData/Data/Asax/2019-12/Ian/AgBh_long.poni", "maskFile": "/mnt/ChemData/Data/Asax/2019-12/Ian/mask_long.msk"}
