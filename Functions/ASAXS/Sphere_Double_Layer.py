@@ -498,6 +498,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
+        scale=1e27/6.023e23
         self.output_params = {}
         self.output_params['scaler_parameters']={}
         self.update_params()
@@ -595,15 +596,15 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             total = self.norm * np.array(sqt) * 6.022e20 + self.sbkg  # in cm^-1
             if not self.__fit__:
                 self.output_params['Simulated_total_wo_err'] = {'x': self.x[key], 'y': total}
-                self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1]}
-                self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1]}
-                self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]}
-                self.output_params['rhon_r'] = {'x': rhorn[:, 0], 'y': rhorn[:, 1]}
-                self.output_params['eirhon_r'] = {'x': eirhorn[:, 0], 'y': eirhorn[:, 1]}
-                self.output_params['adensityn_r'] = {'x': adensityrn[:, 0], 'y': adensityrn[:, 1]}
-                self.output_params['rhof_r'] = {'x': rhorf[:, 0], 'y': rhorf[:, 1]}
-                self.output_params['eirhof_r'] = {'x': eirhorf[:, 0], 'y': eirhorf[:, 1]}
-                self.output_params['adensityf_r'] = {'x': adensityrf[:, 0], 'y': adensityrf[:, 1]}
+                self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]*scale,'names':['r (Angs)','Density (Molar)']}# in Molar
+                self.output_params['rhon_r'] = {'x': rhorn[:, 0], 'y': rhorn[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['eirhon_r'] = {'x': eirhorn[:, 0], 'y': eirhorn[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['adensityn_r'] = {'x': adensityrn[:, 0], 'y': adensityrn[:, 1]*scale,'names':['r (Angs)','Density (Molar)']}# in Molar
+                self.output_params['rhof_r'] = {'x': rhorf[:, 0], 'y': rhorf[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['eirhof_r'] = {'x': eirhorf[:, 0], 'y': eirhorf[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['adensityf_r'] = {'x': adensityrf[:, 0], 'y': adensityrf[:, 1]*scale,'names':['r (Angs)','Density (Molar)']}# in Molar
         else:
             sqf = []
             asqf = []
@@ -628,15 +629,15 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                 self.output_params['simulated_anomalous'] = {'x': self.x, 'y': asqf}
                 self.output_params['simulated_saxs'] = {'x': self.x, 'y': eisqf}
                 self.output_params['simulated_cross'] = {'x': self.x, 'y': csqf}
-                self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1]}
-                self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1]}
-                self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]}
-                self.output_params['rhon_r'] = {'x': rhorn[:, 0], 'y': rhorn[:, 1]}
-                self.output_params['eirhon_r'] = {'x': eirhorn[:, 0], 'y': eirhorn[:, 1]}
-                self.output_params['adensityn_r'] = {'x': adensityrn[:, 0], 'y': adensityrn[:, 1]}
-                self.output_params['rhof_r'] = {'x': rhorf[:, 0], 'y': rhorf[:, 1]}
-                self.output_params['eirhof_r'] = {'x': eirhorf[:, 0], 'y': eirhorf[:, 1]}
-                self.output_params['adensityf_r'] = {'x': adensityrf[:, 0], 'y': adensityrf[:, 1]}
+                self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]*scale, 'names':['r (Angs)','Density (Molar)']} # in Molar
+                self.output_params['rhon_r'] = {'x': rhorn[:, 0], 'y': rhorn[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['eirhon_r'] = {'x': eirhorn[:, 0], 'y': eirhorn[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['adensityn_r'] = {'x': adensityrn[:, 0], 'y': adensityrn[:, 1]*scale,'names':['r (Angs)','Density (Molar)']} # in Molar
+                self.output_params['rhof_r'] = {'x': rhorf[:, 0], 'y': rhorf[:, 1],'names':['r (Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['eirhof_r'] = {'x': eirhorf[:, 0], 'y': eirhorf[:, 1],'names':['r(Angs)','Electron Density (el/Angs^3)']}
+                self.output_params['adensityf_r'] = {'x': adensityrf[:, 0], 'y': adensityrf[:, 1]*scale,'names':['r (Angs)','Density (Molar)']} # in Molar
         return sqf
 
 

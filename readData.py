@@ -690,7 +690,7 @@ def combineFiles(fnames=None,Npt=1000,kind='linear'):
 
 
         
-def write1DSAXS(data,textEdit=None,fdir=None):
+def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt'):
     """
     Writes the data dictionary in the filename provided with full path by 'fname'
     """
@@ -700,7 +700,7 @@ def write1DSAXS(data,textEdit=None,fdir=None):
     if not os.path.exists(fdir):
         os.makedirs(fdir)
     for fname in data.keys():
-        pfname=os.path.join(fdir,os.path.splitext(os.path.basename(fname))[0]+'_bkg_sub_norm.txt')
+        pfname=os.path.join(fdir,os.path.splitext(os.path.basename(fname))[0]+fterminator)
         header='Processed data on %s\n'%time.asctime()
         #header='Original file=%s\n'%fname
         for key in data[fname].keys():

@@ -431,7 +431,7 @@ class XAnoS_Fit(QWidget):
         fitScaleLabel=QLabel('Fit Scale')
         self.dataLayoutWidget.addWidget(fitScaleLabel)
         self.fitScaleComboBox=QComboBox()
-        self.fitScaleComboBox.addItems(['Linear','Linear w/o error','Log','Log w/o error'])
+        self.fitScaleComboBox.addItems(['Linear','Linear w/o error','Log','Log w/o error','(y-yfit)/y/yerr'])
         self.dataLayoutWidget.addWidget(self.fitScaleComboBox,col=1)
         
         self.dataLayoutWidget.nextRow()
@@ -502,10 +502,10 @@ class XAnoS_Fit(QWidget):
                 for key in self.data[item.text()].keys():
                     self.plotWidget.add_data(self.data[item.text()][key]['x'],self.data[item.text()][key]['y'],yerr=self.data[item.text()][key]['yerr'],name='%s:%s'%(fnum,key),color=self.plotColors[item.text()][key])
             else:
-                text='%s<>%s'%(fnum,newFname)
+                text = '%s<>%s' % (fnum, newFname)
+                self.data[text] = self.data.pop(item.text())
+                self.dlg_data[text] = self.dlg_data.pop(item.text())
                 item.setText(text)
-                self.data[text]=self.data.pop(fname)
-                self.dlg_data[text]=self.dlg_data.pop(fname)
                 self.dlg_data[text]=copy.copy(data_dlg.data)
                 self.data[text]=copy.copy(data_dlg.externalData)
                 self.plotColIndex[text]=data_dlg.plotColIndex
@@ -525,8 +525,11 @@ class XAnoS_Fit(QWidget):
         #self.update_plot()
 
     def xminmaxChanged(self):
-        self.xmin=float(self.xminmaxLineEdit.text().split(':')[0])
-        self.xmax=float(self.xminmaxLineEdit.text().split(':')[1])
+        try:
+            xmin,xmax=self.xminmaxLineEdit.text().split(':')
+            self.xmin, self.xmax=float(xmin),float(xmax)
+        except:
+            QMessageBox.warning(self,"Value Error", "Please supply the Xrange in this format: xmin:xmax",QMessageBox.Ok)
     
     def doFit(self):
         if self.sfnames is None or self.sfnames==[]:
@@ -1093,7 +1096,10 @@ class XAnoS_Fit(QWidget):
                     vartxt=self.mfitParamTableWidget.item(i,0).text()
                     for j in range(1,self.mfitParamTableWidget.columnCount()):
                         header+='%s_%s=%s\n'%(vartxt,self.mfitParamTableWidget.horizontalHeaderItem(j).text(),self.mfitParamTableWidget.item(i,j).text())
-                header += "col_names=%s\n" % var
+                if 'names' in self.fit.params['output_params'][name]:
+                    header += "col_names=%s\n" % str(self.fit.params['output_params']['names'])
+                else:
+                    header += "col_names=%s\n" % var
                 if var=="['x', 'y']":
                     header+='x\ty\n'
                     res=np.vstack((self.fit.params['output_params'][name]['x'], self.fit.params['output_params'][name]['y'])).T
@@ -1591,8 +1597,12 @@ class XAnoS_Fit(QWidget):
                             for k in self.fit.params['output_params'][key].keys():
                                 self.genParamListWidget.addItem(k + ' : ' + str(self.fit.params['output_params'][key][k]))
                         else:
+                            var=[]
+                            for k in self.fit.params['output_params'][key].keys():
+                                if k!='names':
+                                    var.append(k)
                             self.genParamListWidget.addItem(
-                                str(key) + ' : ' + str(list(self.fit.params['output_params'][key].keys())))
+                                str(key) + ' : ' + str(var))
                     if not self.fchanged:
                         for row in self.gen_rows:
                             try:
@@ -1671,7 +1681,12 @@ class XAnoS_Fit(QWidget):
                         for k in self.fit.params['output_params'][key].keys():
                             self.genParamListWidget.addItem(k + ' : ' + str(self.fit.params['output_params'][key][k]))
                     else:
-                        self.genParamListWidget.addItem(str(key)+' : '+str(list(self.fit.params['output_params'][key].keys())))
+                        var = []
+                        for k in self.fit.params['output_params'][key].keys():
+                            if k != 'names':
+                                var.append(k)
+                        self.genParamListWidget.addItem(
+                            str(key) + ' : ' + str(var))
                 if not self.fchanged:
                     for row in self.gen_rows:
                         try:
@@ -1713,6 +1728,9 @@ class XAnoS_Fit(QWidget):
                     except:
                         yerr=None
                     self.extra_param_1DplotWidget.add_data(x=x,y=y,yerr=yerr,name=txt,fit=True)
+                    if 'names' in self.fit.params['output_params'][txt]:
+                        self.extra_param_1DplotWidget.setXLabel(self.fit.params['output_params'][txt]['names'][0])
+                        self.extra_param_1DplotWidget.setYLabel(self.fit.params['output_params'][txt]['names'][1])
                     fdata.append(txt)
             #            pg.plot(self.fit.params['output_params'][txt][axes[0]],self.fit.params['output_params'][txt][axes[1]],title=txt,left=axes[1],bottom=axes[0])
             # else:

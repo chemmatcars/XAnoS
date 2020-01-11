@@ -158,7 +158,7 @@ class XAnoS_Components(QWidget):
         self.xrfBkgCheckBox.setTristate(False)
         self.xrfBkgCheckBox.setEnabled(False)
         self.xrfBkgCheckBox.stateChanged.connect(self.dataSelectionChanged)
-        self.xrfBkgRangeLineEdit=QLineEdit('95:100')
+        self.xrfBkgRangeLineEdit=QLineEdit('0.0:1.0')
         self.xrfBkgRangeLineEdit.returnPressed.connect(self.dataSelectionChanged)
         self.xrfBkgRangeLineEdit.setEnabled(False)
         self.dataDockLayout.addWidget(self.xrfBkgCheckBox,row=row,col=col)
@@ -513,10 +513,11 @@ class XAnoS_Components(QWidget):
         if len(self.dataListWidget.selectedItems())==1:
             fname=str(self.dataListWidget.selectedItems()[0].text().split(': ')[1])
             self.xrfFile=fname
-            minf,maxf=self.xrfBkgRangeLineEdit.text().split(':')
-            xf_bkg_min,xf_bkg_max=float(minf)*np.max(self.data[self.xrfFile]['x'])/100.0,float(maxf)*np.max(self.data[self.xrfFile]['x'])/100.0
+            #minf,maxf=self.xrfBkgRangeLineEdit.text().split(':')
+            xf_bkg_min,xf_bkg_max=self.xrfBkgRangeLineEdit.text().split(':')#float(minf)*np.max(self.data[self.xrfFile]['x'])/100.0,float(maxf)*np.max(self.data[self.xrfFile]['x'])/100.0
             try:
-                self.xrf_base=np.mean(self.data[self.xrfFile]['y'][np.argwhere(self.data[self.xrfFile]['x']>xf_bkg_min)[0][0]:np.argwhere(self.data[self.xrfFile]['x']<xf_bkg_max)[-1][0]])
+                self.xrf_base=np.mean(self.data[self.xrfFile]['y'][np.argwhere(self.data[self.xrfFile]['x']>float(xf_bkg_min))[0][0]:
+                                                                   np.argwhere(self.data[self.xrfFile]['x']<float(xf_bkg_max))[-1][0]])
             except:
                 self.xrf_base=0.0
             self.xrfBkgLineEdit.setText('%.3e'%self.xrf_base)
@@ -614,9 +615,9 @@ class XAnoS_Components(QWidget):
             #Doing the fluorescence correction
             if self.xrfBkgCheckBox.isChecked():
                 minf,maxf=self.xrfBkgRangeLineEdit.text().split(':')
-                xf_bkg_min,xf_bkg_max=float(minf)*np.max(self.data[fname]['x'])/100.0,float(maxf)*np.max(self.data[fname]['x'])/100.0
+                xf_bkg_min,xf_bkg_max=self.xrfBkgRangeLineEdit.text().split(':')#float(minf)*np.max(self.data[fname]['x'])/100.0,float(maxf)*np.max(self.data[fname]['x'])/100.0
                 try:
-                    self.data[fname]['xrf_bkg']=np.mean(self.data[fname]['y'][np.argwhere(self.data[fname]['x']>xf_bkg_min)[0][0]:np.argwhere(self.data[fname]['x']<xf_bkg_max)[-1][0]])-self.xrf_base
+                    self.data[fname]['xrf_bkg']=np.mean(self.data[fname]['y'][np.argwhere(self.data[fname]['x']>float(xf_bkg_min))[0][0]:np.argwhere(self.data[fname]['x']<float(xf_bkg_max))[-1][0]])-self.xrf_base
                 except:#In case no data found between the range provided
                     self.data[fname]['xrf_bkg']=0.0
                 #self.data[fname]['y-flb']=self.data[fname]['CF']*(self.data[fname]['y']-self.xrf_bkg[fname])/self.data[fname]['Thickness']

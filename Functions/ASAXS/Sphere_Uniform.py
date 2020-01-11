@@ -12,11 +12,12 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 from FormFactors.Sphere import Sphere
 from Chemical_Formula import Chemical_Formula
 from PeakFunctions import LogNormal, Gaussian
+from Structure_Factors import hard_sphere_sf, sticky_sphere_sf
 from utils import find_minmax
 
 
 class Sphere_Uniform: #Please put the class name same as the function name
-    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0, sbkg=0.0, cbkg=0.0, abkg=0.0, mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
+    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0, sbkg=0.0, cbkg=0.0, abkg=0.0, D=1.0, phi=0.1, U=-1.0, SF='None', mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
         """
         Documentation
         Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
@@ -32,6 +33,10 @@ class Sphere_Uniform: #Please put the class name same as the function name
         cbkg        : Constant incoherent background for cross-term
         abkg        : Constant incoherent background for Resonant-term
         flux        : Total X-ray flux to calculate the errorbar to simulate the errorbar for the fitted data
+        D           : Hard Sphere Diameter
+        phi         : Volume fraction of particles
+        U           : The sticky-sphere interaction energy
+        SF          : Type of structure factor. Default: 'None'
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
                         Material ('Materials' using chemical formula),
                         Density ('Density' in gm/cubic-cms),
@@ -55,8 +60,12 @@ class Sphere_Uniform: #Please put the class name same as the function name
         self.NrDep=NrDep
         #self.rhosol=rhosol
         self.flux=flux
+        self.D=D
+        self.phi=phi
+        self.U=U
         self.__mpar__=mpar #If there is any multivalued parameter
-        self.choices={'dist':['Gaussian','LogNormal'],'NrDep':['True','False']} #If there are choices available for any fixed parameters
+        self.SF=SF
+        self.choices={'dist':['Gaussian','LogNormal'],'NrDep':['True','False'],'SF':['None','Hard-Sphere', 'Sticky-Sphere']} #If there are choices available for any fixed parameters
         self.init_params()
         self.__cf__=Chemical_Formula()
         self.__fit__=False
@@ -68,9 +77,12 @@ class Sphere_Uniform: #Please put the class name same as the function name
         """
         self.params=Parameters()
         self.params.add('norm',value=self.norm,vary=0, min = -np.inf, max = np.inf, expr = None, brute_step = 0.1)
+        self.params.add('D', value=self.D, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('phi', value=self.phi, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('sbkg',value=self.sbkg,vary=0, min = -np.inf, max = np.inf, expr = None, brute_step = 0.1)
         self.params.add('cbkg', value=self.cbkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('abkg', value=self.abkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('U', value=self.U, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         for key in self.__mpar__.keys():
             if key!='Material':
                 for i in range(len(self.__mpar__[key])):
@@ -262,6 +274,9 @@ class Sphere_Uniform: #Please put the class name same as the function name
         self.sbkg=self.params['sbkg'].value
         self.cbkg = self.params['cbkg'].value
         self.abkg = self.params['abkg'].value
+        self.D= self.params['D'].value
+        self.phi = self.params['phi'].value
+        self.U = self.params['U'].value
         key='Density'
         self.__density__=[self.params['__%s__%03d'%(key,i)].value for i in range(len(self.__mpar__[key]))]
         key='Sol_Density'
@@ -274,7 +289,6 @@ class Sphere_Uniform: #Please put the class name same as the function name
         self.__Rsig__=[self.params['__%s__%03d'%(key,i)].value for i in range(len(self.__mpar__[key]))]
         key='Material'
         self.__material__=[self.__mpar__[key][i] for i in range(len(self.__mpar__[key]))]
-
 
     def y(self):
         """
@@ -302,22 +316,29 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 for q1 in self.x[key]:
                     sq.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity,key=key))
                 sqf[key] = self.norm * np.array(sq) * 6.022e20  # in cm^-1
+                if self.SF is None:
+                    struct = np.ones_like(self.x[key])#hard_sphere_sf(self.x[key], D = self.D, phi = 0.0)
+                elif self.SF == 'Hard-Sphere':
+                    struct = hard_sphere_sf(self.x[key], D=self.D, phi=self.phi)
+                else:
+                    struct = sticky_sphere_sf(self.x[key], D=self.D, phi=self.phi, U=self.U, delta=0.01)
                 if key=='SAXS-term':
-                    sqf[key]=sqf[key]+self.sbkg
+                    sqf[key]=sqf[key]*struct+self.sbkg
                 if key=='Cross-term':
-                    sqf[key]=sqf[key]+self.cbkg
+                    sqf[key]=sqf[key]*struct+self.cbkg
                 if key=='Resonant-term':
-                    sqf[key]=sqf[key]+self.abkg
+                    sqf[key]=sqf[key]*struct+self.abkg
             key1='Total'
             sqt=[]
             for q1 in self.x[key]:
                  sqt.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity, key=key1))
-            total = self.norm * np.array(sqt) * 6.022e20 + self.sbkg # in cm^-1
+            total = self.norm * np.array(sqt) * 6.022e20*struct + self.sbkg # in cm^-1
             if not self.__fit__:
                 self.output_params['Simulated_total_wo_err']={'x':self.x[key],'y':total}
                 self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1]}
                 self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1]}
                 self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]}
+                self.output_params['Structure_Factor']={'x':self.x,'y':struct}
             #sqf[key1]=total
             # sqerr = np.sqrt(self.flux * sqf[key] * 1e-5) / self.flux
             # sqwerr = sqf[key] * 1e-5 + 2 * (0.5 - np.random.rand(len(sqf[key]))) * sqerr
@@ -328,17 +349,23 @@ class Sphere_Uniform: #Please put the class name same as the function name
             asqf = []
             eisqf = []
             csqf = []
+            if self.SF is None:
+                struct = np.ones_like(self.x)
+            elif self.SF == 'Hard-Sphere':
+                struct = hard_sphere_sf(self.x, D=self.D, phi=self.phi)
+            else:
+                struct = sticky_sphere_sf(self.x, D=self.D, phi=self.phi, U=self.U, delta=0.01)
             for q1 in self.x:
                 tsq,eisq,asq,csq=self.sphere(q1, r, adist, sdist, rho,eirho,adensity)
                 sqf.append(tsq)
                 asqf.append(asq)
                 eisqf.append(eisq)
                 csqf.append(csq)
-            sqf=self.norm*np.array(sqf) * 6.022e20 + self.sbkg#in cm^-1
+            sqf=self.norm*np.array(sqf) * 6.022e20 * struct + self.sbkg#in cm^-1
             if not self.__fit__: #Generate all the quantities below while not fitting
-                asqf=self.norm*np.array(asqf) * 6.022e20 + self.abkg#in cm^-1
-                eisqf=self.norm*np.array(eisqf) * 6.022e20 + self.sbkg#in cm^-1
-                csqf = self.norm * np.array(csqf) * 6.022e20 + self.cbkg # in cm^-1
+                asqf=self.norm*np.array(asqf) * 6.022e20 * struct + self.abkg#in cm^-1
+                eisqf=self.norm*np.array(eisqf) * 6.022e20 * struct + self.sbkg#in cm^-1
+                csqf = self.norm * np.array(csqf) * 6.022e20 * struct + self.cbkg # in cm^-1
                 svol=0.2**2 * 1.5 * 1e-3 # scattering volume in cm^3
                 sqerr=np.sqrt(self.flux*sqf*svol)
                 sqwerr=(sqf * svol * self.flux + 2 * (0.5-np.random.rand(len(sqf))) * sqerr)
@@ -350,6 +377,7 @@ class Sphere_Uniform: #Please put the class name same as the function name
                 self.output_params['rho_r'] = {'x': rhor[:, 0], 'y': rhor[:, 1]}
                 self.output_params['eirho_r'] = {'x': eirhor[:, 0], 'y': eirhor[:, 1]}
                 self.output_params['adensity_r'] = {'x': adensityr[:, 0], 'y': adensityr[:, 1]}
+                self.output_params['Structure_Factor'] = {'x': self.x, 'y': struct}
         return sqf
 
 

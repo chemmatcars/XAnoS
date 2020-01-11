@@ -100,6 +100,8 @@ class Fit(QObject):
                     y.append(np.log10(data) - np.log10(fit))
                 elif fit_scale=='Linear w/o error':
                     y.append(data - fit)
+                elif fit_scale=='(y-yfit)/y/yerr':
+                    y.append((data-fit)/dnorm/err)
                 else:
                     y.append((data-fit)/err)
             y=np.concatenate(y)
@@ -114,6 +116,8 @@ class Fit(QObject):
                 return (np.log10(data)-np.log10(fit))
             elif fit_scale=='Linear w/o error':
                 return (data-fit)
+            elif fit_scale == '(y-yfit)/y/yerr':
+                return (data - fit)/data[0]/err
             else:
                 return (data-fit)/err
         
