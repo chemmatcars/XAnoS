@@ -102,7 +102,7 @@ class PlotWidget(QWidget):
                 x=10**x
             if self.plotWidget.getPlotItem().ctrl.logYCheck.isChecked():
                 y=10**y
-            self.crosshairLabel.setText(u'X={: .5g} , Y={: .5g}'.format(x,y))
+            self.crosshairLabel.setText('X={: 10.5f}, Y={: 10.5e}'.format(x,y))
             # if x>1e-3 and y>1e-3:
             #     self.crosshairLabel.setText(u'X={: .5f} , Y={: .5f}'.format(x,y))
             # if x<1e-3 and y>1e-3:

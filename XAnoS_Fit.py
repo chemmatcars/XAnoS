@@ -703,7 +703,10 @@ class XAnoS_Fit(QWidget):
                 for key in ci.keys():
                     text+=('{:>10s} '+'{:10.4e} '*5+'\n').format(key,*[ci[key][i][1] for i in range(7)])
                 self.confIntervalStatus.setText(text)
-            self.fit.functionCalled.disconnect(self.conf_interv_status)
+            try:
+                self.fit.functionCalled.disconnect(self.conf_interv_status)
+            except:
+                pass
 #            except:
 #                QMessageBox.information(self,'Info','Couldnot calculate confidence interval because the error estimated couldnot be calculated.',QMessageBox.Ok)
         else:
@@ -791,7 +794,10 @@ class XAnoS_Fit(QWidget):
         """
         if self.dataListWidget.count()==0:
             self.fileNumber=0
-        self.dataListWidget.itemSelectionChanged.disconnect(self.dataFileSelectionChanged)
+        try:
+            self.dataListWidget.itemSelectionChanged.disconnect(self.dataFileSelectionChanged)
+        except:
+            pass
         #try:
         if fnames is None:
             fnames,_=QFileDialog.getOpenFileNames(self,caption='Open data files',directory=self.curDir,\
@@ -832,7 +838,10 @@ class XAnoS_Fit(QWidget):
     def removeData(self):
         """
         """
-        self.dataListWidget.itemSelectionChanged.disconnect(self.dataFileSelectionChanged)
+        try:
+            self.dataListWidget.itemSelectionChanged.disconnect(self.dataFileSelectionChanged)
+        except:
+            pass
         for item in self.dataListWidget.selectedItems():
             fnum,fname=item.text().split('<>')
             self.dataListWidget.takeItem(self.dataListWidget.row(item))
@@ -992,7 +1001,10 @@ class XAnoS_Fit(QWidget):
             dlg=minMaxDialog(value,minimum=minimum,maximum=maximum,expr=expr,brute_step=brute_step)
             if dlg.exec_():
                 value,maximum,minimum,expr,brute_step=(dlg.value,dlg.maximum,dlg.minimum,dlg.expr,dlg.brute_step)
-            self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+            try:
+                self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+            except:
+                pass
             self.mfitParamTableWidget.item(row,col).setText(str(value))
             self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
             self.mfitParamData[parkey][row]=value
@@ -1007,7 +1019,10 @@ class XAnoS_Fit(QWidget):
         
         
     def add_mpar(self):
-        self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+        try:
+            self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+        except:
+            pass
         if len(self.mfitParamTableWidget.selectedItems())!=0:
             curRow=self.mfitParamTableWidget.currentRow()
             #if curRow!=0:
@@ -1047,7 +1062,10 @@ class XAnoS_Fit(QWidget):
             QMessageBox.warning(self, 'Selection error',
                                 'Cannot remove the last row. Please select the rows other than the last row', QMessageBox.Ok)
             return
-        self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+        try:
+            self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+        except:
+            pass
         if selrows!=[]:
             selrows.sort(reverse=True)
             for row in selrows:
@@ -1097,7 +1115,7 @@ class XAnoS_Fit(QWidget):
                     for j in range(1,self.mfitParamTableWidget.columnCount()):
                         header+='%s_%s=%s\n'%(vartxt,self.mfitParamTableWidget.horizontalHeaderItem(j).text(),self.mfitParamTableWidget.item(i,j).text())
                 if 'names' in self.fit.params['output_params'][name]:
-                    header += "col_names=%s\n" % str(self.fit.params['output_params']['names'])
+                    header += "col_names=%s\n" % str(self.fit.params['output_params'][name]['names'])
                 else:
                     header += "col_names=%s\n" % var
                 if var=="['x', 'y']":
@@ -1357,6 +1375,7 @@ class XAnoS_Fit(QWidget):
             self.curr_funcClass[module]=import_module(module)
         else:
             self.curr_funcClass[module]=reload(self.curr_funcClass[module])
+
         self.fchanged = True
         self.update_parameters()
         self.saveSimulatedButton.setEnabled(True)
@@ -1421,7 +1440,7 @@ class XAnoS_Fit(QWidget):
         for key in self.fit.fit_params.keys():
             if key[:2]!='__':
                 tpdata.append((key,self.fit.fit_params[key].value,self.fit.fit_params[key].min,\
-                               self.fit.fit_params[key].max,self.fit.fit_params[key].expr,self.fit.fit_params[key].brute_step))
+                               self.fit.fit_params[key].max,str(self.fit.fit_params[key].expr),self.fit.fit_params[key].brute_step))
         self.fitParamData=np.array(tpdata,dtype=[('Params',object),('Value',object),('Min',object),('Max',object),\
                                                  ('Expr',object),('Brute step',float)])
         self.sfitParamTableWidget.setData(self.fitParamData)
@@ -1524,7 +1543,7 @@ class XAnoS_Fit(QWidget):
                 self.fit.fit_params[txt].brute_step=val
         elif isinstance(val,str):
             if col==4:
-                self.fit.fit_params[txt].expr=val
+                self.fit.fit_params[txt].expr= None if val == 'None' else val
         else:
             QMessageBox.warning(self,'Value Error','Please input numbers only',QMessageBox.Ok)
             self.sfitParamTableWidget.item(row,col).setText(str(oldVal))

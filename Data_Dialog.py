@@ -5,7 +5,7 @@ from PyQt5.QtTest import QTest
 import sys
 import pandas as pd
 import os
-import numpy as np
+from numpy import *
 import time
 from PlotWidget import PlotWidget
 import pyqtgraph as pg
@@ -272,8 +272,9 @@ class Data_Dialog(QDialog):
             if self.insertColDialog.exec_():
                 imin=eval(self.insertColDialog.minCounterLineEdit.text())
                 imax=eval(self.insertColDialog.maxCounterLineEdit.text())
-                i=np.arange(imin,imax+1)
+                i=arange(imin,imax+1)
                 colname=self.insertColDialog.colNameLineEdit.text()
+                data=copy.copy(self.data)
                 if new:
                     if colname not in self.data['data'].columns:
                         try:
@@ -321,7 +322,7 @@ class Data_Dialog(QDialog):
             if self.insertColDialog.exec_():
                 imin = eval(self.insertColDialog.minCounterLineEdit.text())
                 imax = eval(self.insertColDialog.maxCounterLineEdit.text())
-                i = np.arange(imin, imax + 1)
+                i = arange(imin, imax + 1)
                 colname = self.insertColDialog.colNameLineEdit.text()
                 expr = self.insertColDialog.colExprTextEdit.toPlainText()
                 expr = expr.replace('col.', "self.data['data']")
@@ -452,7 +453,7 @@ class Data_Dialog(QDialog):
         self.data['data']=pd.DataFrame()
         for col in range(self.dataTableWidget.columnCount()):
             label=self.dataTableWidget.horizontalHeaderItem(col).text()
-            self.data['data'][label]=np.array([float(self.dataTableWidget.item(i,col).text()) for i in range(self.dataTableWidget.rowCount())])
+            self.data['data'][label]=array([float(self.dataTableWidget.item(i,col).text()) for i in range(self.dataTableWidget.rowCount())])
         
             
             
@@ -491,12 +492,12 @@ class Data_Dialog(QDialog):
                     break
             if 'col_names' in self.data['meta'].keys():
                 self.data['data']=pd.read_csv(self.fname,comment=comment,names=self.data['meta']['col_names'],header=None,sep=delimiter)
-                if not np.all(self.data['data'].isnull().values):
-                    self.data['data']=pd.DataFrame(np.loadtxt(self.fname,skiprows=skiprows),columns=self.data['meta']['col_names'])
+                if not all(self.data['data'].isnull().values):
+                    self.data['data']=pd.DataFrame(loadtxt(self.fname,skiprows=skiprows),columns=self.data['meta']['col_names'])
             else:
                 self.data['data']=pd.read_csv(self.fname,comment=comment,header=None,sep=delimiter)
-                if not np.all(self.data['data'].isnull()):
-                    self.data['data']=pd.DataFrame(np.loadtxt(self.fname,skiprows=skiprows))
+                if not all(self.data['data'].isnull()):
+                    self.data['data']=pd.DataFrame(loadtxt(self.fname,skiprows=skiprows))
                 self.data['data'].columns=['Col_%d'%i for i in self.data['data'].columns.values.tolist()]
                 self.data['meta']['col_names']=self.data['data'].columns.values.tolist()
             self.autoUpdate_ON_OFF()
@@ -542,7 +543,7 @@ class Data_Dialog(QDialog):
                 header=header+'%s=%s\n'%(key,str(self.data['meta'][key]))
             if 'col_names' not in self.data['meta'].keys():
                 header=header+'col_names=%s\n'%str(self.data['data'].columns.tolist())
-            np.savetxt(fname,self.data['data'].values,header=header,comments='#')
+            savetxt(fname,self.data['data'].values,header=header,comments='#')
         
             
         
@@ -600,7 +601,7 @@ class Data_Dialog(QDialog):
         for key in plotIndex.keys():
             pi=plotIndex[key]
             if colors is None:
-                color=np.array([np.random.randint(200, high=255),0,0])
+                color=array([random.randint(200, high=255),0,0])
             else:
                 color=colors[key]
             self.addPlots(plotIndex=pi,color=color)
@@ -631,7 +632,7 @@ class Data_Dialog(QDialog):
             self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
             if color is None:
-                color=np.array([np.random.randint(200, high=255),0,0])
+                color=array([random.randint(200, high=255),0,0])
             self.plotSetupTableWidget.setCellWidget(row, 4,pg.ColorButton(color=color))
             self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanging.connect(self.updateCellData)
             self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanged.connect(self.updateCellData)
@@ -730,7 +731,7 @@ class Data_Dialog(QDialog):
             self.externalData[key]['x']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(i,1).currentText()].values)
             self.externalData[key]['y']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(i,2).currentText()].values)
             if self.plotSetupTableWidget.cellWidget(i,3).currentText()=='None':
-                self.externalData[key]['yerr']=np.ones_like(self.externalData[key]['x'])
+                self.externalData[key]['yerr']=ones_like(self.externalData[key]['x'])
             else:
                 self.externalData[key]['yerr']=copy.copy(self.data['data'][self.plotSetupTableWidget.cellWidget(i,3).currentText()].values)
             self.externalData[key]['color']=self.plotSetupTableWidget.cellWidget(i,4).color()
@@ -746,7 +747,7 @@ if __name__=='__main__':
         fname=sys.argv[1]
     except:
         fname=None
-    #data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':np.arange(1000),'y':np.arange(1000),'y_err':np.arange(1000)})}
+    #data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':arange(1000),'y':arange(1000),'y_err':arange(1000)})}
     w=Data_Dialog(fname=fname,data=None,matplotlib=False)
     w.resize(600,400)
 #    w.showFullScreen()

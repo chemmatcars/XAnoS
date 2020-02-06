@@ -1136,6 +1136,10 @@ class XAnoS_Components(QWidget):
         """
         Do initial check on the selected data for further ASAXS analysis
         """
+        try:
+            self.dataPlotWidget.plotWidget.removeItem(self.checkDataLocLine)
+        except:
+            pass
         if len(self.dataListWidget.selectedItems())>0:
             self.interpolate_data()
             self.prepareData()
@@ -1182,8 +1186,8 @@ class XAnoS_Components(QWidget):
                 i=self.checkDataSpinBox.value()
                 data=np.vstack((self.pdata[i][0],self.pdata[i][1],self.pdata[i][2],self.pdata[i][3])).T
                 header='Data extracted at Q=%.6f\n'%self.qintp[i]
-                header+='col_names=["Energy","f1","Intensity","Intensity_err"]'
-                header = header + 'Q (inv Angs)\tInt\tInt_err\n'
+                header+='col_names=["Energy","f1","Int","Int_err"]\n'
+                header = header + 'Energy\tf1\tInt\tInt_err\n'
                 np.savetxt(fname,data,header=header,comments='#')            
         except:
             QMessageBox.warning(self,'Data error','No checked data to be saved. Please click Check Data button first',QMessageBox.Ok)

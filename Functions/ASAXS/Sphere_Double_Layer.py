@@ -41,8 +41,8 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         ionDensity  : The bulk density of the ions in Moles per liter
         stThickness : Thickness of the stern layer
         stDensity   : Density of the ions in the stern layer in Moles per liter
-        dbLength    : The decay length of the debye layer in Angstroms
-        dbDensity   : The maximum density of the debye layer in Moles per liter
+        dbLength    : The ratio of decay length and the stern layer thickness
+        dbDensity   : The ratio of maximum density of the debye layer w.r.t the stern layer density
         Ndb         : Number of layers used to represent the double layer region
         flux        : Total X-ray flux to calculate the errorbar to simulate the errorbar for the fitted data
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
@@ -92,8 +92,8 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         self.params.add('norm', value=self.norm, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('stThickness', value=self.stThickness, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('stDensity',value=self.stDensity, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
-        self.params.add('dbLength', value=self.dbLength, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
-        self.params.add('dbDensity', value=self.dbDensity, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('dbLength', value=self.dbLength, vary=0, min=1.0, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('dbDensity', value=self.dbDensity, vary=0, min=0, max=1, expr=None, brute_step=0.1)
         self.params.add('sbkg', value=self.sbkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('cbkg', value=self.cbkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('abkg', value=self.abkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
@@ -143,7 +143,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                     solvent_mw = self.__cf__.molecular_weight()
                     solvent_mole_ratio = self.__cf__.element_mole_ratio()
 
-                    solvent_moles = sol_density[i] / solvent_mw
+                    solvent_moles = sol_density[i]*(1-solute_mv*density[i]/solute_mw) / solvent_mw
                     solute_moles = density[i] / solute_mw
                     total_moles = solvent_moles + solute_moles
                     solvent_mole_fraction = solvent_moles / total_moles
@@ -157,14 +157,21 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                     # self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
                 else:
                     formula = self.__cf__.parse(material[i])
+                    fac=1.0
                     if self.relement in formula.keys():
+                        self.__cf__.formula_dict[self.relement]=0.0
+                        t1=self.__cf__.molar_mass()
                         self.__cf__.formula_dict[self.relement] = Rmoles[i]
+                        t2=self.__cf__.molar_mass()
+                        if t1>0:
+                            fac=t2/t1
+                            self.output_params['scaler_parameters']['density[%s]'%material[i]]=fac*density[i]
                     mole_ratio = self.__cf__.element_mole_ratio()
                     comb_material = ''
                     for ele in mole_ratio.keys():
                         comb_material += '%s%.10f' % (ele, mole_ratio[ele])
                     # comb_material=material[i]
-                    tdensity = density[i]
+                    tdensity = fac*density[i]
                     # self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
                 formula = self.__cf__.parse(comb_material)
                 molwt = self.__cf__.molecular_weight()
@@ -189,12 +196,12 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                             f2 = self.__cf__.xdb.f2_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                             felectrons = felectrons + moles[j] * complex(f1, f2)
                     if elements[j] == self.relement:
-                        aden += 0.6023 * moles[j] * tdensity / molwt
+                        aden += 0.6022 * moles[j] * tdensity / molwt
                 adensity.append(
                     aden)  # * np.where(r > Radii[i - 1], 1.0, 0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
-                eirho.append(0.6023 * (
+                eirho.append(0.6022 * (
                     nelectrons) * tdensity / molwt)  # * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0,0.0) / molwt
-                rho.append(0.6023 * (
+                rho.append(0.6022 * (
                             nelectrons + felectrons) * tdensity / molwt)  # * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
                 # else:
                 #     eirho.append(0.6023 * (nelectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0, 0.0) / molwt
@@ -498,7 +505,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        scale=1e27/6.023e23
+        scale=1e27/6.022e23
         self.output_params = {}
         self.output_params['scaler_parameters']={}
         self.update_params()
@@ -512,15 +519,15 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         tRmoles=self.__Rmoles__[:-1]
         Rp = (3 / (4 * np.pi * self.norm * 6.022e23)) ** (1.0 / 3.0) * 1e9
         Rc=np.sum(tR)
-        near, far = self.solrho(Rp=Rp, Rc=Rc, strho=self.stDensity, tst=self.stThickness, lrho=self.dbDensity,
-                                lexp=self.dbLength, rhosol=self.ionDensity, R=tR,
+        near, far = self.solrho(Rp=Rp, Rc=Rc, strho=self.stDensity, tst=self.stThickness, lrho=self.dbDensity*self.stDensity,
+                                lexp=self.dbLength*self.stThickness, rhosol=self.ionDensity, R=tR,
                                 material=tnmaterial,density=tndensity,sol_density=tsoldensity)
         dbr=[self.stThickness]
         dbr=dbr+[(Rp-Rc-self.stThickness)/self.Ndb for i in range(self.Ndb)]
         nden=[self.stDensity]
         fden=[0.0]
-        nden=np.append(nden,self.dbDensity*np.exp(-np.cumsum(dbr[1:])/self.dbLength)+near)
-        fden=np.append(fden,far*(1-np.exp(-np.cumsum(dbr[1:])/self.dbLength)))
+        nden=np.append(nden,self.dbDensity*self.stDensity*np.exp(-np.cumsum(dbr[1:])/self.dbLength/self.stThickness)+near)
+        fden=np.append(fden,far*(1-np.exp(-np.cumsum(dbr[1:])/self.dbLength/self.stThickness)))
         self.output_params['scaler_parameters']['Rp']=Rp
         nmf=self.__cf__.parse(self.nearIon)
         nmw=self.__cf__.molecular_weight()
@@ -534,23 +541,20 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             tndensity.append(2*nden[i]*nmw/1000) # converting int gms/cubic-cms
             tfdensity.append(2*fden[i]*fmw/1000) # converting int gms/cubic-cms
             tnmaterial.append('%s:%s'%(self.nearIon,self.__material__[-1]))
-            tfmaterial.append('%s:%s' % (self.farIon, self.__material__[-1]))
+            tfmaterial.append('%s:%s' % (self.farIon,self.__material__[-1]))
             if self.relement in self.nearIon:
                 tRmoles.append(1.0)
             elif self.relement in self.farIon:
                 tRmoles.append(1.0)
             else:
                 tRmoles.append(1.0)
-
         rhon, eirhon, adensityn, rhorn, eirhorn, adensityrn = self.calc_rho(R=tR, material=tnmaterial, density=tndensity, sol_density=tsoldensity, Energy=self.Energy, Rmoles=tRmoles, NrDep=self.NrDep)
         rhof, eirhof, adensityf, rhorf, eirhorf, adensityrf = self.calc_rho(R=tR, material=tfmaterial, density=tfdensity, sol_density=tsoldensity, Energy=self.Energy, Rmoles=tRmoles, NrDep=self.NrDep)
-
         rho, eirho, adensity = (rhon+rhof)/2, (eirhon+eirhof)/2, (adensityn+adensityf)/2
         rhor,eirhor, adensityr = rhorn, eirhorn, adensityrn
         rhor[:,1]=(rhor[:,1]+rhorf[:,1])/2
         eirhor[:, 1] = (eirhor[:, 1] + eirhorf[:, 1])/2
         adensityr[:,1]=(adensityr[:,1]+adensityrf[:,1])/2
-
         r=[]
         adist = []
 
