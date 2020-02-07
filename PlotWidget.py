@@ -139,7 +139,8 @@ class PlotWidget(QWidget):
                 self.yerr[dname]=True
             self.fit[dname]=fit
             if dname in self.data.keys():
-                color=self.data[dname].opts['symbolPen'].color()
+                if color is None:
+                    color=self.data[dname].opts['symbolPen'].color()
                 pen=pg.mkPen(color=color,width=float(self.lineWidthLineEdit.text()))
                 symbol='o'
                 if self.fit[dname]:

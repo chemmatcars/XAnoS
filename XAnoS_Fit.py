@@ -488,6 +488,7 @@ class XAnoS_Fit(QWidget):
     def openDataDialog(self,item):
         fnum,fname=item.text().split('<>')
         data_dlg=Data_Dialog(data=self.dlg_data[item.text()],parent=self,expressions=self.expressions[item.text()],plotIndex=self.plotColIndex[item.text()],colors=self.plotColors[item.text()])
+        data_dlg.closePushButton.setText('Cancel')
         data_dlg.tabWidget.setCurrentIndex(1)
         data_dlg.dataFileLineEdit.setText(fname)
         if data_dlg.exec_():
@@ -807,6 +808,7 @@ class XAnoS_Fit(QWidget):
             for fname in fnames:
                 data_key=str(self.fileNumber)+'<>'+fname
                 data_dlg=Data_Dialog(fname=fname,parent=self)
+                data_dlg.closePushButton.setText('Cancel')
                 if len(fnames)>1:
                     data_dlg.accept()
                 else:
