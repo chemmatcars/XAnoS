@@ -431,7 +431,7 @@ class XAnoS_Fit(QWidget):
         fitScaleLabel=QLabel('Fit Scale')
         self.dataLayoutWidget.addWidget(fitScaleLabel)
         self.fitScaleComboBox=QComboBox()
-        self.fitScaleComboBox.addItems(['Linear','Linear w/o error','Log','Log w/o error','(y-yfit)/y/yerr'])
+        self.fitScaleComboBox.addItems(['Linear','Linear w/o error','Log','Log w/o error'])
         self.dataLayoutWidget.addWidget(self.fitScaleComboBox,col=1)
         
         self.dataLayoutWidget.nextRow()
