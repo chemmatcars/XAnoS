@@ -1025,26 +1025,47 @@ class XAnoS_Fit(QWidget):
             self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         except:
             pass
+        NCols=self.mfitParamTableWidget.columnCount()
         if len(self.mfitParamTableWidget.selectedItems())!=0:
             curRow=self.mfitParamTableWidget.currentRow()
             #if curRow!=0:
             self.mfitParamTableWidget.insertRow(curRow)
             self.mfitParamTableWidget.setRow(curRow,self.mfitParamData[curRow])
             self.mfitParamData=np.insert(self.mfitParamData,curRow,self.mfitParamData[curRow],0)
-
-            for col in range(self.mfitParamTableWidget.columnCount()):
+            NRows = self.mfitParamTableWidget.rowCount()
+            for col in range(NCols):
                 parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
                 if col!=0:
-                    for row in range(curRow+1,self.mfitParamTableWidget.rowCount()):
+                    for row in range(curRow,NRows):
                         key='__%s__%03d'%(parkey,row)
                         if key in self.fit.fit_params.keys():
                             self.fit.fit_params[key].value=self.mfitParamData[row][col]
                         else:
-                            self.fit.fit_params.add(key,value=self.mfitParamData[row][col],vary=0)
-                    #This is to make the newly inserted row chekable
-                    item=self.mfitParamTableWidget.item(curRow,col)
-                    item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
-                    item.setCheckState(Qt.Unchecked)
+                            self.fit.fit_params.add(key,value=self.mfitParamData[row][col])
+                    fvals=[self.fit.fit_params['__%s__%03d'%(parkey,row)].vary for row in range(NRows-1)]
+                    minvals = [self.fit.fit_params['__%s__%03d' % (parkey, row)].min for row in range(NRows - 1)]
+                    maxvals = [self.fit.fit_params['__%s__%03d' % (parkey, row)].max for row in range(NRows - 1)]
+                    exprvals= [self.fit.fit_params['__%s__%03d' % (parkey, row)].expr for row in range(NRows - 1)]
+                    bsvals = [self.fit.fit_params['__%s__%03d' % (parkey, row)].brute_step for row in range(NRows - 1)]
+                    for row in range(curRow+1,NRows):# This is to keep intact the fitting flag of the rest of the parameters
+                        key='__%s__%03d'%(parkey,row)
+                        self.fit.fit_params[key].vary=fvals[row-1]
+                        self.fit.fit_params[key].min = minvals[row-1]
+                        self.fit.fit_params[key].max = maxvals[row-1]
+                        self.fit.fit_params[key].exprvals = exprvals[row-1]
+                        self.fit.fit_params[key].brute_step = bsvals[row-1]
+                    key = '__%s__%03d' % (parkey, curRow)
+                    self.fit.fit_params[key].min = minvals[curRow]
+                    self.fit.fit_params[key].max = maxvals[curRow]
+                    self.fit.fit_params[key].exprvals = exprvals[curRow]
+                    self.fit.fit_params[key].brute_step = bsvals[curRow]
+                    # This is to make the newly inserted row chekable
+                    item = self.mfitParamTableWidget.item(curRow, col)
+                    item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsEditable | Qt.ItemIsSelectable)
+                    if fvals[curRow]>0:
+                        item.setCheckState(Qt.Checked)
+                    else:
+                        item.setCheckState(Qt.Unchecked)
                 self.fit.params['__mpar__'][parkey].insert(curRow, self.mfitParamData[curRow][col])
             #self.update_mfit_parameters()
             self.update_plot()
@@ -1071,24 +1092,25 @@ class XAnoS_Fit(QWidget):
         if selrows!=[]:
             selrows.sort(reverse=True)
             for row in selrows:
-                # maxrow=self.mfitParamTableWidget.rowCount()
-                # for trow in range(row,maxrow-1):
-                for col in range(self.mfitParamTableWidget.columnCount()):
-                    parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
-                    # if trow<maxrow-1:
-                    #     key1='__%s__%03d'%(parkey,trow)
-                    #     key2='__%s__%03d'%(parkey,trow+1)
-                    #     if col!=0:
-                    #         self.fit.fit_params[key1]=copy.copy(self.fit.fit_params[key2])
-                    #         del self.fit.fit_params[key2]
-                    del self.fit.params['__mpar__'][parkey][row]
-                    # else:
-                    #     key1='__%s__%03d'%(parkey,trow)
-                    #     del self.fit.params['__mpar__'][parkey][trow]
-                    #     if col!=0:
-                    #         del self.fit.fit_params[key1]
+                maxrow=self.mfitParamTableWidget.rowCount()
+                for trow in range(row,maxrow):
+                    for col in range(self.mfitParamTableWidget.columnCount()):
+                        parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
+                        if trow<maxrow-1:
+                            key1='__%s__%03d'%(parkey,trow)
+                            key2='__%s__%03d'%(parkey,trow+1)
+                            self.fit.params['__mpar__'][parkey][trow] = copy.copy(self.fit.params['__mpar__'][parkey][trow + 1])
+                            if col!=0:
+                                self.fit.fit_params[key1]=copy.copy(self.fit.fit_params[key2])
+                                del self.fit.fit_params[key2]
+                        else:
+                            key1='__%s__%03d'%(parkey,trow)
+                            # if col!=0:
+                            del self.fit.params['__mpar__'][parkey][trow]
+                                # del self.fit.fit_params[key1]
+
                 self.mfitParamTableWidget.removeRow(row)
-                self.mfitParamData=np.delete(self.mfitParamData,row)
+                self.mfitParamData=np.delete(self.mfitParamData,row,axis=0)
         else:
             QMessageBox.warning(self,'Nothing selected','No item is selected for removal',QMessageBox.Ok)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
@@ -1221,9 +1243,11 @@ class XAnoS_Fit(QWidget):
             category=lines[1].split(': ')[1].strip()
             cat_item=self.categoryListWidget.findItems(category,Qt.MatchExactly)
             self.categoryListWidget.setCurrentItem(cat_item[0])
+            self.funcListWidget.clearSelection()
             func=lines[2].split(': ')[1].strip()
             func_item=self.funcListWidget.findItems(func,Qt.MatchExactly)
             self.funcListWidget.setCurrentItem(func_item[0])
+            #self.fit.func.init_params()
             if func==self.funcListWidget.currentItem().text():
                 lnum=3
                 sfline=None
@@ -1322,6 +1346,7 @@ class XAnoS_Fit(QWidget):
                 QMessageBox.warning(self,'File error','This parameter file does not belong to function: %s'% func,QMessageBox.Ok)
         # else:
             #     QMessageBox.warning(self,'Function error','Please select a function first before loading parameter file.',QMessageBox.Ok)
+
         
     def create_plotDock(self):
         self.plotSplitter=QSplitter(Qt.Vertical)

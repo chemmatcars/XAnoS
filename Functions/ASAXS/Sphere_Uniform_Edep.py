@@ -104,7 +104,7 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
                     solvent_mw=self.__cf__.molecular_weight()
                     solvent_mole_ratio=self.__cf__.element_mole_ratio()
 
-                    solvent_moles=sol_density[i]/solvent_mw
+                    solvent_moles=sol_density[i]*(1-solute_mv*density[i]/solute_mw) /solvent_mw
                     solute_moles=density[i]/solute_mw
                     total_moles=solvent_moles+solute_moles
                     solvent_mole_fraction=solvent_moles/total_moles
@@ -117,16 +117,23 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
                     tdensity=density[i]+sol_density[i]*(1-solute_mv*density[i]/solute_mw)
                     #self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
                 else:
-                    formula=self.__cf__.parse(material[i])
+                    formula = self.__cf__.parse(material[i])
+                    fac = 1.0
                     if self.relement in formula.keys():
+                        self.__cf__.formula_dict[self.relement] = 0.0
+                        t1 = self.__cf__.molar_mass()
                         self.__cf__.formula_dict[self.relement] = Rmoles[i]
-                    mole_ratio=self.__cf__.element_mole_ratio()
-                    comb_material=''
+                        t2 = self.__cf__.molar_mass()
+                        if t1 > 0:
+                            fac = t2 / t1
+                            self.output_params['scaler_parameters']['density[%s]' % material[i]] = fac * density[i]
+                    mole_ratio = self.__cf__.element_mole_ratio()
+                    comb_material = ''
                     for ele in mole_ratio.keys():
-                        comb_material+='%s%.10f'%(ele,mole_ratio[ele])
-                    #comb_material=material[i]
-                    tdensity=density[i]
-                    #self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
+                        comb_material += '%s%.10f' % (ele, mole_ratio[ele])
+                    # comb_material=material[i]
+                    tdensity = fac * density[i]
+                    # self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
                 formula = self.__cf__.parse(comb_material)
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
