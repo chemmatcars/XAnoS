@@ -10,6 +10,8 @@ import time
 from PlotWidget import PlotWidget
 import pyqtgraph as pg
 import copy
+from itertools import cycle
+
 
 class QCustomTableWidgetItem (QTableWidgetItem):
     def __init__ (self, value):
@@ -50,6 +52,7 @@ class Data_Dialog(QDialog):
     def __init__(self,fname=None,data=None,comment='#',skiprows=0,delimiter=' ',expressions={},autoupdate=False,parent=None,matplotlib=False,plotIndex=None,colors=None):
         QDialog.__init__(self,parent=parent)
         loadUi('UI_Forms/Data_Dialog.ui',self)
+        self.colcycler = cycle(['r', 'g', 'b', 'c', 'm', 'y', 'w'])
         self.plotWidget=PlotWidget(parent=self,matplotlib=matplotlib)
         self.plotTab=self.tabWidget.addTab(self.plotWidget,'Plots')
         self.tabWidget.setCurrentIndex(0)
@@ -88,6 +91,7 @@ class Data_Dialog(QDialog):
         self.make_default()
         self.setWindowTitle('Data Dialog')
         self.acceptData=True
+
         #self.setWindowSize((600,400))
         # if self.parentWidget() is not None:
         #     self.addPlotPushButton.setEnabled(False)
@@ -601,7 +605,8 @@ class Data_Dialog(QDialog):
         for key in plotIndex.keys():
             pi=plotIndex[key]
             if colors is None:
-                color=array([random.randint(200, high=255),0,0])
+                color=next(self.colcycler)#array([random.randint(200, high=255),0,0])
+                print(color)
             else:
                 color=colors[key]
             self.addPlots(plotIndex=pi,color=color)
@@ -632,7 +637,7 @@ class Data_Dialog(QDialog):
             self.plotSetupTableWidget.setCellWidget(row,3,QComboBox())
             self.plotSetupTableWidget.cellWidget(row,3).addItems(['None']+columns)
             if color is None:
-                color=array([random.randint(200, high=255),0,0])
+                color=next(self.colcycler)#array([random.randint(200, high=255),0,0])
             self.plotSetupTableWidget.setCellWidget(row, 4,pg.ColorButton(color=color))
             self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanging.connect(self.updateCellData)
             self.plotSetupTableWidget.cellWidget(row, 4).sigColorChanged.connect(self.updateCellData)

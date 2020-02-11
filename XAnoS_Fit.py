@@ -648,7 +648,8 @@ class XAnoS_Fit(QWidget):
                         if key not in self.fit.fit_params.keys() and key not in self.special_keys and key[:2]!='__':
                             header+=key+'='+str(self.fit.params[key])+'\n'
                     header+=self.fit_report+'\n'
-                    header+='x \t y\t yerr \t yfit'
+                    header+="col_names=['x','y','yerr','yfit']\n"
+                    header+='x \t y\t yerr \t yfit\n'
                     if type(self.fit.x)==dict:
                         for key in self.fit.x.keys():
                             fitdata=np.vstack((self.fit.x[key][self.fit.imin[key]:self.fit.imax[key]+1],self.fit.y[key][self.fit.imin[key]:self.fit.imax[key]+1],\
@@ -930,20 +931,25 @@ class XAnoS_Fit(QWidget):
         self.loadParamButton=QPushButton('Load Parameters')
         self.loadParamButton.clicked.connect(lambda x: self.loadParameters(fname=None))
         self.mfitparamLayoutWidget.addWidget(self.loadParamButton,col=2)
-        
-        self.parSplitter.addWidget(self.mfitparamLayoutWidget)       
+        self.parSplitter.addWidget(self.mfitparamLayoutWidget)
+
+        self.fitResultsLayoutWidget=pg.LayoutWidget()
+        fitResults=QLabel('Fit Results')
+        self.fitResultsLayoutWidget.addWidget(fitResults,colspan=1)
+        self.fitResultsLayoutWidget.nextRow()
+        self.fitResultsListWidget=QListWidget()
+        self.fitResultsLayoutWidget.addWidget(self.fitResultsListWidget,colspan=1)
+        self.parSplitter.addWidget(self.fitResultsLayoutWidget)
         
         self.genparamLayoutWidget=pg.LayoutWidget()
         genParameters=QLabel('Generated Parameters')
         self.genparamLayoutWidget.addWidget(genParameters,colspan=2)
-        
         self.genparamLayoutWidget.nextRow()
         self.genParamListWidget=QListWidget()
         self.genParamListWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.genParamListWidget.itemSelectionChanged.connect(self.plot_extra_param)
         #self.genParamListWidget.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         self.genparamLayoutWidget.addWidget(self.genParamListWidget,colspan=2)
-        
         self.genparamLayoutWidget.nextRow()
         self.saveGenParamButton=QPushButton('Save Generated Parameters')
         self.saveGenParamButton.clicked.connect(self.saveGenParameters)
@@ -1720,6 +1726,13 @@ class XAnoS_Fit(QWidget):
                 self.genParamListWidget.itemSelectionChanged.disconnect(self.plot_extra_param)
             except:
                 pass
+            self.fitResultsListWidget.clear()
+            try:
+                self.fitResultsListWidget.addItem('Chi-Square : %f' % self.fit.result.chisqr)
+                self.fitResultsListWidget.addItem('Reduced Chi-Square : %f' % self.fit.result.redchi)
+                self.fitResultsListWidget.addItem('Fit Message : %s' % self.fit.result.lmdif_message)
+            except:
+                self.fitResultsListWidget.clear()
             self.genParamListWidget.clear()
             if len(self.fit.params['output_params'])>0:
                 for key in self.fit.params['output_params'].keys():

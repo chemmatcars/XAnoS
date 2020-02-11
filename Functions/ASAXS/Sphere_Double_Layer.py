@@ -269,7 +269,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                 solvent_mw = self.__cf__.molecular_weight()
                 solvent_mole_ratio = self.__cf__.element_mole_ratio()
 
-                solvent_moles = sol_density[i] / solvent_mw
+                solvent_moles = sol_density[i]*(1-solute_mv*density[i]/solute_mw)/ solvent_mw
                 solute_moles = density[i] / solute_mw
                 total_moles = solvent_moles + solute_moles
                 solvent_mole_fraction = solvent_moles / total_moles
@@ -309,13 +309,13 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                     fmratio = mole_ratio[self.farIon]
                 tfar=tfar+(r2**3-r1**3)*tdensity*1e3*fmratio/molwt#mwfion
             r1=r2+0.0
-        integral=(R2**2*lexp+2*R2*lexp**2+2*lexp**3)*np.exp(-R2/lexp)-(Rp**2*lexp+2*Rp*lexp**2+2*lexp**3)*np.exp(-Rp/lexp)
+        integral=(R2**2*lexp+2*R2*lexp**2+2*lexp**3)-(Rp**2*lexp+2*Rp*lexp**2+2*lexp**3)*np.exp((R2-Rp)/lexp)
         if 3*lrho*integral>=rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-tnear:
             near=0.00
             lrho=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-tnear)/3/integral
         else:
-            near=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-3*lrho*integral-tnear)/(Rp**3-R2**3)
-        far=(rhosol*(Rp ** 3 - R1 ** 3)+3*lrho*integral-tfar)/(Rp**3 - R2**3)
+            near=(rhosol*(Rp**3-R1**3)-strho*(R2**3-R1**3)-3*lrho*integral-tnear)/(Rp**3-R2**3-3*integral)
+        far=(rhosol*(Rp ** 3 - R1 ** 3)-tfar)/(Rp **3-R2**3 -3*lrho*integral)
         self.output_params['scaler_parameters']['tnear']=tnear
         self.output_params['scaler_parameters']['tfar']=tfar
         self.output_params['scaler_parameters']['rho_near']=near
