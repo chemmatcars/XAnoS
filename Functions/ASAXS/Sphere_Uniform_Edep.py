@@ -291,7 +291,7 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
             sqf={}
             for key in self.x.keys():
                 sq=[]
-                Energy=float(key.split('_')[1])
+                Energy=float(key.split('_')[1].split(':')[1])
                 rho,eirho,adensity,rhor,eirhor,adensityr=self.calc_rho(R=self.__R__,material=self.__material__, density=self.__density__, sol_density=self.__sol_density__,Energy=Energy, Rmoles= self.__Rmoles__, NrDep=self.NrDep)
                 for q1 in self.x[key]:
                     sq.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity,key='Total'))

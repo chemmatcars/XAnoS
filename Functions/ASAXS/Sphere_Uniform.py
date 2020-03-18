@@ -248,8 +248,8 @@ class Sphere_Uniform: #Please put the class name same as the function name
             r1 += r
             fact=4* np.pi * 2.818e-5*1.0e-8*(np.sin(q * r1) - q * r1 * np.cos(q * r1)) / q ** 3
             form = form + drho * fact
-            eiform = eiform +  deirho*fact
-            aform = aform + darho*fact
+            eiform = eiform +  deirho * fact
+            aform = aform + darho * fact
         return  np.sum(np.abs(form) ** 2 * dist) / sdist, np.sum(np.abs(eiform) ** 2 * dist) / sdist, np.sum(np.abs(aform) ** 2 * dist) / sdist, np.sum(eiform*aform*dist) / sdist   #in cm^2
 
     def sphere_dict(self,q, R, dist, sdist, rho, eirho, adensity,key='SAXS-term'):

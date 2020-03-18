@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/2019-12/Ian/AgBh_long.poni", "maskFile": "/mnt/ChemData/Data/Asax/2019-12/Ian/mask_long.msk"}
+{"poniFile": "Z:/Asax/2020-03/Dafei/AgBh_15_2keV/AgBh_15_2_long.poni", "maskFile": "Z:/Asax/2020-03/Dafei/mask_15_2_long_2.msk"}
