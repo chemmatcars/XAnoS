@@ -3,6 +3,8 @@ from lmfit import Parameters
 import numpy as np
 import sys
 import os
+from functools import lru_cache
+
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./Functions'))
 sys.path.append(os.path.abspath('./Fortran_rountines'))
@@ -103,8 +105,8 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                     self.params.add('__%s__%03d' % (key, i), value=self.__mpar__[key][i], vary=0, min=-np.inf,
                                     max=np.inf, expr=None, brute_step=0.1)
 
-    def calc_rho(self, R=[1.0, 0.0], material=['Au', 'H2O'], density=[19.3, 1.0], sol_density=[1.0, 1.0],
-                 Rmoles=[1.0, 0.0], Energy=None, NrDep='True', stThickness=2.0, stDensity=0.0, dbLength=1.0, dbDensity=0.0, ionDensity=0.0, nearIon='Rb', farIon='Cl'):
+    def calc_rho(self, R=(1.0, 0.0), material=('Au', 'H2O'), density=(19.3, 1.0), sol_density=(1.0, 1.0),
+                 Rmoles=(1.0, 0.0), Energy=None, NrDep='True', stThickness=2.0, stDensity=0.0, dbLength=1.0, dbDensity=0.0, ionDensity=0.0, nearIon='Rb', farIon='Cl'):
         """
         Calculates the complex electron density of core-shell type multilayered particles in el/Angstroms^3
 
@@ -322,6 +324,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         self.output_params['scaler_parameters']['rho_far']=far
         return near, far # in Moles/Liter
 
+
     def calc_form(self, q, r, rho):
         """
         Calculates the isotropic form factor in cm^-1 using the isotropic electron density as a function of radial distance
@@ -337,6 +340,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             amp = amp + 4 * np.pi * r1 * rho1 * np.sin(q * r1) / q
         form = 2.818e-5 ** 2 * np.absolute(amp) ** 2 * dr ** 2 * 1e-16
         return form, 2.818e-5 * amp * dr * 1e-8
+
 
     def calc_mesh(self, R=[1.0], Rsig=[0.0], Np=100):
         """
@@ -521,7 +525,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         Rc=np.sum(tR)
         near, far = self.solrho(Rp=Rp, Rc=Rc, strho=self.stDensity, tst=self.stThickness, lrho=self.dbDensity*self.stDensity,
                                 lexp=self.dbLength*self.stThickness, rhosol=self.ionDensity, R=tR,
-                                material=tnmaterial,density=tndensity,sol_density=tsoldensity)
+                                material=tnmaterial, density=tndensity, sol_density=tsoldensity)
         dbr=[self.stThickness]
         dbr=dbr+[(Rp-Rc-self.stThickness)/self.Ndb for i in range(self.Ndb)]
         nden=[self.stDensity]

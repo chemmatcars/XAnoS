@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath('./Fortran_routines'))
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
-from ff_cylinder import ff_cylinder_ML
+from ff_cylinder import ff_cylinder_ml
 
 
 
@@ -142,8 +142,8 @@ class CoreShellCylinder: #Please put the class name same as the function name
                 h = np.ones_like(r) * self.H
                 disth = np.ones_like(h)
 
-        result = ff_cylinder_ML(q,r,distr,h,disth)
-        return self.norm * result + self.bkg
+        result = ff_cylinder_ml(q,r,distr,h,disth)
+        return self.norm * result[0] + self.bkg
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)

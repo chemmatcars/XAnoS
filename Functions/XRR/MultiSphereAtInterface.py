@@ -145,7 +145,7 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         if self.rrf>0:
             rhos=[self.__rho__[0],self.__rho__[-1]]
             betas=[0,0]
-            ref,r2=parratt(x,lam,[0.0,1.0],rhos,betas)
+            ref,r2=parratt(x-self.qoff,lam,[0.0,1.0],rhos,betas)
             refq=refq/ref
         return refq
 

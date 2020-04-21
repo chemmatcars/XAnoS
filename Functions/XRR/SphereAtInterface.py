@@ -130,7 +130,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         rho=np.array(edp,dtype='float')
         refq,r2=parratt(self.x+qoff,lam,d,rho,beta)
         if self.rrf>0:
-            ref,r2=parratt(self.x+qoff,lam,[0.0,1.0],rhos,[0.0,0.0])
+            ref,r2=parratt(self.x,lam,[0.0,1.0],rhos,[0.0,0.0])
             refq=refq/ref
         return refq
 
