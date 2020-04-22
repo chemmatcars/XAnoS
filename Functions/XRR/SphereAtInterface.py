@@ -107,28 +107,30 @@ class SphereAtInterface: #Please put the class name same as the function name
         #D=D/2
         return np.where(np.abs(z-z0)<=Rc,(2*np.pi*(rhoc-rhob)*(Rc**2-(z-z0)**2)+1.732*rhob*D**2)/(1.732*D**2),rhob)
 
+    def update_parameters(self):
+        self.Rc = self.params['Rc'].value
+        self.D = self.params['D'].value
+        self.Zo = self.params['Zo'].value
+        self.cov = self.params['cov'].value
+        self.roughness = self.params['roughness'].value
+        self.decay = self.params['decay'].value
+        self.rhoc = self.params['rhoc'].value
+        self.qoff = self.params['qoff'].value
+
 
     def y(self):
         """
         Define the function in terms of x to return some value
         """
-        Rc=self.params['Rc'].value
-        D=self.params['D'].value
-        Zo=self.params['Zo'].value
-        cov=self.params['cov'].value
-        sig=self.params['roughness'].value
-        xi=self.params['decay'].value
-        rhoc=self.params['rhoc'].value
-        qoff=self.params['qoff'].value
         rhos=[self.rho_up,self.rho_down]
         lam=self.lam
         z=np.arange(self.zmin,self.zmax,self.dz)
         d=np.ones_like(z)*self.dz
-        edp=self.decayNp(z,Rc=Rc,z0=Zo,xi=xi,cov=cov,rhos=rhos,rhoc=rhoc,sig=sig,D=D)
+        edp=self.decayNp(z,Rc=self.Rc,z0=self.Zo,xi=self.decay,cov=self.cov,rhos=rhos,rhoc=self.rhoc,sig=self.roughness,D=self.D)
         self.output_params['EDP']={'x':z,'y':edp}
         beta=np.zeros_like(z)
         rho=np.array(edp,dtype='float')
-        refq,r2=parratt(self.x+qoff,lam,d,rho,beta)
+        refq,r2=parratt(self.x+self.qoff,lam,d,rho,beta)
         if self.rrf>0:
             ref,r2=parratt(self.x,lam,[0.0,1.0],rhos,[0.0,0.0])
             refq=refq/ref

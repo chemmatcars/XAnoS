@@ -49,6 +49,8 @@ class Parratt_New: #Please put the class name same as the function name
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
+        self.params.add('qoff', self.qoff, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('yscale', self.yscale, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         for key in self.__mpar__.keys():
             if key!='Layers':
                 for i in range(len(self.__mpar__[key])):
@@ -56,17 +58,12 @@ class Parratt_New: #Please put the class name same as the function name
                         self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=1e-5,max=np.inf,expr=None,brute_step=0.1)
                     else:
                         self.params.add('__%s__%03d' % (key, i), value=self.__mpar__[key][i], vary=0, min=0, max=np.inf, expr=None, brute_step=0.1)
-        self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
-        self.params.add('yscale', self.yscale, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
 
-    def calcProfile(self):
+    def calcProfile(self, d, rho, beta, sig):
         """
         Calculates the electron and absorption density profiles
         """
-        d=np.array([self.params['__d__%03d'%i].value for i in range(len(self.__mpar__['d']))])
-        rho=np.array([self.params['__rho__%03d'%i].value for i in range(len(self.__mpar__['rho']))])
-        beta=np.array([self.params['__beta__%03d'%i].value for i in range(len(self.__mpar__['beta']))])
-        sig=np.array([self.params['__sig__%03d'%i].value for i in range(len(self.__mpar__['sig']))])
+
         if self.fix_sig:
             for i in range(1,len(sig)):
                 sig[i]=sig[1]
@@ -94,12 +91,22 @@ class Parratt_New: #Please put the class name same as the function name
             wholesld.append(max((sld+y[0]+y[-1])/2,0))
         return wholesld
 
+    def update_parameters(self):
+        self.qoff = self.params['qoff'].value
+        self.yscale = self.params['yscale'].value
+        d = np.array([self.params['__d__%03d' % i].value for i in range(len(self.__mpar__['d']))])
+        rho = np.array([self.params['__rho__%03d' % i].value for i in range(len(self.__mpar__['rho']))])
+        beta = np.array([self.params['__beta__%03d' % i].value for i in range(len(self.__mpar__['beta']))])
+        sig = np.array([self.params['__sig__%03d' % i].value for i in range(len(self.__mpar__['sig']))])
+        return d,rho,beta,sig
+
 
     def y(self):
         """
         Define the function in terms of x to return some value
         """
-        n=self.calcProfile()
+        d,rho,beta,sig=self.update_parameters()
+        n=self.calcProfile(d,rho,beta,sig)
         x=self.x+self.qoff
         lam=6.62607004e-34*2.99792458e8*1e10/self.E/1e3/1.60217662e-19
         refq,r2=parratt(x,lam,self.__d__,self.__rho__,self.__beta__)

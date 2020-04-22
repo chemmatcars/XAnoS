@@ -661,6 +661,7 @@ class XAnoS_Fit(QWidget):
                                              self.fit.yerr[self.fit.imin:self.fit.imax + 1],
                                              self.fit.yfit)).T
                         np.savetxt(ofname + '_fit.txt', fitdata, header=header, comments='#')
+                    self.xChanged()
                 else:
                     self.undoFit()
             except:

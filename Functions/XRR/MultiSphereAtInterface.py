@@ -115,13 +115,10 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
             else:
                 return res
 
-    def calcProfile(self):
+    def calcProfile(self, Z0, cov, Z0sig):
         """
         Calculates the electron and absorption density profiles
         """
-        Z0=np.array([self.params['__Z0__%03d'%i].value for i in range(len(self.__mpar__['Z0']))])
-        cov=np.array([self.params['__cov__%03d'%i].value for i in range(len(self.__mpar__['cov']))])
-        Z0sig=np.array([self.params['__Z0sig__%03d'%i].value for i in range(len(self.__mpar__['Z0sig']))])
         self.__z__=np.arange(self.zmin,self.zmax,self.dz)
         self.__d__=self.dz*np.ones_like(self.__z__)
         self.__rho__=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=Z0,cov=cov,Z0sig=Z0sig,rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
@@ -130,15 +127,24 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
             rho=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=[Z0[i]],cov=[cov[i]],Z0sig=[Z0sig[i]],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
             self.output_params['Layer %d contribution'%(i+1)]={'x':self.__z__,'y':rho}
 
-
-
+    def update_parameters(self):
+        self.Rc = self.params['Rc'].value
+        self.rhoc = self.params['rhoc'].value
+        self.Tsh = self.params['Tsh'].value
+        self.rhosh = self.params['rhosh'].value
+        self.sig = self.params['sig'].value
+        Z0 = np.array([self.params['__Z0__%03d' % i].value for i in range(len(self.__mpar__['Z0']))])
+        cov = np.array([self.params['__cov__%03d' % i].value for i in range(len(self.__mpar__['cov']))])
+        Z0sig = np.array([self.params['__Z0sig__%03d' % i].value for i in range(len(self.__mpar__['Z0sig']))])
+        return Z0, cov, Z0sig
 
     def y(self):
         """
         Define the function in terms of x to return some value
         """
         self.output_params={}
-        self.calcProfile()
+        Z0, cov, Z0sig = self.update_parameters()
+        self.calcProfile(Z0, cov, Z0sig)
         x=self.x+self.qoff
         lam=6.62607004e-34*2.99792458e8*1e10/self.E/1e3/1.60217662e-19
         refq,r2=parratt(x,lam,self.__d__,self.__rho__,np.zeros_like(self.__rho__))

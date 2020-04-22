@@ -157,21 +157,15 @@ class AsymSphere: #Please put the class name same as the function name
         """
         Calculates the electron and absorption density profiles
         """
-        h1=self.h1
-        h1sig=self.h1sig
         self.__z__=np.arange(self.zmin,self.zmax,self.dz)
         self.__d__=self.dz*np.ones_like(self.__z__)
-        self.__rho__=self.NpRhoGauss(self.__z__,R0=self.R0,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,h2=self.h2,h1=[h1],h1sig=[h1sig],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
+        self.__rho__=self.NpRhoGauss(self.__z__,R0=self.R0,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,h2=self.h2,h1=[self.h1],h1sig=[self.h1sig],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
         self.output_params['Nanoparticle EDP']={'x':self.__z__,'y':self.__rho__}
             
-    def calcProfile2(self):
+    def calcProfile2(self,d,rho,beta,sig):
         """
         Calculates the electron and absorption density profiles
         """
-        d = np.array([self.params['__d__%03d' % i].value for i in range(len(self.__mpar__['d']))])
-        rho = np.array([self.params['__rho__%03d' % i].value for i in range(len(self.__mpar__['rho']))])
-        beta = np.array([self.params['__beta__%03d' % i].value for i in range(len(self.__mpar__['beta']))])
-        sig = np.array([self.params['__sig__%03d' % i].value for i in range(len(self.__mpar__['sig']))])
         if self.fix_sig:
             for i in range(1, len(sig)):
                 sig[i] = sig[1]
@@ -197,6 +191,23 @@ class AsymSphere: #Please put the class name same as the function name
             wholesld.append(max((sld+y[0]+y[-1])/2,0))
         return wholesld
 
+    def update_parameters(self):
+        self.R0 = self.params['R0'].value
+        self.rhoc = self.params['rhoc'].value
+        self.Tsh = self.params['Tsh'].value
+        self.h1 = self.params['h1'].value
+        self.h1sig = self.params['h1sig'].value
+        self.h2 = self.params['h2'].value
+        self.rhosh = self.params['rhosh'].value
+        self.sig = self.params['sig'].value
+        self.cov = self.params['cov'].value
+        self.qoff = self.params['qoff'].value
+        d = np.array([self.params['__d__%03d' % i].value for i in range(len(self.__mpar__['d']))])
+        rho = np.array([self.params['__rho__%03d' % i].value for i in range(len(self.__mpar__['rho']))])
+        beta = np.array([self.params['__beta__%03d' % i].value for i in range(len(self.__mpar__['beta']))])
+        sig = np.array([self.params['__sig__%03d' % i].value for i in range(len(self.__mpar__['sig']))])
+        return d,rho,beta,sig
+
        
     def y(self):
         """
@@ -205,12 +216,13 @@ class AsymSphere: #Please put the class name same as the function name
        
         cov=self.cov
         self.output_params={}
+        d,rho,beta,sig=self.update_parameters()
         self.calcProfile1()
         x=self.x+self.qoff
         lam=6.62607004e-34*2.99792458e8*1e10/self.E/1e3/1.60217662e-19
         refq,r2=parratt(x,lam,self.__d__,self.__rho__,np.zeros_like(self.__rho__))
 
-        self.calcProfile2()
+        self.calcProfile2(d,rho,beta,sig)
         refq2,r2=parratt(x,lam,self.__d2__,self.__rho2__,self.__beta2__)
         
         if self.rrf>0:
