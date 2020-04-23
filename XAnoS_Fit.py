@@ -766,12 +766,14 @@ class XAnoS_Fit(QWidget):
             for key in self.fit.x.keys():
                 self.plotWidget.add_data(x=self.fit.x[key][self.fit.imin[key]:self.fit.imax[key]+1],y=self.fit.yfit[key],\
                                  name=self.funcListWidget.currentItem().text()+':'+key,fit=True)
+                self.fit.params['output_params']['Residuals_%s'%key] = {'x': self.fit.x[key], 'y': self.fit.y[key]-self.fit.yfit[key]}
         else:
             self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax + 1], y=self.fit.yfit, \
                                      name=self.funcListWidget.currentItem().text(), fit=True)
         # else:
         #     QMessageBox.warning(self,'Parameter Value Error','One or more fitting parameters has got unphysical values perhaps to make all the yvalues zeros!',QMessageBox.Ok)
         #     self.fit.fit_abort=True
+            self.fit.params['output_params']['Residuals']={'x':self.fit.x, 'y': self.fit.y-self.fit.yfit}
         QApplication.processEvents()
         pg.QtGui.QApplication.processEvents()
         
@@ -934,13 +936,6 @@ class XAnoS_Fit(QWidget):
         self.mfitparamLayoutWidget.addWidget(self.loadParamButton,col=2)
         self.parSplitter.addWidget(self.mfitparamLayoutWidget)
 
-        self.fitResultsLayoutWidget=pg.LayoutWidget()
-        fitResults=QLabel('Fit Results')
-        self.fitResultsLayoutWidget.addWidget(fitResults,colspan=1)
-        self.fitResultsLayoutWidget.nextRow()
-        self.fitResultsListWidget=QListWidget()
-        self.fitResultsLayoutWidget.addWidget(self.fitResultsListWidget,colspan=1)
-        self.parSplitter.addWidget(self.fitResultsLayoutWidget)
         
         self.genparamLayoutWidget=pg.LayoutWidget()
         genParameters=QLabel('Generated Parameters')
@@ -1362,6 +1357,15 @@ class XAnoS_Fit(QWidget):
         self.plotWidget.setXLabel('X',fontsize=5)
         self.plotWidget.setYLabel('Y',fontsize=5)
         self.plotSplitter.addWidget(self.plotWidget)
+
+        self.fitResultsLayoutWidget = pg.LayoutWidget()
+        fitResults = QLabel('Fit Results')
+        self.fitResultsLayoutWidget.addWidget(fitResults, colspan=1)
+        self.fitResultsLayoutWidget.nextRow()
+        self.fitResultsListWidget = QListWidget()
+        self.fitResultsLayoutWidget.addWidget(self.fitResultsListWidget, colspan=1)
+        self.plotSplitter.addWidget(self.fitResultsLayoutWidget)
+
         self.extra_param_1DplotWidget=PlotWidget()
         self.extra_param_1DplotWidget.setXLabel('X',fontsize=5)
         self.extra_param_1DplotWidget.setYLabel('Y',fontsize=5)

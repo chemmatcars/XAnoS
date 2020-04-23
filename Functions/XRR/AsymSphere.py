@@ -79,15 +79,15 @@ class AsymSphere: #Please put the class name same as the function name
         self.param.add('sig',value=0,vary=0)
         """
         self.params=Parameters()
-        self.params.add('R0', value=self.R0,vary=1,min=0,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('R0', value=self.R0,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('rhoc', value=self.rhoc,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('Tsh', value=self.Tsh,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('h1', value = self.h1, vary = 0, min=-np.inf, max=np.inf, expr = None, brute_step=0.1)
         self.params.add('h1sig', value=self.h1sig, vary=0, min=0, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('h2',value=self.h2,vary=1,min=0,max=7.338,expr=None,brute_step=0.1)
         self.params.add('rhosh',value=self.rhosh,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
-        self.params.add('sig',value=self.sig,vary=1,min=0,max=np.inf,expr=None,brute_step=0.1)
-        self.params.add('cov',value=self.cov,vary=1,min=0.00,max=1,expr=None,brute_step=0.1)
+        self.params.add('sig',value=self.sig,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('cov',value=self.cov,vary=0,min=0.00,max=1,expr=None,brute_step=0.1)
         self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
     
         for key in self.__mpar__.keys():
@@ -145,11 +145,14 @@ class AsymSphere: #Please put the class name same as the function name
         if sig<1e-3:
             return rho
         else:
+            Np = 10*sig/self.dz
             x=np.arange(-5*sig,5*sig,self.dz)
             rough=np.exp(-x**2/2/sig**2)/np.sqrt(2*np.pi)/sig
             res=np.convolve(rho,rough,mode='valid')*self.dz
             if len(res)>len(z):
                 return res[0:len(z)]
+            elif len(res)<len(z):
+                res=np.append(res,[res[-1]])
             else:
                 return res
             
@@ -162,10 +165,14 @@ class AsymSphere: #Please put the class name same as the function name
         self.__rho__=self.NpRhoGauss(self.__z__,R0=self.R0,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,h2=self.h2,h1=[self.h1],h1sig=[self.h1sig],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
         self.output_params['Nanoparticle EDP']={'x':self.__z__,'y':self.__rho__}
             
-    def calcProfile2(self,d,rho,beta,sig):
+    def calcProfile2(self):
         """
-        Calculates the electron and absorption density profiles
+        Calculates the electron and absorption density profiles of the additional monolayer
         """
+        d = np.array([self.params['__d__%03d' % i].value for i in range(len(self.__mpar__['d']))])
+        rho = np.array([self.params['__rho__%03d' % i].value for i in range(len(self.__mpar__['rho']))])
+        beta = np.array([self.params['__beta__%03d' % i].value for i in range(len(self.__mpar__['beta']))])
+        sig = np.array([self.params['__sig__%03d' % i].value for i in range(len(self.__mpar__['sig']))])
         if self.fix_sig:
             for i in range(1, len(sig)):
                 sig[i] = sig[1]
@@ -180,7 +187,6 @@ class AsymSphere: #Please put the class name same as the function name
         if not self.__fit__:
             self.output_params['Monolayer EDP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__rho2__}
             self.output_params['Monolayer ADP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__beta2__}
-
     def sldCalFun(self,d,y,sigma,x):
         wholesld=[]
         for j in range(len(x)):
@@ -191,38 +197,18 @@ class AsymSphere: #Please put the class name same as the function name
             wholesld.append(max((sld+y[0]+y[-1])/2,0))
         return wholesld
 
-    def update_parameters(self):
-        self.R0 = self.params['R0'].value
-        self.rhoc = self.params['rhoc'].value
-        self.Tsh = self.params['Tsh'].value
-        self.h1 = self.params['h1'].value
-        self.h1sig = self.params['h1sig'].value
-        self.h2 = self.params['h2'].value
-        self.rhosh = self.params['rhosh'].value
-        self.sig = self.params['sig'].value
-        self.cov = self.params['cov'].value
-        self.qoff = self.params['qoff'].value
-        d = np.array([self.params['__d__%03d' % i].value for i in range(len(self.__mpar__['d']))])
-        rho = np.array([self.params['__rho__%03d' % i].value for i in range(len(self.__mpar__['rho']))])
-        beta = np.array([self.params['__beta__%03d' % i].value for i in range(len(self.__mpar__['beta']))])
-        sig = np.array([self.params['__sig__%03d' % i].value for i in range(len(self.__mpar__['sig']))])
-        return d,rho,beta,sig
-
-       
     def y(self):
         """
         Define the function in terms of x to return some value
         """
        
         cov=self.cov
-        self.output_params={}
-        d,rho,beta,sig=self.update_parameters()
         self.calcProfile1()
         x=self.x+self.qoff
         lam=6.62607004e-34*2.99792458e8*1e10/self.E/1e3/1.60217662e-19
         refq,r2=parratt(x,lam,self.__d__,self.__rho__,np.zeros_like(self.__rho__))
 
-        self.calcProfile2(d,rho,beta,sig)
+        self.calcProfile2()
         refq2,r2=parratt(x,lam,self.__d2__,self.__rho2__,self.__beta2__)
         
         if self.rrf>0:

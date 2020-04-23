@@ -107,16 +107,6 @@ class SphereAtInterface: #Please put the class name same as the function name
         #D=D/2
         return np.where(np.abs(z-z0)<=Rc,(2*np.pi*(rhoc-rhob)*(Rc**2-(z-z0)**2)+1.732*rhob*D**2)/(1.732*D**2),rhob)
 
-    def update_parameters(self):
-        self.Rc = self.params['Rc'].value
-        self.D = self.params['D'].value
-        self.Zo = self.params['Zo'].value
-        self.cov = self.params['cov'].value
-        self.roughness = self.params['roughness'].value
-        self.decay = self.params['decay'].value
-        self.rhoc = self.params['rhoc'].value
-        self.qoff = self.params['qoff'].value
-
 
     def y(self):
         """
