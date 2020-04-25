@@ -23,9 +23,10 @@ from lmfit import conf_interval, printfuncs
 import traceback
 
 class minMaxDialog(QDialog):
-    def __init__(self,value,minimum=None,maximum=None,expr=None,brute_step=None,parent=None):
+    def __init__(self,value,vary=False, minimum=None,maximum=None,expr=None,brute_step=None,parent=None):
         QDialog.__init__(self,parent)
         self.value=value
+        self.vary = vary
         if minimum is None:
             self.minimum=-np.inf
         else:
@@ -43,12 +44,23 @@ class minMaxDialog(QDialog):
         self.layoutWidget=pg.LayoutWidget()
         self.vblayout.addWidget(self.layoutWidget)
         
-        valueLabel=QLabel('Value:')
+        valueLabel=QLabel('Value')
         self.layoutWidget.addWidget(valueLabel)
         self.layoutWidget.nextColumn()
         self.valueLineEdit=QLineEdit(str(self.value))
         self.layoutWidget.addWidget(self.valueLineEdit)
-        
+
+        self.layoutWidget.nextRow()
+        varyLabel=QLabel('Fit')
+        self.layoutWidget.addWidget(varyLabel)
+        self.layoutWidget.nextColumn()
+        self.varyCheckBox=QCheckBox()
+        self.layoutWidget.addWidget(self.varyCheckBox)
+        if self.vary:
+            self.varyCheckBox.setCheckState(Qt.Checked)
+        else:
+            self.varyCheckBox.setCheckState(Qt.Unchecked)
+
         self.layoutWidget.nextRow()
         minLabel=QLabel('Minimum')
         self.layoutWidget.addWidget(minLabel)
@@ -90,6 +102,10 @@ class minMaxDialog(QDialog):
     def okandClose(self):
         try:
             self.value=float(self.valueLineEdit.text())
+            if self.varyCheckBox.checkState() == Qt.Checked:
+                self.vary=True
+            else:
+                self.vary=False
             self.minimum=float(self.minimumLineEdit.text())
             self.maximum=float(self.maximumLineEdit.text())
             self.expr=self.exprLineEdit.text()
@@ -99,7 +115,7 @@ class minMaxDialog(QDialog):
                 self.brute_step=None
             self.accept()
         except:
-            QMessageBox.warning('Value Error','Value, Min, Max should be floating point numbers\n\n'+traceback.format_exc(),QMessageBox.Ok)
+            QMessageBox.warning(self,'Value Error','Value, Min, Max should be floating point numbers\n\n'+traceback.format_exc(),QMessageBox.Ok)
 
     def cancelandClose(self):
         self.reject()
@@ -766,14 +782,16 @@ class XAnoS_Fit(QWidget):
             for key in self.fit.x.keys():
                 self.plotWidget.add_data(x=self.fit.x[key][self.fit.imin[key]:self.fit.imax[key]+1],y=self.fit.yfit[key],\
                                  name=self.funcListWidget.currentItem().text()+':'+key,fit=True)
-                self.fit.params['output_params']['Residuals_%s'%key] = {'x': self.fit.x[key], 'y': self.fit.y[key]-self.fit.yfit[key]}
+                self.fit.params['output_params']['Residuals_%s'%key] = {'x': self.fit.x[key][self.fit.imin[key]:self.fit.imax[key]+1],
+                                                                        'y': self.fit.y[key][self.fit.imin[key]:self.fit.imax[key]+1]-self.fit.yfit[key]}
         else:
             self.plotWidget.add_data(x=self.fit.x[self.fit.imin:self.fit.imax + 1], y=self.fit.yfit, \
                                      name=self.funcListWidget.currentItem().text(), fit=True)
         # else:
         #     QMessageBox.warning(self,'Parameter Value Error','One or more fitting parameters has got unphysical values perhaps to make all the yvalues zeros!',QMessageBox.Ok)
         #     self.fit.fit_abort=True
-            self.fit.params['output_params']['Residuals']={'x':self.fit.x, 'y': self.fit.y-self.fit.yfit}
+            self.fit.params['output_params']['Residuals']={'x':self.fit.x[self.fit.imin:self.fit.imax + 1],
+                                                           'y': self.fit.y[self.fit.imin:self.fit.imax + 1]-self.fit.yfit}
         QApplication.processEvents()
         pg.QtGui.QApplication.processEvents()
         
@@ -994,30 +1012,33 @@ class XAnoS_Fit(QWidget):
 
         
     def mparDoubleClicked(self,row,col):
+        try:
+            self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+        except:
+            pass
         if col!=0:
             parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
             key='__%s__%03d'%(parkey,row)
             value=self.fit.fit_params[key].value
+            vary=self.fit.fit_params[key].vary
             minimum=self.fit.fit_params[key].min
             maximum=self.fit.fit_params[key].max
             expr=self.fit.fit_params[key].expr
             brute_step=self.fit.fit_params[key].brute_step
-            dlg=minMaxDialog(value,minimum=minimum,maximum=maximum,expr=expr,brute_step=brute_step)
+            dlg=minMaxDialog(value,vary=vary,minimum=minimum,maximum=maximum,expr=expr,brute_step=brute_step)
             if dlg.exec_():
-                value,maximum,minimum,expr,brute_step=(dlg.value,dlg.maximum,dlg.minimum,dlg.expr,dlg.brute_step)
-            try:
-                self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
-            except:
-                pass
+                value,vary,maximum,minimum,expr,brute_step=(dlg.value,dlg.vary,dlg.maximum,dlg.minimum,dlg.expr,dlg.brute_step)
             self.mfitParamTableWidget.item(row,col).setText(str(value))
+            if vary:
+                self.mfitParamTableWidget.item(row, col).setCheckState(Qt.Checked)
+            else:
+                self.mfitParamTableWidget.item(row, col).setCheckState(Qt.Unchecked)
             self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
             self.mfitParamData[parkey][row]=value
-            self.fit.fit_params[key].min=minimum
-            self.fit.fit_params[key].max=maximum
-            if expr!='None':
-                self.fit.fit_params[key].expr=expr
-            self.fit.fit_params[key].brute_step=brute_step
             self.fit.fit_params[key].value=value
+            if expr=='None':
+                expr=''
+            self.fit.fit_params[key].set(value=value,vary=vary,min=minimum,max=maximum,expr=expr,brute_step=brute_step)
             self.update_plot()
 
         

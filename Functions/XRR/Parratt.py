@@ -36,6 +36,7 @@ class Parratt: #Please put the class name same as the function name
         self.choices={'rrf':[1,0]}
         self.output_params={}
         self.init_params()
+        self.__fit__=False
 
 
     def init_params(self):
@@ -79,8 +80,9 @@ class Parratt: #Please put the class name same as the function name
             z=z+d[i+1]
         self.__rho__=np.cumsum(drho)*self.__d__[0]+rho[0]
         self.__beta__=np.cumsum(dbeta)*self.__d__[0]+beta[0]
-        self.output_params['Electro density profile']={'x':self.__z__,'y':self.__rho__}
-        self.output_params['Absorption density profile']={'x':self.__z__,'y':self.__beta__}
+        if not self.__fit__:
+            self.output_params['Electro density profile']={'x':self.__z__,'y':self.__rho__}
+            self.output_params['Absorption density profile']={'x':self.__z__,'y':self.__beta__}
         return n
 
 

@@ -13,6 +13,7 @@ from numpy import loadtxt
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./Functions'))
 sys.path.append(os.path.abspath('./Fortran_routines/'))
+from functools import lru_cache
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
@@ -20,7 +21,7 @@ from xr_ref import parratt
 
 
 class AsymSphere: #Please put the class name same as the function name
-    def __init__(self,x = 0.1, E = 10.0, R0 = 25.00, rhoc = 4.68, Tsh = 7.337, rhosh = 0.200, h1 = -25.0, h1sig = 0.0, h2 = 3.021,
+    def __init__(self,x = 0.1, E = 10.0, R0 = 25.00, rhoc = 4.68, D = 66.6, rhosh = 0.200, h1 = -25.0, h1sig = 0.0, h2 = 3.021,
                  rhoup = 0.00, rhodown = 0.334, sig = 3.0, cov = 0.901, fix_sig = False,
                  mpar={'Layers':['Top', 'Bottom'], 'd':[0.0,1.0],'rho':[0.0,0.334],'beta':[0.0,0.0],'sig':[0.0,3.00]},
                  rrf = 1, qoff=0.0,zmin=-120,zmax=120,dz=1):
@@ -30,7 +31,7 @@ class AsymSphere: #Please put the class name same as the function name
         E      	: Energy of x-rays in inverse units of x
         Rc     	: Radius of the core of the nanoparticles
         rhoc   	: Electron density of the core
-        Tsh     : Thickness of the outer shell
+        D       : Seperation between Nanoparticles
         h1      : Distance between the center for the core and the interface
         h1sig   : width of the Fluctuations in h1
         rhosh  	: Electron Density of the outer shell. If 0, the electron density the shell region will be assumed to be filled by the bulk phases depending upon the position of the nanoparticles
@@ -52,7 +53,7 @@ class AsymSphere: #Please put the class name same as the function name
         self.E=E
         self.R0=R0
         self.rhoc=rhoc
-        self.Tsh=Tsh
+        self.D=D
         self.rhosh=rhosh
         self.h2=h2
         self.h1 = h1
@@ -81,7 +82,7 @@ class AsymSphere: #Please put the class name same as the function name
         self.params=Parameters()
         self.params.add('R0', value=self.R0,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('rhoc', value=self.rhoc,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
-        self.params.add('Tsh', value=self.Tsh,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
+        self.params.add('D', value=self.D,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('h1', value = self.h1, vary = 0, min=-np.inf, max=np.inf, expr = None, brute_step=0.1)
         self.params.add('h1sig', value=self.h1sig, vary=0, min=0, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('h2',value=self.h2,vary=1,min=0,max=7.338,expr=None,brute_step=0.1)
@@ -107,9 +108,10 @@ class AsymSphere: #Please put the class name same as the function name
                                 self.params.add('__%s__%03d' % (key, i), value=self.__mpar__[key][i], vary=0, min=0,
                                             max=np.inf, expr=None, brute_step=0.1)
 
-                  
-    def NpRho(self,z,R0=25,rhoc=4.68,Tsh=10,rhosh=0.2,h2=8,h1=-35,rhoup=0.0,rhodown=0.334):
-        D=2*(R0+Tsh)
+    @lru_cache(maxsize=10)
+    def NpRho(self,z,R0=25,rhoc=4.68,D=66.0,rhosh=0.2,h2=8,h1=-35,rhoup=0.0,rhodown=0.334):
+        z=np.array(z)
+        Tsh=D/2.0-R0
         Atot=np.sqrt(3)*D**2/2
         Re=np.where(-R0-Tsh<h1<R0+Tsh,(D**2/4-h1**2+(h2+R0+h1)**2)/(2*(h2+R0+h1)),D/2)
         rhos=np.where(z>0,rhodown,rhoup)
@@ -117,8 +119,9 @@ class AsymSphere: #Please put the class name same as the function name
         ANp=np.pi*np.sqrt(np.where(z>=0,0.0,D**2/4-(z-h1)**2)*np.where(z<h1-D/2,0.0,D**2/4-(z-h1)**2))+np.pi*np.sqrt(np.where(z<0,0.0,Re**2-(Re-h2-R0-h1+z)**2)*np.where(z>h2+R0+h1,0.0,Re**2-(Re-h2-R0-h1+z)**2))
         return  ((Atot-ANp)*rhos+rhosh*(ANp-Acore)+rhoc*Acore)/Atot
 
-    def NpRhoGauss(self,z,R0=25,rhoc=4.68,Tsh=10,rhosh=0.2,h2=10,h1=[-30],h1sig=[0],rhoup=0.0,rhodown=0.334,sig=3.0,Nc=20):
-        
+    @lru_cache(maxsize=10)
+    def NpRhoGauss(self,z,R0=25,rhoc=4.68,D=66.6,rhosh=0.2,h2=10,h1=(-30,),h1sig=(0,),rhoup=0.0,rhodown=0.334,sig=3.0,Nc=20):
+        z=np.array(z)
         if sig<1e-3:
             zt=z
         else:
@@ -131,16 +134,15 @@ class AsymSphere: #Please put the class name same as the function name
         
         for i in range(len(h1)):
             if h1sig[i]<1e-3:
-                rhosum=rhosum+self.NpRho(zt,R0=R0,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,h2=h2,h1=h1[i],rhoup=rhoup,rhodown=rhodown)
+                rhosum=rhosum+self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=h1[i],rhoup=rhoup,rhodown=rhodown)
             else:
                 Z1=np.linspace(h1[i]-5*h1sig[i],h1[i]+5*h1sig[i],201)
                 dist=np.exp(-(Z1-h1[i])**2/2/h1sig[i]**2)
                 norm=np.sum(dist)
                 tsum=np.zeros_like(len(zt))
                 for j in range(len(Z1)):
-                    tsum=tsum+self.NpRho(zt,R0=R0,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,h2=h2,h1=Z1[j],rhoup=rhoup,rhodown=rhodown)*dist[j]
+                    tsum=tsum+self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=Z1[j],rhoup=rhoup,rhodown=rhodown)*dist[j]
                 rhosum=rhosum+tsum/norm
-
         rho=rhosum-(len(h1)-1)*rhos 
         if sig<1e-3:
             return rho
@@ -155,16 +157,16 @@ class AsymSphere: #Please put the class name same as the function name
                 res=np.append(res,[res[-1]])
             else:
                 return res
-            
+
     def calcProfile1(self):
         """
         Calculates the electron and absorption density profiles
         """
         self.__z__=np.arange(self.zmin,self.zmax,self.dz)
         self.__d__=self.dz*np.ones_like(self.__z__)
-        self.__rho__=self.NpRhoGauss(self.__z__,R0=self.R0,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,h2=self.h2,h1=[self.h1],h1sig=[self.h1sig],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
+        self.__rho__=self.NpRhoGauss(tuple(self.__z__),R0=self.R0,rhoc=self.rhoc,D=self.D,rhosh=self.rhosh,h2=self.h2,h1=(self.h1,),h1sig=(self.h1sig,),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
         self.output_params['Nanoparticle EDP']={'x':self.__z__,'y':self.__rho__}
-            
+
     def calcProfile2(self):
         """
         Calculates the electron and absorption density profiles of the additional monolayer
@@ -187,6 +189,8 @@ class AsymSphere: #Please put the class name same as the function name
         if not self.__fit__:
             self.output_params['Monolayer EDP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__rho2__}
             self.output_params['Monolayer ADP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__beta2__}
+
+
     def sldCalFun(self,d,y,sigma,x):
         wholesld=[]
         for j in range(len(x)):

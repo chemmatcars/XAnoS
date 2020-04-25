@@ -6,6 +6,7 @@ import os
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./Functions'))
 sys.path.append(os.path.abspath('./Fortran_routines/'))
+from functools import lru_cache
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
@@ -73,7 +74,9 @@ class SphereAtInterface: #Please put the class name same as the function name
         self.params.add('qoff',value=self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
 
-    def decayNp(self,z,Rc=10,D=30.0,z0=0.0,xi=1.0,cov=100.0,rhoc=4.65,rhos=[0.334,0.38],sig=1.0):
+    @lru_cache(maxsize=10)
+    def decayNp(self,z,Rc=10,D=30.0,z0=0.0,xi=1.0,cov=100.0,rhoc=4.65,rhos=(0.334,0.38),sig=1.0):
+        z=np.array(z)
         if sig<1e-3:
             z2=z
         else:
@@ -89,7 +92,7 @@ class SphereAtInterface: #Please put the class name same as the function name
             dec=np.exp((z0-z1)/xi)/xi
         rhoz=np.zeros_like(z2)
         for i in range(len(z1)):
-            rhoz=rhoz+self.rhoNPz(z2,z0=z1[i],rhoc=rhoc,Rc=Rc,D=D,rhos=rhos)*dec[i]/sum(dec)
+            rhoz=rhoz+self.rhoNPz(tuple(z2),z0=z1[i],rhoc=rhoc,Rc=Rc,D=D,rhos=rhos)*dec[i]/sum(dec)
         rhoz=cov*rhoz/100.0+(100-cov)*intf/100.0
         x=np.arange(-5*sig,5*sig,self.dz)
         if sig>1e-3:
@@ -102,7 +105,9 @@ class SphereAtInterface: #Please put the class name same as the function name
         else:
             return rhoz
 
-    def rhoNPz(self,z,z0=0,rhoc=4.65,Rc=10.0,D=28.0,rhos=[0.334,0.38]):
+    @lru_cache(maxsize=10)
+    def rhoNPz(self,z,z0=0,rhoc=4.65,Rc=10.0,D=28.0,rhos=(0.334,0.38)):
+        z=np.array(z)
         rhob=np.where(z>0,rhos[1],rhos[0])
         #D=D/2
         return np.where(np.abs(z-z0)<=Rc,(2*np.pi*(rhoc-rhob)*(Rc**2-(z-z0)**2)+1.732*rhob*D**2)/(1.732*D**2),rhob)
@@ -112,12 +117,13 @@ class SphereAtInterface: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        rhos=[self.rho_up,self.rho_down]
+        rhos=(self.rho_up,self.rho_down)
         lam=self.lam
         z=np.arange(self.zmin,self.zmax,self.dz)
         d=np.ones_like(z)*self.dz
-        edp=self.decayNp(z,Rc=self.Rc,z0=self.Zo,xi=self.decay,cov=self.cov,rhos=rhos,rhoc=self.rhoc,sig=self.roughness,D=self.D)
-        self.output_params['EDP']={'x':z,'y':edp}
+        edp=self.decayNp(tuple(z),Rc=self.Rc,z0=self.Zo,xi=self.decay,cov=self.cov,rhos=rhos,rhoc=self.rhoc,sig=self.roughness,D=self.D)
+        if not self.__fit__:
+            self.output_params['EDP']={'x':z,'y':edp}
         beta=np.zeros_like(z)
         rho=np.array(edp,dtype='float')
         refq,r2=parratt(self.x+self.qoff,lam,d,rho,beta)

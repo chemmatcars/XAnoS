@@ -144,7 +144,7 @@ class Fit(QObject):
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise',maxfev=maxiter)
         elif fit_method=='differential_evolution':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,
-                                  nan_policy='raise', calc_covar=True, maxiter=maxiter)
+                                  nan_policy='raise', calc_covar=True, maxiter=maxiter, popsize=300, updating='immediate')
         elif fit_method=='brute':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise')
         elif fit_method=='emcee':
