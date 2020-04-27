@@ -113,7 +113,7 @@ class AsymSphere: #Please put the class name same as the function name
         z=np.array(z)
         Tsh=D/2.0-R0
         Atot=np.sqrt(3)*D**2/2
-        Re=np.where(-R0-Tsh<h1<R0+Tsh,(D**2/4-h1**2+(h2+R0+h1)**2)/(2*(h2+R0+h1)),D/2)
+        Re=np.where(-R0-h2<h1<R0+Tsh,(D**2/4-h1**2+(h2+R0+h1)**2)/(2*(h2+R0+h1)),D/2)
         rhos=np.where(z>0,rhodown,rhoup)
         Acore=np.pi*np.sqrt(np.where(z>h1+R0,0.0,R0**2-(z-h1)**2)*np.where(z<h1-R0,0.0,R0**2-(z-h1)**2))
         ANp=np.pi*np.sqrt(np.where(z>=0,0.0,D**2/4-(z-h1)**2)*np.where(z<h1-D/2,0.0,D**2/4-(z-h1)**2))+np.pi*np.sqrt(np.where(z<0,0.0,Re**2-(Re-h2-R0-h1+z)**2)*np.where(z>h2+R0+h1,0.0,Re**2-(Re-h2-R0-h1+z)**2))
@@ -141,7 +141,8 @@ class AsymSphere: #Please put the class name same as the function name
                 norm=np.sum(dist)
                 tsum=np.zeros_like(len(zt))
                 for j in range(len(Z1)):
-                    tsum=tsum+self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=Z1[j],rhoup=rhoup,rhodown=rhodown)*dist[j]
+                    nprho=self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=Z1[j],rhoup=rhoup,rhodown=rhodown)
+                    tsum=tsum+nprho*dist[j]
                 rhosum=rhosum+tsum/norm
         rho=rhosum-(len(h1)-1)*rhos 
         if sig<1e-3:
@@ -164,7 +165,7 @@ class AsymSphere: #Please put the class name same as the function name
         """
         self.__z__=np.arange(self.zmin,self.zmax,self.dz)
         self.__d__=self.dz*np.ones_like(self.__z__)
-        self.__rho__=self.NpRhoGauss(tuple(self.__z__),R0=self.R0,rhoc=self.rhoc,D=self.D,rhosh=self.rhosh,h2=self.h2,h1=(self.h1,),h1sig=(self.h1sig,),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
+        self.__rho__=self.NpRhoGauss(tuple(self.__z__),R0=self.R0,rhoc=self.rhoc,D=self.D,rhosh=self.rhosh,h2=self.h2,h1=tuple([self.h1]),h1sig=tuple([self.h1sig]),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
         self.output_params['Nanoparticle EDP']={'x':self.__z__,'y':self.__rho__}
 
     def calcProfile2(self):
@@ -205,7 +206,6 @@ class AsymSphere: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-       
         cov=self.cov
         self.calcProfile1()
         x=self.x+self.qoff

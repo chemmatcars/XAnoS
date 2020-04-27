@@ -468,7 +468,7 @@ class XAnoS_Fit(QWidget):
         self.autoCICheckBox=QCheckBox()
         self.autoCICheckBox.setTristate(False)
         self.autoCICheckBox.setCheckState(Qt.Unchecked)
-        self.autoCICheckBox.setDisabled(True)
+        # self.autoCICheckBox.setDisabled(True)
         self.calcConfInterButton=QPushButton('Calculate Confidence Interval')
         self.calcConfInterButton.clicked.connect(self.calcConfInterval)
         #self.calcConfInterButton.setDisabled(True)
@@ -612,9 +612,10 @@ class XAnoS_Fit(QWidget):
 
                 self.fit_info='Fit Message: %s\n'%self.fit_message
 
-    #            if self.autoCICheckBox.isChecked():
-    #                self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
                 self.closeFitInfoDlg()
+                self.fit.functionCalled.disconnect(self.fitCallback)
+                if self.autoCICheckBox.isChecked():
+                    self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
                 for row in range(self.sfitParamTableWidget.rowCount()):
                     key=self.sfitParamTableWidget.item(row,0).text()
                     self.sfitParamTableWidget.item(row,1).setText('%.6e'%(self.fit.result.params[key].value))
@@ -697,37 +698,53 @@ class XAnoS_Fit(QWidget):
         
     def calcConfInterval(self):
         self.autoCICheckBox.setCheckState(Qt.Unchecked)
-        self.confInterval_emcee(minimizer=self.fit.fitter,fit_result=self.fit.result)
+        self.confInterval(minimizer=self.fit.fitter,fit_result=self.fit.result)
         
     def confInterval(self,minimizer=None,fit_result=None):
         """
         """
+        for key in self.fit.result.params.keys():
+            if fit_result.params[key].stderr is None or fit_result.params[key].stderr==0.0:
+                fit_result.params[key].stderr = np.abs(fit_result.params[key].value * 0.1)
         if minimizer is not None and fit_result is not None:
+            for key in fit_result.params.keys():
+                if fit_result.params[key].vary:
+                    fit_result.params[key].set(vary=False)
+                    fval=fit_result.params[key].value
+                    print('Error calculation on '+key)
+                    for i, value in enumerate(np.linspace(fval*0.9,fval*1.1,21)):
+                        fit_result.params[key].set(value=value)
+                        result=minimizer.minimize(method='leastsq',params=fit_result.params)
+                        print(i, value, result.chisqr)
+                    fit_result.params[key].set(value=fval,vary=True)
+                    print('\n')
 #            try:
-            self.confIntervalStatus=QMessageBox(parent=self)
-            self.confIntervalStatus.setWindowTitle('Confidence Interval Calculation')
-            self.confIntervalStatus.setText('Calulationg confidence intervals for all the fitting parameters. Please wait...\n')
-            self.confIntervalStatus.addButton(QMessageBox.Close)
-            self.fit.functionCalled.connect(self.conf_interv_status)
-            self.confIntervalStatus.open()
-            ci= conf_interval(minimizer,fit_result,sigmas=[1,2],maxiter=int(self.fitIterationLineEdit.text()))
-            if self.autoCICheckBox.isChecked():
-                self.fitIterLabel.setText('Calculating confidence intervals of the parameters. Please wait...')
-                self.fit_report+='Confidence Intervals\n'
-                self.fit_report+='--------------------\n'
-                self.fit_report+=printfuncs.report_ci(ci)+'\n'
-            else:
-                text='Confidence Intervals are:\n'
-                text+=('{:>10s} '+'{:>10s} '*5+'\n').format('Parameters','-2sig','-1sig','Best','1sig','2sig')
-                for key in ci.keys():
-                    text+=('{:>10s} '+'{:10.4e} '*5+'\n').format(key,*[ci[key][i][1] for i in range(7)])
-                self.confIntervalStatus.setText(text)
-            try:
-                self.fit.functionCalled.disconnect(self.conf_interv_status)
-            except:
-                pass
-#            except:
-#                QMessageBox.information(self,'Info','Couldnot calculate confidence interval because the error estimated couldnot be calculated.',QMessageBox.Ok)
+#             self.confIntervalStatus=QMessageBox(parent=self)
+#             self.confIntervalStatus.setWindowTitle('Confidence Interval Calculation')
+#             self.confIntervalStatus.setText('Calculating confidence intervals for all the fitting parameters. Please wait...\n')
+#             self.confIntervalStatus.addButton(QMessageBox.Close)
+#             self.fit.functionCalled.connect(self.conf_interv_status)
+#             self.confIntervalStatus.open()
+#             ci= conf_interval(minimizer,fit_result,sigmas=[1,2],maxiter=int(self.fitIterationLineEdit.text()))
+#             print(ci)
+#             # if self.autoCICheckBox.isChecked():
+#             #     self.fitIterLabel.setText('Calculating confidence intervals of the parameters. Please wait...')
+#             #     self.fit_report+='Confidence Intervals\n'
+#             #     self.fit_report+='--------------------\n'
+#             #     self.fit_report+=printfuncs.report_ci(ci)+'\n'
+#             # else:
+#             #     text='Confidence Intervals are:\n'
+#             #     text+=printfuncs.report_ci(ci)+'\n'
+#             #     # text+=('{:>10s} '+'{:>10s} '*5+'\n').format('Parameters','-2sig','-1sig','Best','1sig','2sig')
+#             #     # for key in ci.keys():
+#             #     #     text+=('{:>10s} '+'{:10.4e} '*5+'\n').format(key,*[ci[key][i][1] for i in range(5)])
+#             #     self.confIntervalStatus.setText(text)
+#             try:
+#                 self.fit.functionCalled.disconnect(self.conf_interv_status)
+#             except:
+#                 pass
+# #            except:
+# #                QMessageBox.information(self,'Info','Couldnot calculate confidence interval because the error estimated couldnot be calculated.',QMessageBox.Ok)
         else:
             QMessageBox.warning(self,'Fit warning','Please fit the data first before calculating confidence intervals',\
                                 QMessageBox.Ok)

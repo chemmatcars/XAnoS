@@ -1,5 +1,5 @@
 import numpy as np
-from lmfit import fit_report, Minimizer
+from lmfit import fit_report, Minimizer, conf_interval, printfuncs
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
 import traceback
@@ -141,19 +141,21 @@ class Fit(QObject):
         else:
             self.imin, self.imax = np.where(self.x >= xmin)[0][0], np.where(self.x <= xmax)[0][-1]
         if fit_method=='leastsq':
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise',maxfev=maxiter)
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit',maxfev=maxiter)
         elif fit_method=='differential_evolution':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,
-                                  nan_policy='raise', calc_covar=True, maxiter=maxiter, popsize=300, updating='immediate')
+                                  nan_policy='omit', calc_covar=True, maxiter=maxiter, popsize=300, updating='immediate')
         elif fit_method=='brute':
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise')
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit')
         elif fit_method=='emcee':
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,), iter_cb=self.callback, nan_policy='raise', burn=300, steps=1000, thin=20, is_weighted=True)
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,), iter_cb=self.callback, nan_policy='omit', burn=300, steps=1000, thin=20, is_weighted=True)
         else:
             self.fitter = Minimizer(self.residual, self.fit_params, fcn_args=(fit_scale,), iter_cb=self.callback,
-                                    nan_policy='raise')
+                                    nan_policy='omit')
         self.result=self.fitter.minimize(method=fit_method)
         return fit_report(self.result),self.result.message
-        
+
+
+
         
         
