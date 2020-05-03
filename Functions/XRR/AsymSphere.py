@@ -166,7 +166,7 @@ class AsymSphere: #Please put the class name same as the function name
         self.__z__=np.arange(self.zmin,self.zmax,self.dz)
         self.__d__=self.dz*np.ones_like(self.__z__)
         self.__rho__=self.NpRhoGauss(tuple(self.__z__),R0=self.R0,rhoc=self.rhoc,D=self.D,rhosh=self.rhosh,h2=self.h2,h1=tuple([self.h1]),h1sig=tuple([self.h1sig]),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
-        self.output_params['Nanoparticle EDP']={'x':self.__z__,'y':self.__rho__}
+        self.output_params['Nanoparticle EDP']={'x':self.__z__,'y':self.__rho__, 'names':['z (Angs)', 'Electron Density (el/Angs^3)']}
 
     def calcProfile2(self):
         """
@@ -188,8 +188,8 @@ class AsymSphere: #Please put the class name same as the function name
         self.__rho2__ = self.sldCalFun(d, rho, sig, self.__z2__)
         self.__beta2__ = self.sldCalFun(d, beta, sig, self.__z2__)
         if not self.__fit__:
-            self.output_params['Monolayer EDP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__rho2__}
-            self.output_params['Monolayer ADP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__beta2__}
+            self.output_params['Monolayer EDP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__rho2__, 'names':['z (Angs)','Elecron Density (el/Angs^3)']}
+            self.output_params['Monolayer ADP'] = {'x': self.__z__-np.sum(d[1:-1]), 'y': self.__beta2__, 'names':['z (Angs)','Beta']}
 
 
     def sldCalFun(self,d,y,sigma,x):

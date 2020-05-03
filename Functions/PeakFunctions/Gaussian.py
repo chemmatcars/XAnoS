@@ -30,9 +30,9 @@ class Gaussian:
 
     def init_params(self):
         self.params=Parameters()
-        self.params.add('pos',value=self.pos,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.pos,0.1))
-        self.params.add('wid',value=self.wid,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.wid,0.1))
-        self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.norm,0.1))
+        self.params.add('pos',value=self.pos,vary=1,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.pos,0.1))
+        self.params.add('wid',value=self.wid,vary=1,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.wid,0.1))
+        self.params.add('norm',value=self.norm,vary=1,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.norm,0.1))
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.bkg,0.1))
 
     def update_params(self):

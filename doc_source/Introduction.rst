@@ -17,7 +17,7 @@ Follow the following instructions for installation:
 2) Open a Anaconda terminal the run these two commands::
 
     conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib pandas
-    pip install lmfit pyfai pylint periodictable mendeleev corner emcee
+    pip install lmfit pyfai pylint periodictable mendeleev corner emcee tabulate
 
 3) The installation can be done in two different ways:
     a) Universal way which does not need GIT installation:
