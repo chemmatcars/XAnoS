@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox,\
     QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem,\
     QAbstractItemView, QSpinBox, QSplitter, QSizePolicy, QAbstractScrollArea, QHBoxLayout, QTextEdit, QShortcut,\
-    QProgressDialog
+    QProgressDialog, QDesktopWidget
 from PyQt5.QtGui import QPalette, QKeySequence, QFont
 from PyQt5.QtCore import Qt, QThread
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -806,7 +806,10 @@ class XAnoS_Fit(QWidget):
         names=[name for name in self.fit.result.var_names if name!='__lnsigma']
         values=[self.fit.result.params[name].value for name in names]
         fig = corner.corner(self.fit.result.flatchain[names], labels=names, bins=50,
-                            truths = values, quantiles = [0.159, 0.5, 0.842], show_titles = True, title_fmt='.3f')
+                            truths = values, quantiles = [0.159, 0.5, 0.842], show_titles = True, title_fmt='.3f',
+                            use_math_text=True)
+        for ax in fig.get_axes():
+            ax.set_xlabel('')
         dlg=QDialog(self)
         dlg.setWindowTitle('Error Estimates')
         dlg.resize(800, 600)
@@ -858,28 +861,6 @@ class XAnoS_Fit(QWidget):
         fh=open(fname,'w')
         fh.writelines(text)
         fh.close()
-
-
-    def err_residuals(self, params, x, y):
-        norm = params['norm'].value
-        x0 = params['x0'].value
-        sig1 = params['sig1'].value
-        sig2 = params['sig2'].value
-        fun = norm * (np.where(x < x0, np.exp(-(x - x0) ** 2 / 2 / sig1 ** 2), 0.0) + np.where(x > x0, np.exp(
-            -(x - x0) ** 2 / 2 / sig2 ** 2), 0.0))
-        return (y - fun)
-
-    def err_fit(self, x, y, x0=11.5, sig1=0.1, sig2=0.2, norm=700):
-        params = lmfit.Parameters()
-        params.add('x0', value=x0, vary=True)
-        params.add('sig1', value=sig1, vary=True)
-        params.add('sig2', value=sig2, vary=True)
-        params.add('norm', value=norm, vary=True)
-        results = lmfit.minimize(self.err_residuals, params, args=(x, y))
-        center = results.params['x0'].value
-        left = results.params['sig1'].value * 2.3548 / 2
-        right = results.params['sig2'].value * 2.3548 / 2
-        return center, left, right
 
 
     def undoFit(self):
@@ -1107,11 +1088,11 @@ class XAnoS_Fit(QWidget):
 
         
     def mparDoubleClicked(self,row,col):
-        try:
-            self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
-        except:
-            pass
         if col!=0:
+            try:
+                self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
+            except:
+                pass
             parkey=self.mfitParamTableWidget.horizontalHeaderItem(col).text()
             key='__%s__%03d'%(parkey,row)
             value=self.fit.fit_params[key].value
@@ -1135,6 +1116,7 @@ class XAnoS_Fit(QWidget):
                 expr=''
             self.fit.fit_params[key].set(value=value,vary=vary,min=minimum,max=maximum,expr=expr,brute_step=brute_step)
             self.update_plot()
+
 
         
         
@@ -1474,6 +1456,11 @@ class XAnoS_Fit(QWidget):
         self.plotWidget.setYLabel('Y',fontsize=5)
         self.plotSplitter.addWidget(self.plotWidget)
 
+        self.extra_param_1DplotWidget=PlotWidget()
+        self.extra_param_1DplotWidget.setXLabel('X',fontsize=5)
+        self.extra_param_1DplotWidget.setYLabel('Y',fontsize=5)
+        self.plotSplitter.addWidget(self.extra_param_1DplotWidget)
+
         self.fitResultsLayoutWidget = pg.LayoutWidget()
         fitResults = QLabel('Fit Results')
         self.fitResultsLayoutWidget.addWidget(fitResults, colspan=1)
@@ -1482,11 +1469,6 @@ class XAnoS_Fit(QWidget):
         self.fitResultsLayoutWidget.addWidget(self.fitResultsListWidget, colspan=1)
         self.plotSplitter.addWidget(self.fitResultsLayoutWidget)
 
-        self.extra_param_1DplotWidget=PlotWidget()
-        self.extra_param_1DplotWidget.setXLabel('X',fontsize=5)
-        self.extra_param_1DplotWidget.setYLabel('Y',fontsize=5)
-        self.plotSplitter.addWidget(self.extra_param_1DplotWidget)
-        
         self.plotDock.addWidget(self.plotSplitter)
         
     def update_catagories(self):
@@ -1926,7 +1908,8 @@ if __name__=='__main__':
     app=QApplication(sys.argv)
     w=XAnoS_Fit()
     w.setWindowTitle('XAnoS-Fit')
-    w.setGeometry(100,100,1000,800)
+    screen=QDesktopWidget().screenGeometry()
+    w.setGeometry(0,0,screen.width(),screen.height())
     try:
         fname = sys.argv[1]
         w.addData(fnames=[fname])

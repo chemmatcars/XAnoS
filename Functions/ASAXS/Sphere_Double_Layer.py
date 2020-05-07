@@ -84,6 +84,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         self.init_params()
         self.__cf__ = Chemical_Formula()
         self.__fit__ = False
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         """
@@ -510,8 +511,6 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         scale=1e27/6.022e23
-        self.output_params = {}
-        self.output_params['scaler_parameters']={}
         self.update_params()
         tR=self.__R__[:-1]
         tRsig=self.__Rsig__[:-1]

@@ -54,6 +54,7 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
         self.init_params()
         self.__cf__=Chemical_Formula()
         self.__fit__=False
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         """
@@ -274,7 +275,6 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         self.update_params()
         r = self.calc_mesh(R=self.__R__[:-1], Rsig=self.__Rsig__[:-1], Np=self.Np)
         adist = np.ones_like(r[0])

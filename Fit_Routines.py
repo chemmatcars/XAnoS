@@ -115,9 +115,9 @@ class Fit(QObject):
                 y = (data-fit)
             else:
                 y = (data-fit)/err
-            self.Niter+=1
-            self.functionCalled.emit(params, self.Niter, y, fit_scale)
-            return y
+        self.Niter+=1
+        self.functionCalled.emit(params, self.Niter, y, fit_scale)
+        return y
         
     def callback(self,params,iterations,residual,fit_scale):
         """
@@ -143,20 +143,20 @@ class Fit(QObject):
         else:
             self.imin, self.imax = np.where(self.x >= xmin)[0][0], np.where(self.x <= xmax)[0][-1]
         if fit_method=='leastsq':
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit',maxfev=maxiter)
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise',maxfev=maxiter)
         elif fit_method=='differential_evolution':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,
-                                  nan_policy='omit', calc_covar=True, maxiter=maxiter, popsize=300, updating='immediate')
+                                  nan_policy='raise', calc_covar=True, maxiter=maxiter, popsize=300, updating='immediate')
         elif fit_method=='brute':
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='omit')
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise')
         elif fit_method == 'emcee':
             emcee_params = self.result.params.copy()
             emcee_params.add('__lnsigma', value=np.log(0.1),vary=True, min=np.log(0.001), max=np.log(2.0))
             self.fitter = Minimizer(self.residual, emcee_params, fcn_args=(fit_scale,), iter_cb=self.callback,
-                                nan_policy='omit', burn=emcee_burn, steps=emcee_steps, thin=2, is_weighted=True)
+                                nan_policy='raise', burn=emcee_burn, steps=emcee_steps, thin=2, is_weighted=True)
         else:
             self.fitter = Minimizer(self.residual, self.fit_params, fcn_args=(fit_scale,), iter_cb=self.callback,
-                                    nan_policy='omit')
+                                    nan_policy='raise')
         self.result=self.fitter.minimize(method=fit_method)
         if fit_method!='emcee':
             return fit_report(self.result),self.result.message

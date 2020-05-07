@@ -71,6 +71,7 @@ class Cylinder_Uniform: #Please put the class name same as the function name
         self.init_params()
         self.__cf__=Chemical_Formula()
         self.__fit__=False
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         """
@@ -278,13 +279,6 @@ class Cylinder_Uniform: #Please put the class name same as the function name
 
 
     def update_params(self):
-        self.norm=self.params['norm'].value
-        self.sbkg=self.params['sbkg'].value
-        self.cbkg = self.params['cbkg'].value
-        self.abkg = self.params['abkg'].value
-        self.D= self.params['D'].value
-        self.phi = self.params['phi'].value
-        self.U = self.params['U'].value
         key='Density'
         self.__density__=[self.params['__%s__%03d'%(key,i)].value for i in range(len(self.__mpar__[key]))]
         key='Sol_Density'
@@ -302,7 +296,6 @@ class Cylinder_Uniform: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         self.update_params()
         # for key in self.params.keys():
         #     print('%s: %f %f'%(key,self.params[key].min,self.params[key].max))
