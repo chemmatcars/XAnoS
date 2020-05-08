@@ -66,7 +66,12 @@ class Energy_Widget(QWidget):
         self.getUndulatorOffset()
         self.undulatorChanging=False
         if self.feedbackComboBox.pv.value==1:
+            # self.feedback_enabled=True
+            # self.feedback_disable=False
             QMessageBox.warning(self,'Feedback Warning','Please switch off the feedback before start energy tracking',QMessageBox.Ok)
+        # else:
+        #     self.feedback_enabled=False
+        #     self.feedback_disabled=True
 
 
     def getUndulatorOffset(self):
@@ -198,6 +203,8 @@ class Energy_Widget(QWidget):
             pass
 
     def changeUndulatorEnergy(self):
+        # self.feedback_OFF()
+        # print("Feedback Disabled")
         print('Changing Undulator')
         self.undulatorChanging=True
         self.undulatorEnergyLineEdit.pv.put(self.energyLineEdit.pv.value+self.undulatorOffset)
@@ -214,16 +221,22 @@ class Energy_Widget(QWidget):
             print("Scanning 2nd Mirror...")
             self.scan_mirror()
         self.undulatorChanging=False
+        # self.feeback_ON()
+        # print("Feedback Enabled")
 
 
     def scan_xtal(self):
+        # if self.feedback_enabled:
+        #     print("Feedback Disabled")
+        #     self.feedback_OFF()
         self.stoppedTracking=False
         self.scan(dac='xtal')
+        # print("Feedback Enabled")
+        # self.feeback_ON()
 
     def scan_mirror(self):
         self.stoppedTracking = False
         self.scan(dac='mirror')
-
 
     def scan(self,dac='xtal',save=True):
         self.countTime_15IDC_PV.put(1)
@@ -249,6 +262,7 @@ class Energy_Widget(QWidget):
         data['MonB'] = np.array([])
         data['MonP'] = np.array([])
         data['MonD'] = np.array([])
+        # data['Readback'] = np.array([])
         data['PD'] = np.array([])
         self.auto_count_off()
         if dac == 'xtal':
@@ -267,6 +281,7 @@ class Energy_Widget(QWidget):
                 data['MonP'] = np.append(data['MonP'],self.monPCountsLabel.pv.value)
                 data['MonD'] = np.append(data['MonD'],self.monDCountsLabel.pv.value)
                 data['PD']=np.append(data['PD'],self.pdCountsLabel.pv.value)
+                # data['Readback'] = np.append(data['Readback'], float(epics.caget(BYTES2STR("15IDA:pid_mono_1.CVAL"))))
                 if dac=='xtal':
                     self.tabWidget.setCurrentIndex(0)
                     self.xtalPlotTab.add_data(data[dac][:i+1],data[yaxis],name=dac+'-'+yaxis)
@@ -282,6 +297,7 @@ class Energy_Widget(QWidget):
                 break
         if not self.stoppedTracking:
             maxval=data[dac][data[yaxis].argmax()]
+            # self.readbackvalue=data['Readback'][data[yaxis].argmax()]
             if dac=='xtal':
                 # offset of -0.06 is added because we find the
                 # peak position obtained from scan is -0.06 from the real peak position
@@ -344,6 +360,21 @@ class Energy_Widget(QWidget):
                 pdCounts = self.pdCountsLabel.pv.value
         self.auto_count_on()
 
+
+    # def feeback_ON(self):
+    #     epics.caput(BYTES2STR("15IDA:pid_mono_1.INP"),"15IDA:pid_mono_1_incalc.D", wait=True)
+    #     sfb=float(epics.caget(BYTES2STR("15IDA:pid_mono_1_incalc.INPC")))
+    #     sf=96.0*sfb/self.readbackvalue
+    #     print(self.readbackvalue,sfb)
+    #     epics.caput(BYTES2STR("15IDA:pid_mono_1_incalc.INPC"), '%.3f'%sf, wait=True)
+    #     epics.caput(BYTES2STR("15IDA:pid_mono_1.FBON"), 1, wait=True)
+    #     self.feedback_enabled=True
+    #     self.feedback_disabled=False
+    #
+    # def feedback_OFF(self):
+    #     epics.caput(BYTES2STR("15IDA:pid_mono_1.FBON"), 0)
+    #     self.feedback_disabled=True
+    #     self.feedback_enabled=False
 
     def auto_count_on(self):
         epics.caput(BYTES2STR("15IDC:scaler1.CONT"), 1)  # setting autocount on for 15IDC scaler
