@@ -555,6 +555,8 @@ class XAnoS_Fit(QWidget):
         except:
             QMessageBox.warning(self,"Value Error", "Please supply the Xrange in this format: xmin:xmax",QMessageBox.Ok)
     
+
+
     def doFit(self, fit_method=None, emcee_steps=100, emcee_burn=30):
         if self.sfnames is None or self.sfnames==[]:
             QMessageBox.warning(self,'Data Error','Please select a dataset first before fitting',QMessageBox.Ok)
@@ -569,7 +571,7 @@ class XAnoS_Fit(QWidget):
             QMessageBox.warning(self, 'Fit Function Warning', 'Please select a function to fit', QMessageBox.Ok)
             return
         try:
-            self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
+            self.sfitParamTableWidget.cellChanged.disconnect(self.sfitParamChanged)
             self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         except:
             QMessageBox.warning(self,'Function Error','Please select a function first to fit.\n'+traceback.format_exc(),QMessageBox.Ok)
@@ -654,7 +656,7 @@ class XAnoS_Fit(QWidget):
                             try:
                                 if self.fit.result.params[key].stderr is None:
                                     self.fit.result.params[key].stderr=0.0
-                                self.sfitParamTableWidget.item(row,1).setToolTip('%.3e \u00B1 %.3e'%\
+                                self.sfitParamTableWidget.item(row,1).setToolTip(key+' = %.3e \u00B1 %.3e'%\
                                                                                  (self.fit.result.params[key].value,\
                                                                                   self.fit.result.params[key].stderr))
                             except:
@@ -666,7 +668,7 @@ class XAnoS_Fit(QWidget):
                                     key='__%s__%03d'%(parkey,row)
                                     if self.fit.result.params[key].stderr is None:
                                         self.fit.result.params[key].stderr = 0.0
-                                    self.mfitParamTableWidget.item(row,col).setToolTip('%.3e \u00B1 %0.3e'%\
+                                    self.mfitParamTableWidget.item(row,col).setToolTip(key+' = %.3e \u00B1 %0.3e'%\
                                                                                        (self.fit.result.params[key].value,\
                                                                                         self.fit.result.params[key].stderr))
                                     self.mfitParamData[parkey][row]=self.fit.result.params[key].value
@@ -708,7 +710,7 @@ class XAnoS_Fit(QWidget):
                 QMessageBox.warning(self,'Minimization failed','Some of the parameters have got unreasonable values.\n'+traceback.format_exc(),QMessageBox.Ok)
                 self.update_plot()
                 break
-        self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
+        self.sfitParamTableWidget.cellChanged.connect(self.sfitParamChanged)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
         try:
             self.fit.functionCalled.disconnect(self.fitCallback)
@@ -1379,18 +1381,15 @@ class XAnoS_Fit(QWidget):
                     for line in lines[sfline:mendnum]:
                         parname,parval,parfit,parmin,parmax,parexpr,parbrute=line.strip().split('\t')
                         self.fit.params[parname]=float(parval)
-                        self.fit.fit_params[parname].value=float(parval)
-                        self.fit.fit_params[parname].vary=int(parfit)
-                        self.fit.fit_params[parname].min=float(parmin)
-                        self.fit.fit_params[parname].max=float(parmax)
+                        self.fit.fit_params.set(value=float(parval),vary=int(parfit),min=float(parmin),max=float(parmax))
                         try:
-                            self.fit.fit_params[parname].expr=eval(parexpr)
+                            self.fit.fit_params[parname].set(expr=eval(parexpr))
                         except:
-                            self.fit.fit_params[parname].expr=str(parexpr)
+                            self.fit.fit_params[parname].set(expr=str(parexpr))
                         try:
-                            self.fit.fit_params[parname].brute_step=eval(parbrute)
+                            self.fit.fit_params[parname].set(brute_step=eval(parbrute))
                         except:
-                            self.fit.fit_params[parname].brute_step=str(parbrute)
+                            self.fit.fit_params[parname].set(brute_step=str(parbrute))
 
                 if mfline is not None:
                     for line in lines[mfline:]:
@@ -1412,6 +1411,7 @@ class XAnoS_Fit(QWidget):
                                 self.fit.fit_params[parname].max=float(parmax)
                                 self.fit.fit_params[parname].expr=expr
                                 self.fit.fit_params[parname].brute_step=brute_step
+                                self.fit.fit_params.set(value=float(parval),vary=int(parfit),min=float(parmin),max=float(parmax),expr=expr,brute_step=brute_step)
                             except:
                                 self.fit.fit_params.add(parname,value=float(parval),vary=int(parfit),min=float(parmin),\
                                                         max=float(parmax),expr=expr,brute_step=brute_step)
@@ -1432,14 +1432,14 @@ class XAnoS_Fit(QWidget):
                                 self.fit.params['__mpar__'][par].insert(num,parval)
                 try:
                     self.fixedParamTableWidget.cellChanged.disconnect(self.fixedParamChanged)
-                    self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
+                    self.sfitParamTableWidget.cellChanged.disconnect(self.sfitParamChanged)
                     self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
                 except:
                     pass
                 self.update_fixed_parameters()
                 self.update_fit_parameters()
                 self.fixedParamTableWidget.cellChanged.connect(self.fixedParamChanged)
-                self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
+                self.sfitParamTableWidget.cellChanged.connect(self.sfitParamChanged)
                 self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
                 self.update_plot()
             else:
@@ -1524,7 +1524,7 @@ class XAnoS_Fit(QWidget):
         """
         try:
             self.fixedParamTableWidget.cellChanged.disconnect(self.fixedParamChanged)
-            self.sfitParamTableWidget.cellChanged.disconnect(self.fitParamChanged)
+            self.sfitParamTableWidget.cellChanged.disconnect(self.sfitParamChanged)
             self.mfitParamTableWidget.cellChanged.disconnect(self.mfitParamChanged)
         except:
             pass
@@ -1544,7 +1544,7 @@ class XAnoS_Fit(QWidget):
         self.xLineEdit.returnPressed.connect(self.xChanged)
         self.mfitParamTableWidget.cellChanged.connect(self.mfitParamChanged)
         self.fixedParamTableWidget.cellChanged.connect(self.fixedParamChanged)
-        self.sfitParamTableWidget.cellChanged.connect(self.fitParamChanged)
+        self.sfitParamTableWidget.cellChanged.connect(self.sfitParamChanged)
 
     def update_fixed_parameters(self):
         fpdata=[]        
@@ -1589,6 +1589,9 @@ class XAnoS_Fit(QWidget):
                 item.setCheckState(Qt.Unchecked)
             else:
                 item.setCheckState(Qt.Checked)
+            item.setToolTip(par + ' = %.3e \u00B1 %.3e' % \
+                                                              (self.fit.fit_params[par].value, \
+                                                               0.0))
         self.sfitParamTableWidget.resizeRowsToContents()
         self.sfitParamTableWidget.resizeColumnsToContents()
         
@@ -1614,10 +1617,14 @@ class XAnoS_Fit(QWidget):
                 for col in range(1,self.mfitParamTableWidget.columnCount()):
                     item=self.mfitParamTableWidget.item(row,col)
                     item.setFlags(Qt.ItemIsUserCheckable|Qt.ItemIsEnabled|Qt.ItemIsEditable|Qt.ItemIsSelectable)
-                    if self.fit.fit_params['__%s__%03d'%(self.mfitParamTableWidget.horizontalHeaderItem(col).text(),row)].vary==0:
+                    key='__%s__%03d'%(self.mfitParamTableWidget.horizontalHeaderItem(col).text(),row)
+                    if self.fit.fit_params[key].vary==0:
                         item.setCheckState(Qt.Unchecked)
                     else:
                         item.setCheckState(Qt.Checked)
+                    item.setToolTip(key + ' = %.3e \u00B1 %0.3e' % \
+                                                                (self.fit.fit_params[key].value, \
+                                                                 0.0))
             self.mfitParamTableWidget.resizeRowsToContents()
             self.mfitParamTableWidget.resizeColumnsToContents()
         else:
@@ -1650,7 +1657,7 @@ class XAnoS_Fit(QWidget):
 
         
         
-    def fitParamChanged(self,row,col):
+    def sfitParamChanged(self,row,col):
         txt=self.sfitParamTableWidget.item(row,0).text()
         try:
             val=float(self.sfitParamTableWidget.item(row,col).text())
@@ -1669,14 +1676,15 @@ class XAnoS_Fit(QWidget):
         if isinstance(val,numbers.Number):
             if col==1:
                 self.fit.params[txt]=val
+                self.fit.fit_params[txt].set(value=val)
                 self.fchanged=False
                 self.update_plot()
             elif col==2:
-                self.fit.fit_params[txt].min=val
+                self.fit.fit_params[txt].set(min=val)
             elif col==3:
-                self.fit.fit_params[txt].max=val
+                self.fit.fit_params[txt].set(max=val)
             elif col==5:
-                self.fit.fit_params[txt].brute_step=val
+                self.fit.fit_params[txt].set(brute_step=val)
         elif isinstance(val,str):
             if col==4:
                 self.fit.fit_params[txt].expr= None if val == 'None' else val
@@ -1687,6 +1695,9 @@ class XAnoS_Fit(QWidget):
             self.fit.fit_params[txt].vary=1
         else:
             self.fit.fit_params[txt].vary=0
+        self.sfitParamTableWidget.item(row,1).setToolTip(txt + ' = %.3e \u00B1 %0.3e' % \
+                                                                (self.fit.fit_params[txt].value, \
+                                                                 0.0))
         self.sfitParamTableWidget.resizeRowsToContents()
         self.sfitParamTableWidget.resizeColumnsToContents()
         
@@ -1697,11 +1708,11 @@ class XAnoS_Fit(QWidget):
             key='__%s__%03d'%(parkey,row)
             if col!=0:
                 oldval = self.fit.fit_params[key].value
-                self.fit.fit_params[key].value=float(txt)
+                self.fit.fit_params[key].set(value=float(txt))
                 if self.mfitParamTableWidget.item(row,col).checkState()==Qt.Checked:
-                    self.fit.fit_params[key].vary=1
+                    self.fit.fit_params[key].set(vary=1)
                 else:
-                    self.fit.fit_params[key].vary=0
+                    self.fit.fit_params[key].set(vary=0)
                 self.mfitParamData[row][col]=float(txt)
                 self.fit.fit_params[key].value=float(txt)
             else:
@@ -1709,6 +1720,9 @@ class XAnoS_Fit(QWidget):
                 self.fit.params['__mpar__'][parkey][row] = txt
                 self.mfitParamData[row][col] = txt
             self.fchanged=False
+            self.mfitParamTableWidget.item(row,col).setToolTip(key + ' = %.3e \u00B1 %0.3e' % \
+                                                                (self.fit.fit_params[key].value, \
+                                                                 0.0))
             self.update_plot()
         except:
             if col!=0:
