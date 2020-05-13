@@ -33,7 +33,7 @@ class Ellipsoid:
         self.bkg=bkg
         self.choices=None
         self.__mpar__=mpar
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         self.params=Parameters()
@@ -49,7 +49,6 @@ class Ellipsoid:
         """
         Computes the form factor of an ellipsoid
         """
-        self.output_params={}
         r=lambda a: np.sqrt((self.R1*np.sin(a))**2+(self.R2*np.cos(a))**2)
         ang=np.linspace(0,np.pi/2.0,91)
         if type(self.x)==np.ndarray:

@@ -485,14 +485,6 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             return fform  # in cm^2
 
     def update_params(self):
-        self.norm = self.params['norm'].value
-        self.sbkg = self.params['sbkg'].value
-        self.cbkg = self.params['cbkg'].value
-        self.abkg = self.params['abkg'].value
-        self.stThickness=self.params['stThickness'].value
-        self.stDensity=self.params['stDensity'].value
-        self.dbLength=self.params['dbLength'].value
-        self.dbDensity=self.params['dbDensity'].value
         key = 'Density'
         self.__density__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
         key = 'Sol_Density'

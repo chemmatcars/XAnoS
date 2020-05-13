@@ -41,7 +41,7 @@ class CoreShellSphere:
         self.N=N
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']} # Its not implemented yet
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
         self.init_params()
 
     def init_params(self):
@@ -66,17 +66,6 @@ class CoreShellSphere:
 
 
     def y(self):
-        self.output_params={}
-        self.R=self.params['R'].value
-        self.Rsig=self.params['Rsig'].value
-        self.rhoc=self.params['rhoc'].value
-        self.sh=self.params['sh'].value
-        self.shsig=self.params['shsig'].value
-        self.rhosh=self.params['rhosh']
-        self.rhosol=self.params['rhosol'].value
-        self.norm=self.params['norm'].value
-        self.bkg=self.params['bkg'].value
-
         if self.Rsig<1e-3 and self.shsig<1e-3:
             amp,res= self.coreshell(self.x,self.R,self.rhoc,self.sh,self.rhosh,self.rhosol)
             return self.norm*res+self.bkg

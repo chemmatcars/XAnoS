@@ -256,7 +256,6 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
 
 
     def update_params(self):
-        self.norm=self.params['norm'].value
         key='Density'
         self.__density__=[self.params['__%s__%03d'%(key,i)].value for i in range(len(self.__mpar__[key]))]
         key='Sol_Density'

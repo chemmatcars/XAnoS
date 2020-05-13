@@ -39,7 +39,7 @@ class Parratt_New: #Please put the class name same as the function name
         self.qoff=qoff
         self.yscale=yscale
         self.choices={'rrf':[1,0],'fix_sig': [True,False]}
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
         self.init_params()
         self.__fit__=False
 

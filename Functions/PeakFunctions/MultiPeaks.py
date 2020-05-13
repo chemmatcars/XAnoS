@@ -45,6 +45,7 @@ class MultiPeaks: #Please put the class name same as the function name
         self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
         self.init_params()
+        self.output_params={'scaler_parameters':{}}
 
 
     def init_params(self):
@@ -88,7 +89,6 @@ class MultiPeaks: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         func={'Gau':self.gau,'Lor':self.lor,'Ste':self.ste}
-        self.output_params={}
         res=np.zeros_like(self.x)
         for i in range(len(self.__mpar__['type'])):
             peak=self.__mpar__['type'][i]

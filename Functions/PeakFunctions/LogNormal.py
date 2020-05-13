@@ -23,6 +23,7 @@ class LogNormal:
         self.__mpar__=mpar
         self.choices=None
         self.init_params()
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         self.params=Parameters()
@@ -31,15 +32,7 @@ class LogNormal:
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=max(self.norm*0.1,0.1))
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=max(self.bkg*0.1,0.1))
 
-    def update_params(self):
-        self.params['pos'].value=self.pos
-        self.params['wid'].value=self.wid
-        self.params['norm'].value=self.norm
-        self.params['bkg'].value=self.bkg
-
 
     def y(self):
-        self.output_params={}
-        self.update_params()
         return self.norm*np.exp(-(np.log(self.x)-np.log(self.pos))**2/2.0/self.wid**2)/self.x/self.wid/2.5066+self.bkg
 

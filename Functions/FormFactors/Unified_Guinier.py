@@ -35,6 +35,7 @@ class Unified_Guinier: #Please put the class name same as the function name
         self.choices={} #If there are choices available for any fixed parameters
         self.init_params()
         self.__fit__=False
+        self.output_params={'scaler_parameters': {}}
 
     def init_params(self):
         """

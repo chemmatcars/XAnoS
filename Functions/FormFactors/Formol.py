@@ -74,6 +74,7 @@ class Formol: #Please put the class name same as the function name
         #    self.__Natoms2__,self.__pos2__,self.__f12__=self.readXYZ(self.fname2)
         self.__x__=self.x
         self.__qoff__=self.qoff
+        self.output_params={'scaler_parameters':{}}
 
 
     def init_params(self):
@@ -160,7 +161,6 @@ class Formol: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         self.__qoff__=self.params['qoff']
         #if self.__fnames__!=[None,None]:
         #Contribution from first molecule

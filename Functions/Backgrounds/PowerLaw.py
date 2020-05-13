@@ -30,6 +30,7 @@ class PowerLaw: #Please put the class name same as the function name
         self.n=n
         self.__mpar__={} #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
+        self.output_params={'scaler_parameters':{}}
 
 
     def init_params(self):
@@ -45,7 +46,6 @@ class PowerLaw: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         return self.A*self.x**self.n
 
 

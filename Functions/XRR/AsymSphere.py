@@ -71,7 +71,7 @@ class AsymSphere: #Please put the class name same as the function name
         self.qoff=qoff
         self.choices={'rrf' : [1,0] ,'fix_sig' : [True, False]}
         self.init_params()
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
 
 
     def init_params(self):

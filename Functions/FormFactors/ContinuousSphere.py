@@ -34,7 +34,7 @@ class ContinuousSphere:
         self.N=N
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']} #Its not implemented yet
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
         self.init_params()
 
     def init_params(self):
@@ -56,7 +56,6 @@ class ContinuousSphere:
         return np.array(res)**2
 
     def y(self):
-        self.output_params={}
         R=[self.params['__R__%03d'%i] for i in range(len(self.__mpar__['R']))]
         rho=[self.params['__rho__%03d'%i] for i in range(len(self.__mpar__['rho']))]
         if self.Rsig<0.001:

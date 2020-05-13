@@ -34,7 +34,7 @@ class Parratt: #Please put the class name same as the function name
         self.rrf=rrf
         self.qoff=qoff
         self.choices={'rrf':[1,0]}
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
         self.init_params()
         self.__fit__=False
 

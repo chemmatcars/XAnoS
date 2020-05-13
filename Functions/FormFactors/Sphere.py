@@ -36,6 +36,7 @@ class Sphere:
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal'],'integ':['Trapezoid','MonteCarlo']}
         self.init_params()
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         self.params=Parameters()
@@ -46,17 +47,8 @@ class Sphere:
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
-    def update_params(self):
-        self.R=self.params['R'].value
-        self.Rsig=self.params['R'].value
-        self.rhoc=self.params['rhoc'].value
-        self.rhosol=self.params['rhosol'].value
-        self.norm=self.params['norm'].value
-        self.bkg=self.params['bkg'].value
-
     def y(self):
         rho=self.rhoc-self.rhosol
-        self.output_params={}
         if self.Rsig<1e-3:
             return self.norm*rho**2*(np.sin(self.x*self.R)-self.x*self.R*np.cos(self.x*self.R))**2/self.x**6+self.bkg
         else:
