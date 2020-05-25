@@ -1,1 +1,1 @@
-__all__=['Cylinder_Uniform', 'Sphere_Double_Layer', 'Sphere_Uniform', 'Sphere_Uniform.py', 'Sphere_Uniform_Edep']
+__all__=['Cylinder_Uniform', 'Sphere_Double_Layer', 'Sphere_Uniform', 'Sphere_Uniform.py', 'Sphere_Uniform_Edep', 'UFO_Disc']
