@@ -1139,6 +1139,7 @@ class XAnoS_Fit(QWidget):
         if col==1:
             try:
                 self.sfitSlider.valueChanged.disconnect()
+                self.sfitSlider.sliderReleased.disconnect()
             except:
                 pass
             key=self.sfitParamTableWidget.item(row,0).text()
@@ -1165,6 +1166,7 @@ class XAnoS_Fit(QWidget):
         if col!=0:
             try:
                 self.mfitSlider.valueChanged.disconnect()
+                self.mfitSlider.sliderReleased.disconnect()
             except:
                 pass
             parkey = self.mfitParamTableWidget.horizontalHeaderItem(col).text()
@@ -1175,7 +1177,7 @@ class XAnoS_Fit(QWidget):
             value=self.fit.fit_params[key].value
             self.mfitSlider.setValue(500)
             self.mfitSlider.valueChanged.connect(self.mfitSliderChanged)
-            self.mfitSlider.valueChanged.connect(self.mfitSliderReleased)
+            self.mfitSlider.sliderReleased.connect(self.mfitSliderReleased)
 
     def mfitSliderChanged(self,value):
         if not self.mfitSlider.isSliderDown():
