@@ -21,11 +21,11 @@ import time
 
 
 
-class UFO_Disc: #Please put the class name same as the function name
-    def __init__(self, x=0, Np=10, flux=1e13, term='Total',dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0, thickness=1.0, Rsig=0.0, sbkg=0.0, cbkg=0.0, abkg=0.0, D=1.0, phi=0.1, U=-1.0, SF='None', mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0]}):
+class Oblate_Disc: #Please put the class name same as the function name
+    def __init__(self, x=0, Np=10, flux=1e13, term='Total',dist='Gaussian', Energy=None, relement='Au',lnum=10, NrDep='True', norm=1.0, aspect=1.0, Rsig=0.0, sbkg=0.0, cbkg=0.0, abkg=0.0, D=1.0, phi=0.1, U=-1.0, SF='None', mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0]}):
         """
         Documentation
-        Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
+        Calculates the Energy dependent form factor of multilayered oblate nanoparticles with different materials
 
         x           : Reciprocal wave-vector 'Q' inv-Angs in the form of a scalar or an array
         relement    : Resonant element of the nanoparticle. Default: 'Au'
@@ -33,7 +33,7 @@ class UFO_Disc: #Please put the class name same as the function name
         Np          : No. of points with which the size distribution will be computed. Default: 10
         NrDep       : Energy dependence of the non-resonant element. Default= 'True' (Energy Dependent), 'False' (Energy independent)
         dist        : The probablity distribution fucntion for the radii of different interfaces in the nanoparticles. Default: Gaussian
-        thickness      : Thickness of the disc in Angstroms
+        aspect      : Ratio of thickness to the diameter of the disc in Angstroms
         norm        : The density of the nanoparticles in Molar (Moles/Liter)
         sbkg        : Constant incoherent background for SAXS-term
         cbkg        : Constant incoherent background for cross-term
@@ -45,6 +45,7 @@ class UFO_Disc: #Please put the class name same as the function name
         U           : The sticky-sphere interaction energy
         SF          : Type of structure factor. Default: 'None'
         Rsig        : Width of distribution of radii
+        lnum        : Number of sublayers in which all the layers will be further divided
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
                         Material ('Materials' using chemical formula),
                         Density ('Density' in gm/cubic-cms),
@@ -56,7 +57,7 @@ class UFO_Disc: #Please put the class name same as the function name
             self.x=np.array(x)
         else:
             self.x=x
-        self.thickness=thickness
+        self.aspect=aspect
         self.norm=norm
         self.sbkg=sbkg
         self.cbkg=cbkg
@@ -66,6 +67,7 @@ class UFO_Disc: #Please put the class name same as the function name
         self.Energy=Energy
         self.relement=relement
         self.NrDep=NrDep
+        self.lnum=lnum
         #self.rhosol=rhosol
         self.flux=flux
         self.D=D
@@ -90,7 +92,7 @@ class UFO_Disc: #Please put the class name same as the function name
         self.params.add('sig',value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
         """
         self.params=Parameters()
-        self.params.add('thickness',value=self.thickness, vary=0, min=0, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('aspect',value=self.aspect, vary=0, min=0, max=1, expr=None, brute_step=0.1)
         self.params.add('norm',value=self.norm,vary=0, min = -np.inf, max = np.inf, expr = None, brute_step = 0.1)
         self.params.add('D', value=self.D, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('phi', value=self.phi, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
@@ -192,7 +194,7 @@ class UFO_Disc: #Please put the class name same as the function name
                     for ele in mole_ratio.keys():
                         comb_material += '%s%.10f' % (ele, mole_ratio[ele])
                     tdensity = fac * density[i]
-                    self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
+                    # self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
                 formula = self.__cf__.parse(comb_material)
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
@@ -296,24 +298,48 @@ class UFO_Disc: #Please put the class name same as the function name
         key='Material'
         self.__material__=[self.__mpar__[key][i] for i in range(len(self.__mpar__[key]))]
 
+
+    @lru_cache(maxsize=2)
+    def create_layers(self,R,material,density,sol_density,Rmoles, lnum=10):
+        R=list(R)
+        rt=[]
+        mt=[]
+        dt=[]
+        sdt=[]
+        rmols=[]
+        R[-1]=R[-2]
+        for i, r in enumerate(R):
+            rt=rt+[r/lnum]*lnum
+            mt=mt+[material[i]]*lnum
+            dt=dt+[density[i]]*lnum
+            sdt=sdt+[sol_density[i]]*lnum
+            rmols=rmols+[Rmoles[i]]*lnum
+        return tuple(rt), tuple(mt), tuple(dt), tuple(sdt), tuple(rmols)
+
     def y(self):
         """
         Define the function in terms of x to return some value
         """
         self.update_params()
-        trt=np.array(self.__R__)
-        r=np.cumsum(self.__R__)
-        r[-1]=r[-1]+self.__R__[-2]
-        density=np.where(((r-trt/2)>self.thickness/2)&((r-trt/2)<r[-1]),2*(np.array(self.__density__)-self.__density__[-1])
-                         *np.arcsin(self.thickness/2/(r+trt/2))/np.pi+self.__density__[-1],np.array(self.__density__))
-        self.output_params['density']={'x':r,'y':density}
-        rho,eirho,adensity,rhor,eirhor,adensityr=self.calc_rho(R=tuple(self.__R__),material=tuple(self.__material__),relement=self.relement,
-                                                               density=tuple(density), sol_density=tuple(self.__sol_density__),
-                                                               Energy=self.Energy, Rmoles= tuple(self.__Rmoles__), NrDep=self.NrDep)
+        rt, mt, dt, sdt, rmols = self.create_layers(tuple(self.__R__), tuple(self.__material__), tuple(self.__density__),
+                                                    tuple(self.__sol_density__), tuple(self.__Rmoles__), lnum=self.lnum)
+        trt=np.array(rt)
+        r=np.cumsum(rt)
+        Rtot=np.sum(self.__R__[:-1])
+        thickness=Rtot*self.aspect
+        self.output_params['scaler_parameters']['Thickness']=2*thickness
+        self.output_params['scaler_parameters']['Diameter']=2*Rtot
+        dt=np.where(((r-trt/2)>thickness)&((r-trt/2)<Rtot),2*(np.array(dt)-dt[-1])*
+                    np.arcsin(thickness*np.sqrt((Rtot**2-(r-trt/2)**2)/(Rtot**2-thickness**2))/(r-trt/2))/np.pi+dt[-1],
+                    np.array(dt))
+        self.output_params['density']={'x':r,'y':dt}
+        rho,eirho,adensity,rhor,eirhor,adensityr=self.calc_rho(R=rt,material=mt,relement=self.relement,
+                                                               density=tuple(dt), sol_density=sdt,
+                                                               Energy=self.Energy, Rmoles=tuple(rmols), NrDep=self.NrDep)
         if type(self.x)==dict:
             sqf={}
             for key in self.x.keys():
-                sqf[key] = self.norm * 6.022e20 * self.new_sphere_dict(tuple(self.x[key]),tuple(self.__R__),self.Rsig,
+                sqf[key] = self.norm * 6.022e20 * self.new_sphere_dict(tuple(self.x[key]),rt,self.Rsig,
                                                                        tuple(rho), tuple(eirho), tuple(adensity),key=key,
                                                                        dist=self.dist,Np=self.Np)  # in cm^-1
                 if self.SF is None:
@@ -329,7 +355,7 @@ class UFO_Disc: #Please put the class name same as the function name
                 if key=='Resonant-term':
                     sqf[key]=sqf[key]*struct+self.abkg
             key1='Total'
-            total = self.norm * 6.022e20*struct *self.new_sphere_dict(tuple(self.x[key]), tuple(self.__R__),self.Rsig,
+            total = self.norm * 6.022e20*struct *self.new_sphere_dict(tuple(self.x[key]), rt,self.Rsig,
                                                                       tuple(rho), tuple(eirho), tuple(adensity), key=key1,
                                                                       dist=self.dist,Np=self.Np)+ self.sbkg # in cm^-1
             if not self.__fit__:
@@ -346,7 +372,7 @@ class UFO_Disc: #Please put the class name same as the function name
             else:
                 struct = sticky_sphere_sf(self.x, D=self.D, phi=self.phi, U=self.U, delta=0.01)
 
-            tsqf,eisqf,asqf,csqf=self.new_sphere(tuple(self.x), tuple(self.__R__),self.Rsig, tuple(rho),tuple(eirho),
+            tsqf,eisqf,asqf,csqf=self.new_sphere(tuple(self.x), rt,self.Rsig, tuple(rho),tuple(eirho),
                                                  tuple(adensity),dist=self.dist,Np=self.Np)
             sqf=self.norm*np.array(tsqf) * 6.022e20 * struct + self.sbkg#in cm^-1
             # if not self.__fit__: #Generate all the quantities below while not fitting
@@ -371,5 +397,5 @@ class UFO_Disc: #Please put the class name same as the function name
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)
-    fun=UFO_Disc(x=x)
+    fun=Oblate_Disc(x=x)
     print(fun.y())

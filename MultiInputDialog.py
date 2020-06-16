@@ -14,7 +14,6 @@ class MultiInputDialog(QDialog):
         self.inputs=inputs
         self.intValidator = QIntValidator()
         self.floatValidator = QDoubleValidator()
-        self.signalMapper = QSignalMapper(self)
         self.createUI()
 
     def createUI(self):
@@ -27,16 +26,39 @@ class MultiInputDialog(QDialog):
             self.labels[key] = QLabel(key)
             self.layoutWidget.addWidget(self.labels[key])
             if type(value)==int:
-                self.inputFields[key] = QLineEdit(str(value))
+                self.signalMapper1 = QSignalMapper(self)
+                self.inputFields[key]=QLineEdit(str(value))
                 self.inputFields[key].setValidator(self.intValidator)
+                self.inputFields[key].textChanged.connect(self.signalMapper1.map)
+                self.signalMapper1.setMapping(self.inputFields[key], key)
+                self.signalMapper1.mapped[str].connect(self.inputChanged)
             elif type(value)==float:
-                self.inputFields[key] = QLineEdit(str(value))
-                self.inputFieldsp[key].setValidator(self.floatValidator)
-            else:
+                self.signalMapper2 = QSignalMapper(self)
+                self.inputFields[key]=QLineEdit(str(value))
+                self.inputFields[key].setValidator(self.floatValidator)
+                self.inputFields[key].textChanged.connect(self.signalMapper2.map)
+                self.signalMapper2.setMapping(self.inputFields[key], key)
+                self.signalMapper2.mapped[str].connect(self.inputChanged)
+            elif type(value)==bool:
+                self.signalMapper3 = QSignalMapper(self)
+                self.inputFields[key]=QCheckBox()
+                self.inputFields[key].setTristate(False)
+                self.inputFields[key].stateChanged.connect(self.signalMapper3.map)
+                self.signalMapper3.setMapping(self.inputFields[key], key)
+                self.signalMapper3.mapped[str].connect(self.inputStateChanged)
+            elif type(value)==str:
+                self.signalMapper4 = QSignalMapper(self)
                 self.inputFields[key] = QLineEdit(value)
-            self.inputFields[key].textChanged.connect(self.signalMapper.map)
-            self.signalMapper.setMapping(self.inputFields[key],key)
-            self.signalMapper.mapped[str].connect(self.inputChanged)
+                self.inputFields[key].textChanged.connect(self.signalMapper4.map)
+                self.signalMapper4.setMapping(self.inputFields[key], key)
+                self.signalMapper4.mapped[str].connect(self.inputChanged)
+            elif type(value)==list:
+                self.signalMapper5 = QSignalMapper(self)
+                self.inputFields[key] = QComboBox()
+                self.inputFields[key].addItems(value)
+                self.inputFields[key].currentTextChanged.connect(self.signalMapper5.map)
+                self.signalMapper5.setMapping(self.inputFields[key], key)
+                self.signalMapper5.mapped[str].connect(self.inputTextChanged)
             self.layoutWidget.addWidget(self.inputFields[key])
             self.layoutWidget.nextRow()
         self.layoutWidget.nextRow()
@@ -51,6 +73,16 @@ class MultiInputDialog(QDialog):
     def inputChanged(self, key):
         self.inputs[key]=self.inputFields[key].text()
 
+    def inputStateChanged(self, key):
+        if self.inputFields[key].checkState():
+            self.inputs[key]=True
+        else:
+            self.inputs[key]=False
+
+    def inputTextChanged(self, key):
+        self.inputs[key]=self.inputFields[key].currentText()
+        print(self.inputs[key])
+
     def okandClose(self):
         self.accept()
 
@@ -59,6 +91,6 @@ class MultiInputDialog(QDialog):
 
 if __name__=='__main__':
     app = QApplication(sys.argv)
-    dlg = MultiInputDialog(inputs={'value':100})
+    dlg = MultiInputDialog(inputs={'value':100,'value2':10.0,'fit':True,'func':['Lor','Gau']})
     dlg.show()
     sys.exit(app.exec_())

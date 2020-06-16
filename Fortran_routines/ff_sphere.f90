@@ -10,7 +10,7 @@ subroutine ff_sphere(q,R,ff,M)
     double precision :: ff(0:M-1)
     double precision :: R, fact
 
-    do i = 0,M
+    do i = 0,M-1
         fact=(sin(q(i)*R)-q(i)*R*cos(q(i)*R))/q(i)**3
         ff(i)=fact*fact
     enddo
@@ -19,7 +19,7 @@ end subroutine ff_sphere
 
 subroutine ff_sphere_ML(q,R,rho,ff,aff,M,Nlayers)
     !***************************************************************************
-    !Subroutine to calculate the form factor of sphere with disctribution of radius and length
+    !Subroutine to calculate the form factor of sphere with disctribution of radii
     !q = Array of reciprocal wave-vectors at which the form-factor needs to be calculated
     !R = Array of radius and shell thicknesses of sphere in Angstroms
     !rho = Array of electron densities  of core and the shells

@@ -138,7 +138,7 @@ class AsymSphere: #Please put the class name same as the function name
                 rhosum=rhosum+self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=h1[i],rhoup=rhoup,rhodown=rhodown)
             else:
                 Z1=np.linspace(h1[i]-5*h1sig[i],h1[i]+5*h1sig[i],201)
-                dist=np.exp(-(Z1-h1[i])**2/2/h1sig[i]**2)
+                dist=np.where(Z1<h1, np.exp(-(Z1-h1[i])**2/2/h1sig[i]**2),0.0)
                 norm=np.sum(dist)
                 tsum=np.zeros_like(len(zt))
                 for j in range(len(Z1)):
