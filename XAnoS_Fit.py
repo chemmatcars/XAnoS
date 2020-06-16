@@ -1069,6 +1069,8 @@ class XAnoS_Fit(QWidget):
         self.sfitSlider=QSlider(Qt.Horizontal)
         self.sfitSlider.setMinimum(1)
         self.sfitSlider.setMaximum(1000)
+        self.sfitSlider.setSingleStep(10)
+        self.sfitSlider.setTickInterval(10)
         self.sfitparamLayoutWidget.addWidget(self.sfitSlider,colspan=3)
         self.sfitParamTableWidget.cellClicked.connect(self.update_sfitSlider)
 
@@ -1097,6 +1099,8 @@ class XAnoS_Fit(QWidget):
         self.mfitparamLayoutWidget.nextRow()
         self.mfitSlider=QSlider(Qt.Horizontal)
         self.mfitSlider.setMinimum(1)
+        self.mfitSlider.setSingleStep(10)
+        self.mfitSlider.setTickInterval(10)
         self.mfitSlider.setMaximum(1000)
         self.mfitparamLayoutWidget.addWidget(self.mfitSlider,colspan=3)
         self.mfitParamTableWidget.cellClicked.connect(self.update_mfitSlider)
@@ -1142,11 +1146,20 @@ class XAnoS_Fit(QWidget):
             value=self.fit.fit_params[key].value
             self.sfitSlider.setValue(500)
             self.sfitSlider.valueChanged.connect(self.sfitSliderChanged)
+            self.sfitSlider.sliderReleased.connect(self.sfitSliderReleased)
 
     def sfitSliderChanged(self,value):
+        if not self.sfitSlider.isSliderDown():
+            key=self.sfitParamTableWidget.item(self.current_sfit_row,0).text()
+            pvalue=self.fit.fit_params[key].value*(1+0.2*(value-500)/500)
+            self.sfitParamTableWidget.item(self.current_sfit_row,1).setText(self.format%pvalue)
+            QApplication.processEvents()
+
+    def sfitSliderReleased(self):
         key=self.sfitParamTableWidget.item(self.current_sfit_row,0).text()
-        pvalue=self.fit.fit_params[key].value*(1+0.2*(value-500)/500)
+        pvalue=self.fit.fit_params[key].value*(1+0.2*(self.sfitSlider.value()-500)/500)
         self.sfitParamTableWidget.item(self.current_sfit_row,1).setText(self.format%pvalue)
+        QApplication.processEvents()
 
     def update_mfitSlider(self,row,col):
         if col!=0:
@@ -1162,15 +1175,24 @@ class XAnoS_Fit(QWidget):
             value=self.fit.fit_params[key].value
             self.mfitSlider.setValue(500)
             self.mfitSlider.valueChanged.connect(self.mfitSliderChanged)
+            self.mfitSlider.valueChanged.connect(self.mfitSliderReleased)
 
     def mfitSliderChanged(self,value):
+        if not self.mfitSlider.isSliderDown():
+            parkey = self.mfitParamTableWidget.horizontalHeaderItem(self.current_mfit_col).text()
+            txt = self.mfitParamTableWidget.item(self.current_mfit_row, self.current_mfit_col).text()
+            key = '__%s__%03d' % (parkey, self.current_mfit_row)
+            pvalue=self.fit.fit_params[key].value*(1+0.2*(value-500)/500)
+            self.mfitParamTableWidget.item(self.current_mfit_row,self.current_mfit_col).setText(self.format%pvalue)
+            QApplication.processEvents()
+
+    def mfitSliderReleased(self):
         parkey = self.mfitParamTableWidget.horizontalHeaderItem(self.current_mfit_col).text()
         txt = self.mfitParamTableWidget.item(self.current_mfit_row, self.current_mfit_col).text()
         key = '__%s__%03d' % (parkey, self.current_mfit_row)
-        pvalue=self.fit.fit_params[key].value*(1+0.2*(value-500)/500)
-        self.mfitParamTableWidget.item(self.current_mfit_row,self.current_mfit_col).setText(self.format%pvalue)
-
-
+        pvalue = self.fit.fit_params[key].value * (1 + 0.2 * (self.mfitParamTableWidget.value() - 500) / 500)
+        self.mfitParamTableWidget.item(self.current_mfit_row, self.current_mfit_col).setText(self.format % pvalue)
+        QApplication.processEvents()
 
 
     def saveSimulatedCurve(self):
