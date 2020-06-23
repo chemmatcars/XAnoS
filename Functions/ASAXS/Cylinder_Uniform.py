@@ -6,6 +6,7 @@ import os
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./Functions'))
 sys.path.append(os.path.abspath('./Fortran_routines'))
+from functools import lru_cache
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
@@ -17,7 +18,9 @@ from utils import find_minmax
 
 
 class Cylinder_Uniform: #Please put the class name same as the function name
-    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', length=1.0, norm=1.0, sbkg=0.0, cbkg=0.0, abkg=0.0, D=1.0, phi=0.1, U=-1.0, SF='None', mpar={'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}):
+    def __init__(self, x=0, Np=10, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', length=1.0,
+                 norm=1.0, sbkg=0.0, cbkg=0.0, abkg=0.0, D=1.0, phi=0.1, U=-1.0, SF='None',
+                 mpar={'Layers':{'Material':['Au','H2O'],'Density':[19.32,1.0],'Sol_Density':[1.0,1.0],'Rmoles':[1.0,0.0],'R':[1.0,0.0],'Rsig':[0.0,0.0]}}):
         """
         Documentation
         Calculates the Energy dependent form factor of multilayered cylinders with different materials
@@ -72,6 +75,7 @@ class Cylinder_Uniform: #Please put the class name same as the function name
         self.__cf__=Chemical_Formula()
         self.__fit__=False
         self.output_params={'scaler_parameters':{}}
+        self.__mkeys__=list(self.__mpar__.keys())
 
     def init_params(self):
         """
@@ -87,79 +91,102 @@ class Cylinder_Uniform: #Please put the class name same as the function name
         self.params.add('cbkg', value=self.cbkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('abkg', value=self.abkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('U', value=self.U, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
-        for key in self.__mpar__.keys():
-            if key!='Material':
-                for i in range(len(self.__mpar__[key])):
-                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        for mkey in self.__mkeys__:
+            for key in self.__mpar__[mkey].keys():
+                if key!='Material':
+                    for i in range(len(self.__mpar__[key])):
+                        self.params.add('__%s_%s_%03d'%(mkey,key,i),value=self.__mpar__[mkey][key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
-    def calc_rho(self,R=[1.0,0.0],material=['Au','H2O'], density=[19.3,1.0], sol_density=[1.0,1.0], Rmoles=[1.0,0.0], Energy=None, NrDep='True'):
+    @lru_cache(maxsize=1)
+    def calc_rho(self, R=(1.0, 0.0), material=('Au', 'H2O'), relement='Au', density=(19.3, 1.0), sol_density=(1.0, 1.0),
+                 Rmoles=(1.0, 0.0), Energy=None, NrDep='True'):
         """
         Calculates the complex electron density of core-shell type multilayered particles in el/Angstroms^3
 
         R         :: list of Radii and subsequent shell thicknesses in Angstroms of the nanoparticle system
         material  :: list of material of all the shells starting from the core to outside
+        relement  :: Resonant element
         density   :: list of density of all the materials in gm/cm^3 starting from the inner core to outside
         Rmoles    :: mole-fraction of the resonant element in the materials
         Energy    :: Energy in keV
         """
-        self.output_params['scaler_parameters']={}
+        density = list(density)
         if len(material) == len(density):
             Nl = len(material)
             rho = []
             adensity = []  # Density of anomalous element
             eirho = []  # Energy independent electron density
-            r=0.0
-            rhor=[]
-            eirhor=[]
-            adensityr=[]
+            r = 0.0
+            rhor = []
+            eirhor = []
+            adensityr = []
             for i in range(Nl):
-                mat=material[i].split(':')
-                if len(mat)==2:
-                    solute,solvent=mat
+                mat = material[i].split(':')
+                if len(mat) == 2:
+                    solute, solvent = mat
+                    element_adjust = None
+                    if '*' in solute:
+                        m = solute.split('*')[0]
+                        f = self.__cf__.parse(m)
+                        element_adjust = self.__cf__.elements()[-1]
+                    solute_formula = self.__cf__.parse(solute)
+                    if relement in solute_formula.keys():
+                        if element_adjust is not None:
+                            self.__cf__.formula_dict[relement] = 0.0
+                            t1 = self.__cf__.molar_mass()
+                            self.__cf__.formula_dict[element_adjust] = self.__cf__.element_mole_ratio()[
+                                                                           element_adjust] - Rmoles[i]
+                            self.__cf__.formula_dict[relement] = Rmoles[i]
+                            t2 = self.__cf__.molar_mass()
+                            if t1 > 0:
+                                fac = t2 / t1
+                    density[i] = fac * density[i]
+                    solute_elements = self.__cf__.elements()
+                    solute_mw = self.__cf__.molecular_weight()
+                    solute_mv = self.__cf__.molar_volume()
+                    solute_mole_ratio = self.__cf__.element_mole_ratio()
 
-                    solute_formula=self.__cf__.parse(solute)
-                    if self.relement in solute_formula.keys():
-                        self.__cf__.formula_dict[self.relement] = Rmoles[i]
-                    solute_elements=self.__cf__.elements()
-                    solute_mw=self.__cf__.molecular_weight()
-                    solute_mv=self.__cf__.molar_volume()
-                    solute_mole_ratio=self.__cf__.element_mole_ratio()
+                    solvent_formula = self.__cf__.parse(solvent)
+                    solvent_elements = self.__cf__.elements()
+                    solvent_mw = self.__cf__.molecular_weight()
+                    solvent_mole_ratio = self.__cf__.element_mole_ratio()
 
-                    solvent_formula=self.__cf__.parse(solvent)
-                    solvent_elements=self.__cf__.elements()
-                    solvent_mw=self.__cf__.molecular_weight()
-                    solvent_mole_ratio=self.__cf__.element_mole_ratio()
-
-                    solvent_moles=sol_density[i]*(1-solute_mv*density[i]/solute_mw) / solvent_mw
-                    solute_moles=density[i]/solute_mw
-                    total_moles=solvent_moles+solute_moles
-                    solvent_mole_fraction=solvent_moles/total_moles
-                    solute_mole_fraction=solute_moles/total_moles
-                    comb_material=''
+                    solvent_moles = sol_density[i] * (1 - solute_mv * density[i] / solute_mw) / solvent_mw
+                    solute_moles = density[i] / solute_mw
+                    total_moles = solvent_moles + solute_moles
+                    solvent_mole_fraction = solvent_moles / total_moles
+                    solute_mole_fraction = solute_moles / total_moles
+                    comb_material = ''
                     for ele in solute_mole_ratio.keys():
-                        comb_material+='%s%.10f'%(ele,solute_mole_ratio[ele]*solute_mole_fraction)
+                        comb_material += '%s%.10f' % (ele, solute_mole_ratio[ele] * solute_mole_fraction)
                     for ele in solvent_mole_ratio.keys():
-                        comb_material+='%s%.10f'%(ele,solvent_mole_ratio[ele]*solvent_mole_fraction)
-                    tdensity=density[i]+sol_density[i]*(1-solute_mv*density[i]/solute_mw)
-                    #self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
+                        comb_material += '%s%.10f' % (ele, solvent_mole_ratio[ele] * solvent_mole_fraction)
+                    density[i] = density[i] + sol_density[i] * (1 - solute_mv * density[i] / solute_mw)
+                    # self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
                 else:
+                    element_adjust = None
+                    if '*' in material[i]:
+                        m = material[i].split('*')[0]
+                        f = self.__cf__.parse(m)
+                        element_adjust = self.__cf__.elements()[-1]
                     formula = self.__cf__.parse(material[i])
                     fac = 1.0
-                    if self.relement in formula.keys():
-                        self.__cf__.formula_dict[self.relement] = 0.0
+                    if relement in formula.keys():
+                        self.__cf__.formula_dict[relement] = 0.0
                         t1 = self.__cf__.molar_mass()
-                        self.__cf__.formula_dict[self.relement] = Rmoles[i]
+                        if element_adjust is not None:
+                            self.__cf__.formula_dict[element_adjust] = self.__cf__.element_mole_ratio()[
+                                                                           element_adjust] - Rmoles[i]
+                        self.__cf__.formula_dict[relement] = Rmoles[i]
                         t2 = self.__cf__.molar_mass()
                         if t1 > 0:
                             fac = t2 / t1
-                            self.output_params['scaler_parameters']['density[%s]' % material[i]] = fac * density[i]
                     mole_ratio = self.__cf__.element_mole_ratio()
                     comb_material = ''
                     for ele in mole_ratio.keys():
                         comb_material += '%s%.10f' % (ele, mole_ratio[ele])
-                    # comb_material=material[i]
-                    tdensity = fac * density[i]
-                    # self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
+                    density[i] = fac * density[i]
+                tdensity = density[i]
                 formula = self.__cf__.parse(comb_material)
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
@@ -168,12 +195,12 @@ class Cylinder_Uniform: #Please put the class name same as the function name
                 moles = [mole_ratio[ele] for ele in elements]
                 nelectrons = 0.0
                 felectrons = complex(0.0, 0.0)
-                aden=0.0
+                aden = 0.0
                 for j in range(len(elements)):
                     f0 = self.__cf__.xdb.f0(elements[j], 0.0)[0]
                     nelectrons = nelectrons + moles[j] * f0
                     if Energy is not None:
-                        if elements[j]!=self.relement:
+                        if elements[j] != relement:
                             if NrDep:
                                 f1 = self.__cf__.xdb.f1_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                                 f2 = self.__cf__.xdb.f2_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
@@ -182,29 +209,29 @@ class Cylinder_Uniform: #Please put the class name same as the function name
                             f1 = self.__cf__.xdb.f1_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                             f2 = self.__cf__.xdb.f2_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                             felectrons = felectrons + moles[j] * complex(f1, f2)
-                    if elements[j]==self.relement:
-                        aden+=0.6023 * moles[j]*tdensity/molwt
-                adensity.append(aden)# * np.where(r > Radii[i - 1], 1.0, 0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
-                eirho.append(0.6023 * (nelectrons) * tdensity/molwt)# * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0,0.0) / molwt
-                rho.append(0.6023 * (nelectrons + felectrons) * tdensity/molwt)# * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
-                # else:
-                #     eirho.append(0.6023 * (nelectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0, 0.0) / molwt
-                #     rho.append(0.6023 * (nelectrons + felectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0,0.0) / molwt
-                #self.output_params['scaler_parameters']['rho[%s]' % material[i]]=rho[-1]
-                #self.output_params['scaler_parameters']['eirho[%s]' % material[i]] = eirho[-1]
-                #self.output_params['scaler_parameters']['adensity[%s]' % material[i]] = adensity[-1]
-                rhor.append([r,np.real(rho[-1])])
-                eirhor.append([r,np.real(eirho[-1])])
-                adensityr.append([r,np.real(adensity[-1])])
-                r=r+R[i]
+                    if elements[j] == relement:
+                        aden += 0.6023 * moles[j] * tdensity / molwt
+                adensity.append(
+                    aden)  # * np.where(r > Radii[i - 1], 1.0, 0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
+                eirho.append(0.6023 * (
+                    nelectrons) * tdensity / molwt)  # * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0,0.0) / molwt
+                rho.append(0.6023 * (
+                        nelectrons + felectrons) * tdensity / molwt)  # * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
                 rhor.append([r, np.real(rho[-1])])
                 eirhor.append([r, np.real(eirho[-1])])
                 adensityr.append([r, np.real(adensity[-1])])
-            rhor,eirhor,adensityr=np.array(rhor),np.array(eirhor),np.array(adensityr)
-            rhor[-1,0]=rhor[-1,0]+R[-2]
+                r = r + R[i]
+                rhor.append([r, np.real(rho[-1])])
+                eirhor.append([r, np.real(eirho[-1])])
+                adensityr.append([r, np.real(adensity[-1])])
+            rhor, eirhor, adensityr = np.array(rhor), np.array(eirhor), np.array(adensityr)
+            rhor[-1, 0] = rhor[-1, 0] + R[-2]
             eirhor[-1, 0] = eirhor[-1, 0] + R[-2]
             adensityr[-1, 0] = adensityr[-1, 0] + R[-2]
+            self.output_params['Density'] = {'x': np.cumsum(R), 'y': density,
+                                             'names': ['r (Angs)', 'density (gm/cm^3)']}
             return rho, eirho, adensity, rhor, eirhor, adensityr
+
 
     def calc_form(self, q, r, rho):
         """

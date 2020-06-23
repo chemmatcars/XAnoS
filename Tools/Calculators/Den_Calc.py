@@ -18,7 +18,7 @@ class XCalc(QMainWindow):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-        loadUi('./UI_Forms/Den_Calc.ui', self)
+        loadUi('./Tools/Calculators/UI_Forms/Den_Calc.ui', self)
 
 
         #font=QFont('Monospace')

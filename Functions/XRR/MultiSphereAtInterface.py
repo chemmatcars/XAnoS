@@ -14,7 +14,8 @@ from xr_ref import parratt
 
 
 class MultiSphereAtInterface: #Please put the class name same as the function name
-    def __init__(self,x=0.1,E=10.0,Rc=10.0,rhoc=4.68,Tsh=20.0,rhosh=0.0,rhoup=0.333,rhodown=0.38,sig=3.0, mpar={'Layers':['Layer 1'],'Z0':[20],'cov':[1.0],'Z0sig':[0.0]},rrf=1,qoff=0.0,zmin=-10,zmax=100,dz=1.0):
+    def __init__(self,x=0.1,E=10.0,Rc=10.0,rhoc=4.68,Tsh=20.0,rhosh=0.0,rhoup=0.333,rhodown=0.38,sig=3.0,
+                 mpar={'Layers':{'Layers':['Layer 1'],'Z0':[20],'cov':[1.0],'Z0sig':[0.0]}},rrf=True,qoff=0.0,zmin=-10,zmax=100,dz=1.0):
         """
         Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface
         x       	: array of wave-vector transfer along z-direction
@@ -52,10 +53,10 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         self.__mpar__=mpar
         self.rrf=rrf
         self.qoff=qoff
-        self.choices={'rrf':[1,0]}
-        self.init_params()
+        self.choices={'rrf':[True,False]}
         self.__fit__=False
-        self.output_params={'scaler_parameters':{}}
+        self.__mkeys__=list(self.__mpar__.keys())
+        self.init_params()
 
 
     def init_params(self):
@@ -69,10 +70,11 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         self.params.add('Tsh',value=self.Tsh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('rhosh',value=self.rhosh,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('sig',value=self.sig,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
-        for key in self.__mpar__.keys():
-            if key !='Layers':
-                for i in range(len(self.__mpar__[key])):
-                    self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        for mkey in self.__mpar__.keys():
+            for key in self.__mpar__[mkey].keys():
+                if key !='Layers':
+                    for i in range(len(self.__mpar__[mkey][key])):
+                        self.params.add('__%s_%s_%03d'%(mkey,key,i),value=self.__mpar__[mkey][key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
     @lru_cache(maxsize=10)
@@ -122,37 +124,50 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
             else:
                 return res
 
-    def calcProfile(self):
+    @lru_cache(maxsize=10)
+    def calcProfile(self,Rc,rhoc,rhosh,Z0,cov,Z0sig,Tsh,rhoup,rhodown,sig,zmin,zmax,dz):
         """
         Calculates the electron and absorption density profiles
         """
-        Z0 = np.array([self.params['__Z0__%03d' % i].value for i in range(len(self.__mpar__['Z0']))])
-        cov = np.array([self.params['__cov__%03d' % i].value for i in range(len(self.__mpar__['cov']))])
-        Z0sig = np.array([self.params['__Z0sig__%03d' % i].value for i in range(len(self.__mpar__['Z0sig']))])
-        self.__z__=np.arange(self.zmin,self.zmax,self.dz)
-        self.__d__=self.dz*np.ones_like(self.__z__)
-        self.__rho__=self.NpRhoGauss(tuple(self.__z__),Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,
-                                     Z0=tuple(Z0),cov=tuple(cov),Z0sig=tuple(Z0sig),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
-        if not self.__fit__:
-            self.output_params['Total density profile']={'x':self.__z__,'y':self.__rho__}
-            for i in range(len(Z0)):
-                rho=self.NpRhoGauss(tuple(self.__z__),Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=tuple([Z0[i]]),
-                                    cov=tuple([cov[i]]),Z0sig=tuple([Z0sig[i]]),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
-                self.output_params['Layer %d contribution'%(i+1)]={'x':self.__z__,'y':rho}
-        return Z0, cov, Z0sig
+
+        __z__=np.arange(zmin,zmax,dz)
+        __d__=dz*np.ones_like(__z__)
+        __rho__=self.NpRhoGauss(tuple(__z__),Rc=Rc,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,Z0=tuple(Z0),cov=tuple(cov),
+                                Z0sig=tuple(Z0sig),rhoup=rhoup,rhodown=rhodown,sig=sig)
+        return __z__,__d__,__rho__
+
+
+    def update_parameters(self):
+        mkey=self.__mkeys__[0]
+        self.__Z0__ = tuple([self.params['__%s_Z0_%03d' %(mkey,i)].value for i in range(len(self.__mpar__[mkey]['Z0']))])
+        self.__cov__ = tuple([self.params['__%s_cov_%03d' %(mkey,i)].value for i in range(len(self.__mpar__[mkey]['cov']))])
+        self.__Z0sig__ = tuple([self.params['__%s_Z0sig_%03d' %(mkey, i)].value for i in range(len(self.__mpar__[mkey]['Z0sig']))])
+
+    @lru_cache(maxsize=10)
+    def py_parratt(self, x, lam, d, rho, beta):
+        return parratt(x, lam, d, rho, beta)
 
     def y(self):
         """
         Define the function in terms of x to return some value
         """
-        self.calcProfile()
+        self.output_params = {'scaler_parameters': {}}
+        self.update_parameters()
+        z,d,rho=self.calcProfile(self.Rc,self.rhoc,self.rhosh,self.__Z0__,self.__cov__,self.__Z0sig__,self.Tsh,self.rhoup,self.rhodown,
+                         self.sig,self.zmin,self.zmax,self.dz)
+        if not self.__fit__:
+            self.output_params['Total density profile']={'x':z,'y':rho}
+            for i in range(len(self.__Z0__)):
+                rhonp=self.NpRhoGauss(tuple(z),Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=tuple([self.__Z0__[i]]),
+                                    cov=tuple([self.__cov__[i]]),Z0sig=tuple([self.__Z0sig__[i]]),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
+                self.output_params['Layer %d contribution'%(i+1)]={'x':z,'y':rhonp,'names':['depth (Angs)','Electron Density (el/Angs^3)']}
         x=self.x+self.qoff
         lam=6.62607004e-34*2.99792458e8*1e10/self.E/1e3/1.60217662e-19
-        refq,r2=parratt(x,lam,self.__d__,self.__rho__,np.zeros_like(self.__rho__))
-        if self.rrf>0:
-            rhos=[self.__rho__[0],self.__rho__[-1]]
-            betas=[0,0]
-            ref,r2=parratt(x-self.qoff,lam,[0.0,1.0],rhos,betas)
+        refq,r2=self.py_parratt(tuple(x),lam,tuple(d),tuple(rho),tuple(np.zeros_like(rho)))
+        if self.rrf:
+            rhos=(rho[0],rho[-1])
+            betas=(0,0)
+            ref,r2=self.py_parratt(tuple(x-self.qoff),lam,(0.0,1.0),rhos,betas)
             refq=refq/ref
         return refq
 

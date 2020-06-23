@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath('./Fortran_rountines'))
 
 
 class MultiPeaks: #Please put the class name same as the function name
-    def __init__(self,x=0,power=1,N=0.0,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cN=0.0,cexp=0.0,lexp=1.0,mpar={'type':['Gau'],'pos':[0.5],'wid':[0.1],'norm':[1.0]}):
+    def __init__(self,x=0,power=1,N=0.0,c0=0.0,c1=0.0,c2=0.0,c3=0.0,cN=0.0,cexp=0.0,lexp=1.0,mpar={'Peaks':{'type':['Gau'],'pos':[0.5],'wid':[0.1],'norm':[1.0]}}):
         """
         Provides multipeak function with different background function
 
@@ -27,7 +27,7 @@ class MultiPeaks: #Please put the class name same as the function name
         cN    	: coefficient of the x**N or inverse 1/x**N background
         cexp  	: coefficient of the exponential background
         lexp  	: decay length of the exponential background
-        mpar  	: The peak parameters where 'type': ('Gau': Gaussian, 'Lor': lorentzian, 'Ste': step)
+        mpar  	: The peak parameters where 'type': ('Gau': Gaussian function, 'Lor': Lorenzian function, 'Ste': Step function)
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -46,6 +46,7 @@ class MultiPeaks: #Please put the class name same as the function name
         self.choices={} #If there are choices available for any fixed parameters
         self.init_params()
         self.output_params={'scaler_parameters':{}}
+        self.__mkeys__=list(self.__mpar__.keys())
 
 
     def init_params(self):
@@ -61,10 +62,11 @@ class MultiPeaks: #Please put the class name same as the function name
         self.params.add('cN',value=self.cN,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('cexp',value=self.cexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('lexp',value=self.lexp,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
-        for key in self.__mpar__.keys():
-            if key!='type':
-                for i in range(len(self.__mpar__[key])):
-                        self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
+        for mkey in self.__mpar__.keys():
+            for key in self.__mpar__[mkey].keys():
+                if key!='type':
+                    for i in range(len(self.__mpar__[mkey][key])):
+                        self.params.add('__%s_%s_%03d'%(mkey,key,i),value=self.__mpar__[mkey][key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=None)
 
     def gau(self,x,pos,wid,norm):
         """
@@ -90,19 +92,20 @@ class MultiPeaks: #Please put the class name same as the function name
         """
         func={'Gau':self.gau,'Lor':self.lor,'Ste':self.ste}
         res=np.zeros_like(self.x)
-        for i in range(len(self.__mpar__['type'])):
-            peak=self.__mpar__['type'][i]
-            pos=self.params['__pos__%03d'%i].value
-            wid=self.params['__wid__%03d'%i].value
-            norm=self.params['__norm__%03d'%i].value
-            fun=func[peak](self.x,pos,wid,norm)
-            res=res+fun
-            self.output_params['peak_%03d'%(i+1)]={'x':self.x,'y':fun}
+        for mkey in self.__mkeys__:
+            for i in range(len(self.__mpar__[mkey]['type'])):
+                peak=self.__mpar__[mkey]['type'][i]
+                pos=self.params['__%s_pos_%03d'%(mkey,i)].value
+                wid=self.params['__%s_wid_%03d'%(mkey,i)].value
+                norm=self.params['__%s_norm_%03d'%(mkey,i)].value
+                fun=func[peak](self.x,pos,wid,norm)
+                res=res+fun
+                self.output_params['%s_%s_%03d'%(mkey,peak,i+1)]={'x':self.x,'y':fun}
         c=[self.params['c%d'%i].value for i in range(4)]
         cN=self.params['cN'].value
         bkg=c[0]+c[1]*self.x**self.power+c[2]*self.x**(self.power*2)+c[3]*self.x**(self.power*3)+cN*self.x**(self.power*self.N)+self.params['cexp'].value*np.exp(-self.x*self.params['lexp'].value)
         res=res+bkg
-        self.output_params['bkg']={'x':self.x,'y':bkg}
+        self.output_params['%s_bkg'%mkey]={'x':self.x,'y':bkg}
         return res
 
 

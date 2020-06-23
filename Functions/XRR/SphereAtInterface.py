@@ -14,7 +14,8 @@ from xr_ref import parratt
 
 
 class SphereAtInterface: #Please put the class name same as the function name
-    def __init__(self,x=0.1,lam=1.0,Rc=10,Rsig=0.0,rhoc=4.68,D=60.0, cov=100,Zo=20.0,decay=3.0,rho_up=0.333,rho_down=0.38,zmin=-50,zmax=100,dz=1,roughness=3.0,rrf=1,mpar={},qoff=0):
+    def __init__(self,x=0.1,lam=1.0,Rc=10,Rsig=0.0,rhoc=4.68,D=60.0, cov=100,Zo=20.0,decay=3.0,rho_up=0.333,
+                 rho_down=0.38,zmin=-50,zmax=100,dz=1,roughness=3.0,rrf=True,mpar={},qoff=0):
         """
         Calculates X-ray reflectivity from a system of nanoparticle at an interface between two media
         x         	: array of wave-vector transfer along z-direction
@@ -31,7 +32,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         zmax      	: Maximum z value for the electron density profile
         dz       	: minimum slab thickness
         roughness	: Roughness of the interface
-        rrf      	: 1 for Frensnel normalized refelctivity and 0 for just reflectivity
+        rrf      	: True for Frensnel normalized refelctivity and False for just reflectivity
         qoff      	: offset in the value of qz due to alignment errors
         """
         if type(x)==list:
@@ -53,9 +54,10 @@ class SphereAtInterface: #Please put the class name same as the function name
         self.roughness=roughness
         self.rrf=rrf
         self.qoff=qoff
-        self.choices={'rrf':[1,0]}
-        self.output_params={'scaler_parameters':{}}
-        self.__mpar__=mpar
+        self.__mpar__ = mpar
+        self.choices={'rrf':[True,False]}
+        self.init_params()
+
 
 
     def init_params(self):
@@ -117,6 +119,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
+        self.output_params = {'scaler_parameters': {}}
         rhos=(self.rho_up,self.rho_down)
         lam=self.lam
         z=np.arange(self.zmin,self.zmax,self.dz)
@@ -127,7 +130,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         beta=np.zeros_like(z)
         rho=np.array(edp,dtype='float')
         refq,r2=parratt(self.x+self.qoff,lam,d,rho,beta)
-        if self.rrf>0:
+        if self.rrf:
             ref,r2=parratt(self.x,lam,[0.0,1.0],rhos,[0.0,0.0])
             refq=refq/ref
         return refq

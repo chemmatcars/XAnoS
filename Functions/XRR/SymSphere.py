@@ -20,10 +20,10 @@ from functools import lru_cache
 from xr_ref import parratt
 
 
-class AsymSphere: #Please put the class name same as the function name
+class SymSphere: #Please put the class name same as the function name
     def __init__(self,x = 0.1, E = 10.0, R0 = 25.00, rhoc = 4.68, D = 66.6, rhosh = 0.200, h1 = -25.0, h1sig = 0.0, h2 = 3.021,
                  sig = 3.0, cov = 0.901, fix_sig = False,
-                 mpar={'Multilayer':{'Layers':['Top', 'Bottom'], 'd':[0.0,1.0],'rho':[0.0,0.334],'beta':[0.0,0.0],'sig':[0.0,3.00]}},
+                 mpar={'Lipid_Layer':{'Layers':['Top', 'Bottom'], 'd':[0.0,1.0],'rho':[0.0,0.334],'beta':[0.0,0.0],'sig':[0.0,3.00]}},
                  rrf = True, qoff=0.0,zmin=-120,zmax=120,dz=1,coherrent=False,yscale=1.0,bkg=0.0):
         """
         Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface
@@ -73,8 +73,9 @@ class AsymSphere: #Please put the class name same as the function name
         self.coherrent=coherrent
         self.qoff=qoff
         self.choices={'rrf' : [True,False] ,'fix_sig' : [True, False],'coherrent':[True, False]}
-        self.__mkeys__=list(self.__mpar__.keys())
         self.init_params()
+        self.__mkeys__=list(self.__mpar__.keys())
+        self.__fit__=False
 
 
     def init_params(self):
@@ -93,7 +94,7 @@ class AsymSphere: #Please put the class name same as the function name
         self.params.add('sig',value=self.sig,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('cov',value=self.cov,vary=0,min=0.00,max=1,expr=None,brute_step=0.1)
         self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
-    
+
         for mkey in self.__mpar__.keys():
             for key in self.__mpar__[mkey].keys():
                 if key!='Layers':
@@ -135,9 +136,9 @@ class AsymSphere: #Please put the class name same as the function name
             zmax=z[-1]+5*sig
             zt=np.arange(zmin,zmax,self.dz)
         rhosum=np.zeros_like(zt)
-        
+
         rhos=np.where(zt>0,rhodown,rhoup)
-        
+
         for i in range(len(h1)):
             if h1sig[i]<1e-3:
                 rhosum=rhosum+self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=h1[i],rhoup=rhoup,rhodown=rhodown)
@@ -150,7 +151,7 @@ class AsymSphere: #Please put the class name same as the function name
                     nprho=self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=Z1[j],rhoup=rhoup,rhodown=rhodown)
                     tsum=tsum+nprho*dist[j]
                 rhosum=rhosum+tsum/norm
-        rho=rhosum-(len(h1)-1)*rhos 
+        rho=rhosum-(len(h1)-1)*rhos
         if sig<1e-3:
             return rho
         else:
@@ -243,7 +244,7 @@ class AsymSphere: #Please put the class name same as the function name
                                                       'names': ['z (Angs)', 'Electron Density (el/Angs^3)']}
             self.output_params['Monolayer EDP'] = {'x': z2, 'y': rho2, 'names':['z (Angs)','Electron Density (el/Angs^3)']}
             self.output_params['Monolayer ADP'] = {'x': z2, 'y': beta2, 'names':['z (Angs)','Beta']}
-        
+
         if self.rrf:
             rhos1=(rho1[0],rho1[-1])
             betas1=(0,0)
@@ -254,10 +255,10 @@ class AsymSphere: #Please put the class name same as the function name
             return crefq
         else:
             return refq
-    
-        
+
+
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)
-    fun=AsymSphere(x=x)
+    fun=SymSphere(x=x)
     print(fun.y())

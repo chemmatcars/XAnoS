@@ -23,8 +23,8 @@ import time
 class Ellipsoid_Uniform: #Please put the class name same as the function name
     def __init__(self, x=0, Np=10, flux=1e13, term='Total', dist='Gaussian', Energy=None, relement='Au', Nalf=1000,
                  NrDep='True', norm=1.0, Rsig=0.0, sbkg=0.0, cbkg=0.0, abkg=0.0, D=1.0, phi=0.1, U=-1.0,
-                 SF='None', mpar={'Material': ['Au', 'H2O'], 'Density': [19.32, 1.0], 'Sol_Density': [1.0, 1.0],
-                                  'Rmoles': [1.0, 0.0], 'R': [1.0, 0.0],'RzRatio':[1.0,1.0]}):
+                 SF='None', mpar={'Layers':{'Material': ['Au', 'H2O'], 'Density': [19.32, 1.0], 'SolDensity': [1.0, 1.0],
+                                  'Rmoles': [1.0, 0.0], 'R': [1.0, 0.0],'RzRatio':[1.0,1.0]}}):
         """
         Documentation
         Calculates the Energy dependent form factor of multilayered oblate nanoparticles with different materials
@@ -50,7 +50,7 @@ class Ellipsoid_Uniform: #Please put the class name same as the function name
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
                         Material ('Materials' using chemical formula),
                         Density ('Density' in gm/cubic-cms),
-                        Density of solvent ('Sol_Density' in gm/cubic-cms) of the particular layer
+                        Density of solvent ('SolDensity' in gm/cubic-cms) of the particular layer
                         Mole-fraction ('Rmoles') of resonant element in the material)
                         Radii ('R' in Angs), and
                         Height to Radii ratio ('RzRatio' ratio)
@@ -82,11 +82,12 @@ class Ellipsoid_Uniform: #Please put the class name same as the function name
                         'SF': ['None', 'Hard-Sphere', 'Sticky-Sphere'],
                         'term': ['SAXS-term', 'Cross-term', 'Resonant-term',
                                  'Total']}  # If there are choices available for any fixed parameters
-        self.init_params()
         self.__cf__ = Chemical_Formula()
         self.__fit__ = False
         self.output_params = {}
         self.output_params = {'scaler_parameters': {}}
+        self.__mkeys__=list(self.__mpar__.keys())
+        self.init_params()
 
     def init_params(self):
         """
@@ -102,13 +103,14 @@ class Ellipsoid_Uniform: #Please put the class name same as the function name
         self.params.add('abkg', value=self.abkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('U', value=self.U, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('Rsig', value=self.Rsig, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
-        for key in self.__mpar__.keys():
-            if key != 'Material':
-                for i in range(len(self.__mpar__[key])):
-                    self.params.add('__%s__%03d' % (key, i), value=self.__mpar__[key][i], vary=0, min=-np.inf,
-                                    max=np.inf, expr=None, brute_step=0.1)
+        for mkey in self.__mpar__.keys():
+            for key in self.__mpar__[mkey].keys():
+                if key != 'Material':
+                    for i in range(len(self.__mpar__[mkey][key])):
+                        self.params.add('__%s_%s_%03d' % (mkey, key, i), value=self.__mpar__[mkey][key][i], vary=0, min=-np.inf,
+                                        max=np.inf, expr=None, brute_step=0.1)
 
-    @lru_cache(maxsize=1)
+    @lru_cache(maxsize=10)
     def calc_rho(self, R=(1.0, 0.0), material=('Au', 'H2O'), relement='Au', density=(19.3, 1.0), sol_density=(1.0, 1.0),
                  Rmoles=(1.0, 0.0), Energy=None, NrDep='True'):
         """
@@ -121,7 +123,6 @@ class Ellipsoid_Uniform: #Please put the class name same as the function name
         Rmoles    :: mole-fraction of the resonant element in the materials
         Energy    :: Energy in keV
         """
-        self.output_params['scaler_parameters'] = {}
         density=list(density)
         if len(material) == len(density):
             Nl = len(material)
@@ -286,18 +287,20 @@ class Ellipsoid_Uniform: #Please put the class name same as the function name
         return sqf
 
     def update_params(self):
+        mkey=self.__mkeys__[0]
         key = 'Density'
-        self.__density__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
-        key = 'Sol_Density'
-        self.__sol_density__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        Nmpar = len(self.__mpar__[mkey][key])
+        self.__density__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
+        key = 'SolDensity'
+        self.__solDensity__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Rmoles'
-        self.__Rmoles__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__Rmoles__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'R'
-        self.__R__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__R__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'RzRatio'
-        self.__RzRatio__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__RzRatio__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Material'
-        self.__material__ = [self.__mpar__[key][i] for i in range(len(self.__mpar__[key]))]
+        self.__material__ = [self.__mpar__[mkey][key][i] for i in range(Nmpar)]
 
     def y(self):
         """
@@ -307,7 +310,7 @@ class Ellipsoid_Uniform: #Please put the class name same as the function name
         rho, eirho, adensity, rhor, eirhor, adensityr = self.calc_rho(R=tuple(self.__R__), material=tuple(self.__material__),
                                                                       relement=self.relement,
                                                                       density=tuple(self.__density__),
-                                                                      sol_density=tuple(self.__sol_density__),
+                                                                      sol_density=tuple(self.__solDensity__),
                                                                       Energy=self.Energy, Rmoles=tuple(self.__Rmoles__),
                                                                       NrDep=self.NrDep)
         self.output_params['scaler_parameters']['Diameter (Angstroms)']=2*np.sum(self.__R__)
