@@ -92,9 +92,6 @@ class Parratt_New: #Please put the class name same as the function name
         __d__ = np.append(__d__, [__d__[-1]])
         __rho__ = self.sldCalFun(tuple(d), tuple(rho), tuple(sig), tuple(__z__))
         __beta__ = self.sldCalFun(tuple(d), tuple(beta), tuple(sig), tuple(__z__))
-        if not self.__fit__:
-            self.output_params['%s_EDP' % phase] = {'x': __z__, 'y': __rho__}
-            self.output_params['%s_ADP' % phase] = {'x': __z__, 'y': __beta__}
         return n, __z__, __d__, __rho__, __beta__
 
     @lru_cache(maxsize=10)
@@ -133,6 +130,9 @@ class Parratt_New: #Please put the class name same as the function name
         n, z, d, rho, beta = self.calcProfile(self.__d__[mkey], self.__rho__[mkey],
                                                                                 self.__beta__[mkey], self.__sig__[mkey],
                                                                                 mkey)
+        if not self.__fit__:
+            self.output_params['%s_EDP' % self.__mkeys__[0]] = {'x': z, 'y': rho}
+            self.output_params['%s_ADP' % self.__mkeys__[0]] = {'x': z, 'y': beta}
         refq, r2 = self.py_parratt(tuple(x), lam, tuple(d), tuple(rho), tuple(beta))
         if self.rrf:
             rhos = (self.params['__%s_rho_000'%(mkey)].value, self.params['__%s_rho_%03d' % (mkey,n - 1)].value)

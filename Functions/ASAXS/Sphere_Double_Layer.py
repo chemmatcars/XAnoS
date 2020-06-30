@@ -20,7 +20,7 @@ import time
 
 
 class Sphere_Double_Layer: #Please put the class name same as the function name
-    def __init__(self, x=0, Np=50, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0e-4,
+    def __init__(self, x=0, Np=50, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep=True, norm=1.0e-4,
                  sbkg=0.0, cbkg=0.0, abkg=0.0, nearIon='Rb', farIon='Cl', ionDensity=0.0, stThickness=1.0,
                  stDensity=0.0, dbLength=1.0, dbDensity=0.0,Ndb=20,
                  mpar={'Multilayers':{'Material': ['Au', 'H2O'], 'Density': [19.32, 1.0], 'SolDensity': [1.0, 1.0],'Rmoles': [1.0, 0.0], 'R': [1.0, 0.0], 'Rsig': [0.0, 0.0]}}):
@@ -80,11 +80,11 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         self.flux = flux
         self.__mpar__ = mpar  # If there is any multivalued parameter
         self.choices = {'dist': ['Gaussian', 'LogNormal'],
-                        'NrDep': ['True', 'False']}  # If there are choices available for any fixed parameters
+                        'NrDep': [True, False]}  # If there are choices available for any fixed parameters
         self.__cf__ = Chemical_Formula()
         self.__fit__ = False
         self.output_params={'scaler_parameters':{}}
-        self.__mkeys__=self.__mpar__.keys()
+        self.__mkeys__=list(self.__mpar__.keys())
         self.init_params()
 
     def init_params(self):
@@ -241,7 +241,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             adensityr[-1, 0] = adensityr[-1, 0] + R[-2]
             self.output_params['Density'] = {'x': np.cumsum(R), 'y': density,
                                              'names': ['r (Angs)', 'density (gm/cm^3)']}
-            return rho, eirho, adensity, rhor, eirhor, adensityr
+            return np.array(rho), np.array(eirho), np.array(adensity), np.array(rhor), np.array(eirhor), np.array(adensityr)
 
     def solrho(self, Rp=100.0, Rc=12.5, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0, R=[1.0],
                                 material=['H2O'],density=[1.0],sol_density=[1.0]):
@@ -503,18 +503,20 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             return fform  # in cm^2
 
     def update_params(self):
+        mkey=self.__mkeys__[0]
         key = 'Density'
-        self.__density__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
-        key = 'Sol_Density'
-        self.__sol_density__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        Nmpar=len(self.__mpar__[mkey][key])
+        self.__density__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
+        key = 'SolDensity'
+        self.__sol_density__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Rmoles'
-        self.__Rmoles__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__Rmoles__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'R'
-        self.__R__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__R__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Rsig'
-        self.__Rsig__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__Rsig__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Material'
-        self.__material__ = [self.__mpar__[key][i] for i in range(len(self.__mpar__[key]))]
+        self.__material__ = [self.__mpar__[mkey][key][i] for i in range(Nmpar)]
 
     def y(self):
         """
@@ -561,8 +563,12 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                 tRmoles.append(1.0)
             else:
                 tRmoles.append(1.0)
-        rhon, eirhon, adensityn, rhorn, eirhorn, adensityrn = self.calc_rho(R=tR, material=tnmaterial, density=tndensity, sol_density=tsoldensity, Energy=self.Energy, Rmoles=tRmoles, NrDep=self.NrDep)
-        rhof, eirhof, adensityf, rhorf, eirhorf, adensityrf = self.calc_rho(R=tR, material=tfmaterial, density=tfdensity, sol_density=tsoldensity, Energy=self.Energy, Rmoles=tRmoles, NrDep=self.NrDep)
+        rhon, eirhon, adensityn, rhorn, eirhorn, adensityrn = self.calc_rho(R=tuple(tR), material=tuple(tnmaterial),
+                                                                            density=tuple(tndensity), sol_density=tuple(tsoldensity),
+                                                                            Energy=self.Energy, Rmoles=tuple(tRmoles), NrDep=self.NrDep)
+        rhof, eirhof, adensityf, rhorf, eirhorf, adensityrf = self.calc_rho(R=tuple(tR), material=tuple(tfmaterial),
+                                                                            density=tuple(tfdensity), sol_density=tuple(tsoldensity),
+                                                                            Energy=self.Energy, Rmoles=tuple(tRmoles), NrDep=self.NrDep)
         rho, eirho, adensity = (rhon+rhof)/2, (eirhon+eirhof)/2, (adensityn+adensityf)/2
         rhor,eirhor, adensityr = rhorn, eirhorn, adensityrn
         rhor[:,1]=(rhor[:,1]+rhorf[:,1])/2

@@ -26,7 +26,7 @@ class Gaussian:
         """
         Gaussian function
         """
-        return norm*np.exp(-0.69315*(x-pos)**2/wid**2)*0.46972/wid
+        return norm*np.exp(-(x-pos)**2/wid**2)/2.5066/wid
 
     def init_params(self):
         self.params=Parameters()
@@ -37,4 +37,7 @@ class Gaussian:
 
 
     def y(self):
+        self.output_params = {'scaler_parameters': {}}
+        self.output_params['scaler_parameters']['peak_position']=self.pos
+        self.output_params['scaler_parameters']['peak_width']=2.35428*self.wid
         return self.gau(self.x,self.pos,self.wid,self.norm)+self.bkg

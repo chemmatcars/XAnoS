@@ -190,7 +190,7 @@ class AsymSphere: #Please put the class name same as the function name
         # Nlayers = int((np.sum(d[:-1]) + 10 * maxsig) / self.Minstep)
         # halfstep = (np.sum(d[:-1]) + 10 * maxsig) / 2 / Nlayers
         __z2__ = np.arange(zmin,zmax,dz)#np.linspace(-5 * maxsig + halfstep, np.sum(d[:-1]) + 5 * maxsig - halfstep, Nlayers)
-        __d2__=self.dz*np.ones_like(__z2__)
+        __d2__=dz*np.ones_like(__z2__)
         __rho2__ = self.sldCalFun(d, tuple(rho), tuple(sig), tuple(__z2__))
         __beta2__ = self.sldCalFun(d, tuple(beta), tuple(sig), tuple(__z2__))
         return __z2__-np.sum(d[1:-1]),__d2__,__rho2__,__beta2__

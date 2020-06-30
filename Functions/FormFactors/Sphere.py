@@ -36,7 +36,7 @@ class Sphere:
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal'],'integ':['Trapezoid','MonteCarlo']}
         self.init_params()
-        self.output_params={'scaler_parameters':{}}
+        self.init_params()
 
     def init_params(self):
         self.params=Parameters()
@@ -48,6 +48,7 @@ class Sphere:
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
     def y(self):
+        self.output_params = {'scaler_parameters': {}}
         rho=self.rhoc-self.rhosol
         if self.Rsig<1e-3:
             return self.norm*rho**2*(np.sin(self.x*self.R)-self.x*self.R*np.cos(self.x*self.R))**2/self.x**6+self.bkg
@@ -61,6 +62,8 @@ class Sphere:
                     dist=gau.y()
                     sumdist=np.sum(dist)
                     self.output_params['Distribution']={'x':r,'y':dist/sumdist}
+                    self.output_params['scaler_parameters']['Rmean']=self.R
+                    self.output_params['scaler_parameters']['Rwidth']=2.35482*self.Rsig
                     if type(self.x)==np.ndarray:
                         ffactor=[]
                         for x in self.x:
@@ -71,12 +74,14 @@ class Sphere:
                         return self.norm*rho**2*np.sum((np.sin(self.x*r)-self.x*r*np.cos(self.x*r))**2*dist/self.x**6)/sumdist+self.bkg
                 elif self.dist=='LogNormal':
                     lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
-                    rmin,rmax=max(0.001, self.R * (1 - np.exp(self.Rsig))), self.R * (1 + 2 * np.exp(self.Rsig))
+                    rmin,rmax=max(0.001, np.exp(np.log(self.R) - 5*self.Rsig)), np.exp(np.log(self.R) + 5*self.Rsig)
                     r=np.linspace(rmin,rmax,self.N)
                     lgn.x=r
                     dist=lgn.y()
                     sumdist=np.sum(dist)
                     self.output_params['Distribution']={'x':r,'y':dist/sumdist}
+                    self.output_params['scaler_parameters']['Rmean'] = np.exp(np.log(self.R)+self.Rsig**2/2)
+                    self.output_params['scaler_parameters']['Rwidth'] = np.sqrt((np.exp(self.Rsig**2)-1)*np.exp(2*np.log(self.R)+self.Rsig**2))
                     if type(self.x)==np.ndarray:
                         ffactor=[]
                         for x in self.x:
@@ -88,11 +93,13 @@ class Sphere:
             else:
                 np.random.seed(100)
                 if self.dist == 'Gaussian':
-                    r=np.sort(np.random.normal(self.R,self.Rsig/2.355,10000))
+                    r=np.sort(np.random.normal(self.R,self.Rsig,10000))
                     gau = Gaussian.Gaussian(x=r, pos=self.R, wid=self.Rsig)
                     dist = gau.y()
                     sumdist = np.sum(dist)
                     self.output_params['Distribution'] = {'x': r, 'y': dist / sumdist}
+                    self.output_params['scaler_parameters']['Rmean'] = self.R
+                    self.output_params['scaler_parameters']['Rwidth'] = 2.35482 * self.Rsig
                     if type(self.x) == np.ndarray:
                         ffactor = []
                         for x in self.x:
@@ -108,6 +115,9 @@ class Sphere:
                     dist = lgn.y()
                     sumdist = np.sum(dist)
                     self.output_params['Distribution'] = {'x': r, 'y': dist / sumdist}
+                    self.output_params['scaler_parameters']['Rmean'] = np.exp(np.log(self.R) + self.Rsig ** 2 / 2)
+                    self.output_params['scaler_parameters']['Rwidth'] = np.sqrt(
+                        (np.exp(self.Rsig ** 2) - 1) * np.exp(2 * np.log(self.R) + self.Rsig ** 2))
                     if type(self.x) == np.ndarray:
                         ffactor = []
                         for x in self.x:

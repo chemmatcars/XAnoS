@@ -1266,11 +1266,13 @@ class XAnoS_Fit(QWidget):
             for i in range(self.sfitParamTableWidget.rowCount()):
                 header += '%s=%s\n' % (
                 self.sfitParamTableWidget.item(i, 0).text(), self.sfitParamTableWidget.item(i, 1).text())
-            for i in range(self.mfitParamTableWidget.rowCount()):
-                vartxt = self.mfitParamTableWidget.item(i, 0).text()
-                for j in range(1, self.mfitParamTableWidget.columnCount()):
-                    header += '%s_%s=%s\n' % (vartxt, self.mfitParamTableWidget.horizontalHeaderItem(j).text(),
-                                              self.mfitParamTableWidget.item(i, j).text())
+            for i in range(self.mfitParamTabWidget.count()):
+                mkey = self.mfitParamTabWidget.tabText(i)
+                for row in range(self.mfitParamTableWidget[mkey].rowCount()):
+                    vartxt = self.mfitParamTableWidget[mkey].item(row, 0).text()
+                    for col in range(1, self.mfitParamTableWidget[mkey].columnCount()):
+                        header += '%s_%s=%s\n' % (vartxt, self.mfitParamTableWidget[mkey].horizontalHeaderItem(col).text(),
+                                              self.mfitParamTableWidget[mkey].item(row, col).text())
             if type(self.fit.x)==dict:
                 text='col_names=[\'q\','
                 keys=list(self.fit.x.keys())
