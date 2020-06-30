@@ -1269,7 +1269,7 @@ class XAnoS_Fit(QWidget):
             for i in range(self.mfitParamTabWidget.count()):
                 mkey = self.mfitParamTabWidget.tabText(i)
                 for row in range(self.mfitParamTableWidget[mkey].rowCount()):
-                    vartxt = self.mfitParamTableWidget[mkey].item(row, 0).text()
+                    vartxt = mkey+'_'+self.mfitParamTableWidget[mkey].item(row, 0).text()
                     for col in range(1, self.mfitParamTableWidget[mkey].columnCount()):
                         header += '%s_%s=%s\n' % (vartxt, self.mfitParamTableWidget[mkey].horizontalHeaderItem(col).text(),
                                               self.mfitParamTableWidget[mkey].item(row, col).text())
