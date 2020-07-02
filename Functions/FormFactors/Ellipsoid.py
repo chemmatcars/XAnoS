@@ -90,7 +90,10 @@ class Ellipsoid:
         self.output_params={'scaler_paramters':{}}
         return self.norm*self.ellipsoid_dist(tuple(self.x),self.R,self.Rsig,self.dist,self.aspect,self.Nalf,self.Np)+self.bkg
 
-
+if __name__=='__main__':
+    x=np.arange(0.001,1.0,0.1)
+    fun=Ellipsoid(x=x)
+    print(fun.y())
 
 
 

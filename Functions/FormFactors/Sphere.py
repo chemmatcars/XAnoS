@@ -75,7 +75,7 @@ class Sphere:
                 elif self.dist=='LogNormal':
                     lgn=LogNormal.LogNormal(x=0.001,pos=self.R,wid=self.Rsig)
                     rmin,rmax=max(0.001, np.exp(np.log(self.R) - 5*self.Rsig)), np.exp(np.log(self.R) + 5*self.Rsig)
-                    r=np.linspace(rmin,rmax,self.N)
+                    r=np.logspace(np.log10(rmin),np.log10(rmax),self.N)
                     lgn.x=r
                     dist=lgn.y()
                     sumdist=np.sum(dist)

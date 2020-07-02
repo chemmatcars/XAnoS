@@ -56,6 +56,7 @@ class SphereAtInterface: #Please put the class name same as the function name
         self.qoff=qoff
         self.__mpar__ = mpar
         self.choices={'rrf':[True,False]}
+        self.__fit__=False
         self.init_params()
 
 
@@ -137,6 +138,6 @@ class SphereAtInterface: #Please put the class name same as the function name
 
 
 if __name__=='__main__':
-    x=np.arange(0.001,1.0,0.1)
+    x=np.linspace(0.001,1.0,100)
     fun=SphereAtInterface(x=x)
     print(fun.y())

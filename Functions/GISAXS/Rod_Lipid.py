@@ -81,5 +81,5 @@ class Rod_Lipid: #Please put the class name same as the function name
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)
-    fun=Rod_Sphere(x=x)
+    fun=Rod_Lipid(x=x)
     print(fun.y())

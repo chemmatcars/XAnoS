@@ -74,6 +74,7 @@ class AsymSphere: #Please put the class name same as the function name
         self.qoff=qoff
         self.choices={'rrf' : [True,False] ,'fix_sig' : [True, False],'coherrent':[True, False]}
         self.__mkeys__=list(self.__mpar__.keys())
+        self.__fit__=False
         self.init_params()
 
 
@@ -93,7 +94,7 @@ class AsymSphere: #Please put the class name same as the function name
         self.params.add('sig',value=self.sig,vary=0,min=0,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('cov',value=self.cov,vary=0,min=0.00,max=1,expr=None,brute_step=0.1)
         self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
-    
+
         for mkey in self.__mpar__.keys():
             for key in self.__mpar__[mkey].keys():
                 if key!='Layers':
@@ -135,9 +136,9 @@ class AsymSphere: #Please put the class name same as the function name
             zmax=z[-1]+5*sig
             zt=np.arange(zmin,zmax,self.dz)
         rhosum=np.zeros_like(zt)
-        
+
         rhos=np.where(zt>0,rhodown,rhoup)
-        
+
         for i in range(len(h1)):
             if h1sig[i]<1e-3:
                 rhosum=rhosum+self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=h1[i],rhoup=rhoup,rhodown=rhodown)
@@ -150,7 +151,7 @@ class AsymSphere: #Please put the class name same as the function name
                     nprho=self.NpRho(tuple(zt),R0=R0,rhoc=rhoc,D=D,rhosh=rhosh,h2=h2,h1=Z1[j],rhoup=rhoup,rhodown=rhodown)
                     tsum=tsum+nprho*dist[j]
                 rhosum=rhosum+tsum/norm
-        rho=rhosum-(len(h1)-1)*rhos 
+        rho=rhosum-(len(h1)-1)*rhos
         if sig<1e-3:
             return rho
         else:
@@ -182,9 +183,6 @@ class AsymSphere: #Please put the class name same as the function name
         """
         Calculates the electron and absorption density profiles of the additional monolayer
         """
-        if self.fix_sig:
-            for i in range(1, len(sig)):
-                sig[i] = sig[1]
         # n = len(d)
         # maxsig = max(np.abs(np.max(sig[1:])), 3)
         # Nlayers = int((np.sum(d[:-1]) + 10 * maxsig) / self.Minstep)
@@ -225,6 +223,14 @@ class AsymSphere: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         self.output_params = {'scaler_parameters': {}}
+        if not self.__fit__:
+            for mkey in self.__mpar__.keys():
+                Nlayers = len(self.__mpar__[mkey]['sig'])
+                for i in range(2,Nlayers):
+                    if self.fix_sig:
+                        self.params['__%s_%s_%03d' % (mkey, 'sig', i)].expr = '__%s_%s_%03d' % (mkey, 'sig', 1)
+                    else:
+                        self.params['__%s_%s_%03d' % (mkey, 'sig', i)].expr = None
         self.update_parameters()
         rhoup=self.__rho__[0]
         rhodown=self.__rho__[-1]
@@ -243,7 +249,7 @@ class AsymSphere: #Please put the class name same as the function name
                                                       'names': ['z (Angs)', 'Electron Density (el/Angs^3)']}
             self.output_params['Monolayer EDP'] = {'x': z2, 'y': rho2, 'names':['z (Angs)','Electron Density (el/Angs^3)']}
             self.output_params['Monolayer ADP'] = {'x': z2, 'y': beta2, 'names':['z (Angs)','Beta']}
-        
+
         if self.rrf:
             rhos1=(rho1[0],rho1[-1])
             betas1=(0,0)
@@ -254,10 +260,10 @@ class AsymSphere: #Please put the class name same as the function name
             return crefq
         else:
             return refq
-    
-        
+
+
 
 if __name__=='__main__':
-    x=np.arange(0.001,1.0,0.1)
+    x=np.linspace(0.001,1.0,100)
     fun=AsymSphere(x=x)
     print(fun.y())

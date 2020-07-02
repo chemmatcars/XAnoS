@@ -199,7 +199,10 @@ class CoreShellSphere:
                 #amp,res=self.coreshell(self.x,self.R,self.rhoc,self.sh,self.rhosh)
                 return np.ones_like(self.x)
 
-
+if __name__=='__main__':
+    x=np.arange(0.001,1.0,0.1)
+    fun=CoreShellSphere(x=x)
+    print(fun.y())
 
 
 

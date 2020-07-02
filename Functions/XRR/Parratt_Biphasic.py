@@ -31,6 +31,7 @@ class Parratt_Biphasic: #Please put the class name same as the function name
         yscale   : a scale factor for R or R/Rf
         bkg      : In-coherrent background
         coherrent: True or False for coherrent or incoherrent addition of reflectivities from different phases
+        fix_sig  : True or False for constraining or not constraining all the roughness parameters to the roughness of the bare interface roughness
         """
         if type(x)==list:
             self.x=np.array(x)
@@ -132,6 +133,14 @@ class Parratt_Biphasic: #Please put the class name same as the function name
         self.output_params = {'scaler_parameters': {}}
         x = self.x + self.qoff
         lam = 6.62607004e-34 * 2.99792458e8 * 1e10 / self.E / 1e3 / 1.60217662e-19
+        if not self.__fit__:
+            for mkey in self.__mpar__.keys():
+                Nlayers = len(self.__mpar__[mkey]['sig'])
+                for i in range(2,Nlayers):
+                    if self.fix_sig:
+                        self.params['__%s_%s_%03d' % (mkey, 'sig', i)].expr = '__%s_%s_%03d' % (mkey, 'sig', 1)
+                    else:
+                        self.params['__%s_%s_%03d' % (mkey, 'sig', i)].expr = None
         self.update_parameters()
         refq={}
         r2={}
@@ -186,6 +195,6 @@ class Parratt_Biphasic: #Please put the class name same as the function name
 
 
 if __name__=='__main__':
-    x=np.arange(0.001,1.0,0.1)
+    x=np.linspace(0.001,1.0,100)
     fun=Parratt_Biphasic(x=x)
     print(fun.y())

@@ -79,6 +79,11 @@ class ContinuousSphere:
                 res = res + rdist[i] * ff
             return self.norm * res + self.bkg
 
+if __name__=='__main__':
+    x=np.arange(0.001,1.0,0.1)
+    fun=ContinuousSphere(x=x)
+    print(fun.y())
+
 
 
 

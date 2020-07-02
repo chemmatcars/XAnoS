@@ -150,7 +150,7 @@ class PlotWidget(QWidget):
                 #if self.errorbarCheckBox.isChecked():
                 # self.dataErrPos[dname].setData(x,np.where(y+yerr/2.0>0,y+yerr/2.0,y))
                 # self.dataErrNeg[dname].setData(x,np.where(y-yerr/2.0>0,y-yerr/2.0,y))
-                self.err[dname]= yerr/2.0
+                self.err[dname]= yerr
                 self.dataErr[dname].setData(x=x, y=y, top=self.err[dname], bottom=self.err[dname], pen='w')# beam=min(np.abs(x))*0.01*float(self.pointSizeLineEdit.text()),pen='w')
             #self.dataErr[dname].setCurves(self.dataErrPos[dname],self.dataErrNeg[dname])
             else:
@@ -163,7 +163,7 @@ class PlotWidget(QWidget):
                     symbol=None
                 self.data[dname]=pg.PlotDataItem(x,y,pen=pen,symbol=symbol,symbolSize=float(self.pointSizeLineEdit.text()),symbolPen=pg.mkPen(color=color),symbolBrush=pg.mkBrush(color=color))
                 self.dataErr[dname] = pg.ErrorBarItem()
-                self.err[dname]=yerr/2.0
+                self.err[dname]=yerr
                 self.dataErr[dname].setData(x=x,y=y,top=self.err[dname],bottom=self.err[dname], pen='w')# beam=min(np.abs(x))*0.01*float(self.pointSizeLineEdit.text()),pen='w')
                 self.data[dname].curve.setClickable(True,width=10)
                 self.data[dname].sigClicked.connect(self.colorChanged)
@@ -291,7 +291,7 @@ class PlotWidget(QWidget):
                          x=np.log10(x)
                     if self.yLogCheckBox.checkState() == Qt.Checked:
                         top=np.log10(1+top/y)
-                        bottom=np.log10(1+bottom/y)
+                        bottom=np.log10(y/(y-bottom))
                         y = np.log10(y)
                     self.dataErr[dname].setData(x=x,y=y,top=top,bottom=bottom,pen='w')#beam=min(np.abs(x))*0.01*float(self.pointSizeLineEdit.text()),pen='w')
                     self.plotWidget.addItem(self.dataErr[dname])

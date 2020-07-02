@@ -80,9 +80,6 @@ class Parratt_New: #Please put the class name same as the function name
         rho = np.array(rho)
         beta = np.array(beta)
         sig = np.array(sig)
-        if self.fix_sig:
-            for i in range(1, len(sig)):
-                sig[i] = sig[1]
         n = len(d)
         maxsig = max(np.abs(np.max(sig[1:])), 3)
         Nlayers = int((np.sum(d[:-1]) + 10 * maxsig) / self.Minstep)
@@ -125,6 +122,14 @@ class Parratt_New: #Please put the class name same as the function name
         self.output_params = {'scaler_parameters': {}}
         x = self.x + self.qoff
         lam = 6.62607004e-34 * 2.99792458e8 * 1e10 / self.E / 1e3 / 1.60217662e-19
+        if not self.__fit__:
+            for mkey in self.__mpar__.keys():
+                Nlayers = len(self.__mpar__[mkey]['sig'])
+                for i in range(2,Nlayers):
+                    if self.fix_sig:
+                        self.params['__%s_%s_%03d'%(mkey,'sig',i)].expr='__%s_%s_%03d'%(mkey,'sig',1)
+                    else:
+                        self.params['__%s_%s_%03d' % (mkey, 'sig', i)].expr = None
         self.update_parameters()
         mkey=list(self.__mpar__.keys())[0]
         n, z, d, rho, beta = self.calcProfile(self.__d__[mkey], self.__rho__[mkey],
@@ -144,6 +149,6 @@ class Parratt_New: #Please put the class name same as the function name
 
 
 if __name__=='__main__':
-    x=np.arange(0.001,1.0,0.1)
+    x=np.linspace(0.001,1.0,100)
     fun=Parratt_New(x=x)
     print(fun.y())
