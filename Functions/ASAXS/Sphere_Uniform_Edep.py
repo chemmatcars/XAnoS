@@ -54,6 +54,7 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
         self.init_params()
         self.__cf__=Chemical_Formula()
         self.__fit__=False
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         """
@@ -274,7 +275,6 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         self.update_params()
         r = self.calc_mesh(R=self.__R__[:-1], Rsig=self.__Rsig__[:-1], Np=self.Np)
         adist = np.ones_like(r[0])
@@ -291,7 +291,7 @@ class Sphere_Uniform_Edep: #Please put the class name same as the function name
             sqf={}
             for key in self.x.keys():
                 sq=[]
-                Energy=float(key.split('_')[1])
+                Energy=float(key.split('_')[1].split(':')[1])
                 rho,eirho,adensity,rhor,eirhor,adensityr=self.calc_rho(R=self.__R__,material=self.__material__, density=self.__density__, sol_density=self.__sol_density__,Energy=Energy, Rmoles= self.__Rmoles__, NrDep=self.NrDep)
                 for q1 in self.x[key]:
                     sq.append(self.sphere_dict(q1, r, adist, sdist, rho, eirho, adensity,key='Total'))

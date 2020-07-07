@@ -1277,6 +1277,13 @@ class XAnoS_Collector(QWidget):
                                                              'positioner file has some errors.',
                                 QMessageBox.Ok)
             return
+        if caget('15IDA:KohzuModeBO.VAL')!=1:
+            QMessageBox.warning(self,'Monochromator Warning','It seems monochomator is not in Auto mode. Please change the Monochromator to Auto mode before starting data collection', QMessageBox.Ok)
+            return
+        if caget('15IDA:KohzuUseSetBO.VAL')!=0:
+            QMessageBox.warning(self,'Monochromator Warning','It seems monochomator is not in Use mode. Please change the Monochormator to Use mode before starting data collection', QMessageBox.Ok)
+            return
+
         self.create_measurementList()
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()

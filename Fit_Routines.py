@@ -1,5 +1,5 @@
 import numpy as np
-from lmfit import fit_report, Minimizer
+from lmfit import fit_report, Minimizer, conf_interval, printfuncs
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
 import traceback
@@ -103,33 +103,35 @@ class Fit(QObject):
                 else:
                     y.append((data-fit)/err)
             y=np.concatenate(y)
-            return y
         else:
             data=self.y[self.imin:self.imax+1]
             err=self.yerr[self.imin:self.imax+1]
             fit = yfit
             if fit_scale=='Log':
-                return (np.log10(data)-np.log10(fit))*data/err
+                y= (np.log10(data)-np.log10(fit))*data/err
             elif fit_scale=='Log w/o error':
-                return (np.log10(data)-np.log10(fit))
+                y = (np.log10(data)-np.log10(fit))
             elif fit_scale=='Linear w/o error':
-                return (data-fit)
+                y = (data-fit)
             else:
-                return (data-fit)/err
+                y = (data-fit)/err
+        self.Niter+=1
+        self.functionCalled.emit(params, self.Niter, y, fit_scale)
+        return y
         
     def callback(self,params,iterations,residual,fit_scale):
         """
         """
         #self.Niter += 1
         #print(self.Niter, ': I m here')
-        self.functionCalled.emit(params,iterations,residual,fit_scale)
+        #self.functionCalled.emit(params,iterations,residual,fit_scale)
         if self.fit_abort:
             return True
         else:
             return None
     
     
-    def perform_fit(self,xmin,xmax,fit_scale='Linear',fit_method='leastsq',maxiter=1):
+    def perform_fit(self,xmin,xmax,fit_scale='Linear',fit_method='leastsq',maxiter=1,emcee_steps=100, emcee_burn=30):
         self.Niter=0
         #self.sync_param()
         self.fit_abort=False
@@ -144,16 +146,24 @@ class Fit(QObject):
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise',maxfev=maxiter)
         elif fit_method=='differential_evolution':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,
-                                  nan_policy='raise', calc_covar=True, maxiter=maxiter)
+                                  nan_policy='raise', calc_covar=True, maxiter=maxiter, popsize=300, updating='immediate')
         elif fit_method=='brute':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise')
-        elif fit_method=='emcee':
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,), iter_cb=self.callback, nan_policy='raise', burn=300, steps=1000, thin=20, is_weighted=True)
+        elif fit_method == 'emcee':
+            emcee_params = self.result.params.copy()
+            emcee_params.add('__lnsigma', value=np.log(0.1),vary=True, min=np.log(0.001), max=np.log(2.0))
+            self.fitter = Minimizer(self.residual, emcee_params, fcn_args=(fit_scale,), iter_cb=self.callback,
+                                nan_policy='raise', burn=emcee_burn, steps=emcee_steps, thin=2, is_weighted=True)
         else:
             self.fitter = Minimizer(self.residual, self.fit_params, fcn_args=(fit_scale,), iter_cb=self.callback,
                                     nan_policy='raise')
         self.result=self.fitter.minimize(method=fit_method)
-        return fit_report(self.result),self.result.message
-        
+        if fit_method!='emcee':
+            return fit_report(self.result),self.result.message
+        else:
+            return fit_report(self.result), 'None'
+
+
+
         
         

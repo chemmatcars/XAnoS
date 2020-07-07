@@ -74,5 +74,5 @@ In **Parallel mode**, generally the data are collected within a same folder with
 12. Within the **bkgsub** subfolder two kinds of files will be created in the following format:
 
     * *filename_filenumber_bsub.txt* : These are background subtracted files of the system of interest
-    * *filename_filenumber_bsub_proc.txt* : These are background subtracted and absolute scale normalized data obtained after the processing. These files will be used further for ASAXS analysis using :ref:`ASAXS_Widget`.
+    * *filename_filenumber_bsub_proc.txt* : These are background subtracted and absolute scale normalized data obtained after the processing. These files will be used further for ASAXS analysis using :ref:`XAnoS_Components`.
 

@@ -5,10 +5,11 @@ import sys
 import os
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./Functions'))
-sys.path.append(os.path.abspath('./Fortran_rountines'))
+sys.path.append(os.path.abspath('./Fortran_routines'))
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
+from ff_cylinder import ff_cylinder_ml
 
 
 
@@ -20,7 +21,7 @@ class CoreShellCylinder: #Please put the class name same as the function name
         R           : Radius of the cylindrical core in the same inverse unit as Q
         Rsig        : Width of the distribution in core radius R
         rhoCore     : The electron density of the core in el/Angs^3
-        Shell       : Thickness of the shell
+        shell       : Thickness of the shell
         rhoShell    : Electron density of the shell in el/Angs^3
         rhoSol      : Electron density of the solvent in el/Angs^3
         H           : Length/Height of the cylindrical core in the same inverse unit as Q
@@ -37,7 +38,7 @@ class CoreShellCylinder: #Please put the class name same as the function name
         self.R = R
         self.Rsig = Rsig
         self.rhoCore=rhoCore
-        self.Shell=Shell
+        self.shell=shell
         self.rhoShell=rhoShell
         self.rhoSol=rhoSol
         self.H = H
@@ -48,6 +49,7 @@ class CoreShellCylinder: #Please put the class name same as the function name
         self.Nsample = Nsample
         self.__mpar__ = mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
+        self.output_params={}
         self.init_params()
         self.__fit__=False
 
@@ -60,7 +62,7 @@ class CoreShellCylinder: #Please put the class name same as the function name
         self.params.add('R', value=self.R, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('Rsig', value=self.Rsig, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('rhoCore',value=self.rhoCore, vary= 0 , min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
-        self.params.add('Shell', value=self.Rsig, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
+        self.params.add('shell', value=self.Rsig, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('rhoShell',value=self.rhoShell, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('rhoSol',value=self.rhoShell, vary=0,min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('H', value=self.H, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
@@ -77,7 +79,7 @@ class CoreShellCylinder: #Please put the class name same as the function name
         self.R = self.params['R'].value
         self.Rsig = self.params['Rsig'].value
         self.rhoCore = self.params['rhoCore'].value
-        self.Shell = self.params['Shell'].value
+        self.shell = self.params['shell'].value
         self.rhoShell = self.params['rhoShell'].value
         self.rhoSol = self.params['rhoSol'].value
         self.H = self.params['H'].value
@@ -90,6 +92,7 @@ class CoreShellCylinder: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         q = self.x
+        self.output_params={}
         if self.dist == 'Gaussian':
             if self.Rsig > 1e-3:
                 rdist = Gaussian.Gaussian(x=0.0, pos=self.R, wid=self.Rsig)
@@ -139,8 +142,8 @@ class CoreShellCylinder: #Please put the class name same as the function name
                 h = np.ones_like(r) * self.H
                 disth = np.ones_like(h)
 
-        result = ff_cylinder_dist(q,r,distr,h,disth)
-        return self.norm * result + self.bkg
+        result = ff_cylinder_ml(q,r,distr,h,disth)
+        return self.norm * result[0] + self.bkg
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)

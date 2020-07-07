@@ -64,3 +64,44 @@ subroutine ff_cylinder_dist(q,R,Rdist,L,Ldist,ff,M,N)
     enddo
 
 end subroutine ff_cylinder_dist
+
+
+subroutine ff_cylinder_ML(q,rho,R,L,ff,ffamp,M, Nl)
+    !***************************************************************************
+    !Subroutine to calculate the form factor of Multilayered Cylinder
+    !q = Array of reciprocal wave-vectors at which the form-factor needs to be calculated
+    !rho= List of complex electron density of different layers including the solvent
+    !R = List of Radius and shell thicknesses of multilayered cylinder in Angstroms
+    !L = Length of cylinder in Angstroms
+    !M = No. of reciprocal wave-vectors at which the form-factor needs to be calculated
+    !Nl = No. of multilayers
+    !***************************************************************************
+    integer :: M, Nl, i, j, K
+    double precision :: q(0:M)
+    double precision :: ff(0:M)
+    double complex :: rho(0:Nl)
+    double precision :: R(0:Nl)
+    double precision :: L, alpha, rtemp
+    double complex :: fact
+    double complex :: ffamp(0:M)
+    double precision, parameter :: pi=3.14157
+    integer, parameter :: N=1000
+
+    do i = 0,M
+        do j=1,N
+            alpha=pi*j/N/2.0
+            fact=dcmplx(0.0,0.0)
+            rtemp=0
+            do k=0,Nl-1
+                rtemp=rtemp+R(k)
+                fact=fact+(rho(k+1)-rho(k))*(dsin(q(i)*L*dcos(alpha)/2)/(q(i)*L*dcos(alpha)/2) &
+                * bessel_j1(q(i)*rtemp*dsin(alpha))/(q(i)*rtemp*dsin(alpha)))
+            enddo
+            ff(i) = ff(i) + cdabs(fact)**2 * dsin(alpha)
+            ffamp(i) = ffamp(i) + fact * dsin(alpha)
+        enddo
+        ff(i) = ff(i)*pi/N
+        ffamp(i) = ffamp(i)*pi/N
+    enddo
+
+end subroutine ff_cylinder_ML

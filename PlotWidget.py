@@ -390,12 +390,13 @@ class PlotWidget(QWidget):
         else:
             self.plotWidget.getPlotItem().setTitle(title='<font size='+str(fontsize)+'>'+title+'</font>')
 
-    def addROI(self,values=(0,1),orientation='horizontal',movable=True):
+    def addROI(self,values=(0,1),orientation='horizontal',movable=True, minmax_widget=None, min_widget=None, max_widget=None):
         if orientation=='vertical':
             self.roi=pg.LinearRegionItem(values=values,orientation=pg.LinearRegionItem.Vertical,movable=movable)
         else:
             self.roi = pg.LinearRegionItem(values=values, orientation=pg.LinearRegionItem.Horizontal,movable=movable)
         self.plotWidget.addItem(self.roi)
+        return self.roi
 
  
     

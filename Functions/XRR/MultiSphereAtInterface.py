@@ -6,6 +6,7 @@ import os
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('./Functions'))
 sys.path.append(os.path.abspath('./Fortran_routines/'))
+from functools import lru_cache
 ####Please do not remove lines above####
 
 ####Import your modules below if needed####
@@ -53,6 +54,7 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         self.qoff=qoff
         self.choices={'rrf':[1,0]}
         self.init_params()
+        self.__fit__=False
 
 
     def init_params(self):
@@ -72,7 +74,9 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
                     self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('qoff',self.qoff,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
+    @lru_cache(maxsize=10)
     def NpRho(self,z,Rc=10,rhoc=4.68,Tsh=20,rhosh=0.0,Z0=20,rhoup=0.333,rhodown=0.38,cov=1.0):
+        z=np.array(z)
         D=Rc+Tsh
         Atot=2*np.sqrt(3)*D**2
         rhos=np.where(z>0,rhodown,rhoup)
@@ -83,7 +87,9 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         else:
             return (1-cov)*rhos+cov*((Atot-ANp)*rhos+Acore*(rhoc-rhosh)+ANp*rhosh)/Atot
 
-    def NpRhoGauss(self,z,Rc=10,rhoc=4.68,Tsh=20,rhosh=0.0,Z0=[20],cov=[1.0],Z0sig=[0.0],rhoup=0.333,rhodown=0.38,sig=3.0,Nc=20):
+    @lru_cache(maxsize=10)
+    def NpRhoGauss(self,z,Rc=10,rhoc=4.68,Tsh=20,rhosh=0.0,Z0=(20),cov=(1.0),Z0sig=(0.0),rhoup=0.333,rhodown=0.38,sig=3.0,Nc=20):
+        z=np.array(z)
         if sig<1e-3:
             zt=z
         else:
@@ -93,14 +99,14 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         rhosum=np.zeros_like(zt)
         for i in range(len(Z0)):
             if Z0sig[i]<1e-3:
-                rhosum=rhosum+self.NpRho(zt,Rc=Rc,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,Z0=Z0[i],rhoup=rhoup,rhodown=rhodown,cov=cov[i])
+                rhosum=rhosum+self.NpRho(tuple(zt),Rc=Rc,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,Z0=Z0[i],rhoup=rhoup,rhodown=rhodown,cov=cov[i])
             else:
                 Z1=np.linspace(Z0[i]-5*Z0sig[i],Z0[i]+5*Z0sig[i],101)
                 dist=np.exp(-(Z1-Z0[i])**2/2/Z0sig[i]**2)
                 norm=np.sum(dist)
                 tsum=np.zeros_like(len(zt))
                 for j in range(len(Z1)):
-                    tsum=tsum+self.NpRho(zt,Rc=Rc,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,Z0=Z1[j],rhoup=rhoup,rhodown=rhodown,cov=cov[i])*dist[j]
+                    tsum=tsum+self.NpRho(tuple(zt),Rc=Rc,rhoc=rhoc,Tsh=Tsh,rhosh=rhosh,Z0=Z1[j],rhoup=rhoup,rhodown=rhodown,cov=cov[i])*dist[j]
                 rhosum=rhosum+tsum/norm
         rhos=np.where(zt>0,rhodown,rhoup)
         rho=rhosum-(len(Z0)-1)*rhos
@@ -119,19 +125,20 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         """
         Calculates the electron and absorption density profiles
         """
-        Z0=np.array([self.params['__Z0__%03d'%i].value for i in range(len(self.__mpar__['Z0']))])
-        cov=np.array([self.params['__cov__%03d'%i].value for i in range(len(self.__mpar__['cov']))])
-        Z0sig=np.array([self.params['__Z0sig__%03d'%i].value for i in range(len(self.__mpar__['Z0sig']))])
+        Z0 = np.array([self.params['__Z0__%03d' % i].value for i in range(len(self.__mpar__['Z0']))])
+        cov = np.array([self.params['__cov__%03d' % i].value for i in range(len(self.__mpar__['cov']))])
+        Z0sig = np.array([self.params['__Z0sig__%03d' % i].value for i in range(len(self.__mpar__['Z0sig']))])
         self.__z__=np.arange(self.zmin,self.zmax,self.dz)
         self.__d__=self.dz*np.ones_like(self.__z__)
-        self.__rho__=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=Z0,cov=cov,Z0sig=Z0sig,rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
-        self.output_params['Total density profile']={'x':self.__z__,'y':self.__rho__}
-        for i in range(len(Z0)):
-            rho=self.NpRhoGauss(self.__z__,Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=[Z0[i]],cov=[cov[i]],Z0sig=[Z0sig[i]],rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
-            self.output_params['Layer %d contribution'%(i+1)]={'x':self.__z__,'y':rho}
-
-
-
+        self.__rho__=self.NpRhoGauss(tuple(self.__z__),Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,
+                                     Z0=tuple(Z0),cov=tuple(cov),Z0sig=tuple(Z0sig),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
+        if not self.__fit__:
+            self.output_params['Total density profile']={'x':self.__z__,'y':self.__rho__}
+            for i in range(len(Z0)):
+                rho=self.NpRhoGauss(tuple(self.__z__),Rc=self.Rc,rhoc=self.rhoc,Tsh=self.Tsh,rhosh=self.rhosh,Z0=tuple([Z0[i]]),
+                                    cov=tuple([cov[i]]),Z0sig=tuple([Z0sig[i]]),rhoup=self.rhoup,rhodown=self.rhodown,sig=self.sig)
+                self.output_params['Layer %d contribution'%(i+1)]={'x':self.__z__,'y':rho}
+        return Z0, cov, Z0sig
 
     def y(self):
         """
@@ -145,7 +152,7 @@ class MultiSphereAtInterface: #Please put the class name same as the function na
         if self.rrf>0:
             rhos=[self.__rho__[0],self.__rho__[-1]]
             betas=[0,0]
-            ref,r2=parratt(x,lam,[0.0,1.0],rhos,betas)
+            ref,r2=parratt(x-self.qoff,lam,[0.0,1.0],rhos,betas)
             refq=refq/ref
         return refq
 

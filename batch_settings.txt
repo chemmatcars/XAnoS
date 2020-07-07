@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 samNums=[8]
 bkgNum=3
 stdNum=1
@@ -5,10 +6,23 @@ mtNum=0
 airNum=2
 sampleThickness=[0.002]
 bkgThickness=0.002
+=======
+samNums=[2]
+bkgNum=2
+stdNum=1
+mtNum=0
+airNum=15
+sampleThickness=[0.003]
+bkgThickness=0.003
+>>>>>>> 3a09d2e9c5e9c98b868b0d4e02794184fdf14bf7
 stdThickness=0.1055
 normStd=GC
 xMinMax=0.04:0.07
 interpType=linear
 energyNpts=20
 repeatNpts=1
+<<<<<<< HEAD
 sampleSet=8
+=======
+sampleSet=15
+>>>>>>> 3a09d2e9c5e9c98b868b0d4e02794184fdf14bf7

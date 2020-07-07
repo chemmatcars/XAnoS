@@ -16,21 +16,10 @@ Follow the following instructions for installation:
 1) Install Anaconda python (Python 3.6 and higher) for your operating system from: 'https://www.anaconda.com/download/'
 2) Open a Anaconda terminal the run these two commands::
 
-    conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib
-    pip install lmfit pyfai periodictable lmdifftools mendeleev corner emcee
+    conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib pandas
+    pip install lmfit pyfai pylint periodictable mendeleev corner emcee tabulate
 
-3) Go to the website: https://github.com/scikit-beam/XrayDB
-
-	i) Click the green button named "Clone or download"
-	ii) Download the zip file
-	iii) Extract the zip file into a folder
-	iv) In the Anaconda terminal go the the extracted folder and type the following commands with your own folder path::
-
-   		cd /home/mrinal/Download/XrayDB-master
-   		cd python
-   		python setup.py install
-
-4) The installation can be done in two different ways:
+3) The installation can be done in two different ways:
     a) Universal way which does not need GIT installation:
 	    i) Open a web browser and go to the webpage : https://github.com/nayanbera/XAnoS
 	    ii) Click the green button named "Clone or download"
@@ -49,7 +38,7 @@ Follow the following instructions for installation:
 
             git pull
 
-5) Run the following commands to run different packages:
+4) Run the following commands to run different packages:
     i) Data Collection package (**Do not run this when not in the beamline!**)::
 
          python XAnoS_Collector.py
