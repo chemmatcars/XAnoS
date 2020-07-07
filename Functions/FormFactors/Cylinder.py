@@ -44,6 +44,7 @@ class Cylinder: #Please put the class name same as the function name
         self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={'dist':['Gaussian','LogNormal']} #If there are choices available for any fixed parameters
         self.init_params()
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         """
@@ -59,19 +60,10 @@ class Cylinder: #Please put the class name same as the function name
         self.params.add('norm',value=self.norm,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
         self.params.add('bkg', value=self.bkg,vary=0,min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
 
-    def update_parameters(self):
-        self.R = self.params['R'].value
-        self.Rsig = self.params['Rsig'].value
-        self.H = self.params['H'].value
-        self.Hsig = self.params['Hsig'].value
-        self.norm = self.params['norm'].value
-        self.bkg = self.params['bkg'].value
-
     def y(self):
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         q=self.x
         if self.dist=='Gaussian':
             if self.Rsig>1e-3:

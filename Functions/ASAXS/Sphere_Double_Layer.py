@@ -20,10 +20,10 @@ import time
 
 
 class Sphere_Double_Layer: #Please put the class name same as the function name
-    def __init__(self, x=0, Np=50, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep='True', norm=1.0e-4,
+    def __init__(self, x=0, Np=50, flux=1e13, dist='Gaussian', Energy=None, relement='Au', NrDep=True, norm=1.0e-4,
                  sbkg=0.0, cbkg=0.0, abkg=0.0, nearIon='Rb', farIon='Cl', ionDensity=0.0, stThickness=1.0,
                  stDensity=0.0, dbLength=1.0, dbDensity=0.0,Ndb=20,
-                 mpar={'Material': ['Au', 'H2O'], 'Density': [19.32, 1.0], 'Sol_Density': [1.0, 1.0],'Rmoles': [1.0, 0.0], 'R': [1.0, 0.0], 'Rsig': [0.0, 0.0]}):
+                 mpar={'Multilayers':{'Material': ['Au', 'H2O'], 'Density': [19.32, 1.0], 'SolDensity': [1.0, 1.0],'Rmoles': [1.0, 0.0], 'R': [1.0, 0.0], 'Rsig': [0.0, 0.0]}}):
         """
         Documentation
         Calculates the Energy dependent form factor of multilayered nanoparticles with different materials
@@ -50,7 +50,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         mpar        : Multi-parameter which defines the following including the solvent/bulk medium which is the last one. Default: 'H2O'
                         Material ('Materials' using chemical formula),
                         Density ('Density' in gm/cubic-cms),
-                        Density of solvent ('Sol_Density' in gm/cubic-cms) of the particular layer
+                        Density of solvent ('SolDensity' in gm/cubic-cms) of the particular layer
                         Mole-fraction ('Rmoles') of resonant element in the material)
                         Radii ('R' in Angs), and
                         Widths of the distributions ('Rsig' in Angs) of radii of all the interfaces present in the nanoparticle system. Default: [0.0]
@@ -80,11 +80,12 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         self.flux = flux
         self.__mpar__ = mpar  # If there is any multivalued parameter
         self.choices = {'dist': ['Gaussian', 'LogNormal'],
-                        'NrDep': ['True', 'False']}  # If there are choices available for any fixed parameters
-        self.init_params()
+                        'NrDep': [True, False]}  # If there are choices available for any fixed parameters
         self.__cf__ = Chemical_Formula()
         self.__fit__ = False
         self.output_params={'scaler_parameters':{}}
+        self.__mkeys__=list(self.__mpar__.keys())
+        self.init_params()
 
     def init_params(self):
         """
@@ -100,25 +101,27 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
         self.params.add('sbkg', value=self.sbkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('cbkg', value=self.cbkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
         self.params.add('abkg', value=self.abkg, vary=0, min=-np.inf, max=np.inf, expr=None, brute_step=0.1)
-        for key in self.__mpar__.keys():
-            if key != 'Material':
-                for i in range(len(self.__mpar__[key])):
-                    self.params.add('__%s__%03d' % (key, i), value=self.__mpar__[key][i], vary=0, min=-np.inf,
-                                    max=np.inf, expr=None, brute_step=0.1)
+        for mkey in self.__mkeys__:
+            for key in self.__mpar__[mkey]:
+                if key != 'Material':
+                    for i in range(len(self.__mpar__[mkey][key])):
+                        self.params.add('__%s_%s_%03d' % (mkey, key, i), value=self.__mpar__[mkey][key][i], vary=0, min=-np.inf,
+                                        max=np.inf, expr=None, brute_step=0.1)
 
-    def calc_rho(self, R=(1.0, 0.0), material=('Au', 'H2O'), density=(19.3, 1.0), sol_density=(1.0, 1.0),
-                 Rmoles=(1.0, 0.0), Energy=None, NrDep='True', stThickness=2.0, stDensity=0.0, dbLength=1.0, dbDensity=0.0, ionDensity=0.0, nearIon='Rb', farIon='Cl'):
+    @lru_cache(maxsize=10)
+    def calc_rho(self, R=(1.0, 0.0), material=('Au', 'H2O'), relement='Au', density=(19.3, 1.0), sol_density=(1.0, 1.0),
+                 Rmoles=(1.0, 0.0), Energy=None, NrDep='True'):
         """
         Calculates the complex electron density of core-shell type multilayered particles in el/Angstroms^3
 
         R         :: list of Radii and subsequent shell thicknesses in Angstroms of the nanoparticle system
         material  :: list of material of all the shells starting from the core to outside
+        relement  :: Resonant element
         density   :: list of density of all the materials in gm/cm^3 starting from the inner core to outside
         Rmoles    :: mole-fraction of the resonant element in the materials
         Energy    :: Energy in keV
         """
-        #self.output_params['scaler_parameters'] = {}
-
+        density = list(density)
         if len(material) == len(density):
             Nl = len(material)
             rho = []
@@ -132,10 +135,23 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                 mat = material[i].split(':')
                 if len(mat) == 2:
                     solute, solvent = mat
-
+                    element_adjust = None
+                    if '*' in solute:
+                        m = solute.split('*')[0]
+                        f = self.__cf__.parse(m)
+                        element_adjust = self.__cf__.elements()[-1]
                     solute_formula = self.__cf__.parse(solute)
-                    if self.relement in solute_formula.keys():
-                        self.__cf__.formula_dict[self.relement] = Rmoles[i]
+                    if relement in solute_formula.keys():
+                        if element_adjust is not None:
+                            self.__cf__.formula_dict[relement] = 0.0
+                            t1 = self.__cf__.molar_mass()
+                            self.__cf__.formula_dict[element_adjust] = self.__cf__.element_mole_ratio()[
+                                                                           element_adjust] - Rmoles[i]
+                            self.__cf__.formula_dict[relement] = Rmoles[i]
+                            t2 = self.__cf__.molar_mass()
+                            if t1 > 0:
+                                fac = t2 / t1
+                    density[i] = fac * density[i]
                     solute_elements = self.__cf__.elements()
                     solute_mw = self.__cf__.molecular_weight()
                     solute_mv = self.__cf__.molar_volume()
@@ -146,7 +162,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                     solvent_mw = self.__cf__.molecular_weight()
                     solvent_mole_ratio = self.__cf__.element_mole_ratio()
 
-                    solvent_moles = sol_density[i]*(1-solute_mv*density[i]/solute_mw) / solvent_mw
+                    solvent_moles = sol_density[i] * (1 - solute_mv * density[i] / solute_mw) / solvent_mw
                     solute_moles = density[i] / solute_mw
                     total_moles = solvent_moles + solute_moles
                     solvent_mole_fraction = solvent_moles / total_moles
@@ -156,26 +172,32 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                         comb_material += '%s%.10f' % (ele, solute_mole_ratio[ele] * solute_mole_fraction)
                     for ele in solvent_mole_ratio.keys():
                         comb_material += '%s%.10f' % (ele, solvent_mole_ratio[ele] * solvent_mole_fraction)
-                    tdensity = density[i] + sol_density[i] * (1 - solute_mv * density[i] / solute_mw)
+                    density[i] = density[i] + sol_density[i] * (1 - solute_mv * density[i] / solute_mw)
                     # self.output_params['scaler_parameters']['density[%s]' % material[i]]=tdensity
                 else:
+                    element_adjust = None
+                    if '*' in material[i]:
+                        m = material[i].split('*')[0]
+                        f = self.__cf__.parse(m)
+                        element_adjust = self.__cf__.elements()[-1]
                     formula = self.__cf__.parse(material[i])
-                    fac=1.0
-                    if self.relement in formula.keys():
-                        self.__cf__.formula_dict[self.relement]=0.0
-                        t1=self.__cf__.molar_mass()
-                        self.__cf__.formula_dict[self.relement] = Rmoles[i]
-                        t2=self.__cf__.molar_mass()
-                        if t1>0:
-                            fac=t2/t1
-                            self.output_params['scaler_parameters']['density[%s]'%material[i]]=fac*density[i]
+                    fac = 1.0
+                    if relement in formula.keys():
+                        self.__cf__.formula_dict[relement] = 0.0
+                        t1 = self.__cf__.molar_mass()
+                        if element_adjust is not None:
+                            self.__cf__.formula_dict[element_adjust] = self.__cf__.element_mole_ratio()[
+                                                                           element_adjust] - Rmoles[i]
+                        self.__cf__.formula_dict[relement] = Rmoles[i]
+                        t2 = self.__cf__.molar_mass()
+                        if t1 > 0:
+                            fac = t2 / t1
                     mole_ratio = self.__cf__.element_mole_ratio()
                     comb_material = ''
                     for ele in mole_ratio.keys():
                         comb_material += '%s%.10f' % (ele, mole_ratio[ele])
-                    # comb_material=material[i]
-                    tdensity = fac*density[i]
-                    # self.output_params['scaler_parameters']['density[%s]' % material[i]] = tdensity
+                    density[i] = fac * density[i]
+                tdensity = density[i]
                 formula = self.__cf__.parse(comb_material)
                 molwt = self.__cf__.molecular_weight()
                 elements = self.__cf__.elements()
@@ -189,7 +211,7 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                     f0 = self.__cf__.xdb.f0(elements[j], 0.0)[0]
                     nelectrons = nelectrons + moles[j] * f0
                     if Energy is not None:
-                        if elements[j] != self.relement:
+                        if elements[j] != relement:
                             if NrDep:
                                 f1 = self.__cf__.xdb.f1_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                                 f2 = self.__cf__.xdb.f2_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
@@ -198,20 +220,14 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                             f1 = self.__cf__.xdb.f1_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                             f2 = self.__cf__.xdb.f2_chantler(element=elements[j], energy=Energy * 1e3, smoothing=0)
                             felectrons = felectrons + moles[j] * complex(f1, f2)
-                    if elements[j] == self.relement:
-                        aden += 0.6022 * moles[j] * tdensity / molwt
+                    if elements[j] == relement:
+                        aden += 0.6023 * moles[j] * tdensity / molwt
                 adensity.append(
                     aden)  # * np.where(r > Radii[i - 1], 1.0, 0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
-                eirho.append(0.6022 * (
+                eirho.append(0.6023 * (
                     nelectrons) * tdensity / molwt)  # * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0,0.0) / molwt
-                rho.append(0.6022 * (
-                            nelectrons + felectrons) * tdensity / molwt)  # * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
-                # else:
-                #     eirho.append(0.6023 * (nelectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0, 0.0) / molwt
-                #     rho.append(0.6023 * (nelectrons + felectrons) * density[i]/molwt)# * np.where(r <= Radii[i], 1.0,0.0) / molwt
-                # self.output_params['scaler_parameters']['rho[%s]' % material[i]]=rho[-1]
-                # self.output_params['scaler_parameters']['eirho[%s]' % material[i]] = eirho[-1]
-                # self.output_params['scaler_parameters']['adensity[%s]' % material[i]] = adensity[-1]
+                rho.append(0.6023 * (
+                        nelectrons + felectrons) * tdensity / molwt)  # * np.where(r > Radii[i - 1], 1.0,0.0) * pl.where(r <= Radii[i], 1.0, 0.0) / molwt
                 rhor.append([r, np.real(rho[-1])])
                 eirhor.append([r, np.real(eirho[-1])])
                 adensityr.append([r, np.real(adensity[-1])])
@@ -223,7 +239,9 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             rhor[-1, 0] = rhor[-1, 0] + R[-2]
             eirhor[-1, 0] = eirhor[-1, 0] + R[-2]
             adensityr[-1, 0] = adensityr[-1, 0] + R[-2]
-            return np.array(rho), np.array(eirho), np.array(adensity), rhor, eirhor, adensityr
+            self.output_params['Density'] = {'x': np.cumsum(R), 'y': density,
+                                             'names': ['r (Angs)', 'density (gm/cm^3)']}
+            return np.array(rho), np.array(eirho), np.array(adensity), np.array(rhor), np.array(eirhor), np.array(adensityr)
 
     def solrho(self, Rp=100.0, Rc=12.5, strho=1.0, tst=2.0, lrho=0.5, lexp=10.0, rhosol=0.0, R=[1.0],
                                 material=['H2O'],density=[1.0],sol_density=[1.0]):
@@ -485,26 +503,20 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
             return fform  # in cm^2
 
     def update_params(self):
-        self.norm = self.params['norm'].value
-        self.sbkg = self.params['sbkg'].value
-        self.cbkg = self.params['cbkg'].value
-        self.abkg = self.params['abkg'].value
-        self.stThickness=self.params['stThickness'].value
-        self.stDensity=self.params['stDensity'].value
-        self.dbLength=self.params['dbLength'].value
-        self.dbDensity=self.params['dbDensity'].value
+        mkey=self.__mkeys__[0]
         key = 'Density'
-        self.__density__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
-        key = 'Sol_Density'
-        self.__sol_density__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        Nmpar=len(self.__mpar__[mkey][key])
+        self.__density__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
+        key = 'SolDensity'
+        self.__sol_density__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Rmoles'
-        self.__Rmoles__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__Rmoles__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'R'
-        self.__R__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__R__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Rsig'
-        self.__Rsig__ = [self.params['__%s__%03d' % (key, i)].value for i in range(len(self.__mpar__[key]))]
+        self.__Rsig__ = [self.params['__%s_%s_%03d' % (mkey, key, i)].value for i in range(Nmpar)]
         key = 'Material'
-        self.__material__ = [self.__mpar__[key][i] for i in range(len(self.__mpar__[key]))]
+        self.__material__ = [self.__mpar__[mkey][key][i] for i in range(Nmpar)]
 
     def y(self):
         """
@@ -551,8 +563,12 @@ class Sphere_Double_Layer: #Please put the class name same as the function name
                 tRmoles.append(1.0)
             else:
                 tRmoles.append(1.0)
-        rhon, eirhon, adensityn, rhorn, eirhorn, adensityrn = self.calc_rho(R=tR, material=tnmaterial, density=tndensity, sol_density=tsoldensity, Energy=self.Energy, Rmoles=tRmoles, NrDep=self.NrDep)
-        rhof, eirhof, adensityf, rhorf, eirhorf, adensityrf = self.calc_rho(R=tR, material=tfmaterial, density=tfdensity, sol_density=tsoldensity, Energy=self.Energy, Rmoles=tRmoles, NrDep=self.NrDep)
+        rhon, eirhon, adensityn, rhorn, eirhorn, adensityrn = self.calc_rho(R=tuple(tR), material=tuple(tnmaterial),
+                                                                            density=tuple(tndensity), sol_density=tuple(tsoldensity),
+                                                                            Energy=self.Energy, Rmoles=tuple(tRmoles), NrDep=self.NrDep)
+        rhof, eirhof, adensityf, rhorf, eirhorf, adensityrf = self.calc_rho(R=tuple(tR), material=tuple(tfmaterial),
+                                                                            density=tuple(tfdensity), sol_density=tuple(tsoldensity),
+                                                                            Energy=self.Energy, Rmoles=tuple(tRmoles), NrDep=self.NrDep)
         rho, eirho, adensity = (rhon+rhof)/2, (eirhon+eirhof)/2, (adensityn+adensityf)/2
         rhor,eirhor, adensityr = rhorn, eirhorn, adensityrn
         rhor[:,1]=(rhor[:,1]+rhorf[:,1])/2

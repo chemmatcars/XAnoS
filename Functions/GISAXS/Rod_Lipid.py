@@ -36,7 +36,7 @@ class Rod_Lipid: #Please put the class name same as the function name
         self.sig=sig
         self.__mpar__=mpar
         self.choices={}
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
 
 
     def init_params(self):
@@ -66,29 +66,9 @@ class Rod_Lipid: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        # R=self.params['R']
-        # Rsig=self.params['Rsig']
-        # qc=self.params['qc']
-        # norm=self.params['norm']
-        # sig=self.params['sig']
-        # bkg=self.params['bkg']
         x=self.x+self.qoff
         k0=2*np.pi*self.E/12.3984
         qbeta=x-k0*np.sin(self.alpha/180*np.pi)
-        # if self.qparsig>1e-3:
-        #     qpar=np.linspace(self.qpar-5*self.qparsig,self.qpar+5*self.qparsig,10)
-        #     peak=np.exp(-(qpar-self.qpar)**2/2.0/self.qparsig**2)
-        #     peaksum=np.sum(peak)
-        #     distsum=np.zeros_like(self.x)
-        #     for i in range(len(qpar)):
-        #         q=np.sqrt(x**2+qpar[i]**2)
-        #         sphere=Sphere.Sphere(x=q,R=R,Rsig=Rsig,dist=self.dist,N=self.N)
-        #         distsum=distsum+sphere.y()*peak[i]
-        #     res=norm*distsum*self.trans(qbeta,qc/2)*np.exp(-x**2*sig**2)/peaksum+bkg
-        # else:
-        #     q=np.sqrt(x**2+self.qpar**2)
-        #     sphere=Sphere.Sphere(x=q,R=R,Rsig=Rsig,dist=self.dist,N=self.N)
-        #     res=norm*sphere.y()*self.trans(qbeta,qc/2)*np.exp(-x**2*sig**2)+bkg
         x=x-self.qz_cen
         formfac = special.spherical_jn(0,x*self.H_lipid/2)**2
         #formfac = ((np.sin(x * self.H_lipid / 2)) / (x * self.H_lipid / 2)) ** 2
@@ -101,5 +81,5 @@ class Rod_Lipid: #Please put the class name same as the function name
 
 if __name__=='__main__':
     x=np.arange(0.001,1.0,0.1)
-    fun=Rod_Sphere(x=x)
+    fun=Rod_Lipid(x=x)
     print(fun.y())

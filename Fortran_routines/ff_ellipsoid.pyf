@@ -1,0 +1,45 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module ff_ellipsoid ! in 
+    interface  ! in :ff_ellipsoid
+        subroutine ff_ellipsoid(q,rx,rzratio,nalf,ff,aff,m) ! in :ff_ellipsoid:ff_ellipsoid.f90
+            double precision dimension(m), intent(in) :: q
+            double precision, intent(in) :: rx
+            double precision, intent(in) :: rzratio
+            integer, intent(in) :: nalf
+            double precision dimension(m),depend(m), intent(out) :: ff
+            double precision dimension(m),depend(m), intent(out) :: aff
+            integer, optional,check(len(q)>=m),depend(q) :: m=len(q)
+        end subroutine ff_ellipsoid
+        subroutine ff_ellipsoid_ml(q,rx,rzratio,rho,nalf,ff,aff,m,nlayers) ! in :ff_ellipsoid:ff_ellipsoid.f90
+            double precision dimension(m), intent(in) :: q
+            double precision dimension(nlayers), intent(in) :: rx
+            double precision dimension(nlayers),depend(nlayers), intent(in) :: rzratio
+            double precision dimension(nlayers),depend(nlayers), intent(in) :: rho
+            integer, intent(in) :: nalf
+            double precision dimension(m),depend(m), intent(out) :: ff
+            double precision dimension(m),depend(m), intent(out) :: aff
+            integer, optional,check(len(q)>=m),depend(q) :: m=len(q)
+            integer, optional,check(len(rx)>=nlayers),depend(rx) :: nlayers=len(rx)
+        end subroutine ff_ellipsoid_ml
+        subroutine ff_ellipsoid_ml_asaxs(q,rx,rzratio,rho,eirho,adensity,nalf,fft,ffs,ffc,ffr,m,nlayers) ! in :ff_ellipsoid:ff_ellipsoid.f90
+            double precision dimension(m), intent(in) :: q
+            double precision dimension(nlayers), intent(in) :: rx
+            double precision dimension(nlayers),depend(nlayers), intent(in) :: rzratio
+            double complex dimension(nlayers),depend(nlayers), intent(in) :: rho
+            double precision dimension(nlayers),depend(nlayers), intent(in) :: eirho
+            double precision dimension(nlayers),depend(nlayers), intent(in) :: adensity
+            integer, intent(in) :: nalf
+            double precision dimension(m),depend(m), intent(out) :: fft
+            double precision dimension(m),depend(m), intent(out) :: ffs
+            double precision dimension(m),depend(m), intent(out) :: ffc
+            double precision dimension(m),depend(m), intent(out) :: ffr
+            integer, optional,check(len(q)>=m),depend(q) :: m=len(q)
+            integer, optional,check(len(rx)>=nlayers),depend(rx) :: nlayers=len(rx)
+        end subroutine ff_ellipsoid_ml_asaxs
+    end interface 
+end python module ff_ellipsoid
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

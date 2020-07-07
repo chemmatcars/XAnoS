@@ -131,7 +131,8 @@ class Fit(QObject):
             return None
     
     
-    def perform_fit(self,xmin,xmax,fit_scale='Linear',fit_method='leastsq',maxiter=1,emcee_steps=100, emcee_burn=30):
+    def perform_fit(self,xmin,xmax,fit_scale='Linear',fit_method='leastsq',maxiter=1,emcee_walker=100, emcee_steps=100,
+                    emcee_burn=30, emcee_cores=1, reuse_sampler=False):
         self.Niter=0
         #self.sync_param()
         self.fit_abort=False
@@ -143,24 +144,28 @@ class Fit(QObject):
         else:
             self.imin, self.imax = np.where(self.x >= xmin)[0][0], np.where(self.x <= xmax)[0][-1]
         if fit_method=='leastsq':
-            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise',maxfev=maxiter)
+            self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise',max_nfev=maxiter)
         elif fit_method=='differential_evolution':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,
-                                  nan_policy='raise', calc_covar=True, maxiter=maxiter, popsize=300, updating='immediate')
+                                  nan_policy='raise', calc_covar=True, max_nfev=maxiter, popsize=300, updating='immediate')
         elif fit_method=='brute':
             self.fitter=Minimizer(self.residual,self.fit_params,fcn_args=(fit_scale,),iter_cb=self.callback,nan_policy='raise')
         elif fit_method == 'emcee':
-            emcee_params = self.result.params.copy()
-            emcee_params.add('__lnsigma', value=np.log(0.1),vary=True, min=np.log(0.001), max=np.log(2.0))
-            self.fitter = Minimizer(self.residual, emcee_params, fcn_args=(fit_scale,), iter_cb=self.callback,
-                                nan_policy='raise', burn=emcee_burn, steps=emcee_steps, thin=2, is_weighted=True)
+            if not reuse_sampler:
+                emcee_params = self.result.params.copy()
+                emcee_params.add('__lnsigma', value=np.log(0.1),vary=True, min=np.log(0.001), max=np.log(2.0))
+                self.fitter = Minimizer(self.residual, emcee_params, fcn_args=(fit_scale,), iter_cb=self.callback,
+                                    nan_policy='raise', burn=emcee_burn, steps=emcee_steps, thin=2, is_weighted=True,
+                                        nwalkers=emcee_walker, workers=emcee_cores, reuse_sampler=reuse_sampler)
         else:
             self.fitter = Minimizer(self.residual, self.fit_params, fcn_args=(fit_scale,), iter_cb=self.callback,
-                                    nan_policy='raise')
-        self.result=self.fitter.minimize(method=fit_method)
+                                    nan_policy='raise',max_nfev=maxiter)
         if fit_method!='emcee':
+            self.result = self.fitter.minimize(method=fit_method)
             return fit_report(self.result),self.result.message
         else:
+            self.result = self.fitter.minimize(method=fit_method,burn=emcee_burn, steps=emcee_steps, thin=2, is_weighted=True,
+                                        nwalkers=emcee_walker, workers=emcee_cores, reuse_sampler=reuse_sampler)
             return fit_report(self.result), 'None'
 
 

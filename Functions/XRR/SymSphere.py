@@ -20,10 +20,10 @@ from functools import lru_cache
 from xr_ref import parratt
 
 
-class AsymSphere: #Please put the class name same as the function name
+class SymSphere: #Please put the class name same as the function name
     def __init__(self,x = 0.1, E = 10.0, R0 = 25.00, rhoc = 4.68, D = 66.6, rhosh = 0.200, h1 = -25.0, h1sig = 0.0, h2 = 3.021,
                  sig = 3.0, cov = 0.901, fix_sig = False,
-                 mpar={'Multilayer':{'Layers':['Top', 'Bottom'], 'd':[0.0,1.0],'rho':[0.0,0.334],'beta':[0.0,0.0],'sig':[0.0,3.00]}},
+                 mpar={'Lipid_Layer':{'Layers':['Top', 'Bottom'], 'd':[0.0,1.0],'rho':[0.0,0.334],'beta':[0.0,0.0],'sig':[0.0,3.00]}},
                  rrf = True, qoff=0.0,zmin=-120,zmax=120,dz=1,coherrent=False,yscale=1.0,bkg=0.0):
         """
         Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface
@@ -73,9 +73,9 @@ class AsymSphere: #Please put the class name same as the function name
         self.coherrent=coherrent
         self.qoff=qoff
         self.choices={'rrf' : [True,False] ,'fix_sig' : [True, False],'coherrent':[True, False]}
+        self.init_params()
         self.__mkeys__=list(self.__mpar__.keys())
         self.__fit__=False
-        self.init_params()
 
 
     def init_params(self):
@@ -183,12 +183,15 @@ class AsymSphere: #Please put the class name same as the function name
         """
         Calculates the electron and absorption density profiles of the additional monolayer
         """
+        if self.fix_sig:
+            for i in range(1, len(sig)):
+                sig[i] = sig[1]
         # n = len(d)
         # maxsig = max(np.abs(np.max(sig[1:])), 3)
         # Nlayers = int((np.sum(d[:-1]) + 10 * maxsig) / self.Minstep)
         # halfstep = (np.sum(d[:-1]) + 10 * maxsig) / 2 / Nlayers
         __z2__ = np.arange(zmin,zmax,dz)#np.linspace(-5 * maxsig + halfstep, np.sum(d[:-1]) + 5 * maxsig - halfstep, Nlayers)
-        __d2__=dz*np.ones_like(__z2__)
+        __d2__=self.dz*np.ones_like(__z2__)
         __rho2__ = self.sldCalFun(d, tuple(rho), tuple(sig), tuple(__z2__))
         __beta2__ = self.sldCalFun(d, tuple(beta), tuple(sig), tuple(__z2__))
         return __z2__-np.sum(d[1:-1]),__d2__,__rho2__,__beta2__
@@ -223,14 +226,6 @@ class AsymSphere: #Please put the class name same as the function name
         Define the function in terms of x to return some value
         """
         self.output_params = {'scaler_parameters': {}}
-        if not self.__fit__:
-            for mkey in self.__mpar__.keys():
-                Nlayers = len(self.__mpar__[mkey]['sig'])
-                for i in range(2,Nlayers):
-                    if self.fix_sig:
-                        self.params['__%s_%s_%03d' % (mkey, 'sig', i)].expr = '__%s_%s_%03d' % (mkey, 'sig', 1)
-                    else:
-                        self.params['__%s_%s_%03d' % (mkey, 'sig', i)].expr = None
         self.update_parameters()
         rhoup=self.__rho__[0]
         rhodown=self.__rho__[-1]
@@ -265,5 +260,5 @@ class AsymSphere: #Please put the class name same as the function name
 
 if __name__=='__main__':
     x=np.linspace(0.001,1.0,100)
-    fun=AsymSphere(x=x)
+    fun=SymSphere(x=x)
     print(fun.y())

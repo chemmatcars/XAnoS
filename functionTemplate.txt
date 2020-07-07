@@ -14,7 +14,7 @@ from functools import lru_cache
 
 
 class <*>: #Please put the class name same as the function name
-    def __init__(self,x=0,mpar={'type':['1']}):
+    def __init__(self,x=0,mpar={'Multiparams':{'type':['1']}}):
         """
         Documentation
         x           : Independent variable in the form of a scalar or an array
@@ -25,8 +25,10 @@ class <*>: #Please put the class name same as the function name
             self.x=x
         self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
-        self.init_params()
         self.__fit__=False
+        self.__mkeys__=list(self.__mpar__.keys())
+        self.output_params={self.scaler_parameters:{}}
+        self.init_params()
         
     def init_params(self):
         """
@@ -34,18 +36,29 @@ class <*>: #Please put the class name same as the function name
         self.param.add('sig',value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)
         """
         self.params=Parameters()
-        for key in self.__mpar__.keys():
-            if key!='type':
-                for i in range(len(self.__mpar__[key])):
-                        self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
+        for mkey in self.__mkeys__:
+            for key in self.__mpar__[mkey].keys()
+                if key!='type':
+                    for i in range(len(self.__mpar__[mkey][key])):
+                            self.params.add('__%s_%s_%03d'%(mkey,key,i),value=self.__mpar__[mkey][key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
     
+    def update_parameters(self):
+        """
+        update all the multifit parameters
+        """
+        pass
+
     def y(self):
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
+        self.update_parameters()
         if not self.__fit__:
-            self.output_params['scaler_parameters']={}
+            #Update all the output_params within the if loop for example
+            #self.output_params['param1']={'x':x,'y':y,names=['x','y']}
+            #self.output_params['scaler_parameters']['par1']=value
+
+
         return self.x
         
         

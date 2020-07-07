@@ -39,6 +39,7 @@ class FirstCumulant: #Please put the class name same as the function name
         self.bkg=bkg
         self.__mpar__=mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
+        self.output_params={'scaler_parameters':{}}
 
     def eta(self,T):
         """
@@ -61,7 +62,6 @@ class FirstCumulant: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         q=4*np.pi*self.n*np.sin(self.theta*np.pi/180.0/2.0)/self.lam/1e-10
         Dt=1.38065e-23*self.T/(3.0*np.pi*self.eta(self.T)*self.D*1e-10)
         gamma=q**2*Dt

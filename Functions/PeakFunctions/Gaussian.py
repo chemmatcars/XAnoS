@@ -19,14 +19,14 @@ class Gaussian:
         self.bkg=0.0
         self.__mpar__=mpar
         self.choices={}
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
         self.init_params()
 
     def gau(self,x,pos,wid,norm):
         """
         Gaussian function
         """
-        return norm*np.exp(-0.69315*(x-pos)**2/wid**2)*0.46972/wid
+        return norm*np.exp(-(x-pos)**2/wid**2)/2.5066/wid
 
     def init_params(self):
         self.params=Parameters()
@@ -35,14 +35,9 @@ class Gaussian:
         self.params.add('norm',value=self.norm,vary=1,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.norm,0.1))
         self.params.add('bkg',value=self.bkg,vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=max(0.1*self.bkg,0.1))
 
-    def update_params(self):
-        self.params['pos'].value=self.pos
-        self.params['wid'].value=self.wid
-        self.params['norm'].value=self.norm
-        self.params['bkg'].value=self.bkg
-
 
     def y(self):
-        self.output_params={}
-        self.update_params()
+        self.output_params = {'scaler_parameters': {}}
+        self.output_params['scaler_parameters']['peak_position']=self.pos
+        self.output_params['scaler_parameters']['peak_width']=2.35428*self.wid
         return self.gau(self.x,self.pos,self.wid,self.norm)+self.bkg

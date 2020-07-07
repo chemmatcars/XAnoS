@@ -48,6 +48,7 @@ class XAnoS_Components(QWidget):
         self.metaKeys=[]
         self.CF=1.0
         self.absData={}
+        self.stopCalc=False
         
         self.vblayout=QVBoxLayout(self)
         self.mainDock=DockArea(self,parent)
@@ -318,7 +319,11 @@ class XAnoS_Components(QWidget):
         col=0
         self.ASAXSProgressBar=QProgressBar(self)
         self.ASAXSProgressBar.reset()
-        self.dataDockLayout.addWidget(self.ASAXSProgressBar,row=row,col=col,colspan=3)
+        self.stopPushButton=QPushButton('Stop',parent=self)
+        self.stopPushButton.setDisabled(True)
+        self.stopPushButton.clicked.connect(self.stopSplitting)
+        self.dataDockLayout.addWidget(self.ASAXSProgressBar,row=row,col=col,colspan=2)
+        self.dataDockLayout.addWidget(self.stopPushButton,row=row,col=2,colspan=1)
 
         #row+=1
         #col=0
@@ -496,7 +501,7 @@ class XAnoS_Components(QWidget):
                     fnum+=1
                     self.progressDialog.setValue(fnum)
                     self.progressDialog.setLabelText('Read file: %s successfully.'%file)
-                    QApplication.processEvents()
+                    pg.QtGui.QApplication.processEvents()
                 else:
                     QMessageBox.warning(self,'Import error','%s is already imported. Please remove the file to import it again'%file,QMessageBox.Ok)
             self.initialize_metaDataPlotDock()
@@ -1372,12 +1377,17 @@ class XAnoS_Components(QWidget):
                 param.add('x3', value=0.0,vary=False)
         out = lmfit_minimize(self.lmfit_residual, param, args=(A,B/fac,Err,constraint))#,method='emcee',nan_policy='raise',
                              # steps=1000, burn=300, thin=200, is_weighted=False,progress=False)
+        # emcee_kws = dict(steps=200, burn=20, thin=2, is_weighted=False, progress=False)
+        emcee_params = out.params.copy()
+        emcee_params.add('__lnsigma', value=np.log(0.1), min=np.log(0.001), max=np.log(2.0))
+        emcee_result = lmfit_minimize(self.lmfit_residual, params=emcee_params, method='emcee',args=(A,B/fac,Err,constraint),
+                                 nan_policy='omit', steps=100, burn=20, thin=2, is_weighted=False, progress=False)
         x1 = out.params['x1'].value
-        x1err = out.params['x1'].stderr
+        x1err = emcee_result.params['x1'].stderr
         x2 = out.params['x2'].value
-        x2err = out.params['x2'].stderr
+        x2err = emcee_result.params['x2'].stderr
         x3 = out.params['x3'].value
-        x3err = out.params['x3'].stderr
+        x3err = emcee_result.params['x3'].stderr
         if x1err is None:
             x1err=x1*0.1
         if x2err is None:
@@ -1426,40 +1436,51 @@ class XAnoS_Components(QWidget):
             self.ASAXSProgressBar.setMinimum(0)
             self.ASAXSProgressBar.setMaximum(len(self.qintp))
             self.raiseDock(self.ASAXSCheckPlotDock)
+            self.stopPushButton.setEnabled(True)
+            stime=time.time()
             for i in range(len(self.qintp)):
-                x = self.brute_finderrbars(self.AMatrix, self.BMatrix[:, i])
-                #x=[self.BMatrix[0,i],self.BMatrix[0,i]*1e-3,self.BMatrix[0,i]*1e-6]
-                #x=[self.BMatrix[0,i],1,0.0]
-                #x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
-                x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],self.ErrMatrix[:,i], constraint=constraint,mono=mono)
+                if not self.stopCalc:
+                    x = self.brute_finderrbars(self.AMatrix, self.BMatrix[:, i])
+                    #x=[self.BMatrix[0,i],self.BMatrix[0,i]*1e-3,self.BMatrix[0,i]*1e-6]
+                    #x=[self.BMatrix[0,i],1,0.0]
+                    #x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
+                    x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],self.ErrMatrix[:,i], constraint=constraint,mono=mono)
 
-                if constraint:
-                    xn=[x1,x2,x2**2/x1+x3]
+                    if constraint:
+                        xn=[x1,x2,x2**2/x1+x3]
+                    else:
+                        xn=[x1,x2,x3]
+                    self.XMatrix.append(xn)
+                    tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
+                    self.ASAXSCheckPlotWidget.errorbarCheckBox.setChecked(True)
+                    # if ans == QMessageBox.Yes:
+                    self.ASAXSCheckPlotWidget.setTitle('Point=%d, Q=%.5f' % (i,self.qintp[i]))
+                    self.ASAXSCheckPlotWidget.add_data(f1, self.BMatrix[:, i], yerr=self.ErrMatrix[:,i],name='Data')
+                    self.ASAXSCheckPlotWidget.add_data(f1, tot[-1], name='Fit', fit=True)
+                    self.ASAXSCheckPlotWidget.Plot(['Data', 'Fit'])
+                    # ans = QMessageBox.question(self, 'Question', 'Do you like to see the next Q?', QMessageBox.Yes,
+                    #                            QMessageBox.No)
+                    xnerr=[x1err, x2err, x3err]
+                    self.XMatrixErr.append(xnerr)
+                    pg.QtGui.QApplication.processEvents()
+                    #QTest.qWait(100)
                 else:
-                    xn=[x1,x2,x3]
-                self.XMatrix.append(xn)
-                tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
-                self.ASAXSCheckPlotWidget.errorbarCheckBox.setChecked(True)
-                # if ans == QMessageBox.Yes:
-                self.ASAXSCheckPlotWidget.setTitle('Point=%d, Q=%.5f' % (i,self.qintp[i]))
-                self.ASAXSCheckPlotWidget.add_data(f1, self.BMatrix[:, i], yerr=self.ErrMatrix[:,i],name='Data')
-                self.ASAXSCheckPlotWidget.add_data(f1, tot[-1], name='Fit', fit=True)
-                self.ASAXSCheckPlotWidget.Plot(['Data', 'Fit'])
-                # ans = QMessageBox.question(self, 'Question', 'Do you like to see the next Q?', QMessageBox.Yes,
-                #                            QMessageBox.No)
-                xnerr=[x1err, x2err, x3err]
-                self.XMatrixErr.append(xnerr)
+                    break
+                ctime=time.time()
+                tleft=(len(self.qintp)-i-1)*(ctime-stime)/(i+1)
                 self.ASAXSProgressBar.setValue(i)
-                QApplication.processEvents()
-                #QTest.qWait(100)
+
+            self.stopCalc=False
+            self.stopPushButton.setDisabled(True)
             self.XMatrix = np.array(self.XMatrix)
             self.XMatrixErr = np.array(self.XMatrixErr)
+            Ndata=self.XMatrix.shape[0]
 
-            self.directComponentPlotWidget.add_data(self.qintp, self.XMatrix[:, 0], yerr=self.XMatrixErr[:, 0], name='SAXS-term')
-            self.directComponentPlotWidget.add_data(self.qintp, self.XMatrix[:, 2], yerr=self.XMatrixErr[:, 2], name='Resonant-term')
-            tot = np.sum(np.dot([self.AMatrix[0, :]], self.XMatrix.T), axis=0)
-            self.directComponentPlotWidget.add_data(self.qintp, tot, name='Total')
-            self.directComponentPlotWidget.add_data(self.qintp, self.data[self.fnames[0]]['yintp'],
+            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], self.XMatrix[:, 0], yerr=self.XMatrixErr[:, 0], name='SAXS-term')
+            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], self.XMatrix[:, 2], yerr=self.XMatrixErr[:, 2], name='Resonant-term')
+            tot = np.sum(np.dot([self.AMatrix[0, 0:Ndata]], self.XMatrix.T), axis=0)
+            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], tot, name='Total')
+            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], self.data[self.fnames[0]]['yintp'][0:Ndata],
                                                     name='Data_%s' % self.datanames[0])
             self.directComponentListWidget.clear()
             self.crossComponentListWidget.clear()
@@ -1471,7 +1492,7 @@ class XAnoS_Components(QWidget):
             self.directComponentListWidget.addItems(
                 ['SAXS-term', 'Resonant-term', 'Total', 'Data_%s' % self.datanames[0]])
             self.crossComponentListWidget.addItem('Cross-term')
-            self.crossComponentPlotWidget.add_data(self.qintp, self.XMatrix[:, 1], yerr=self.XMatrixErr[:, 1], name='Cross-term')
+            self.crossComponentPlotWidget.add_data(self.qintp[0:Ndata], self.XMatrix[:, 1], yerr=self.XMatrixErr[:, 1], name='Cross-term')
             self.components = {}
             self.components['SAXS-term'] = self.XMatrix[:, 0]
             self.components['SAXS-term_err'] = self.XMatrixErr[:, 0]
@@ -1480,20 +1501,24 @@ class XAnoS_Components(QWidget):
             self.components['Cross-term'] = self.XMatrix[:, 1]
             self.components['Cross-term_err'] = self.XMatrixErr[:, 1]
             self.components['Total'] = tot
-            self.components['Data_%s' % self.datanames[0]] = self.data[self.fnames[0]]['yintp']
+            self.components['Data_%s' % self.datanames[0]] = self.data[self.fnames[0]]['yintp'][0:Ndata]
             self.saveASAXSPushButton.setEnabled(True)
             self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
             self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
             self.directComponentListWidget.item(0).setSelected(True)
             self.directComponentListWidget.item(1).setSelected(True)
             self.crossComponentListWidget.item(0).setSelected(True)
-            self.ASAXSProgressBar.setValue(len(self.qintp))
+            self.ASAXSProgressBar.setValue(Ndata)
+            self.ASAXSProgressBar.reset()
             self.update_ASAXSPlot()
         else:
             # self.saveASAXSPushButton.setEnabled(True)
             QMessageBox.warning(self, 'Data Error', 'Please select three or more data sets to do the calculation',
                                 QMessageBox.Ok)
             self.ASAXSProgressBar.reset()
+
+    def stopSplitting(self):
+        self.stopCalc=True
 
     def residual(self,x,A,B):
         """
@@ -1613,7 +1638,7 @@ class XAnoS_Components(QWidget):
                     except:
                         self.components[key]=[X[-1][self.AIndex[key]]]
                 self.ASAXSProgressBar.setValue(i)
-                QApplication.processEvents()
+                pg.QtGui.QApplication.processEvents()
 
             #try:
             #    fplot.close()
@@ -1728,7 +1753,7 @@ class XAnoS_Components(QWidget):
         
         
 if __name__=='__main__':
-    app=QApplication(sys.argv)
+    app=pg.QtGui.QApplication(sys.argv)
     w=XAnoS_Components()
     w.setWindowTitle('XAnoS_Components')
     w.setGeometry(20,20,1000,800)

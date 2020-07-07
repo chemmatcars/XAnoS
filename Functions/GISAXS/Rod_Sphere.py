@@ -43,7 +43,7 @@ class Rod_Sphere: #Please put the class name same as the function name
         self.N=N
         self.__mpar__=mpar
         self.choices={'dist':['Gaussian','LogNormal']}
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
 
 
     def init_params(self):
@@ -73,13 +73,6 @@ class Rod_Sphere: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
-        R=self.params['R']
-        Rsig=self.params['Rsig']
-        qc=self.params['qc']
-        norm=self.params['norm']
-        sig=self.params['sig']
-        bkg=self.params['bkg']
         x=self.x+self.qoff
         k0=2*np.pi*self.E/12.3984
         qbeta=x-k0*np.sin(self.alpha/180*np.pi)
@@ -90,13 +83,13 @@ class Rod_Sphere: #Please put the class name same as the function name
             distsum=np.zeros_like(self.x)
             for i in range(len(qpar)):
                 q=np.sqrt(x**2+qpar[i]**2)
-                sphere=Sphere.Sphere(x=q,R=R,Rsig=Rsig,dist=self.dist,N=self.N)
+                sphere=Sphere.Sphere(x=q,R=self.R,Rsig=self.Rsig,dist=self.dist,N=self.N)
                 distsum=distsum+sphere.y()*peak[i]
-            res=norm*distsum*self.trans(qbeta,qc/2)*np.exp(-x**2*sig**2)/peaksum+bkg
+            res=self.norm*distsum*self.trans(qbeta,self.qc/2)*np.exp(-x**2*self.sig**2)/peaksum+self.bkg
         else:
             q=np.sqrt(x**2+self.qpar**2)
-            sphere=Sphere.Sphere(x=q,R=R,Rsig=Rsig,dist=self.dist,N=self.N)
-            res=norm*sphere.y()*self.trans(qbeta,qc/2)*np.exp(-x**2*sig**2)+bkg
+            sphere=Sphere.Sphere(x=q,R=self.R,Rsig=self.Rsig,dist=self.dist,N=self.N)
+            res=self.norm*sphere.y()*self.trans(qbeta,self.qc/2)*np.exp(-x**2*self.sig**2)+self.bkg
         if self.Rsig>1e-3:
             self.output_params['Distribution']=sphere.output_params['Distribution']
         return res

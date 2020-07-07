@@ -49,7 +49,7 @@ class CoreShellCylinder: #Please put the class name same as the function name
         self.Nsample = Nsample
         self.__mpar__ = mpar #If there is any multivalued parameter
         self.choices={} #If there are choices available for any fixed parameters
-        self.output_params={}
+        self.output_params={'scaler_parameters':{}}
         self.init_params()
         self.__fit__=False
 
@@ -75,24 +75,11 @@ class CoreShellCylinder: #Please put the class name same as the function name
                 for i in range(len(self.__mpar__[key])):
                         self.params.add('__%s__%03d'%(key,i),value=self.__mpar__[key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
 
-    def update_parameters(self):
-        self.R = self.params['R'].value
-        self.Rsig = self.params['Rsig'].value
-        self.rhoCore = self.params['rhoCore'].value
-        self.shell = self.params['shell'].value
-        self.rhoShell = self.params['rhoShell'].value
-        self.rhoSol = self.params['rhoSol'].value
-        self.H = self.params['H'].value
-        self.Hsig = self.params['Hsig'].value
-        self.norm = self.params['norm'].value
-        self.bkg = self.params['bkg'].value
-
     def y(self):
         """
         Define the function in terms of x to return some value
         """
         q = self.x
-        self.output_params={}
         if self.dist == 'Gaussian':
             if self.Rsig > 1e-3:
                 rdist = Gaussian.Gaussian(x=0.0, pos=self.R, wid=self.Rsig)

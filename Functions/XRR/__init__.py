@@ -1,1 +1,1 @@
-__all__=['AsymSphere', 'MultiPeaks', 'MultiSphereAtInterface', 'Parratt', 'Parratt_New', 'SphereAtInterface']
+__all__=['AsymSphere', 'MultiPeaks', 'MultiSphereAtInterface', 'Parratt', 'Parratt_Biphasic', 'Parratt_New', 'SphereAtInterface', 'SymSphere', 'trialSphere']

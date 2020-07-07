@@ -1,0 +1,25 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module ff_sphere ! in 
+    interface  ! in :ff_sphere
+        subroutine ff_sphere(q,r,ff,m) ! in :ff_sphere:ff_sphere.f90
+            double precision dimension(m), intent(in) :: q
+            double precision, intent(in) :: r
+            double precision dimension(m),depend(m), intent(out) :: ff
+            integer, optional,check(len(q)>=m),depend(q) :: m=len(q)
+        end subroutine ff_sphere
+        subroutine ff_sphere_ml(q,r,rho,ff,aff,m,nlayers) ! in :ff_sphere:ff_sphere.f90
+            double precision dimension(m), intent(in) :: q
+            double precision dimension(nlayers), intent(in) :: r
+            double precision dimension(nlayers),depend(nlayers), intent(in) :: rho
+            double precision dimension(m),depend(m), intent(out) :: ff
+            double precision dimension(m),depend(m), intent(out) :: aff
+            integer, optional,check(len(q)>=m),depend(q) :: m=len(q)
+            integer, optional,check(len(r)>=nlayers),depend(r) :: nlayers=len(r)
+        end subroutine ff_sphere_ml
+    end interface 
+end python module ff_sphere
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

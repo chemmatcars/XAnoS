@@ -49,6 +49,7 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
         self.choices={} #If there are choices available for any fixed parameters
         self.__xrdb__=XrayDB()
         self.init_params()
+        self.output_params={'scaler_parameters':{}}
 
     def init_params(self):
         """
@@ -111,7 +112,6 @@ class SphericalShell_expDecay: #Please put the class name same as the function n
         """
         Define the function in terms of x to return some value
         """
-        self.output_params={}
         self.output_params['scaler_parameters']={}
         r=np.linspace(self.rmin, self.rmax, self.Nr)
         strho=self.params['strho'].value
