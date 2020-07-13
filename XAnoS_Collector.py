@@ -16,6 +16,7 @@ from numpy import *
 from scanner import Scanner
 import zmq
 from Energy_Widget import Energy_Widget
+import traceback
 #from Data_Reducer import Data_Reducer
 
 
@@ -809,7 +810,7 @@ class XAnoS_Collector(QWidget):
                 else:
                     QMessageBox.warning(self,'File error','It seems there are there are no lines to read from the file.',QMessageBox.Ok)
             except:
-                QMessageBox.warning(self,'File error','The file is not a valid positioner file.',QMessageBox.Ok)
+                QMessageBox.warning(self,'File error','The file is not a valid positioner file.\n\n'+traceback.format_exc(),QMessageBox.Ok)
         
     def check_coupledPositioner(self):
         """
@@ -1039,8 +1040,8 @@ class XAnoS_Collector(QWidget):
         Sets up and opens the scanner for scanning purposes
         """
         if self.experimentIsSet:
-            self.mainDock.addDock(self.scanDock)
-            self.mainDock.moveDock(self.scanDock,'above',self.dataColDock)
+            self.mainDock.addDock(self.scanDock,'above',self.dataColDock)
+            #self.mainDock.moveDock(self.scanDock,'above',self.dataColDock)
             self.scanFolder=os.path.join(self.experimentFolder,'Scans')
             if not os.path.exists(self.scanFolder):
                 os.makedirs(self.scanFolder)
@@ -1298,7 +1299,9 @@ class XAnoS_Collector(QWidget):
                 for key in self.measurementList.keys():
                     print(key, len(self.measurementList[key]))
                     print(self.measurementList[key])
-                ans=QMessageBox.question(self,'Measurement Information','Total number of measurements to be done: %d\n Do you want to continue?'%self.measurementCount,QMessageBox.Yes,QMessageBox.No)
+                ans=QMessageBox.question(self,'Measurement Information','Total number of measurements to be done: '
+                                                                        '%d\n Do you want to continue?'%(
+                        self.measurementCount*self.NLoops*self.frameCount),QMessageBox.Yes,QMessageBox.No)
                 if ans==QMessageBox.Yes:
                     limitsOK=self.check_motorLimits()
                     if limitsOK:
@@ -1313,6 +1316,13 @@ class XAnoS_Collector(QWidget):
                             if motorname=='Energy':
                                 self.energyWidget.track_undulator()
                                 firstPosition[motorname]=caget(self.motors[motorname]['PV']+'RdbkAO')
+                                first_det_thresh={}
+                                first_det_energy={}
+                                thresh_diff={}
+                                for detname in self.usedDetectors:
+                                    first_det_energy[detname]=caget(self.detectors[detname]['PV']+'Energy')
+                                    first_det_thresh[detname]=caget(self.detectors[detname]['PV']+'ThresholdEnergy')
+                                    thresh_diff[detname]=firstPosition[motorname]-first_det_thresh[detname]
                             elif motorname=='Undulator_ID15Energy':
                                 firstPosition[motorname]=caget(self.motors['Undulator_Energy']['PV'])
                             else:
@@ -1327,6 +1337,13 @@ class XAnoS_Collector(QWidget):
                                 for motorname in self.measurementList.keys():
                                     if motorname=='Energy':
                                         caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][i],wait=False)
+                                        for detname in self.usedDetectors:
+                                            caput(self.detectors[detname]['PV']+'Energy',round(self.measurementList[
+                                                motorname][i],3),wait=False) #Changing the energy of the detectors
+                                            caput(self.detectors[detname]['PV']+'ThresholdEnergy',\
+                                                              round(self.measurementList[motorname][
+                                                i]-thresh_diff[detname],3),wait=False) #Changing the threshold energy of
+                                            # the detectors
                                     elif motorname=='Undulator_ID15Energy':
                                         caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
                                     else:
@@ -1375,6 +1392,15 @@ class XAnoS_Collector(QWidget):
                         for motorname in self.measurementList.keys():
                             if motorname=='Energy':
                                 caput(self.motors[motorname]['PV']+'AO.VAL',firstPosition[motorname],wait=False)
+                                for detname in self.usedDetectors:
+                                    caput(self.detectors[detname]['PV'] + 'Energy', round(first_det_energy[detname], 3),
+                                          wait=False) #Changing the energy of the detectors back to the starting point
+                                    caput(self.detectors[detname]['PV'] + 'ThresholdEnergy', \
+                                          round(first_det_thresh[detname], 3),
+                                          wait=False)  # Changing the threshold energy of the detectors back to the starting
+                                    # point
+
+
                             elif motorname=='Undulator_ID15Energy':
                                 caput(self.motors[motorname]['PV'],firstPosition[motorname],wait=False)
                             else:
@@ -1551,9 +1577,9 @@ class XAnoS_Collector(QWidget):
         stime=time.time()
         for detname in self.usedDetectors:
             caput(self.detectors[detname]['PV'] + 'Acquire', 1)
-        self.counting=True
-        caput(self.scalers['15IDC_scaler_start']['PV'], 1, wait=False)
-        caput(self.scalers['15IDD_scaler_start']['PV'], 1, wait=False)
+        caput(self.scalers['15IDD_scaler_start']['PV'], 1)
+        caput(self.scalers['15IDC_scaler_start']['PV'], 1)
+        self.counting = True
         QtTest.QTest.qWait(10)
         while self.counting:
             if self.abort:

@@ -511,6 +511,14 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         for i in num:
             fnames.append(fname+'_%04d.txt'%i)
             data=read1DSAXS(fnames[-1],data=data)
+        ttrans=np.array([data[tname]['BSDiode']/data[tname]['Monitor'] for tname in fnames])
+        mtrans=np.mean(ttrans)
+        strans=np.std(ttrans)
+        newfnames=[]
+        for it, tfname in enumerate(fnames):
+            if np.abs(ttrans[it]-mtrans)<strans:
+                newfnames.append(tfname)
+        fnames=copy.copy(newfnames)
         interpolate_data(data,Npt=len(data[fnames[0]]['x']),kind='linear')
         sumdata=[]
         monitor=0.0
@@ -536,7 +544,7 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
                 pDiodeCorr=0.0
                 monitorCorr=0.0
                 trans=0.0
-        tlen=len(num)
+        tlen=len(fnames)
         monitor=monitor/tlen
         pDiode=pDiode/tlen
         diode=diode/tlen

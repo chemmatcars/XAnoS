@@ -839,6 +839,7 @@ class Scanner(QWidget):
             
             if self.shutterModeCheckBox.isChecked():
                 self.shutter_ON()
+
             self.scalerDone=1
             self.triggerAllDetectors()
             # QtTest.QTest.qWait(10)
@@ -911,10 +912,6 @@ class Scanner(QWidget):
         """
         Steps before to abort a scan
         """
-        try:
-            camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
-        except:
-            pass
         caput(self.scalers['15IDD_scaler_start']['PV'],0)
         caput(self.scalers['15IDC_scaler_start']['PV'], 0)
         caput(self.scalers['15IDD_scaler_mode']['PV'],1)
@@ -924,6 +921,12 @@ class Scanner(QWidget):
         print('\n')
         print('##Scan Aborted after %d points'%self.data_num)
         self.motorStopped=True
+        if self.shutterModeCheckBox.isChecked():
+            self.shutter_OFF()
+        try:
+            camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
+        except:
+            pass
         
         
         

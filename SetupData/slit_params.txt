@@ -14,5 +14,5 @@ JJC_VCenter@[pv=15IDC:Slit4VDcenter,rbk=15IDC:Slit4VDt2.D,mov1=15IDC:m39,mov2=15
 #JJD parameters
 JJB_HGap@[pv=15IDB:Slit2Hsize,rbk=15IDB:Slit2Ht2.C,mov1=15IDB:m7,mov2=15IDB:m8]
 JJB_HCenter@[pv=15IDB:Slit2Hcenter,rbk=15IDB:Slit2Ht2.D,mov1=15IDB:m7,mov2=15IDB:m8]
-JJB_VGap@[pv=15IDG:Slit2Vsize,rbk=15IDB:Slit2Vt2.C,mov1=15IDB:m13,mov2=15IDB:m14]
+JJB_VGap@[pv=15IDB:Slit2Vsize,rbk=15IDB:Slit2Vt2.C,mov1=15IDB:m13,mov2=15IDB:m14]
 JJB_VCenter@[pv=15IDB:Slit2Vcenter,rbk=15IDB:Slit2Vt2.D,mov1=15IDB:m13,mov2=15IDB:m14]

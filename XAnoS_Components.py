@@ -311,9 +311,13 @@ class XAnoS_Components(QWidget):
         self.ASAXSCalcTypeComboBox.addItems(['single-mono','single-poly','single-free','multiple'])
         self.dataDockLayout.addWidget(self.ASAXSCalcTypeComboBox,row=row,col=col)
         col+=1
+        self.ASAXSCalcMethodComboBox=QComboBox()
+        self.ASAXSCalcMethodComboBox.addItems(['lmfit','emcee'])
+        self.dataDockLayout.addWidget(self.ASAXSCalcMethodComboBox,row=row,col=col)
+        col+=1
         self.calcASAXSPushButton=QPushButton('Calculate scattering components')
         self.calcASAXSPushButton.clicked.connect(self.ASAXS_split)
-        self.dataDockLayout.addWidget(self.calcASAXSPushButton,row=row,col=col,colspan=2)
+        self.dataDockLayout.addWidget(self.calcASAXSPushButton,row=row,col=col,colspan=1)
 
         row+=1
         col=0
@@ -1378,16 +1382,21 @@ class XAnoS_Components(QWidget):
         out = lmfit_minimize(self.lmfit_residual, param, args=(A,B/fac,Err,constraint))#,method='emcee',nan_policy='raise',
                              # steps=1000, burn=300, thin=200, is_weighted=False,progress=False)
         # emcee_kws = dict(steps=200, burn=20, thin=2, is_weighted=False, progress=False)
-        emcee_params = out.params.copy()
-        emcee_params.add('__lnsigma', value=np.log(0.1), min=np.log(0.001), max=np.log(2.0))
-        emcee_result = lmfit_minimize(self.lmfit_residual, params=emcee_params, method='emcee',args=(A,B/fac,Err,constraint),
-                                 nan_policy='omit', steps=100, burn=20, thin=2, is_weighted=False, progress=False)
         x1 = out.params['x1'].value
-        x1err = emcee_result.params['x1'].stderr
+        x1err = out.params['x1'].stderr
         x2 = out.params['x2'].value
-        x2err = emcee_result.params['x2'].stderr
+        x2err = out.params['x2'].stderr
         x3 = out.params['x3'].value
-        x3err = emcee_result.params['x3'].stderr
+        x3err = out.params['x3'].stderr
+        if self.ASAXSCalcMethodComboBox.currentText()=='emcee':
+            emcee_params = out.params.copy()
+            emcee_params.add('__lnsigma', value=np.log(0.1), min=np.log(0.001), max=np.log(2.0))
+            emcee_result = lmfit_minimize(self.lmfit_residual, params=emcee_params, method='emcee',args=(A,B/fac,Err,constraint),
+                                     nan_policy='omit', steps=100, burn=20, thin=2, is_weighted=False, progress=False)
+            x1err = emcee_result.params['x1'].stderr
+            x2err = emcee_result.params['x2'].stderr
+            x3err = emcee_result.params['x3'].stderr
+
         if x1err is None:
             x1err=x1*0.1
         if x2err is None:

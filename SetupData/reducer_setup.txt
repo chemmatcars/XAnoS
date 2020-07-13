@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"poniFile": "/mnt/ChemData/Data/Asax/2020-03/Dafei/AgBh_15_2keV/AgBh_15_2_long.poni", "maskFile": "/mnt/ChemData/Data/Asax/2019-12/Ian/mask_long.msk"}
-=======
-{"poniFile": "Z:/Asax/2020-03/Dafei/AgBh_15_2keV/AgBh_15_2_long.poni", "maskFile": "Z:/Asax/2020-03/Dafei/mask_15_2_long_2.msk"}
->>>>>>> 3a09d2e9c5e9c98b868b0d4e02794184fdf14bf7
+{"poniFile": "/mnt/ChemData/Data/Asax/2020-07/Tianbo/AgBh_15_2keV_corr.poni", "maskFile": "/mnt/ChemData/Data/Asax/2020-07/Tianbo/mask_15_2keV.msk"}
