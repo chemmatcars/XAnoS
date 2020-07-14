@@ -1,0 +1,3 @@
+[submodule "legacycontour_src"]
+  path = legacycontour_src
+  url = https://github.com/nayanbera/XAnoS.git
