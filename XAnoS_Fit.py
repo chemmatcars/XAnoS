@@ -364,6 +364,7 @@ class XAnoS_Fit(QWidget):
         row+=1
         col=0
         self.funcListWidget=QListWidget()
+        self.funcListWidget.setSelectionMode(3)
         self.funcListWidget.itemSelectionChanged.connect(self.functionChanged)
         self.funcListWidget.itemDoubleClicked.connect(self.openFunction)
         self.funcLayoutWidget.addWidget(self.funcListWidget,row=row,col=col,colspan=2)
