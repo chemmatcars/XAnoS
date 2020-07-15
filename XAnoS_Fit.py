@@ -1110,12 +1110,14 @@ class XAnoS_Fit(QWidget):
         #self.sfitParamTableWidget.cellDoubleClicked.connect(self.editFitParam)
         self.sfitparamLayoutWidget.addWidget(self.sfitParamTableWidget,colspan=3)
         self.sfitparamLayoutWidget.nextRow()
+        self.sfitLabel=QLabel('')
         self.sfitSlider=QSlider(Qt.Horizontal)
         self.sfitSlider.setMinimum(1)
         self.sfitSlider.setMaximum(1000)
         self.sfitSlider.setSingleStep(10)
         self.sfitSlider.setTickInterval(10)
-        self.sfitparamLayoutWidget.addWidget(self.sfitSlider,colspan=3)
+        self.sfitparamLayoutWidget.addWidget(self.sfitLabel,col=0,colspan=1)
+        self.sfitparamLayoutWidget.addWidget(self.sfitSlider,col=1,colspan=2)
         self.sfitParamTableWidget.cellClicked.connect(self.update_sfitSlider)
 
         self.parSplitter.addWidget(self.sfitparamLayoutWidget)
@@ -1144,12 +1146,14 @@ class XAnoS_Fit(QWidget):
         # self.mfitparamLayoutWidget.addWidget(self.mfitParamTableWidget,colspan=3)
         self.mfitparamLayoutWidget.addWidget(self.mfitParamTabWidget,colspan=3)
         self.mfitparamLayoutWidget.nextRow()
+        self.mfitLabel=QLabel('')
         self.mfitSlider=QSlider(Qt.Horizontal)
         self.mfitSlider.setMinimum(1)
         self.mfitSlider.setSingleStep(10)
         self.mfitSlider.setTickInterval(10)
         self.mfitSlider.setMaximum(1000)
-        self.mfitparamLayoutWidget.addWidget(self.mfitSlider,colspan=3)
+        self.mfitparamLayoutWidget.addWidget(self.mfitLabel,col=0,colspan=1)
+        self.mfitparamLayoutWidget.addWidget(self.mfitSlider,col=1,colspan=2)
         # self.mfitParamTableWidget.cellClicked.connect(self.update_mfitSlider)
         
         # self.mfitparamLayoutWidget.nextRow()
@@ -1192,6 +1196,7 @@ class XAnoS_Fit(QWidget):
             except:
                 pass
             key=self.sfitParamTableWidget.item(row,0).text()
+            self.sfitLabel.setText(key)
             self.current_sfit_row=row
             value=self.fit.fit_params[key].value
             self.sfitSlider.setValue(500)
@@ -1223,6 +1228,7 @@ class XAnoS_Fit(QWidget):
             pkey = self.mfitParamTableWidget[self.mkey].horizontalHeaderItem(col).text()
             txt = self.mfitParamTableWidget[self.mkey].item(row, col).text()
             key = '__%s_%s_%03d' % (self.mkey, pkey, row)
+            self.mfitLabel.setText(key)
             self.current_mfit_row=row
             self.current_mfit_col=col
             value=self.fit.fit_params[key].value
@@ -1460,9 +1466,9 @@ class XAnoS_Fit(QWidget):
                     header+='%s=%s\n'%(self.sfitParamTableWidget.item(i,0).text(),self.sfitParamTableWidget.item(i,1).text())
                 for k in range(self.mfitParamTabWidget.count()):
                     mkey=self.mfitParamTabWidget.tabText(k)
-                    for i in range(self.mfitParamTableWidget.rowCount()):
+                    for i in range(self.mfitParamTableWidget[mkey].rowCount()):
                         vartxt=self.mfitParamTableWidget[mkey].item(i,0).text()
-                        for j in range(1,self.mfitParamTableWidget.columnCount()):
+                        for j in range(1,self.mfitParamTableWidget[mkey].columnCount()):
                             header+='%s_%s=%s\n'%(vartxt,self.mfitParamTableWidget[mkey].horizontalHeaderItem(j).text(),
                                                   self.mfitParamTableWidget[mkey].item(i,j).text())
                 if 'names' in self.fit.params['output_params'][name]:
@@ -2031,6 +2037,7 @@ class XAnoS_Fit(QWidget):
         self.sfitParamTableWidget.cellChanged.connect(self.sfitParamChanged)
         self.update_sfit_parameters()
         self.update_mfit_parameters_new()
+        self.sfitParamTableWidget.setCurrentCell(row,col)
 
     def mfitParamChanged_new(self,row,col):
         index=self.mfitParamTabWidget.currentIndex()
@@ -2082,6 +2089,8 @@ class XAnoS_Fit(QWidget):
         self.mfitParamTableWidget[mkey].cellChanged.connect(self.mfitParamChanged_new)
         self.update_sfit_parameters()
         self.update_mfit_parameters_new()
+        self.mfitParamTabWidget.setCurrentIndex(index)
+        self.mfitParamTableWidget[mkey].setCurrentCell(row,col)
 
 
         
