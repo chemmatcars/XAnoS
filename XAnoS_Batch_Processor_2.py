@@ -17,6 +17,7 @@ class XAnoS_Batch_Processor_2(QWidget):
         loadUi('UI_Forms/ASAXS_Batch_Processor_2.ui',self)
         self.initUI()
         self.init_signals()
+        print(self.spikeFilterCheckBox.isChecked())
         try:
             self.open_settings()
         except:
@@ -78,6 +79,10 @@ class XAnoS_Batch_Processor_2(QWidget):
 
 
     def process(self):
+        if self.spikeFilterCheckBox.isChecked():
+            do_avg=True
+        else:
+            do_avg=False
         if not self.duplicateNums():
             self.infoTextEdit.clear()
             if self.sampleFileName is not None:
@@ -111,7 +116,7 @@ class XAnoS_Batch_Processor_2(QWidget):
                             fnum.append(i)
                             bnames[i] = self.sampleFileName + '%04d.txt' % i
                         data, oaname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data,
-                                                     extra_key=fnum[0],textEdit=self.infoTextEdit)
+                                                     extra_key=fnum[0],textEdit=self.infoTextEdit,spike_filter=do_avg)
 
                     # Calculating mean of MT capillary if the mtNum is other than 0
                     if mt_num != 0:
@@ -120,7 +125,7 @@ class XAnoS_Batch_Processor_2(QWidget):
                             fnum.append(i)
                             bnames[i] = self.sampleFileName + '%04d.txt' % i
                         data, omname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data,
-                                                     extra_key=fnum[0],textEdit=self.infoTextEdit)
+                                                     extra_key=fnum[0],textEdit=self.infoTextEdit,spike_filter=do_avg)
                         if air_num != 0:
                             obsmfname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
                             data, bsmfname = bkgSub1DSAXS(data, omname, data, oaname, obsmfname, thickness=0.02, cf=1.0,
@@ -130,7 +135,8 @@ class XAnoS_Batch_Processor_2(QWidget):
                     for i in range(bg_num + ctimes * j, bg_num + ctimes * j + self.repeatNpts):
                         fnum.append(i)
                         bnames[i] = self.sampleFileName + '%04d.txt' % i
-                    data, obname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0],textEdit=self.infoTextEdit)
+                    data, obname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data,
+                                                 extra_key=fnum[0],textEdit=self.infoTextEdit,spike_filter=do_avg)
                     if mt_num != 0:
                         obsbfname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
                         data, bsbfname = bkgSub1DSAXS(data, obname, data, omname, obsbfname, thickness=self.bkgThickness, cf=1.0,
@@ -140,7 +146,8 @@ class XAnoS_Batch_Processor_2(QWidget):
                     for i in range(gc_num + ctimes * j, gc_num + ctimes * j + self.repeatNpts):
                         fnum.append(i)
                         gnames[i] = self.sampleFileName + '%04d.txt' % i
-                    data, ogname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0],textEdit=self.infoTextEdit)
+                    data, ogname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data,
+                                                 extra_key=fnum[0],textEdit=self.infoTextEdit,spike_filter=do_avg)
                     if air_num != 0:
                         obsgfname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])
                         data, bsgfname = bkgSub1DSAXS(data, ogname, data, oaname, obsgfname, thickness=self.stdThickness, cf=1.0,
@@ -170,7 +177,8 @@ class XAnoS_Batch_Processor_2(QWidget):
                         for i in range(sam_num + ctimes * j, sam_num + ctimes * j + self.repeatNpts):
                             fnum.append(i)
                             snames[i] = self.sampleFileName + '%04d.txt' % i
-                        data, ofname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data, extra_key=fnum[0],textEdit=self.infoTextEdit)
+                        data, ofname = average1DSAXS(self.sampleFileName, num=fnum, delete_prev=False, data=data,
+                                                     extra_key=fnum[0],textEdit=self.infoTextEdit,spike_filter=do_avg)
 
                         # Performing background subtraction
                         obsname = os.path.basename(self.sampleFileName + '_%04d_bsub.txt' % fnum[0])

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>833</width>
+    <width>842</width>
     <height>517</height>
    </rect>
   </property>
@@ -301,6 +301,13 @@
          <string>cubic</string>
         </property>
        </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="spikeFilterCheckBox">
+       <property name="text">
+        <string>Spike Filter</string>
+       </property>
       </widget>
      </item>
     </layout>

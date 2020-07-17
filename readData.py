@@ -500,7 +500,7 @@ def reduce1DSAXS2(fname=None,ftimes=1,gc_name=None,gc_times=1,air_name=None,air_
     return data
         
 
-def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=None,extra_key=''):
+def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=None,extra_key='',spike_filter=False):
     """
     Averages over the 1D-SAXS patterns recorded in files with the names in the format like 'fname_0001.txt' where the last four numbers of the filename with path will be given as a list of numbers in 'num'.
     delete_prev=True will delete the directory containing output files if it exists
@@ -511,14 +511,15 @@ def average1DSAXS(fname,num=None,ofname=None,delete_prev=False,data={},textEdit=
         for i in num:
             fnames.append(fname+'_%04d.txt'%i)
             data=read1DSAXS(fnames[-1],data=data)
-        ttrans=np.array([data[tname]['BSDiode']/data[tname]['Monitor'] for tname in fnames])
-        mtrans=np.mean(ttrans)
-        strans=np.std(ttrans)
-        newfnames=[]
-        for it, tfname in enumerate(fnames):
-            if np.abs(ttrans[it]-mtrans)<strans:
-                newfnames.append(tfname)
-        fnames=copy.copy(newfnames)
+        if spike_filter:
+            ttrans=np.array([data[tname]['BSDiode']/data[tname]['Monitor'] for tname in fnames])
+            mtrans=np.mean(ttrans)
+            strans=np.std(ttrans)
+            newfnames=[]
+            for it, tfname in enumerate(fnames):
+                if np.abs(ttrans[it]-mtrans)<strans:
+                    newfnames.append(tfname)
+            fnames=copy.copy(newfnames)
         interpolate_data(data,Npt=len(data[fnames[0]]['x']),kind='linear')
         sumdata=[]
         monitor=0.0

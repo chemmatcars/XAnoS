@@ -391,7 +391,7 @@
        <item>
         <widget class="QLineEdit" name="xtalMinLineEdit">
          <property name="text">
-          <string>-0.2</string>
+          <string>-0.3</string>
          </property>
         </widget>
        </item>
@@ -405,7 +405,7 @@
        <item>
         <widget class="QLineEdit" name="xtalMaxLineEdit">
          <property name="text">
-          <string>0.2</string>
+          <string>0.3</string>
          </property>
         </widget>
        </item>
@@ -419,7 +419,7 @@
        <item>
         <widget class="QLineEdit" name="xtalStepsLineEdit">
          <property name="text">
-          <string>41</string>
+          <string>61</string>
          </property>
         </widget>
        </item>
