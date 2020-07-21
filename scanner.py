@@ -258,15 +258,16 @@ class Scanner(QWidget):
         The scanning motor is changed
         """
         try:
-            camonitor_clear(self.oldMotorName)
+            camonitor_clear(self.motors[self.oldMotorName]['PV'] + '.RBV')
+            camonitor_clear(self.motors[self.oldMotorName]['PV'] + '.DMOV')
         except:
             pass
         if self.scanName=='MotorScan':
             self.scanMotorName=str(self.scanMotorComboBox.currentText())
             self.scanMotorPos=caget(self.motors[self.scanMotorName]['PV']+'.RBV')
             self.scanMotorPositionLabel.setText('%3.5f'%self.scanMotorPos)
-            camonitor(self.motors[str(self.scanMotorComboBox.currentText())]['PV']+'.RBV',callback=self.reportMotorPos)
-            camonitor(self.motors[str(self.scanMotorComboBox.currentText())]['PV']+'.DMOV',callback=self.reportMotorStatus)
+            camonitor(self.motors[self.scanMotorName]['PV']+'.RBV',callback=self.reportMotorPos)
+            camonitor(self.motors[self.scanMotorName]['PV']+'.DMOV',callback=self.reportMotorStatus)
             self.oldMotorName=copy.copy(self.scanMotorName)
         elif self.scanName=='SlitScan':
             self.scanMotorName=str(self.scanMotorComboBox.currentText())
