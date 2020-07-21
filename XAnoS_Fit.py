@@ -364,7 +364,7 @@ class XAnoS_Fit(QWidget):
         row+=1
         col=0
         self.funcListWidget=QListWidget()
-        self.funcListWidget.setSelectionMode(3)
+        self.funcListWidget.setSelectionMode(4)
         self.funcListWidget.itemSelectionChanged.connect(self.functionChanged)
         self.funcListWidget.itemDoubleClicked.connect(self.openFunction)
         self.funcLayoutWidget.addWidget(self.funcListWidget,row=row,col=col,colspan=2)
@@ -1560,7 +1560,6 @@ class XAnoS_Fit(QWidget):
                                 par = self.mfitParamTableWidget[mkey].item(row, col)
                                 parval = par.text()
                                 fh.write('%s\t%s\n' % (parname, parval))
-
             fh.close()
         
         
@@ -1740,34 +1739,37 @@ class XAnoS_Fit(QWidget):
         self.funcListWidget.itemDoubleClicked.connect(self.openFunction)
         
     def functionChanged(self):
-        self.gen_param_items=[]
-        self.curr_module=self.funcListWidget.currentItem().text()
-        module='Functions.%s.%s'%(self.curr_category,self.curr_module)
-        # try:
-        if module not in sys.modules:
-            self.curr_funcClass[module]=import_module(module)
+        if len(self.funcListWidget.selectedItems())==1:
+            self.gen_param_items=[]
+            self.curr_module=self.funcListWidget.currentItem().text()
+            module='Functions.%s.%s'%(self.curr_category,self.curr_module)
+            try:
+                if module not in sys.modules:
+                    self.curr_funcClass[module]=import_module(module)
+                else:
+                    self.curr_funcClass[module]=reload(self.curr_funcClass[module])
+                mpath=os.path.join('Functions',self.curr_category,self.curr_module+'.py')
+                fh=open(mpath,'r')
+                lines=fh.readlines()
+                for i,line in enumerate(lines):
+                    if '__name__' in line:
+                        lnum=i+1
+                        break
+                if 'x' in lines[lnum]:
+                    xline=lines[lnum].split('=')[1].strip()
+                    self.xLineEdit.setText(xline)
+                self.fixedParamTableWidget.clear()
+                self.sfitParamTableWidget.clear()
+                self.mfitParamTabWidget.clear()
+                # self.mfitParamTableWidget.clear()
+                self.genParamListWidget.clear()
+                self.fchanged = True
+                self.update_parameters()
+                self.saveSimulatedButton.setEnabled(True)
+            except:
+                QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
         else:
-            self.curr_funcClass[module]=reload(self.curr_funcClass[module])
-        mpath=os.path.join('Functions',self.curr_category,self.curr_module+'.py')
-        fh=open(mpath,'r')
-        lines=fh.readlines()
-        for i,line in enumerate(lines):
-            if '__name__' in line:
-                lnum=i+1
-                break
-        if 'x' in lines[lnum]:
-            xline=lines[lnum].split('=')[1].strip()
-            self.xLineEdit.setText(xline)
-        self.fixedParamTableWidget.clear()
-        self.sfitParamTableWidget.clear()
-        self.mfitParamTabWidget.clear()
-        # self.mfitParamTableWidget.clear()
-        self.genParamListWidget.clear()
-        self.fchanged = True
-        self.update_parameters()
-        self.saveSimulatedButton.setEnabled(True)
-        # except:
-        #     QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
+            QMessageBox.warning(self,'Function Error', 'Please select one function at a time', QMessageBox.Ok)
         
     def update_parameters(self):
         """
