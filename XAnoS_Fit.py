@@ -1740,6 +1740,10 @@ class XAnoS_Fit(QWidget):
         
     def functionChanged(self):
         if len(self.funcListWidget.selectedItems())==1:
+            self.sfitLabel.clear()
+            self.mfitLabel.clear()
+            self.sfitSlider.setValue(500)
+            self.mfitSlider.setValue(500)
             self.gen_param_items=[]
             self.curr_module=self.funcListWidget.currentItem().text()
             module='Functions.%s.%s'%(self.curr_category,self.curr_module)
