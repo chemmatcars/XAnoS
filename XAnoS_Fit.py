@@ -1117,6 +1117,7 @@ class XAnoS_Fit(QWidget):
         self.sfitSlider.setMaximum(1000)
         self.sfitSlider.setSingleStep(10)
         self.sfitSlider.setTickInterval(10)
+        self.sfitSlider.setValue(500)
         self.sfitparamLayoutWidget.addWidget(self.sfitLabel,col=0,colspan=1)
         self.sfitparamLayoutWidget.addWidget(self.sfitSlider,col=1,colspan=2)
         self.sfitParamTableWidget.cellClicked.connect(self.update_sfitSlider)
@@ -1153,6 +1154,7 @@ class XAnoS_Fit(QWidget):
         self.mfitSlider.setSingleStep(10)
         self.mfitSlider.setTickInterval(10)
         self.mfitSlider.setMaximum(1000)
+        self.mfitSlider.setValue(500)
         self.mfitparamLayoutWidget.addWidget(self.mfitLabel,col=0,colspan=1)
         self.mfitparamLayoutWidget.addWidget(self.mfitSlider,col=1,colspan=2)
         # self.mfitParamTableWidget.cellClicked.connect(self.update_mfitSlider)
@@ -1187,6 +1189,10 @@ class XAnoS_Fit(QWidget):
 
     def mfitParamTabChanged(self,index):
         self.mkey=self.mfitParamTabWidget.tabText(index)
+        if self.mfitParamTableWidget[self.mkey].rowCount()==self.mpar_N[self.mkey]:
+            self.remove_mpar_button.setDisabled(True)
+        else:
+            self.remove_mpar_button.setEnabled(True)
 
 
     def update_sfitSlider(self,row,col):
@@ -1573,6 +1579,7 @@ class XAnoS_Fit(QWidget):
         else:
             fname=fname
         if fname!='':
+            self.funcListWidget.itemSelectionChanged.disconnect()
             fh=open(fname,'r')
             lines=fh.readlines()
             category=lines[1].split(': ')[1].strip()
@@ -1581,6 +1588,7 @@ class XAnoS_Fit(QWidget):
             self.funcListWidget.clearSelection()
             func=lines[2].split(': ')[1].strip()
             func_item=self.funcListWidget.findItems(func,Qt.MatchExactly)
+            self.funcListWidget.itemSelectionChanged.connect(self.functionChanged)
             self.funcListWidget.setCurrentItem(func_item[0])
             #self.fit.func.init_params()
             if func==self.funcListWidget.currentItem().text():
@@ -1739,7 +1747,7 @@ class XAnoS_Fit(QWidget):
         self.funcListWidget.itemDoubleClicked.connect(self.openFunction)
         
     def functionChanged(self):
-        if len(self.funcListWidget.selectedItems())==1:
+        if len(self.funcListWidget.selectedItems())<=1:
             self.sfitLabel.clear()
             self.mfitLabel.clear()
             self.sfitSlider.setValue(500)
@@ -1771,7 +1779,7 @@ class XAnoS_Fit(QWidget):
                 self.update_parameters()
                 self.saveSimulatedButton.setEnabled(True)
             except:
-                QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.',QMessageBox.Ok)
+                QMessageBox.warning(self,'Function Error','Some syntax error in the function still exists.\n'+traceback.format_exc(),QMessageBox.Ok)
         else:
             QMessageBox.warning(self,'Function Error', 'Please select one function at a time', QMessageBox.Ok)
         

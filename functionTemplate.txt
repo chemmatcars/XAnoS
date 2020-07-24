@@ -27,7 +27,7 @@ class <*>: #Please put the class name same as the function name
         self.choices={} #If there are choices available for any fixed parameters
         self.__fit__=False
         self.__mkeys__=list(self.__mpar__.keys())
-        self.output_params={self.scaler_parameters:{}}
+        self.output_params={'scaler_parameters':{}}
         self.init_params()
         
     def init_params(self):
@@ -37,7 +37,7 @@ class <*>: #Please put the class name same as the function name
         """
         self.params=Parameters()
         for mkey in self.__mkeys__:
-            for key in self.__mpar__[mkey].keys()
+            for key in self.__mpar__[mkey].keys():
                 if key!='type':
                     for i in range(len(self.__mpar__[mkey][key])):
                             self.params.add('__%s_%s_%03d'%(mkey,key,i),value=self.__mpar__[mkey][key][i],vary=0,min=-np.inf,max=np.inf,expr=None,brute_step=0.1)
@@ -57,7 +57,7 @@ class <*>: #Please put the class name same as the function name
             #Update all the output_params within the if loop for example
             #self.output_params['param1']={'x':x,'y':y,names=['x','y']}
             #self.output_params['scaler_parameters']['par1']=value
-
+            pass
 
         return self.x
         
