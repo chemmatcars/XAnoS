@@ -17,7 +17,7 @@ from xr_ref import parratt
 class Parratt_Biphasic: #Please put the class name same as the function name
     def __init__(self,x=0.1,E=10.0,mpar={'Phase1':{'Layers':['top','Bottom'],'d':[0.0,1.0],'rho':[0.0,0.333],'beta':[0.0,0.0],'sig':[0.0,3.0]},
                                          'Phase2':{'Layers':['top','Bottom'],'d':[0.0,1.0],'rho':[0.0,0.333],'beta':[0.0,0.0],'sig':[0.0,3.0]}},
-                 Minstep=0.5, rrf=True, fix_sig=False, qoff=0.0, yscale=1,cov1=0.5, bkg=0.0, coherrent=True):
+                 Minstep=0.5, rrf=True, fix_sig=False, qoff=0.0, yscale=1,cov1=0.5, bkg=0.0, coherrent=True, aveed=True):
         """
         Calculates X-ray reflectivity from a system of multiple layers using Parratt formalism
 
@@ -46,14 +46,16 @@ class Parratt_Biphasic: #Please put the class name same as the function name
         self.bkg=bkg
         self.yscale=yscale
         self.coherrent=coherrent
+        self.aveed=aveed
         self.cov1=cov1
-        self.choices={'rrf':[True,False],'fix_sig': [True,False],'coherrent':[True,False]}
+        self.choices={'rrf':[True,False],'fix_sig': [True,False],'coherrent':[True,False],'aveed':[True,False]}
         self.__d__={}
         self.__rho__={}
         self.__beta__={}
         self.__sig__={}
         self.__fit__=False
         self.__mkeys__ = list(self.__mpar__.keys())
+        self.output_params = {'scaler_parameters': {}}
         self.init_params()
 
 
@@ -130,7 +132,6 @@ class Parratt_Biphasic: #Please put the class name same as the function name
         """
         Define the function in terms of x to return some value
         """
-        self.output_params = {'scaler_parameters': {}}
         x = self.x + self.qoff
         lam = 6.62607004e-34 * 2.99792458e8 * 1e10 / self.E / 1e3 / 1.60217662e-19
         if not self.__fit__:
@@ -167,25 +168,43 @@ class Parratt_Biphasic: #Please put the class name same as the function name
                 trefq=trefq/ref
             return trefq * self.yscale + self.bkg
         else:
-            maxsig=max(max(self.__sig__[mkeys[0]][1:]),max(self.__sig__[mkeys[1]][1:]))
-            zmin=-max(np.sum(self.__d__[mkeys[0]][:-1]),np.sum(self.__d__[mkeys[1]][:-1]))-5*maxsig
-            zmax=5*maxsig
-            Nlayers = int((zmax - zmin)/self.Minstep)
-            for mkey in mkeys:
-                n[mkey], z[mkey], d[mkey], rho[mkey], beta[mkey] = self.calcProfile(self.__d__[mkey],
-                                                                                    self.__rho__[mkey],
-                                                                                    self.__beta__[mkey],
-                                                                                    self.__sig__[mkey], mkey,
-                                                                                    self.Minstep,zmin=zmin,zmax=zmax)
+            if not self.aveed:
+                for mkey in mkeys:
+                    n[mkey], z[mkey], d[mkey], rho[mkey], beta[mkey] = self.calcProfile(self.__d__[mkey],
+                                                                                        self.__rho__[mkey],
+                                                                                        self.__beta__[mkey],
+                                                                                        self.__sig__[mkey], mkey,
+                                                                                        self.Minstep)
+                    refq[mkey], r2[mkey] = self.py_parratt(tuple(x), lam, tuple(d[mkey]), tuple(rho[mkey]),
+                                                           tuple(beta[mkey]))
+                    if not self.__fit__:
+                        self.output_params['%s_EDP' % mkey] = {'x': z[mkey] - np.sum(self.__d__[mkey][:-1]),
+                                                               'y': rho[mkey]}
+                        self.output_params['%s_ADP' % mkey] = {'x': z[mkey] - np.sum(self.__d__[mkey][:-1]),
+                                                               'y': beta[mkey]}
+                deld=np.sum(self.__d__[mkeys[0]][:-1])-np.sum(self.__d__[mkeys[1]][:-1])
+                refq = abs(np.exp(-1j*self.x*deld)*self.cov1 * r2[mkeys[0]] + (1.0 - self.cov1) * r2[mkeys[1]])**2
+
+            else:
+                maxsig=max(max(self.__sig__[mkeys[0]][1:]),max(self.__sig__[mkeys[1]][1:]))
+                zmin=-max(np.sum(self.__d__[mkeys[0]][:-1]),np.sum(self.__d__[mkeys[1]][:-1]))-5*maxsig
+                zmax=5*maxsig
+                Nlayers = int((zmax - zmin)/self.Minstep)
+                for mkey in mkeys:
+                    n[mkey], z[mkey], d[mkey], rho[mkey], beta[mkey] = self.calcProfile(self.__d__[mkey],
+                                                                                        self.__rho__[mkey],
+                                                                                        self.__beta__[mkey],
+                                                                                        self.__sig__[mkey], mkey,
+                                                                                        self.Minstep,zmin=zmin,zmax=zmax)
+                    if not self.__fit__:
+                        self.output_params['%s_EDP' % mkey] = {'x': z[mkey], 'y': rho[mkey]}
+                        self.output_params['%s_ADP' % mkey] = {'x': z[mkey], 'y': beta[mkey]}
+                trho=self.cov1*rho[mkeys[0]]+(1-self.cov1)*rho[mkeys[1]]
+                tbeta = self.cov1*beta[mkeys[0]]+(1-self.cov1)*beta[mkeys[1]]
                 if not self.__fit__:
-                    self.output_params['%s_EDP' % mkey] = {'x': z[mkey], 'y': rho[mkey]}
-                    self.output_params['%s_ADP' % mkey] = {'x': z[mkey], 'y': beta[mkey]}
-            trho=self.cov1*rho[mkeys[0]]+(1-self.cov1)*rho[mkeys[1]]
-            tbeta = self.cov1*beta[mkeys[0]]+(1-self.cov1)*beta[mkeys[1]]
-            if not self.__fit__:
-                self.output_params['Total_EDP'] = {'x': z[mkey], 'y': trho}
-                self.output_params['Total_ADP'] = {'x': z[mkey], 'y': tbeta}
-            refq, r2 = self.py_parratt(tuple(x), lam, tuple(d[mkey]), tuple(trho), tuple(tbeta))
+                    self.output_params['Total_EDP'] = {'x': z[mkey], 'y': trho}
+                    self.output_params['Total_ADP'] = {'x': z[mkey], 'y': tbeta}
+                refq, r2 = self.py_parratt(tuple(x), lam, tuple(d[mkey]), tuple(trho), tuple(tbeta))
             if self.rrf:
                 rhos=(self.params['__%s_rho_000'%mkeys[0]].value,self.params['__%s_rho_%03d'%(mkeys[0],n[mkeys[0]]-1)].value)
                 betas=(self.params['__%s_beta_000'%mkeys[0]].value,self.params['__%s_beta_%03d'%(mkeys[0],n[mkeys[0]]-1)].value)
