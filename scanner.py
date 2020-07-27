@@ -449,7 +449,11 @@ class Scanner(QWidget):
         self.scanFolderLabel=QLabel()
         self.scanFolderLabel.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.scanFolderPushButton=QPushButton('Change Folder')
+<<<<<<< HEAD
         self.scanFolderPushButton.clicked.connect(lambda x:self.changeScanFolder(scanFolder=None))
+=======
+        self.scanFolderPushButton.clicked.connect(self.changeScanFolder)
+>>>>>>> 7210e5c66ecf27a5ed7a0c940be838c7c6b0ca51
         self.scanPlotLayout.addWidget(scanFolderLabel,row=row,col=col)
         col+=1
         self.scanPlotLayout.addWidget(self.scanFolderLabel,row=row,col=col,colspan=2)

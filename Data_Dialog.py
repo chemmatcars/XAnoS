@@ -126,7 +126,7 @@ class Data_Dialog(QDialog):
         
         self.dataTableWidget.itemChanged.connect(self.dataChanged)
         self.editColumnPushButton.clicked.connect(self.editDataColumn)
-        self.addColumnPushButton.clicked.connect(lambda x: self.addDataColumn(colName='Col_X'))
+        self.addColumnPushButton.clicked.connect(lambda x: self.addDataColumn(colName=None))
         self.removeColumnPushButton.clicked.connect(self.removeDataColumn)
         self.removeRowsPushButton.clicked.connect(self.removeDataRows)
         self.dataTableWidget.setSelection
@@ -272,6 +272,8 @@ class Data_Dialog(QDialog):
     def addDataColumn(self,colName='Col_X',expr=None,new=True):
         if self.data is not None:
             row,col=self.data['data'].shape
+            if colName is None:
+                colName='Col_%d'%(col)
             self.insertColDialog=InsertCol_Dialog(colName=colName,minCounter=1,maxCounter=row,expr=expr)
             if self.insertColDialog.exec_():
                 imin=eval(self.insertColDialog.minCounterLineEdit.text())
@@ -291,7 +293,7 @@ class Data_Dialog(QDialog):
                                 self.data['meta']['col_names'].append(colname)
                             except:
                                 QMessageBox.warning(self,'Column Error','Please check the expression.\n The expression should be in this format:\n col[column_name]*5',QMessageBox.Ok)
-                                self.addDataColumn(colName='Col_X',expr=expr)
+                                self.addDataColumn(colName=colname,expr=expr)
                         self.expressions[colname]=expr
                         self.setData2Table()
                         self.setMeta2Table()
@@ -300,7 +302,7 @@ class Data_Dialog(QDialog):
                         self.dataAltered=False
                     else:
                         QMessageBox.warning(self,'Column Name Error','Please choose different column name than the exisiting ones',QMessageBox.Ok)
-                        self.addDataColumn(colName='Col_X',expr=expr)
+                        self.addDataColumn(colName='Col_%d'%(col),expr=expr)
                 else:
                     try:
                         self.data['data'][colname] = eval(expr)
@@ -313,7 +315,7 @@ class Data_Dialog(QDialog):
                             QMessageBox.warning(self, 'Column Error',
                                                 'Please check the expression.\n The expression should be in this format:\n col[column_name]*5',
                                                 QMessageBox.Ok)
-                            self.addDataColumn(colName='Col_X', expr=expr)
+                            self.addDataColumn(colName=colname, expr=expr)
                         self.expressions[colname] = expr
                         self.setData2Table()
                         self.setMeta2Table()
@@ -346,10 +348,10 @@ class Data_Dialog(QDialog):
                     self.expressions[colname]=expr
                 except:
                     QMessageBox.warning(self, 'Column Error',
-                                        'Please check the expression.\n The expression should be in this format:\n col.column_name*5',
+                                        'Please check the expression.\n The expression should be in this format:\n col[column_name]*5',
                                         QMessageBox.Ok)
                     self.data=None
-                    self.addDataColumn(colName='Col_X', expr=expr)
+                    self.addDataColumn(colName=colname, expr=expr)
 
 
 
