@@ -325,7 +325,7 @@
        </sizepolicy>
       </property>
      </widget>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QTextEdit" name="infoTextEdit"/>
@@ -338,11 +338,22 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="processPushButton">
-         <property name="text">
-          <string>Process</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QPushButton" name="stopPushButton">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="processPushButton">
+           <property name="text">
+            <string>Process</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>

@@ -17,11 +17,11 @@ class XAnoS_Batch_Processor_2(QWidget):
         loadUi('UI_Forms/ASAXS_Batch_Processor_2.ui',self)
         self.initUI()
         self.init_signals()
-        print(self.spikeFilterCheckBox.isChecked())
         try:
             self.open_settings()
         except:
             pass
+        self.stop=False
 
         
     def initUI(self):
@@ -76,7 +76,10 @@ class XAnoS_Batch_Processor_2(QWidget):
         self.xMinMaxLineEdit.returnPressed.connect(self.xMinMaxChanged)
         self.interpComboBox.currentIndexChanged.connect(self.interpTypeChanged)
         self.processPushButton.clicked.connect(self.process)
+        self.stopPushButton.clicked.connect(self.stopProcess)
 
+    def stopProcess(self):
+        self.stop=True
 
     def process(self):
         if self.spikeFilterCheckBox.isChecked():
@@ -109,6 +112,10 @@ class XAnoS_Batch_Processor_2(QWidget):
                 outputNames=[]
                 self.outputFnames=[]
                 for j in range(0, self.energyNpts):
+                    if self.stop:
+                        self.stop=False
+                        self.progressBar.setValue(0)
+                        return
                     # Calculating mean of air scattering if the airNum is other than 0
                     if air_num != 0:
                         fnum = []
@@ -286,7 +293,6 @@ class XAnoS_Batch_Processor_2(QWidget):
         txt = self.firstSampleNumsLineEdit.text().replace(" ", "")
         Nums = list(map(int, txt.split(",")))
         Nums=Nums+[self.bkgNum,self.mtNum,self.airNum]
-        print(Nums)
         if self.mtNum!=0 and self.airNum!=0:
             if np.unique(Nums).size!=len(Nums):
                 return True
