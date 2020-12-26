@@ -464,7 +464,7 @@ class Data_Dialog(QDialog):
             
             
             
-    def readData(self,fname,skiprows=0,comment='#',delimiter=' '):
+    def readData(self,fname,skiprows=0,comment='#',delimiter=r'\s+'):
         """
         Read data from a file and put it in dictionary structure with keys 'meta' and 'data' and the data would look like the following
         data={'meta':meta_dictionary,'data'=pandas_dataframe}
@@ -494,7 +494,7 @@ class Data_Dialog(QDialog):
                     elif ',' in line:
                         delimiter=','
                     elif ' ' in line:
-                        delimiter=' '
+                        delimiter=r'\s+'
                     break
             if 'col_names' in self.data['meta'].keys():
                 self.data['data']=pd.read_csv(self.fname,comment=comment,names=self.data['meta']['col_names'],header=None,sep=delimiter)
