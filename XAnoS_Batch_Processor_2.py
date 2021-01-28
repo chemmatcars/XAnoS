@@ -3,11 +3,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QFileDialog
 from PyQt5.QtGui import QDoubleValidator, QIntValidator,QTextCursor
 import sys
 from readData import average1DSAXS, interpolate_data, read1DSAXS, bkgSub1DSAXS, write1DSAXS
-import copy
 import numpy as np
 from calc_cf import calc_cf
 import os
-import time
 
 class XAnoS_Batch_Processor_2(QWidget):
     """
