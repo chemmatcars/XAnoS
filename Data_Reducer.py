@@ -13,7 +13,7 @@ import fabio as fb
 import time
 from numpy import *
 from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
-from maskWidget import MaskWidget
+from Mask_Widget import MaskWidget
 from Image_Widget import Image_Widget
 from calibrationWidget import CalibrationWidget
 import json
@@ -484,6 +484,7 @@ class Data_Reducer(QWidget):
         """
         Reduces the 2d data to 1d data
         """
+        print('Iloveu', self.darkFile)
         if (self.dataFile is not None) and (os.path.exists(self.dataFile)):
             if (self.poniFile is not None) and (os.path.exists(self.poniFile)):
 #                self.statusLabel.setText('Busy')
@@ -500,7 +501,7 @@ class Data_Reducer(QWidget):
                     self.ai.set_wavelength(float(self.header['Wavelength'])*1e-10)
                 except:
                     self.ai.set_wavelength(self.wavelength)
-                print(self.darkFile)
+                print('Iloveu',self.darkFile)
                 if os.path.exists(self.dataFile.split('.')[0]+'_dark.edf') and self.darkCheckBox.isChecked():
                     self.darkFile=self.dataFile.split('.')[0]+'_dark.edf'
                     dark=fb.open(self.darkFile)
@@ -536,7 +537,8 @@ class Data_Reducer(QWidget):
                 if self.maskFile is not None:
                     imageMask=fb.open(self.maskFile).data
                 else:
-                    imageMask=None                
+                    imageMask=None
+                print(self.maskFile)
 #                QApplication.processEvents()
                 #print(self.azimuthRange)
                 self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=norm_factor,azimuth_range=self.azimuthRange)

@@ -597,12 +597,15 @@ class XAnoS_Reducer(QWidget):
                     imageMask=fb.open(self.maskFile).data
                 else:
                     imageMask=None
+                print(imageMask)
 #                QApplication.processEvents()
                 #print(self.azimuthalRange)
-                self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=norm_factor,azimuth_range=self.azimuthalRange,polarization_factor=self.polarization_factor)
+                self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',
+                                                             mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=norm_factor,azimuth_range=self.azimuthalRange,polarization_factor=self.polarization_factor)
                 self.plotWidget.add_data(self.q,self.I,yerr=self.Ierr,name='Reduced data')
                 if not self.set_externally:
-                    cakedI,qr,phir=self.ai.integrate2d(imageData.data,self.npt,mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=norm_factor,polarization_factor=self.polarization_factor)
+                    cakedI,qr,phir=self.ai.integrate2d(imageData.data,self.npt,mask=imageMask,dark=imageDark,
+                                                        unit='q_A^-1',normalization_factor=norm_factor,polarization_factor=self.polarization_factor)
                     self.cakedImageWidget.setImage(cakedI,xmin=qr[0],xmax=qr[-1],ymin=phir[0],ymax=phir[-1],transpose=True,xlabel='Q ', ylabel='phi ',unit=['&#8491;<sup>-1</sup>','degree'])
                     self.cakedImageWidget.imageView.view.setAspectLocked(False)
                     try:

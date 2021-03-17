@@ -570,7 +570,7 @@ class XAnoS_Collector(QWidget):
         absLabel=QLabel('Attenuator')
         self.absSpinBox=QSpinBox()
         self.absSpinBox.setRange(0,15)
-        self.absSpinBox.setValue(caget(self.motors['absorber']['PV']))
+        self.absSpinBox.setValue(int(caget(self.motors['absorber']['PV'])))
         self.absSpinBox.valueChanged.connect(self.absorberChanged)
         self.absSpinBox.setSingleStep(1)
         self.dataColLayout.addWidget(absLabel,row=row,col=col)
@@ -1284,7 +1284,7 @@ class XAnoS_Collector(QWidget):
         if caget('15IDA:KohzuUseSetBO.VAL')!=0:
             QMessageBox.warning(self,'Monochromator Warning','It seems monochomator is not in Use mode. Please change the Monochormator to Use mode before starting data collection', QMessageBox.Ok)
             return
-
+        MonoBacklashReversed=False
         self.create_measurementList()
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()
@@ -1336,11 +1336,25 @@ class XAnoS_Collector(QWidget):
                                 break
                             for motorname in self.measurementList.keys():
                                 if motorname=='Energy':
-                                    caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][i],wait=False)
+                                    if caget(self.motors[motorname]['PV']+'RdbkAO')>self.measurementList[motorname][
+                                        i] and caget('15IDA:m10.UEIP')==0:
+                                        caput('15IDA:m10.BDST',-0.1,wait=True)
+                                        MonoBacklashReversed=True
+                                    if round(abs(caget(self.motors[motorname]['PV']+'RdbkAO')-self.measurementList[
+                                        motorname][i]),4)>1e-4:
+                                        caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][
+                                            i],wait=True)
+                                    if MonoBacklashReversed:
+                                        caput('15IDA:m10.BDST',0.1,wait=True)
                                     for detname in self.usedDetectors:
-                                        if self.measurementList[motorname][i] != caget(self.detectors[
+                                        if round(self.measurementList[motorname][i],3) != caget(self.detectors[
                                                                                            detname][
                                                                                            'PV']+'Energy_RBV'):
+                                            self.instrumentStatus.setText(
+                                                '<font color="Red">Setting the Energy and Threshhold of Pilatus 300K. '
+                                                'Please '
+                                                'wait...</font>')
+
                                             caput(self.detectors[detname]['PV']+'Energy',round(self.measurementList[
                                                 motorname][i],3),wait=False) #Changing the energy of the detectors
                                             caput(self.detectors[detname]['PV']+'ThresholdEnergy',\
