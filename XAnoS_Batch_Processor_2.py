@@ -6,6 +6,7 @@ from readData import average1DSAXS, interpolate_data, read1DSAXS, bkgSub1DSAXS, 
 import numpy as np
 from calc_cf import calc_cf
 import os
+from xraydb import XrayDB
 
 class XAnoS_Batch_Processor_2(QWidget):
     """
@@ -48,6 +49,7 @@ class XAnoS_Batch_Processor_2(QWidget):
         self.interpType = self.interpComboBox.currentText()
         self.progressBar.setMinimum(0)
         self.progressBar.setValue(0)
+        self.xdb=XrayDB()
 
     def init_signals(self):
         """
@@ -164,7 +166,10 @@ class XAnoS_Batch_Processor_2(QWidget):
                         ene, cf, a, b = calc_cf(ogname, standard=self.normStd, thickness=self.stdThickness,
                                                 xmin=self.xMin, xmax=self.xMax,
                                                 interpolation_type=self.interpType)
-
+                    if self.normStd == 'GC':
+                        f0=self.xdb.f0('C',q=0.0)
+                        f1=self.xdb.f1_chantler('C',energy=ene*1e3,smoothing=0)
+                        cf=cf*(f0[0]/(f0[0]+f1))**2
                     if air_num!=0:
                         data[bsgfname]['CF'] = cf
                         bsub_data[bsgfname]=data[bsgfname]
