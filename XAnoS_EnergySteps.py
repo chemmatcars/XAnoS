@@ -125,8 +125,12 @@ if __name__ == '__main__':
     # poniFile='/home/epics/CARS5/Data/Data/saxs/2017-06/Alignment/agbh1.poni'
     w = XAnoS_EnergySteps()
     w.setWindowTitle('Energy Steps')
-    w.setFixedSize(1024,480)
+    #w.setFixedSize(1024,480)
     # w.setGeometry(50,50,800,800)
 
     w.show()
     sys.exit(app.exec_())
+
+
+
+

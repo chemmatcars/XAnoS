@@ -1765,7 +1765,7 @@ if __name__=='__main__':
     app=pg.QtGui.QApplication(sys.argv)
     w=XAnoS_Components()
     w.setWindowTitle('XAnoS_Components')
-    w.setGeometry(20,20,1000,800)
+    # w.setGeometry(20,20,1000,800)
     
     w.show()
     sys.exit(app.exec_())
