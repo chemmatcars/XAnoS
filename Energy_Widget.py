@@ -212,7 +212,7 @@ class Energy_Widget(QWidget):
         while epics.caget(BYTES2STR("15IDA:KohzuMoving"))==1:
             QTest.qWait(10)
         print('Undulator Changed')
-        self.wait_for_stablization(detector='MonB')
+        #self.wait_for_stablization(detector='MonB')
         #print("Undulator change stablized")
         if self.trackXtalCheckBox.isChecked():
             print("Scanning 2nd Xtal...")
@@ -221,8 +221,9 @@ class Energy_Widget(QWidget):
             print("Scanning 2nd Mirror...")
             self.scan_mirror()
         self.undulatorChanging=False
-        # self.feeback_ON()
+        # self.feedback_ON()
         # print("Feedback Enabled")
+
 
 
     def scan_xtal(self):
@@ -361,20 +362,38 @@ class Energy_Widget(QWidget):
         self.auto_count_on()
 
 
-    # def feeback_ON(self):
-    #     epics.caput(BYTES2STR("15IDA:pid_mono_1.INP"),"15IDA:pid_mono_1_incalc.D", wait=True)
-    #     sfb=float(epics.caget(BYTES2STR("15IDA:pid_mono_1_incalc.INPC")))
-    #     sf=96.0*sfb/self.readbackvalue
-    #     print(self.readbackvalue,sfb)
-    #     epics.caput(BYTES2STR("15IDA:pid_mono_1_incalc.INPC"), '%.3f'%sf, wait=True)
-    #     epics.caput(BYTES2STR("15IDA:pid_mono_1.FBON"), 1, wait=True)
-    #     self.feedback_enabled=True
-    #     self.feedback_disabled=False
-    #
-    # def feedback_OFF(self):
-    #     epics.caput(BYTES2STR("15IDA:pid_mono_1.FBON"), 0)
-    #     self.feedback_disabled=True
-    #     self.feedback_enabled=False
+    def feedback_ON(self):
+        # epics.caput(BYTES2STR("15IDA:pid_mono_1.INP"),"15IDA:pid_mono_1_incalc.D", wait=True)
+        # sfb=float(epics.caget(BYTES2STR("15IDA:pid_mono_1_incalc.INPC")))
+        # sf=96.0*sfb/self.readbackvalue
+        # print(self.readbackvalue,sfb)
+        # epics.caput(BYTES2STR("15IDA:pid_mono_1_incalc.INPC"), '%.3f'%sf, wait=True)
+        # epics.caput(BYTES2STR("15IDA:pid_mono_1.FBON"), 1, wait=True)
+        self.vertical_feedback_ON()
+        self.horizontal_feedback_ON()
+        self.feedback_enabled=True
+        self.feedback_disabled=False
+
+
+    def vertical_feedback_ON(self):
+        epics.caput(BYTES2STR("15IDA:pid_mirror.FBON"), 1, wait=True)
+
+    def vertical_feedback_OFF(self):
+        epics.caput(BYTES2STR("15IDA:pid_mirror.FBON"), 0, wait=True)
+
+    def horizontal_feedback_ON(self):
+        epics.caput(BYTES2STR("15IDA:pid_mono_2.FBON"), 1, wait=True)
+
+    def horizontal_feedback_OFF(self):
+        epics.caput(BYTES2STR("15IDA:pid_mono_2.FBON"), 0, wait=True)
+
+    def feedback_OFF(self):
+        # epics.caput(BYTES2STR("15IDA:pid_mono_1.FBON"), 0)
+        self.vertical_feedback_OFF()
+        self.horizontal_feedback_OFF()
+        self.feedback_disabled=True
+        self.feedback_enabled=False
+
 
     def auto_count_on(self):
         epics.caput(BYTES2STR("15IDC:scaler1.CONT"), 1)  # setting autocount on for 15IDC scaler

@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/2021-02/Ray/AgBh_16_105keV_long.poni", "maskFile": "/mnt/ChemData/Data/Asax/2021-02/Ge/mask_18_3keV.msk"}
+{"poniFile": "/mnt/ChemData/Data/Asax/2021-07/Brian/AgBh_25_514keV/AgBh_25_514keV.poni", "maskFile": "/mnt/ChemData/Data/Asax/2021-07/Ge/AgBu_Lu_L3_edge/mask.msk"}

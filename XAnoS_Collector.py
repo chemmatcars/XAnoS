@@ -240,7 +240,7 @@ class XAnoS_Collector(QWidget):
     def create_energyDock(self):
         self.energyWidget=Energy_Widget(parent=self)
         self.energyDock.addWidget(self.energyWidget)
-        self.energyWidget.trackXtalCheckBox.setCheckState(Qt.Checked)
+        # self.energyWidget.trackXtalCheckBox.setCheckState(Qt.Checked)
 
         
     def sync_BLInfo(self):
@@ -1342,10 +1342,20 @@ class XAnoS_Collector(QWidget):
                                         MonoBacklashReversed=True
                                     if round(abs(caget(self.motors[motorname]['PV']+'RdbkAO')-self.measurementList[
                                         motorname][i]),4)>1e-4:
+                                        self.energyWidget.feedback_OFF()
                                         caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][
                                             i],wait=True)
+                                        self.energyWidget.feedback_ON()
+                                        for iwait in range(600):
+                                            if self.abort:
+                                                break
+                                            self.instrumentStatus.setText(
+                                                '<font color="Red">Waiting for the feedback to stabilize. Please '
+                                                'wait for %d sec</font>' % ((60000 - iwait * 100) / 1000))
+                                            QtTest.QTest.qWait(100)
                                     if MonoBacklashReversed:
                                         caput('15IDA:m10.BDST',0.1,wait=True)
+
                                     for detname in self.usedDetectors:
                                         if round(self.measurementList[motorname][i],3) != caget(self.detectors[
                                                                                            detname][
