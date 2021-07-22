@@ -1346,12 +1346,12 @@ class XAnoS_Collector(QWidget):
                                         caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][
                                             i],wait=True)
                                         self.energyWidget.feedback_ON()
-                                        for iwait in range(600):
+                                        for iwait in range(300):
                                             if self.abort:
                                                 break
                                             self.instrumentStatus.setText(
                                                 '<font color="Red">Waiting for the feedback to stabilize. Please '
-                                                'wait for %d sec</font>' % ((60000 - iwait * 100) / 1000))
+                                                'wait for %d sec</font>' % ((30000 - iwait * 100) / 1000))
                                             QtTest.QTest.qWait(100)
                                     if MonoBacklashReversed:
                                         caput('15IDA:m10.BDST',0.1,wait=True)

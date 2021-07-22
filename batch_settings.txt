@@ -1,5 +1,5 @@
-samNums=[5]
-bkgNum=4
+samNums=[21]
+bkgNum=22
 stdNum=1
 mtNum=3
 airNum=2
@@ -11,4 +11,4 @@ xMinMax=0.04:0.07
 interpType=linear
 energyNpts=20
 repeatNpts=1
-sampleSet=15
+sampleSet=22
