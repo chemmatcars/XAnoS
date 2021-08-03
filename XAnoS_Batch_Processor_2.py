@@ -1,6 +1,7 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QFileDialog, QDesktopWidget
 from PyQt5.QtGui import QDoubleValidator, QIntValidator,QTextCursor
+from PyQt5.QtCore import Qt
 import sys
 from readData import average1DSAXS, interpolate_data, read1DSAXS, bkgSub1DSAXS, write1DSAXS
 import numpy as np
@@ -424,9 +425,20 @@ class XAnoS_Batch_Processor_2(QWidget):
 
 
 if __name__=='__main__':
-    app=QApplication(sys.argv)
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    app = QApplication(sys.argv)
+    try:
+        # app.setAttribute(Qt.AA_EnableHighDpiScaling)
+        app.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    except:
+        pass
     w=XAnoS_Batch_Processor_2()
-    w.setWindowTitle('XAnoS_Batch_Processor_2')
-    w.resize(800,600)
+    w.setWindowTitle('XAnoS Batch Processor 2')
+    resolution = QDesktopWidget().screenGeometry()
+    w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
+    w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
+           int(resolution.height() / 2) - int(w.frameSize().height() / 2))
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     w.show()
     sys.exit(app.exec_())

@@ -1,6 +1,6 @@
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox, QFileDialog, QMessageBox
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox, QFileDialog, QMessageBox, QDesktopWidget
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from PyQt5.QtTest import QTest
 import sys
@@ -8,6 +8,7 @@ import numpy as np
 import copy
 import time
 from xraydb import XrayDB
+import os
 
 class XAnoS_EnergySteps(QWidget):
     """
@@ -121,9 +122,22 @@ class XAnoS_EnergySteps(QWidget):
 
 
 if __name__ == '__main__':
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QApplication(sys.argv)
+    try:
+        # app.setAttribute(Qt.AA_EnableHighDpiScaling)
+        app.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    except:
+        pass
     # poniFile='/home/epics/CARS5/Data/Data/saxs/2017-06/Alignment/agbh1.poni'
     w = XAnoS_EnergySteps()
+    w.setWindowTitle('XAnoS Energy Steps')
+    resolution = QDesktopWidget().screenGeometry()
+    w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
+    w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
+           int(resolution.height() / 2) - int(w.frameSize().height() / 2))
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     w.setWindowTitle('Energy Steps')
     #w.setFixedSize(1024,480)
     # w.setGeometry(50,50,800,800)

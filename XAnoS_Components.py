@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, \
-    QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QShortcut, QSplitter, QProgressDialog
+    QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QAbstractItemView, QSpinBox, QShortcut, QSplitter, QProgressDialog, \
+    QDesktopWidget
 from PyQt5.QtGui import QPalette, QKeySequence
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest
@@ -1762,8 +1763,21 @@ class XAnoS_Components(QWidget):
         
         
 if __name__=='__main__':
-    app=pg.QtGui.QApplication(sys.argv)
+    #app=pg.QtGui.QApplication(sys.argv)
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    app = QApplication(sys.argv)
+    try:
+        # app.setAttribute(Qt.AA_EnableHighDpiScaling)
+        app.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    except:
+        pass
     w=XAnoS_Components()
+    resolution = QDesktopWidget().screenGeometry()
+    w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
+    w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
+           int(resolution.height() / 2) - int(w.frameSize().height() / 2))
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     w.setWindowTitle('XAnoS_Components')
     # w.setGeometry(20,20,1000,800)
     

@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, QTableWidgetItem, QGridLayout, QTabWidget, QGraphicsEllipseItem
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMessageBox, \
+    QCheckBox, QSpinBox, QComboBox, QListWidget, QDialog, QFileDialog, QProgressBar, QTableWidget, \
+    QTableWidgetItem, QGridLayout, QTabWidget, QGraphicsEllipseItem, QDesktopWidget
 from PyQt5.QtGui import QPalette, QPainter
 from PyQt5.QtCore import Qt, QPoint, QRectF, QObject, pyqtSignal, QThread, QTimer, QProcess
 from PyQt5.uic import loadUi
@@ -687,11 +689,22 @@ class XAnoS_Reducer(QWidget):
         
         
 if __name__=='__main__':
-    app=QApplication(sys.argv)
-    #poniFile='/home/epics/CARS5/Data/Data/saxs/2017-06/Alignment/agbh1.poni'
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    app = QApplication(sys.argv)
+    try:
+        # app.setAttribute(Qt.AA_EnableHighDpiScaling)
+        app.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    except:
+        pass
     w=XAnoS_Reducer()
-    w.setWindowTitle('XAnoS_Reducer')
-    #w.setGeometry(50,50,800,800)
+    w.setWindowTitle('XAnoS Reducer')
+    resolution = QDesktopWidget().screenGeometry()
+    w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
+    w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
+           int(resolution.height() / 2) - int(w.frameSize().height() / 2))
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+    w.show()
     
     w.show()
     sys.exit(app.exec_())
