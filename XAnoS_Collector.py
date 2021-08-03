@@ -495,10 +495,15 @@ class XAnoS_Collector(QWidget):
         self.sampleNameLineEdit.returnPressed.connect(self.sampleNameChanged)
         sampleImgCountLabel=QLabel('Next Image Number')
         self.sampleImgCounterLabel=QLabel('1')
+        sampleNumLabel = QLabel('Sample Num(s)')
+        self.sampleNumLineEdit = QLineEdit('0')
+        self.sampleNumLineEdit.returnPressed.connect(self.sampleNumChanged)
         self.dataColLayout.addWidget(sampleNameLabel,row=row,col=0)
-        self.dataColLayout.addWidget(self.sampleNameLineEdit,row=row,col=1,colspan=3)
-        self.dataColLayout.addWidget(sampleImgCountLabel,row=row,col=4)
-        self.dataColLayout.addWidget(self.sampleImgCounterLabel,row=row,col=5)        
+        self.dataColLayout.addWidget(self.sampleNameLineEdit,row=row,col=1)
+        self.dataColLayout.addWidget(sampleImgCountLabel,row=row,col=2)
+        self.dataColLayout.addWidget(self.sampleImgCounterLabel,row=row,col=3)
+        self.dataColLayout.addWidget(sampleNumLabel,row=row,col=4)
+        self.dataColLayout.addWidget(self.sampleNumLineEdit,row=row,col=5)
         
         
         row=row+1
@@ -687,6 +692,14 @@ class XAnoS_Collector(QWidget):
         self.dataColLayout.addWidget(self.dynamicCollectButton,row=row,col=5)        
         
         self.dataColDock.addWidget(self.dataColLayout)
+
+
+    def sampleNumChanged(self):
+        self.sampleNums=list(map(int,self.sampleNumLineEdit.text().split(',')))
+        if self.positionerTable.rowCount()>0:
+            self.create_measurementList()
+            print(self.sampleIndex)
+
         
     def loopSleepTimeChanged(self):
         try:
@@ -701,7 +714,7 @@ class XAnoS_Collector(QWidget):
         try:
             vol=float(self.pumpVolLineEdit.text())
             try:
-                caput('15IDD:PHDUltra:TargetVolume',vol)
+                caput('15IDD:PHDUltra:TargetVolume',vol,wait=True)
             except:
                 QMessageBox.warning(self,'Pump error','Please check the pump in connected',QMessageBox.Ok)
         except:
@@ -845,6 +858,13 @@ class XAnoS_Collector(QWidget):
                 for keyc in self.positioner_coupled.keys():
                     self.measurementList[keyc].append(self.positioner_coupled[keyc][i])
                 self.measurementCount+=1
+        self.sampleIndex=[]
+        if self.sampleNums!=[0]:
+            for snum in self.sampleNums:
+                for i in range(snum,self.measurementCount,coupled_len):
+                    self.sampleIndex.append(i)
+            self.sampleIndex.sort()
+
         
         
     def check_motorLimits(self):
@@ -1058,7 +1078,7 @@ class XAnoS_Collector(QWidget):
         """
         Changes the absorber number used for the measurments
         """
-        caput(self.motors['absorber']['PV'],self.absSpinBox.value())
+        caput(self.motors['absorber']['PV'],self.absSpinBox.value(),wait=True)
         
     def expTimeChanged(self):
         """
@@ -1240,6 +1260,10 @@ class XAnoS_Collector(QWidget):
                 if self.abort:
                     break
                 self.collect_data()
+                if self.autoPumpCheckBox.isChecked() and not self.darkImage:
+                    self.pump_solution()
+                    self.instrumentStatus.setText('<font color="Green">Pumping Done</font>')
+
                 if self.autoReduceCheckBox.isChecked():
                     self.redServerSocket.send_string(self.serverFileOut)
 
@@ -1346,12 +1370,13 @@ class XAnoS_Collector(QWidget):
                                         caput(self.motors[motorname]['PV']+'AO.VAL',self.measurementList[motorname][
                                             i],wait=True)
                                         self.energyWidget.feedback_ON()
-                                        for iwait in range(300):
+                                        stablize_time=int(self.energyWidget.stablizationTimeLineEdit.text())
+                                        for iwait in range(stablize_time*10):
                                             if self.abort:
                                                 break
                                             self.instrumentStatus.setText(
                                                 '<font color="Red">Waiting for the feedback to stabilize. Please '
-                                                'wait for %d sec</font>' % ((30000 - iwait * 100) / 1000))
+                                                'wait for %d sec</font>' % ((stablize_time*1000 - iwait * 100) / 1000))
                                             QtTest.QTest.qWait(100)
                                     if MonoBacklashReversed:
                                         caput('15IDA:m10.BDST',0.1,wait=True)
@@ -1374,7 +1399,8 @@ class XAnoS_Collector(QWidget):
                                 elif motorname=='Undulator_ID15Energy':
                                     caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
                                 else:
-                                    caput(self.motors[motorname]['PV']+'.VAL',self.measurementList[motorname][i],wait=False)
+                                    caput(self.motors[motorname]['PV']+'.VAL',self.measurementList[motorname][i],
+                                          wait=False)
                             QtTest.QTest.qWait(100)
                             moving=self.checkMotorsMoving()
 
@@ -1398,6 +1424,9 @@ class XAnoS_Collector(QWidget):
                                 if self.abort:
                                     break
                                 self.collect_data()
+                                if self.autoPumpCheckBox.isChecked() and not self.darkImage and (i+1) in self.sampleIndex:
+                                    self.pump_solution()
+                                    self.instrumentStatus.setText('<font color="Green">Pumping Done</font>')
                                 if self.autoReduceCheckBox.isChecked():
                                     self.redServerSocket.send_string(self.serverFileOut)
                                 if self.sleepTime>1e-3:
@@ -1571,7 +1600,7 @@ class XAnoS_Collector(QWidget):
         """
         Put the shutter ON
         """
-        caput(self.motors['shutter']['PV'],0)
+        caput(self.motors['shutter']['PV'],0,wait=True)
         shutterTime = float(self.shutterTimeLineEdit.text())
         QtTest.QTest.qWait(shutterTime * 1000)  # waiting for 0.3 seconds to open the shutter
         
@@ -1579,7 +1608,7 @@ class XAnoS_Collector(QWidget):
         """
         Put the shutter OFF
         """
-        caput(self.motors['shutter']['PV'],1)
+        caput(self.motors['shutter']['PV'],1,wait=True)
             
         
     def count_em(self):
@@ -1745,23 +1774,24 @@ class XAnoS_Collector(QWidget):
             self.sampleCounter+=1
             self.update_counter_record()        
             self.sampleImgCounterLabel.setText(str(self.sampleCounter))
-        if self.autoPumpCheckBox.isChecked() and not self.darkImage:
-            caput('15IDD:PHDUltra:TargetVolume',float(self.pumpVolLineEdit.text()))
-            caput('15IDD:PHDUltra:Infuse',1)
-            self.palette.setColor(QPalette.Foreground,Qt.red)
-            self.instrumentStatus.setPalette(self.palette)
-            t1=time.time()
-            QtTest.QTest.qWait(5*1000)
-            while caget('15IDD:PHDUltra:PumpState',as_string=True)!='Idle':
-                self.instrumentStatus.setText('<font color="Red">Pumping new solution for next frame. Please wait...</font>')
-                QtTest.QTest.qWait(10)
-            t2=time.time()
-            print(t2-t1)
-            caput("15IDD:PHDUltra:ClearVolume",0)
-            caput("15IDD:PHDUltra:Infuse",0)
-            #self.palette.setColor(QPalette.Foreground,Qt.red)
-            #self.instrumentStatus.setPalette(self.palette)
-            self.instrumentStatus.setText('<font color="Green">Done</font>')
+
+    def pump_solution(self):
+        caput('15IDD:PHDUltra:TargetVolume', float(self.pumpVolLineEdit.text()), wait=True)
+        caput('15IDD:PHDUltra:Infuse', 1, wait=True)
+        self.palette.setColor(QPalette.Foreground, Qt.red)
+        self.instrumentStatus.setPalette(self.palette)
+        t1 = time.time()
+        self.instrumentStatus.setText(
+            '<font color="Red">Pumping new solution for next frame. Please wait...</font>')
+        QtTest.QTest.qWait(5 * 1000)
+        while caget('15IDD:PHDUltra:PumpState', as_string=True) != 'Idle':
+            QtTest.QTest.qWait(10)
+        t2 = time.time()
+        print(t2 - t1)
+        caput("15IDD:PHDUltra:ClearVolume", 0, wait=True)
+        caput("15IDD:PHDUltra:Infuse", 0, wait=True)
+        # self.palette.setColor(QPalette.Foreground,Qt.red)
+        # self.instrumentStatus.setPalette(self.palette)
             
             
         
