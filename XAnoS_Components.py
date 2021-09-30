@@ -1534,7 +1534,7 @@ class XAnoS_Components(QWidget):
         """
         Calculates the residual for ASAXS_split_2
         """
-        return np.sum(np.array([np.sum([A[i,j]*x[j]-B[i] for j in range(3)]) for i in range(A.shape[0])])**2)
+        return np.sum(np.array([np.sum([A[i,j]*x[j]-B[i] for j in range(len(x))]) for i in range(A.shape[0])])**2)
             
     def ASAXS_split_2(self):
         """
@@ -1581,22 +1581,35 @@ class XAnoS_Components(QWidget):
         self.AIndex={}
         self.AMatrix=np.zeros((Ne,Np+int(sp.special.comb(Np,2))))
         self.BMatrix=None
+
         for k in range(Ne):
+            self.r_index = []  # resonant index
+            self.c_index = {}  # cross_index
             ind=0
             for i in range(Np):
                 if self.elements[i]=='x':
-                    fe[self.elements[i]]=np.complex(1.0,0.0)
+                    fe[self.elements[i]]=complex(1.0,0.0)
+                    self.nr_index=ind #non-resonant index
                 else:
                     f0=self.xrdb.f0(self.elements[i],0.0)
                     f1,f2=self.get_f1_f2(self.elements[i],(self.data[self.fnames[k]]['Energy']-self.EOff))
-                    fe[self.elements[i]]=np.complex(f0+f1,f2)
+                    fe[self.elements[i]]=complex(f0+f1,f2)
+                    self.r_index.append(ind)
                 self.AMatrix[k,ind]=np.absolute(fe[self.elements[i]])**2
                 self.AIndex['S_%s-%s'%(self.elements[i],self.elements[i])]=ind
                 ind+=1
+            try: #If the nr_index is not found then the first element will be considered as a non-resonant element
+                self.nr_index
+            except:
+                self.nr_index=0
             for i in range(Np-1):
                 for j in range(i+1,Np):
                     self.AMatrix[k,ind]=2*np.real(fe[self.elements[i]]*np.conjugate(fe[self.elements[j]]))
                     self.AIndex['S_%s-%s'%(self.elements[i],self.elements[j])]=ind
+                    if i==self.nr_index:
+                        self.c_index[j]=ind
+                    elif j==self.nr_index:
+                        self.c_index[i]=ind
                     ind+=1
 
             if self.BMatrix is not None:
@@ -1628,28 +1641,56 @@ class XAnoS_Components(QWidget):
             tot=[]
             self.components={}
             ans=QMessageBox.Yes
+            energy=[self.data[self.fnames[k]]['Energy'] for k in range(Ne)]
             f1=[self.xrdb.f1_chantler(element=self.elements[Np-1],energy=self.data[self.fnames[k]]['Energy']*1e3,smoothing=0) for k in range(Ne)]
             # ans=QMessageBox.question(self,'Question','Do you like to look at each individual Q for this analysis?',QMessageBox.Yes, QMessageBox.No)
             self.ASAXSProgressBar.setMinimum(0)
             self.ASAXSProgressBar.setMaximum(self.BMatrix.shape[1])
             self.raiseDock(self.ASAXSCheckPlotDock)
+            self.stopPushButton.setEnabled(True)
+            stime=time.time()
+            Ndata=0
+            self.stopCalc=False
             for i in range(self.BMatrix.shape[1]):
-                X.append(sp.linalg.lstsq(self.AMatrix,self.BMatrix[:,i],lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0])
-                tot.append(np.dot(self.AMatrix,X[-1]))            
-                # if ans==QMessageBox.Yes:
-                self.ASAXSCheckPlotWidget.setTitle('Q=%.5f'%self.qintp[i])
-                self.ASAXSCheckPlotWidget.add_data(f1,self.BMatrix[:,i],name='Data')
-                self.ASAXSCheckPlotWidget.add_data(f1,tot[-1],name='Fit',fit=True)
-                self.ASAXSCheckPlotWidget.Plot(['Data','Fit'])
-                # ans=QMessageBox.question(self,'Question','Do you like to see the next Q?',QMessageBox.Yes, QMessageBox.No)
-                for key in self.AIndex.keys():
-                    try:
-                        self.components[key].append(X[-1][self.AIndex[key]]) 
-                    except:
-                        self.components[key]=[X[-1][self.AIndex[key]]]
+                if not self.stopCalc:
+                    xt=sp.linalg.lstsq(self.AMatrix,self.BMatrix[:,i],lapack_driver='gelsd',check_finite=False,overwrite_a=True,overwrite_b=True)[0]
+                    cons=[]
+                    bounds=[]
+                    for ind in self.r_index:
+                        ind2=self.c_index[ind]
+                        cons.append({'type': 'eq', 'fun': lambda x: x[ind]-x[ind2]**2/x[self.nr_index]})
+                    for ind in range(Np):
+                        bounds.append((1e-10,None))
+                    for ind in range(Np,self.AMatrix.shape[1]):
+                        bounds.append((None,None))
+                    res = minimize(self.residual,np.abs(xt), args=(self.AMatrix, self.BMatrix[:, i]),
+                                   constraints=cons, bounds=bounds)
+                    X.append(res.x)
+                    tot.append(np.dot(self.AMatrix,X[-1]))
+                    # if ans==QMessageBox.Yes:
+                    self.ASAXSCheckPlotWidget.setTitle('Q=%.5f'%self.qintp[i])
+                    self.ASAXSCheckPlotWidget.add_data(f1,self.BMatrix[:,i],name='Data')
+                    self.ASAXSCheckPlotWidget.add_data(f1,tot[-1],name='Fit',fit=True)
+                    self.ASAXSCheckPlotWidget.setXLabel('Energy (keV)')
+                    self.ASAXSCheckPlotWidget.setYLabel('Intensity')
+                    self.ASAXSCheckPlotWidget.Plot(['Data','Fit'])
+                    # ans=QMessageBox.question(self,'Question','Do you like to see the next Q?',QMessageBox.Yes, QMessageBox.No)
+                    for key in self.AIndex.keys():
+                        try:
+                            self.components[key].append(X[-1][self.AIndex[key]])
+                        except:
+                            self.components[key]=[X[-1][self.AIndex[key]]]
+                    self.ASAXSProgressBar.setValue(i)
+                    pg.QtGui.QApplication.processEvents()
+                    Ndata+=1
+                else:
+                    break
+                ctime = time.time()
+                tleft = (len(self.qintp) - i - 1) * (ctime - stime) / (i + 1)
                 self.ASAXSProgressBar.setValue(i)
-                pg.QtGui.QApplication.processEvents()
 
+            self.stopCalc = False
+            self.stopPushButton.setDisabled(True)
             #try:
             #    fplot.close()
             #except:
@@ -1657,18 +1698,16 @@ class XAnoS_Components(QWidget):
             for i in range(Np):
                 key='S_%s-%s'%(self.elements[i],self.elements[i])
                 self.components[key]=np.array(self.components[key])
-                self.directComponentPlotWidget.add_data(self.qintp,self.components[key],name=key)
+                self.directComponentPlotWidget.add_data(self.qintp[0:Ndata],self.components[key],name=key)
             tot=np.array(tot)
-            #print(len(self.qintp),tot.shape)
-            self.directComponentPlotWidget.add_data(self.qintp,tot[:,0],name='Total')
             self.directComponentListWidget.addItem('Total')
-            self.directComponentPlotWidget.add_data(self.qintp,self.data[self.fnames[0]]['yintp'],name='data_%s'%self.datanames[0])
+            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata],self.data[self.fnames[0]]['yintp'][0:Ndata],name='data_%s'%self.datanames[0])
             self.directComponentListWidget.addItem('data_%s'%self.datanames[0])
             for i in range(Np-1):
                 for j in range(i+1,Np):
                     key='S_%s-%s'%(self.elements[i],self.elements[j])
                     self.components[key]=np.array(self.components[key])
-                    self.crossComponentPlotWidget.add_data(self.qintp,self.components[key],name=key)
+                    self.crossComponentPlotWidget.add_data(self.qintp[0:Ndata],self.components[key],name=key)
             self.directComponentListWidget.item(0).setSelected(True)
             self.crossComponentListWidget.item(0).setSelected(True)
             self.saveASAXSPushButton.setEnabled(True)
