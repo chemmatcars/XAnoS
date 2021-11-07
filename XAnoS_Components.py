@@ -1807,19 +1807,24 @@ class XAnoS_Components(QWidget):
 if __name__=='__main__':
     #app=pg.QtGui.QApplication(sys.argv)
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     app = QApplication(sys.argv)
     try:
         # app.setAttribute(Qt.AA_EnableHighDpiScaling)
         app.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     except:
         pass
+    fnames=[]
     w=XAnoS_Components()
+    if len(sys.argv) > 1:
+        for fname in sys.argv[1:]:
+            fnames.append(fname)
+        w.import_data(fnames)
     resolution = QDesktopWidget().screenGeometry()
     w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
     w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
            int(resolution.height() / 2) - int(w.frameSize().height() / 2))
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     w.setWindowTitle('XAnoS_Components')
     # w.setGeometry(20,20,1000,800)
     

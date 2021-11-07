@@ -1,7 +1,7 @@
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QFileDialog, QDesktopWidget
 from PyQt5.QtGui import QDoubleValidator, QIntValidator,QTextCursor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QProcess
 import sys
 from readData import average1DSAXS, interpolate_data, read1DSAXS, bkgSub1DSAXS, write1DSAXS
 import numpy as np
@@ -219,15 +219,17 @@ class XAnoS_Batch_Processor_2(QWidget):
                 reply=QMessageBox.question(self,'Component Splitting','Do you like to get component splitting from the files?'
                                      , QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
                 if reply == QMessageBox.Yes:
-                    w=XAnoS_Components()
-                    resolution = QDesktopWidget().screenGeometry()
-                    w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
-                    w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
-                    int(resolution.height() / 2) - int(w.frameSize().height() / 2))
-                    w.setWindowTitle('XAnoS_Components')
-                    w.import_data(dataFiles=self.outputFnames)
-                    w.show()
-                    
+                    curdir = os.getcwd()
+                    QProcess.startDetached("python",[os.path.join(curdir,"XAnoS_Components.py")]+self.outputFnames)
+                    # w=XAnoS_Components()
+                    # resolution = QDesktopWidget().screenGeometry()
+                    # w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
+                    # w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
+                    # int(resolution.height() / 2) - int(w.frameSize().height() / 2))
+                    # w.setWindowTitle('XAnoS_Components')
+                    # w.import_data(dataFiles=self.outputFnames)
+                    # w.show()
+                    #
             else:
                 QMessageBox.warning(self,'File Error','Please select first sample file',QMessageBox.Ok)
         else:
@@ -438,6 +440,8 @@ class XAnoS_Batch_Processor_2(QWidget):
 
 if __name__=='__main__':
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     app = QApplication(sys.argv)
     try:
         # app.setAttribute(Qt.AA_EnableHighDpiScaling)
@@ -450,7 +454,5 @@ if __name__=='__main__':
     w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
     w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
            int(resolution.height() / 2) - int(w.frameSize().height() / 2))
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     w.show()
     sys.exit(app.exec_())

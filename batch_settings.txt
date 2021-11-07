@@ -1,5 +1,5 @@
-samNums=[14]
-bkgNum=15
+samNums=[28]
+bkgNum=29
 stdNum=1
 mtNum=3
 airNum=2
