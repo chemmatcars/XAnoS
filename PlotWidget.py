@@ -145,6 +145,8 @@ class PlotWidget(QWidget):
         """
         if not (isinstance(yerr,list) or isinstance(yerr,np.ndarray)):
             yerr=np.ones_like(y)
+        x=np.array(x)
+        y=np.array(y)
         if len(x)==len(y) and len(y)==len(yerr):
             if name is None:
                 dname=str(self.data_num)

@@ -725,7 +725,7 @@ def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt'):
             textEdit.moveCursor(QTextCursor.End)
             QApplication.processEvents()
         fnames.append(pfname)
-    return fdir, pfnames
+    return fdir, fnames
             
         
         

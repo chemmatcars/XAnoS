@@ -210,20 +210,24 @@ class XAnoS_Batch_Processor_2(QWidget):
                         QApplication.processEvents()
                         t+=1
 
-
                 self.data=data
-                fdir,fnames=write1DSAXS(bsub_data,textEdit=self.infoTextEdit)
+                #fdir,fnames=write1DSAXS(bsub_data,textEdit=self.infoTextEdit)
                 self.save_settings()
                 self.infoTextEdit.append('Batch processing completed successfully!')
                 self.infoTextEdit.moveCursor(QTextCursor.End)
                 QApplication.processEvents()
                 reply=QMessageBox.question(self,'Component Splitting','Do you like to get component splitting from the files?'
                                      , QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
-                if reply == QMesssageBox.Yes:
-                    comp_widget=XAnoS_Components(self)
-                    comp_widget.setWindowTitle('XAnoS_Components')
-                    comp_widget.import_data(dataFiles=fnames)
-                    comp_widget.show()
+                if reply == QMessageBox.Yes:
+                    w=XAnoS_Components()
+                    resolution = QDesktopWidget().screenGeometry()
+                    w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
+                    w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
+                    int(resolution.height() / 2) - int(w.frameSize().height() / 2))
+                    w.setWindowTitle('XAnoS_Components')
+                    w.import_data(dataFiles=self.outputFnames)
+                    w.show()
+                    
             else:
                 QMessageBox.warning(self,'File Error','Please select first sample file',QMessageBox.Ok)
         else:
