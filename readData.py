@@ -708,6 +708,7 @@ def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt'):
         fdir=os.path.join(os.path.dirname(fname),'Bkg_sub_and_Norm')
     if not os.path.exists(fdir):
         os.makedirs(fdir)
+    fnames=[]
     for fname in data.keys():
         pfname=os.path.join(fdir,os.path.splitext(os.path.basename(fname))[0]+fterminator)
         header='Processed data on %s\n'%time.asctime()
@@ -723,7 +724,8 @@ def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt'):
             textEdit.append('Data saved in %s...\n'%pfname)
             textEdit.moveCursor(QTextCursor.End)
             QApplication.processEvents()
-    return fdir
+        fnames.append(pfname)
+    return fdir, pfnames
             
         
         

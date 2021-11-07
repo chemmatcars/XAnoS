@@ -185,7 +185,7 @@ class XAnoS_Components(QWidget):
         dataLabel=QLabel('Data files')
         self.dataDockLayout.addWidget(dataLabel,row=row,col=col)
         self.openDataPushButton=QPushButton('Import data')
-        self.openDataPushButton.clicked.connect(self.import_data)
+        self.openDataPushButton.clicked.connect(lambda x:self.import_data(dataFiles=None))
         col+=1
         self.dataDockLayout.addWidget(self.openDataPushButton,row=row,col=col,colspan=2)
         
@@ -481,13 +481,16 @@ class XAnoS_Components(QWidget):
         #except:
         #    QMessageBox.warning(self,'Value error','Please input numeric values only',QMessageBox.Ok)
         
-    def import_data(self):
+    def import_data(self,dataFiles=None):
         """
         Imports data to populate the dataListWidget
         """
         if self.dataListWidget.count()==0:
             self.fCounter=0
-        self.dataFiles=QFileDialog.getOpenFileNames(self,caption='Import data',directory=self.dataDir,filter='Data files (*.dat *.txt *.chi)')[0]
+        if dataFiles is None:
+            self.dataFiles=QFileDialog.getOpenFileNames(self,caption='Import data',directory=self.dataDir,filter='Data files (*.dat *.txt *.chi)')[0]
+        else:
+            self.dataFiles=dataFiles
         if len(self.dataFiles)>0:
             self.dataDir=os.path.dirname(self.dataFiles[0])
             self.progressDialog=QProgressDialog(self)
