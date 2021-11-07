@@ -92,6 +92,7 @@ class XAnoS_Collector(QWidget):
         #camonitor(self.scalers['15IDD_scaler_start']['PV'],callback=self.changeCountingState)
         camonitor(self.motors['absorber']['PV'],callback=self.monitorAbsorber)
         camonitor(self.motors['shutter']['PV'],callback=self.monitorShutter)
+        self.sampleNumChanged()
         if self.autoShutterCheckBox.checkState()>0:
             if caget(self.motors['shutter']['PV'])==0:
                 ans=QMessageBox.question(self,'Shutter status','The shutter is open. Do you want to close the shutter to proceed further?',QMessageBox.No,QMessageBox.Yes)
@@ -100,9 +101,8 @@ class XAnoS_Collector(QWidget):
         #self.undulatorStatusLabel.setPalette(self.palette)
         #self.monochromatorStatusLabel.setPalette(self.palette)
         
-        self.redServerContext = zmq.Context()
-        self.redServerSocket = self.redServerContext.socket(zmq.PUB)
-        self.redServerSocket.bind("tcp://*:%s" %'2036')
+
+
 
         
         
@@ -425,7 +425,7 @@ class XAnoS_Collector(QWidget):
                 QtTest.QTest.qWait(10)
             caput(self.BLParams['Undulator_Energy']['PV']+'Set.VAL',energy+0.17)
             caput('15ID:Start.VAL',1)
-            QtTest.QTest.qWait(self.sleepTime*1000)
+            QtTest.QTest.qWait(int(self.sleepTime*1000))
             #caput('15IDA:pid_mono_1.FBON',1) #Switching intensity feedback on
         except:
             QMessageBox.warning(self,'Value error','The energy value should be floating point value.',QMessageBox.Ok)
@@ -673,6 +673,7 @@ class XAnoS_Collector(QWidget):
         #self.collectDarkButton.clicked.connect(self.collect_dark)
         self.autoReduceCheckBox=QCheckBox('Auto Reduce')
         self.autoReduceCheckBox.setTristate(False)
+        self.autoReduceCheckBox.stateChanged.connect(self.autoReduce)
         self.staticCollectButton=QPushButton('Collect Static')
         self.staticCollectButton.clicked.connect(self.static_collect)
         self.loopSpinBox=QSpinBox()
@@ -692,6 +693,15 @@ class XAnoS_Collector(QWidget):
         self.dataColLayout.addWidget(self.dynamicCollectButton,row=row,col=5)        
         
         self.dataColDock.addWidget(self.dataColLayout)
+
+    def autoReduce(self):
+        if self.autoReduceCheckBox.isChecked():
+            self.redServerContext = zmq.Context()
+            self.redServerSocket = self.redServerContext.socket(zmq.PUB)
+            self.redServerSocket.bind("tcp://*:%s" % '2036')
+        else:
+            self.redServerSocket.close()
+
 
 
     def sampleNumChanged(self):
@@ -1272,7 +1282,7 @@ class XAnoS_Collector(QWidget):
                     #self.instrumentStatus.setPalette(self.palette)
                     caput(self.scalers['15IDD_scaler_mode']['PV'], 1, wait=True)
                     self.instrumentStatus.setText('<font color="Red">Sleeping for %s s. Please wait...</font>'%self.sleepTime)
-                    QtTest.QTest.qWait(self.sleepTime*1000)
+                    QtTest.QTest.qWait(int(self.sleepTime*1000))
                     caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True)
 
                 self.measurementProgressDialog.setValue(i+1)
@@ -1432,13 +1442,13 @@ class XAnoS_Collector(QWidget):
                                 if self.sleepTime>1e-3:
                                     caput(self.scalers['15IDD_scaler_mode']['PV'], 1, wait=True)
                                     self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.sleepTime)
-                                    QtTest.QTest.qWait(self.sleepTime*1000)
+                                    QtTest.QTest.qWait(int(self.sleepTime*1000))
                                     caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True)
                                 self.measurementProgressDialog.setValue(loop*self.measurementCount*self.frameCount+self.frameCount*i+j+1)
                         if self.loopSleepTime>1e-3:
                             caput(self.scalers['15IDD_scaler_mode']['PV'], 1, wait=True)
                             self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.loopSleepTime)
-                            QtTest.QTest.qWait(self.loopSleepTime*1000)
+                            QtTest.QTest.qWait((self.loopSleepTime*1000))
                             caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True)
                         #caput('15PIL3:cam1:FileNumber', 1)
                         #caput('15PIL3:cam1:AutoIncrement', 0)
@@ -1602,7 +1612,7 @@ class XAnoS_Collector(QWidget):
         """
         caput(self.motors['shutter']['PV'],0,wait=True)
         shutterTime = float(self.shutterTimeLineEdit.text())
-        QtTest.QTest.qWait(shutterTime * 1000)  # waiting for 0.3 seconds to open the shutter
+        QtTest.QTest.qWait(int(shutterTime * 1000))  # waiting for 0.3 seconds to open the shutter
         
     def shutter_OFF(self):
         """
@@ -1783,7 +1793,7 @@ class XAnoS_Collector(QWidget):
         t1 = time.time()
         self.instrumentStatus.setText(
             '<font color="Red">Pumping new solution for next frame. Please wait...</font>')
-        QtTest.QTest.qWait(5 * 1000)
+        QtTest.QTest.qWait(int(5 * 1000))
         while caget('15IDD:PHDUltra:PumpState', as_string=True) != 'Idle':
             QtTest.QTest.qWait(10)
         t2 = time.time()

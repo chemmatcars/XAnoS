@@ -313,7 +313,8 @@ class XAnoS_Reducer(QWidget):
         if extn=='':
             fname=name+'.msk'
         elif extn!='.msk':
-            QMessageBox.warning(self,'File extension error','Please donot provide file extension other than ".msk". Thank you!')
+            QMessageBox.warning(self,'File extension error','Please do not provide file extension other than ".msk". '
+                                                            'Thank you!')
             return
         else:
             tmpfile=fb.edfimage.EdfImage(data=self.maskWidget.full_mask_data.T,header=None)
@@ -345,14 +346,36 @@ class XAnoS_Reducer(QWidget):
         else:
             QMessageBox.warning(self,'File error','Please import a data file first for creating the calibration file',QMessageBox.Ok)
             
+    # def save_calibration(self):
+    #     fname=str(QFileDialog.getSaveFileName(self,'Calibration file',directory=self.curDir,filter='Clibration files (*.poni)')[0])
+    #     tfname=os.path.splitext(fname)[0]+'.poni'
+    #     self.calWidget.applyPyFAI()
+    #     self.calWidget.geo.save(tfname)
+    #     self.poniFile=tfname
+    #     self.poniFileLineEdit.setText(self.poniFile)
+    #     self.openPoniFile(file=self.poniFile)
+
     def save_calibration(self):
         fname=str(QFileDialog.getSaveFileName(self,'Calibration file',directory=self.curDir,filter='Clibration files (*.poni)')[0])
         tfname=os.path.splitext(fname)[0]+'.poni'
         self.calWidget.applyPyFAI()
-        self.calWidget.geo.save(tfname)      
+        fh=open(tfname,'w')
+        fh.write('#Calibration file was saved on %s\n'%time.asctime())
+        fh.write('Distance: %.6f\n'%self.calWidget.geo.dist)
+        fh.write('PixelSize1: %.6f\n'%self.calWidget.geo.pixel1)
+        fh.write('PixelSize2: %.6f\n' % self.calWidget.geo.pixel2)
+        fh.write('Poni1: %.6f\n' % self.calWidget.geo.poni1)
+        fh.write('Poni2: %.6f\n' % self.calWidget.geo.poni2)
+        fh.write('Rot1: %.6f\n' % self.calWidget.geo.rot1)
+        fh.write('Rot2: %.6f\n' % self.calWidget.geo.rot2)
+        fh.write('Rot3: %.6f\n' % self.calWidget.geo.rot3)
+        fh.write('Wavelength: %.6e\n' % self.calWidget.geo.wavelength)
+        fh.close()
         self.poniFile=tfname
         self.poniFileLineEdit.setText(self.poniFile)
         self.openPoniFile(file=self.poniFile)
+
+
         
     def openPoniFile(self,file=None):
         """
@@ -599,7 +622,6 @@ class XAnoS_Reducer(QWidget):
                     imageMask=fb.open(self.maskFile).data
                 else:
                     imageMask=None
-                print(imageMask)
 #                QApplication.processEvents()
                 #print(self.azimuthalRange)
                 self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',

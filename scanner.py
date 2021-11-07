@@ -2,7 +2,7 @@ import pyqtgraph as pg
 from epics import caget, caput, camonitor, camonitor_clear
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication, QLabel, QTableWidget, QListWidget, QCheckBox, QComboBox, QLineEdit, QPushButton, QMessageBox, QFileDialog,QAbstractItemView
 from PyQt5.QtCore import QObject, pyqtSignal, Qt
-from PyQt5.QtGui import QSizePolicy
+from PyQt5.Qt import QSizePolicy
 from PyQt5 import QtTest
 from pyqtgraph.dockarea import DockArea, Dock
 import numpy as np
