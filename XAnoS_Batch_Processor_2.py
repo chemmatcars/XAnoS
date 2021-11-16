@@ -218,6 +218,12 @@ class XAnoS_Batch_Processor_2(QWidget):
                 QApplication.processEvents()
                 reply=QMessageBox.question(self,'Component Splitting','Do you like to get component splitting from the files?'
                                      , QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+
+                datadir=os.path.dirname(self.outputFnames[0])
+                fh=open(os.path.join(datadir,'datafiles.macro'),'w')
+                for tfname in self.outputFnames:
+                    fh.write(tfname+'\n')
+                fh.close()
                 if reply == QMessageBox.Yes:
                     curdir = os.getcwd()
                     QProcess.startDetached("python",[os.path.join(curdir,"XAnoS_Components.py")]+self.outputFnames)
@@ -229,7 +235,7 @@ class XAnoS_Batch_Processor_2(QWidget):
                     # w.setWindowTitle('XAnoS_Components')
                     # w.import_data(dataFiles=self.outputFnames)
                     # w.show()
-                    #
+
             else:
                 QMessageBox.warning(self,'File Error','Please select first sample file',QMessageBox.Ok)
         else:
