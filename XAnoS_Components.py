@@ -488,10 +488,15 @@ class XAnoS_Components(QWidget):
         if self.dataListWidget.count()==0:
             self.fCounter=0
         if dataFiles is None:
-            self.dataFiles=QFileDialog.getOpenFileNames(self,caption='Import data',directory=self.dataDir,filter='Data files (*.dat *.txt *.chi)')[0]
+            self.dataFiles=QFileDialog.getOpenFileNames(self,caption='Import data',directory=self.dataDir,filter='Data files (*.dat *.txt *.chi *.macro)')[0]
         else:
             self.dataFiles=dataFiles
         if len(self.dataFiles)>0:
+            if os.path.splitext(self.dataFiles[0])[1]=='.macro':
+                fh=open(self.dataFiles[0],'r')
+                self.dataFiles=[]
+                for fname in fh.readlines():
+                    self.dataFiles.append(fname.strip())
             self.dataDir=os.path.dirname(self.dataFiles[0])
             self.progressDialog=QProgressDialog(self)
             self.progressDialog.setAutoClose(True)
