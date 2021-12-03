@@ -1456,6 +1456,7 @@ class XAnoS_Components(QWidget):
             self.raiseDock(self.ASAXSCheckPlotDock)
             self.stopPushButton.setEnabled(True)
             stime=time.time()
+            i_ignore=[]
             for i in range(len(self.qintp)):
                 if not self.stopCalc:
                     x = self.brute_finderrbars(self.AMatrix, self.BMatrix[:, i])
@@ -1468,6 +1469,15 @@ class XAnoS_Components(QWidget):
                         xn=[x1,x2,x2**2/x1+x3]
                     else:
                         xn=[x1,x2,x3]
+                    if xn[0]>2*np.mean(self.BMatrix[:,i]):
+                        i_ignore.append(i)
+                        print('%d: qintp=%.4f ignored'%(i,self.qintp[i]))
+                    #     if np.abs((np.log10(xn[-1])-np.log10(self.XMatrix[-1][-1]))*100/np.log10(self.XMatrix[-1][-1]))<100:
+                    #         self.XMatrix.append(xn)
+                    #     else:
+                    #         self.XMatrix.append(self.XMatrix[-1])
+                    #         print(self.qintp[i],' ignored')
+                    # else:
                     self.XMatrix.append(xn)
                     tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
                     self.ASAXSCheckPlotWidget.errorbarCheckBox.setChecked(True)
@@ -1493,12 +1503,15 @@ class XAnoS_Components(QWidget):
             self.XMatrix = np.array(self.XMatrix)
             self.XMatrixErr = np.array(self.XMatrixErr)
             Ndata=self.XMatrix.shape[0]
-
-            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], self.XMatrix[:, 0], yerr=self.XMatrixErr[:, 0], name='SAXS-term')
-            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], self.XMatrix[:, 2], yerr=self.XMatrixErr[:, 2], name='Resonant-term')
-            tot = np.sum(np.dot([self.AMatrix[0, 0:Ndata]], self.XMatrix.T), axis=0)
-            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], tot, name='Total')
-            self.directComponentPlotWidget.add_data(self.qintp[0:Ndata], self.data[self.fnames[0]]['yintp'][0:Ndata],
+            qintp=np.delete(self.qintp[0:Ndata],i_ignore,axis=None)
+            XMatrix=np.delete(self.XMatrix,i_ignore,axis=0)
+            XMatrixErr=np.delete(self.XMatrixErr,i_ignore,axis=0)
+            data=np.delete(self.data[self.fnames[0]]['yintp'][0:Ndata],i_ignore,axis=None)
+            self.directComponentPlotWidget.add_data(qintp, XMatrix[:, 0], yerr=XMatrixErr[:, 0], name='SAXS-term')
+            self.directComponentPlotWidget.add_data(qintp, XMatrix[:, 2], yerr=XMatrixErr[:, 2], name='Resonant-term')
+            tot = np.sum(np.dot([self.AMatrix[0,:]], XMatrix.T), axis=0)
+            self.directComponentPlotWidget.add_data(qintp, tot, name='Total')
+            self.directComponentPlotWidget.add_data(qintp, data,
                                                     name='Data_%s' % self.datanames[0])
             self.directComponentListWidget.clear()
             self.crossComponentListWidget.clear()
@@ -1510,23 +1523,24 @@ class XAnoS_Components(QWidget):
             self.directComponentListWidget.addItems(
                 ['SAXS-term', 'Resonant-term', 'Total', 'Data_%s' % self.datanames[0]])
             self.crossComponentListWidget.addItem('Cross-term')
-            self.crossComponentPlotWidget.add_data(self.qintp[0:Ndata], self.XMatrix[:, 1], yerr=self.XMatrixErr[:, 1], name='Cross-term')
+            self.crossComponentPlotWidget.add_data(qintp, XMatrix[:, 1], yerr=XMatrixErr[:, 1], name='Cross-term')
             self.components = {}
-            self.components['SAXS-term'] = self.XMatrix[:, 0]
-            self.components['SAXS-term_err'] = self.XMatrixErr[:, 0]
-            self.components['Resonant-term'] = self.XMatrix[:, 2]
-            self.components['Resonant-term_err'] = self.XMatrixErr[:, 2]
-            self.components['Cross-term'] = self.XMatrix[:, 1]
-            self.components['Cross-term_err'] = self.XMatrixErr[:, 1]
+            self.tqintp=qintp
+            self.components['SAXS-term'] = XMatrix[:, 0]
+            self.components['SAXS-term_err'] = XMatrixErr[:, 0]
+            self.components['Resonant-term'] = XMatrix[:, 2]
+            self.components['Resonant-term_err'] = XMatrixErr[:, 2]
+            self.components['Cross-term'] = XMatrix[:, 1]
+            self.components['Cross-term_err'] = XMatrixErr[:, 1]
             self.components['Total'] = tot
-            self.components['Data_%s' % self.datanames[0]] = self.data[self.fnames[0]]['yintp'][0:Ndata]
+            self.components['Data_%s' % self.datanames[0]] = data
             self.saveASAXSPushButton.setEnabled(True)
             self.directComponentListWidget.itemSelectionChanged.connect(self.directComponentSelectionChanged)
             self.crossComponentListWidget.itemSelectionChanged.connect(self.crossComponentSelectionChanged)
             self.directComponentListWidget.item(0).setSelected(True)
             self.directComponentListWidget.item(1).setSelected(True)
             self.crossComponentListWidget.item(0).setSelected(True)
-            self.ASAXSProgressBar.setValue(Ndata)
+            self.ASAXSProgressBar.setValue(i)
             self.ASAXSProgressBar.reset()
             self.update_ASAXSPlot()
         else:
@@ -1721,6 +1735,7 @@ class XAnoS_Components(QWidget):
             self.saveASAXSPushButton.setEnabled(True)
             self.ASAXSProgressBar.setValue(self.BMatrix.shape[1])
             self.update_ASAXSPlot()
+            self.tqintp=self.qintp
         else:
             QMessageBox.information(self,"ASAXS Error","Please select three or more data sets to get ASAXS components",QMessageBox.Ok)
             self.ASAXSProgressBar.reset()
@@ -1780,7 +1795,7 @@ class XAnoS_Components(QWidget):
                 header=header+file+'\n'
             header=header+'col_names='+str(['Q(inv Angs)']+list(self.components.keys()))+'\n'
             header=header+'Q(inv Angs)\t'
-            data=self.qintp
+            data=self.tqintp
             for key in self.components.keys():
                 header=header+key+'\t'
                 data=np.vstack((data,self.components[key]))
