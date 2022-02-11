@@ -535,7 +535,7 @@ class XAnoS_Components(QWidget):
             xf_bkg_min,xf_bkg_max=self.xrfBkgRangeLineEdit.text().split(':')#float(minf)*np.max(self.data[self.xrfFile]['x'])/100.0,float(maxf)*np.max(self.data[self.xrfFile]['x'])/100.0
             try:
                 self.xrf_base=np.mean(self.data[self.xrfFile]['y'][np.argwhere(self.data[self.xrfFile]['x']>float(xf_bkg_min))[0][0]:
-                                                                   np.argwhere(self.data[self.xrfFile]['x']<float(xf_bkg_max))[-1][0]])
+                                                                   np.argwhere(self.data[self.xrfFile]['x']<float(xf_bkg_max))[-1][0]])*self.data[self.xrfFile]['CF']/self.data[self.xrfFile]['Thickness']
             except:
                 self.xrf_base=0.0
             self.xrfBkgLineEdit.setText('%.3e'%self.xrf_base)
@@ -635,14 +635,15 @@ class XAnoS_Components(QWidget):
                 minf,maxf=self.xrfBkgRangeLineEdit.text().split(':')
                 xf_bkg_min,xf_bkg_max=self.xrfBkgRangeLineEdit.text().split(':')#float(minf)*np.max(self.data[fname]['x'])/100.0,float(maxf)*np.max(self.data[fname]['x'])/100.0
                 try:
-                    self.data[fname]['xrf_bkg']=np.mean(self.data[fname]['y'][np.argwhere(self.data[fname]['x']>float(xf_bkg_min))[0][0]:np.argwhere(self.data[fname]['x']<float(xf_bkg_max))[-1][0]])-self.xrf_base
+                    tbase=np.mean(self.data[fname]['y'][np.argwhere(self.data[fname]['x']>float(xf_bkg_min))[0][0]:np.argwhere(self.data[fname]['x']<float(xf_bkg_max))[-1][0]])
+                    self.data[fname]['xrf_bkg']=tbase*self.data[fname]['CF']/self.data[fname]['Thickness']-self.xrf_base
                 except:#In case no data found between the range provided
                     self.data[fname]['xrf_bkg']=0.0
                 #self.data[fname]['y-flb']=self.data[fname]['CF']*(self.data[fname]['y']-self.xrf_bkg[fname])/self.data[fname]['Thickness']
                 #self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['y-flb'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
             else:
                 self.data[fname]['xrf_bkg']=0.0
-            self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*(self.data[fname]['y']-self.data[fname]['xrf_bkg'])/self.data[fname]['Thickness'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
+            self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['y']/self.data[fname]['Thickness']-self.data[fname]['xrf_bkg'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
         self.metaData['x']=np.array(self.metaData['x'])
         self.metaData['y']=np.array(self.metaData['y'])
         self.metaData['norm']=np.array(self.metaData['norm'])
@@ -765,7 +766,7 @@ class XAnoS_Components(QWidget):
             if filename!='':
                 self.data[filename]=copy.copy(self.data[self.fnames[0]])
                 self.data[filename]['x']=self.qintp
-                self.data[filename]['y']=tdata*(self.data[filename]['Thickness']+self.data[filename]['xrf_bkg'])/self.data[filename]['CF']
+                self.data[filename]['y']=(tdata*self.data[filename]['Thickness']/self.data[filename]['CF']+self.data[filename]['xrf_bkg'])
                 self.data[filename]['yerr']=tdata_err*self.data[filename]['Thickness']/self.data[filename]['CF']
                 self.data[filename]['Monitor']=monitor
                 self.data[filename]['Monitor_corr']=monitorCorr
@@ -1108,7 +1109,7 @@ class XAnoS_Components(QWidget):
             #if self.xrfBkgCheckBox.isChecked():
             #    fun=interp1d(self.data[fname]['x'],self.data[fname]['y-flb'],kind=kind) #Calibration factor and thickness no#rmalization are already applied
             #else:
-            fun=interp1d(self.data[fname]['x'],self.data[fname]['CF']*(self.data[fname]['y']-self.data[fname]['xrf_bkg'])/self.data[fname]['Thickness'],kind=kind)
+            fun=interp1d(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['y']/self.data[fname]['Thickness']-self.data[fname]['xrf_bkg'],kind=kind)
             funerr=interp1d(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],kind=kind)
             self.data[fname]['yintp']=fun(self.qintp)
             self.data[fname]['yintperr']=funerr(self.qintp)
