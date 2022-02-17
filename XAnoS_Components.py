@@ -309,7 +309,7 @@ class XAnoS_Components(QWidget):
         row+=1
         col=0
         self.ASAXSCalcTypeComboBox=QComboBox()
-        self.ASAXSCalcTypeComboBox.addItems(['single-mono','single-poly','single-free','multiple'])
+        self.ASAXSCalcTypeComboBox.addItems(['single-mono','single-hybrid','single-poly','single-free','multiple'])
         self.dataDockLayout.addWidget(self.ASAXSCalcTypeComboBox,row=row,col=col)
         col+=1
         self.ASAXSCalcMethodComboBox=QComboBox()
@@ -1276,6 +1276,8 @@ class XAnoS_Components(QWidget):
             self.ASAXS_split_w_errbars(constraint=True, mono=True)
         elif self.ASAXSCalcTypeComboBox.currentText()=='single-poly':
             self.ASAXS_split_w_errbars(constraint=True, mono=False)
+        elif self.ASAXSCalcTypeComboBox.currentText()=='single-hybrid':
+            self.ASAXS_split_w_errbars(constraint=True,hybrid=True)
         else:
             self.ASAXS_split_3()
             
@@ -1426,7 +1428,7 @@ class XAnoS_Components(QWidget):
         # else:
         #     x3 = x2**2/x1
         #     x3err = np.sqrt((2*x2*x3*x2err/x1)**2+(x2**2*x3*x1err/x1**2)**2)
-        return x1*fac, x1err*fac, x2*fac, x2err*fac, x3*fac, x3err*fac
+        return x1*fac, x1err*fac, x2*fac, x2err*fac, x3*fac, x3err*fac, out.redchi
 
     def brute_finderrbars(self,A,B):
         i,j,k=0,int(A.shape[0]/2),A.shape[0]-1
@@ -1439,7 +1441,7 @@ class XAnoS_Components(QWidget):
         x3=x2**2/np.abs(x1)
         return [np.abs(x1),x2,x3]
 
-    def ASAXS_split_w_errbars(self,constraint=False,mono=False):
+    def ASAXS_split_w_errbars(self,constraint=False,mono=False,hybrid=False):
         """
         This calculates scattering compononents out
         """
@@ -1464,7 +1466,23 @@ class XAnoS_Components(QWidget):
                     #x=[self.BMatrix[0,i],self.BMatrix[0,i]*1e-3,self.BMatrix[0,i]*1e-6]
                     #x=[self.BMatrix[0,i],1,0.0]
                     #x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
-                    x1, x1err, x2, x2err, x3, x3err = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],self.ErrMatrix[:,i], constraint=constraint,mono=mono)
+                    if hybrid:
+                        xm1, xm1err, xm2, xm2err, xm3, xm3err, redchi1 = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],self.ErrMatrix[:,i], constraint=constraint,mono=True)
+                        x1, x1err, x2, x2err, x3, x3err, redchi2 = self.lmfit_finderrbars(x, self.AMatrix,
+                                                                                          self.BMatrix[:, i],
+                                                                                          self.ErrMatrix[:, i],
+                                                                                          constraint=constraint, mono=False)
+                        if redchi1<redchi2:
+                            x1, x1err, x2, x2err, x3, x3err=xm1, xm1err, xm2, xm2err, xm3, xm3err
+                            print('mono accepted',redchi1,redchi2)
+                        else:
+                            print('poly accepted',redchi1,redchi2)
+                    else:
+                        x1, x1err, x2, x2err, x3, x3err, redchi = self.lmfit_finderrbars(x, self.AMatrix,
+                                                                                                self.BMatrix[:, i],
+                                                                                                self.ErrMatrix[:, i],
+                                                                                                constraint=constraint,
+                                                                                                mono=mono)
 
                     if constraint:
                         xn=[x1,x2,x2**2/x1+x3]
