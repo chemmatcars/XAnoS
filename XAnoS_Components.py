@@ -1473,7 +1473,7 @@ class XAnoS_Components(QWidget):
                                                                                           self.ErrMatrix[:, i],
                                                                                           constraint=constraint, mono=False)
                         if redchi1<redchi2:
-                            x1, x1err, x2, x2err, x3, x3err=xm1, xm1err, xm2, xm2err, xm3, xm3err
+                            x1, x1err, x2, x2err, x3, x3err=(xm1+x1)/2, xm1err, (xm2+x2)/2, xm2err, (xm3+x3)/2, xm3err
                             print('mono accepted',redchi1,redchi2)
                         else:
                             print('poly accepted',redchi1,redchi2)

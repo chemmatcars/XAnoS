@@ -679,8 +679,8 @@ def combineFiles(fnames=None,Npt=1000,kind='linear'):
         for fname in fnames:
             comments=comments+fname+'\n'
             energy=data[fname]['Energy']
-            colnames += "'dataE_%0.4f','errE_%0.4f'," % (energy,energy)
-            col += 'data_E:%0.4f err_E:%0.4f ' % (energy, energy)
+            colnames += "'Total_E@%0.4f','err_E@%0.4f'," % (energy,energy)
+            col += 'Total_E@%0.4f err_E@%0.4f ' % (energy, energy)
             if len(tdata) == 0:
                 tdata.append(data[fname]['xintp'])
                 tdata = np.array(tdata)
