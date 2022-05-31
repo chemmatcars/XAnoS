@@ -721,7 +721,8 @@ class XAnoS_Components(QWidget):
         Process the selected data for calculating mean and sum
         """
         if self.processTypeComboBox.currentText()=='Combine Files':
-            combineFiles(fnames=self.fnames)
+            ofname=QFileDialog.getSaveFileName(self,caption='Save as', directory=os.path.dirname(self.fnames[0]),filter='Text files (*.txt)')[0]
+            combineFiles(fnames=self.fnames,ofname=ofname)
             return
         self.interpolate_data(kind='linear')
         tdata=np.zeros_like(self.data[self.fnames[0]]['yintp'])
