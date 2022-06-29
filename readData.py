@@ -657,7 +657,7 @@ def interpolate_data(data,Npt=1000,kind='linear'):
         data[fname]['yintperr']=funerr(qintp)        
     return data
 
-def combineFiles(fnames=None,Npt=1000,kind='linear'):
+def combineFiles(fnames=None,ofname=None, Npt=1000,kind='linear'):
     """
     Save all the data in a same file after interpolating with same q-values
     :param fnames: List of filenames of the data which need to be combined in a file (default: None)
@@ -695,7 +695,10 @@ def combineFiles(fnames=None,Npt=1000,kind='linear'):
         col = col[:-1] + '\n'
         comments = comments + colnames
         comments = comments + col
-        np.savetxt(os.path.join(fdir,'combined.txt'), tdata, header=comments,comments='#')
+        if ofname is None:
+            np.savetxt(os.path.join(fdir,'combined.txt'), tdata, header=comments,comments='#')
+        else:
+            np.savetxt(os.path.join(fdir, ofname), tdata, header=comments, comments='#')
 
 
         
