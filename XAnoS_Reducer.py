@@ -337,8 +337,8 @@ class XAnoS_Reducer(QWidget):
                     mask=None
             else:
                 mask=None
-            pixel1=79.0
-            pixel2=79.0
+            pixel1=172.0
+            pixel2=172.0
             self.calWidget=CalibrationWidget(img,pixel1,pixel2,mask=mask)
             self.calWidget.saveCalibrationPushButton.clicked.disconnect()
             self.calWidget.saveCalibrationPushButton.clicked.connect(self.save_calibration)
@@ -625,7 +625,9 @@ class XAnoS_Reducer(QWidget):
 #                QApplication.processEvents()
                 #print(self.azimuthalRange)
                 self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',
-                                                             mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=norm_factor,azimuth_range=self.azimuthalRange,polarization_factor=self.polarization_factor)
+                                                             mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=1.0,azimuth_range=self.azimuthalRange,polarization_factor=self.polarization_factor)
+                self.I=self.I/norm_factor
+                self.Ierr=self.I*np.sqrt(1/self.I**2+1/norm_factor**2)
                 self.plotWidget.add_data(self.q,self.I,yerr=self.Ierr,name='Reduced data')
                 if not self.set_externally:
                     cakedI,qr,phir=self.ai.integrate2d(imageData.data,self.npt,mask=imageMask,dark=imageDark,

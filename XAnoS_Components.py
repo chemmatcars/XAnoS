@@ -514,7 +514,7 @@ class XAnoS_Components(QWidget):
                     fnum+=1
                     self.progressDialog.setValue(fnum)
                     self.progressDialog.setLabelText('Read file: %s successfully.'%file)
-                    pg.QtGui.QApplication.processEvents()
+                    QApplication.processEvents()
                 else:
                     QMessageBox.warning(self,'Import error','%s is already imported. Please remove the file to import it again'%file,QMessageBox.Ok)
             self.initialize_metaDataPlotDock()
@@ -1184,10 +1184,18 @@ class XAnoS_Components(QWidget):
             #print(len(self.pdata[0][0]), len(self.pdata[0][1]), len(self.pdata[0][2]))
             x = self.pdata[0][1]
             y = self.pdata[0][2]
+            yerr=self.pdata[0][3]
             y = y[np.argsort(x)]
             x = x[np.argsort(x)]
-            self.dataCheckWidget=pg.plot(x,y/y[0],pen=None,symbol='o',labels={'left':'Norm Int','bottom':'f1'})
-            self.dataCheckWidget.setTitle('Q=%.4f'%self.qintp[0])
+            yerr = yerr[np.argsort(x)]
+            self.dataCheckWidget=PlotWidget()#pg.plot(x,y/y[0],pen=None,symbol='o',labels={'left':'Norm Int','bottom':'f1'})
+            # self.dataCheckErrorbar=pg.ErrorBarItem(x=x,y=y/y[0],top=(y+yerr/2)/y[0],bottom=(y-yerr/2)/y[0], beam=0.5,pen={'color':'w', 'width':2})
+            # self.dataCheckWidget.addItem(self.dataCheckErrorbar)
+            # self.dataCheckWidget.setTitle('Q=%.4f'%self.qintp[0])
+            self.dataCheckWidget.add_data(x,y,yerr=yerr,color='w')
+            self.dataCheckWidget.setXLabel('f1')
+            self.dataCheckWidget.setYLabel('I/I<sub>1</sub>')
+            self.dataCheckWidget.show()
             self.checkDataSpinBox.setMinimum(0)
             self.checkDataSpinBox.setMaximum(dataChk.shape[1]-1)
             self.checkDataSpinBox.setValue(0)            
@@ -1218,12 +1226,16 @@ class XAnoS_Components(QWidget):
         Updates the dataCheckplot
         """
         i=self.checkDataSpinBox.value()
-        self.dataCheckWidget.clear()
+        # self.dataCheckWidget.clear()
         x=self.pdata[i][1]
         y=self.pdata[i][2]
+        yerr=self.pdata[i][3]
         y=y[np.argsort(x)]
         x=x[np.argsort(x)]
-        self.dataCheckWidget.plot(x,y/y[0],symbol='o',pen=None,labels={'left':'Norm Int','bottom':'f1'})
+        self.dataCheckWidget.add_data(x,y,yerr=yerr,color='w')
+        # self.dataCheckWidget.plot(x,y/y[0],symbol='o',pen=None,labels={'left':'Norm Int','bottom':'f1'})
+        # self.dataCheckErrorbar.setData(x=x,y=y/y[0],top=y+yerr/2,bottom=y-yerr/2,beam=0.5,pen={'color':'w', 'width':2})
+        self.dataCheckWidget.errorbarCheckBox.setChecked(True)
         self.dataCheckWidget.setTitle('Q=%.4f' % self.qintp[i])
         if self.dataPlotWidget.plotWidget.getPlotItem().ctrl.logXCheck.isChecked():
             self.checkDataLocLine.setValue(np.log10(self.qintp[i]))
@@ -1510,7 +1522,7 @@ class XAnoS_Components(QWidget):
                     #                            QMessageBox.No)
                     xnerr=[x1err, x2err, x3err]
                     self.XMatrixErr.append(xnerr)
-                    pg.QtGui.QApplication.processEvents()
+                    QApplication.processEvents()
                     #QTest.qWait(100)
                 else:
                     break
@@ -1723,7 +1735,7 @@ class XAnoS_Components(QWidget):
                         except:
                             self.components[key]=[X[-1][self.AIndex[key]]]
                     self.ASAXSProgressBar.setValue(i)
-                    pg.QtGui.QApplication.processEvents()
+                    QApplication.processEvents()
                     Ndata+=1
                 else:
                     break
