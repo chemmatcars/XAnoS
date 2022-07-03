@@ -1,1 +1,1 @@
-{"poniFile": "/Volumes/Data/Asax/2021-11/Chong/AgBh_8_944kev_long.poni", "maskFile": "/Volumes/Data/Asax/2021-11/Chong/AgBh/mask_8_944keV_long.msk"}
+{"poniFile": "/mnt/ChemData/Data/Asax/2022-03/You-Yon/AgBh_LongTube_33_169keV_2.poni", "maskFile": "/mnt/ChemData/Data/Asax/2022-03/Harrison/mask_LongTube_15_2keV.msk"}

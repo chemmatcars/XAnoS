@@ -1448,7 +1448,7 @@ class XAnoS_Collector(QWidget):
                         if self.loopSleepTime>1e-3:
                             caput(self.scalers['15IDD_scaler_mode']['PV'], 1, wait=True)
                             self.instrumentStatus.setText('Sleeping for %s s. Please wait...'%self.loopSleepTime)
-                            QtTest.QTest.qWait((self.loopSleepTime*1000))
+                            QtTest.QTest.qWait(int(self.loopSleepTime*1000))
                             caput(self.scalers['15IDD_scaler_mode']['PV'], 0, wait=True)
                         #caput('15PIL3:cam1:FileNumber', 1)
                         #caput('15PIL3:cam1:AutoIncrement', 0)
