@@ -23,6 +23,7 @@ Follow the following instructions for installation:
 
         git clone https://github.com/nayanbera/XAnoS.git
 
+
     The command create a folder named XAnoS. In order to upgrade the software at any time just go to the folder named **XAnoS** and run the following command in the terminal::
 
             git pull
