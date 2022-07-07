@@ -1473,6 +1473,7 @@ class XAnoS_Components(QWidget):
             self.stopPushButton.setEnabled(True)
             stime=time.time()
             i_ignore=[]
+            df=np.max(self.AMatrix[:,1])-np.min(self.AMatrix[:,1])
             for i in range(len(self.qintp)):
                 if not self.stopCalc:
                     x = self.brute_finderrbars(self.AMatrix, self.BMatrix[:, i])
@@ -1481,15 +1482,21 @@ class XAnoS_Components(QWidget):
                     #x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
                     if hybrid:
                         xm1, xm1err, xm2, xm2err, xm3, xm3err, redchi1 = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],self.ErrMatrix[:,i], constraint=constraint,mono=True)
-                        x1, x1err, x2, x2err, x3, x3err, redchi2 = self.lmfit_finderrbars(x, self.AMatrix,
-                                                                                          self.BMatrix[:, i],
-                                                                                          self.ErrMatrix[:, i],
-                                                                                          constraint=constraint, mono=False)
-                        if redchi1<redchi2:
-                            x1, x1err, x2, x2err, x3, x3err=(xm1+x1)/2, xm1err, (xm2+x2)/2, xm2err, (xm3+x3)/2, xm3err
-                            print('mono accepted',redchi1,redchi2)
+                        #x1, x1err, x2, x2err, x3, x3err, redchi2 = self.lmfit_finderrbars(x, self.AMatrix,
+                                                                                          # self.BMatrix[:, i],
+                                                                                          # self.ErrMatrix[:, i],
+                                                                                          # constraint=constraint, mono=False)
+                        if np.abs(self.BMatrix[-1,i]-np.min(self.BMatrix[0,i]))>5*np.max(self.ErrMatrix[:,i]):
+                            x1, x1err, x2, x2err, x3, x3err=xm1, xm1err, xm2, xm2err, xm3, xm3err
+                            #print('%d accepted'%(i))
                         else:
-                            print('poly accepted',redchi1,redchi2)
+                            x1, x1err, x2, x2err, x3, x3err=100*xm1, xm1err, 100*xm2, xm2err, 100*xm3, xm3err
+                            #print('%d rejected'%(i))
+                        # if redchi1<redchi2:
+                        #     x1, x1err, x2, x2err, x3, x3err=(xm1+x1)/2, xm1err, (xm2+x2)/2, xm2err, (xm3+x3)/2, xm3err
+                        #     print('mono accepted',redchi1,redchi2)
+                        # else:
+                        #     print('poly accepted',redchi1,redchi2)
                     else:
                         x1, x1err, x2, x2err, x3, x3err, redchi = self.lmfit_finderrbars(x, self.AMatrix,
                                                                                                 self.BMatrix[:, i],
@@ -1503,7 +1510,7 @@ class XAnoS_Components(QWidget):
                         xn=[x1,x2,x3]
                     if xn[0]>2*np.mean(self.BMatrix[:,i]):
                         i_ignore.append(i)
-                        print('%d: qintp=%.4f ignored'%(i,self.qintp[i]))
+                        # print('%d: qintp=%.4f ignored'%(i,self.qintp[i]))
                     #     if np.abs((np.log10(xn[-1])-np.log10(self.XMatrix[-1][-1]))*100/np.log10(self.XMatrix[-1][-1]))<100:
                     #         self.XMatrix.append(xn)
                     #     else:

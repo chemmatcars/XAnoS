@@ -626,8 +626,8 @@ class XAnoS_Reducer(QWidget):
                 #print(self.azimuthalRange)
                 self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',
                                                              mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=1.0,azimuth_range=self.azimuthalRange,polarization_factor=self.polarization_factor)
+                self.Ierr=self.I*sqrt(self.Ierr**2/self.I**2+1/norm_factor)/norm_factor
                 self.I=self.I/norm_factor
-                self.Ierr=self.I*np.sqrt(1/self.I**2+1/norm_factor**2)
                 self.plotWidget.add_data(self.q,self.I,yerr=self.Ierr,name='Reduced data')
                 if not self.set_externally:
                     cakedI,qr,phir=self.ai.integrate2d(imageData.data,self.npt,mask=imageMask,dark=imageDark,
