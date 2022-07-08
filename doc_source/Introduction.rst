@@ -2,10 +2,10 @@
 
 Introduction
 ============
-    **XAnoS** stands for **X**\-ray **Ano**\malous **S**\cattering and the package provides a collection of widgets developed for the measurement, visualization, data reduction and analysis
-    of Anomalous Small Angle X-ray Scattering data at `NSF's ChemMatCARS (Sector 15) <https://chemmatcars.uchicago.edu/>`_  at `Advanced Photon Source <https://www.aps.anl.gov/>`_ , USA.
+**XAnoS** stands for **X**\-ray **Ano**\malous **S**\cattering and the package provides a collection of widgets developed for the measurement, visualization, data reduction and analysis
+of Anomalous Small Angle X-ray Scattering data at `NSF's ChemMatCARS (Sector 15) <https://chemmatcars.uchicago.edu/>`_  at `Advanced Photon Source <https://www.aps.anl.gov/>`_ , USA.
 
-    If you are using any components of XAnoS for your research/work please do not forget to acknowledge (see :ref:`Acknowledgements`).
+If you are using any components of XAnoS for your research/work please do not forget to acknowledge (see :ref:`Acknowledgements`).
 
 .. _Installation:
 
@@ -23,12 +23,11 @@ Follow the following instructions for installation:
 
         git clone https://github.com/nayanbera/XAnoS.git
 
-
-    The command create a folder named XAnoS. In order to upgrade the software at any time just go to the folder named **XAnoS** and run the following command in the terminal::
+   The command create a folder named XAnoS. In order to upgrade the software at any time just go to the folder named **XAnoS** and run the following command in the terminal::
 
             git pull
 
-4) Run the following commands to run different packages:
+4)  Run the following commands to run different packages:
     i) Data Collection package (**Do not run this when not in the beamline!**)::
 
          python XAnoS_Collector.py
