@@ -16,25 +16,14 @@ Follow the following instructions for installation:
 1) Install Anaconda python (Python 3.6 and higher) for your operating system from: 'https://www.anaconda.com/download/'
 2) Open a Anaconda terminal the run these two commands::
 
-    conda install pyqt pyqtgraph sqlalchemy scipy six matplotlib pandas
+    conda install git pyqt pyqtgraph sqlalchemy scipy six matplotlib pandas
     pip install lmfit pyfai pylint periodictable mendeleev corner emcee tabulate
 
-3) The installation can be done in two different ways:
-    a) Universal way which does not need GIT installation:
-	    i) Open a web browser and go to the webpage : https://github.com/nayanbera/XAnoS
-	    ii) Click the green button named "Clone or download"
-	    iii) Download the zip file
-   	    iv) Extract the zip file into a folder
-   	    v) In the Anaconda terminal go the the extracted folder::
+3) The installation can be done by running the following commands in a terminal (linux/MacOS) or Anaconda Terminal (windows) in a folder where you wish the software to be installed::
 
-   	            cd /home/mrinal/Download/XAnoS-master
-
-    b) Easier way with `GIT <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_ already installed, run the following commands in a terminal with your own folder path::
-
-        cd /home/mrinal/Download/
         git clone https://github.com/nayanbera/XAnoS.git
 
-    The second method will create **XAnoS** folder with all updated packages in installation folder (i.e. /home/mrinal/Download). The advantage of the second method is that it is easy to upgrade the package. In order to upgrade just go to the folder named **XAnoS** and run the following command::
+    The command create a folder named XAnoS. In order to upgrade the software at any time just go to the folder named **XAnoS** and run the following command in the terminal::
 
             git pull
 
@@ -49,9 +38,5 @@ Follow the following instructions for installation:
 
     iii) Data viewer and analysis package::
 
-             python XAnoS_Components.py
-
-    iv) Data fitting package::
-
-         python XAnoS_Fit.py
+            python XAnoS_Components.py
 
