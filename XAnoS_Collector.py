@@ -7,7 +7,7 @@ import sys
 import pyqtgraph as pg
 from pyqtgraph.dockarea import DockArea, Dock
 from Detector_Widget import Detector_Widget
-from epics import caput, caget, camonitor, camonitor_clear
+from epics import caput, caget, camonitor, camonitor_clear, PV
 from Setup import Setup
 from multiprocessing import Process
 import fabio as fb
@@ -58,7 +58,23 @@ class XAnoS_Collector(QWidget):
         self.pixmapOFF=QPixmap('./Images/ShutterOFF.png')
         
         self.experimentFolder=None
-        
+
+        #Connecting Temperature Controller
+        self.tempControl = False
+        self.connect_Temperature_Controller()
+        if self.tempControl:
+            print("Temperature Controller is Connected!")
+        else:
+            print("Temperature Controller is not Connected")
+
+        #Connecting Pump Controller
+        self.pumpControl = False
+        self.connect_Pump_Controller()
+        if self.pumpControl:
+            print("Pump Controller is Connected")
+        else:
+            print("Pump Controller is not Connected")
+
         self.vblayout=QVBoxLayout(self)
         self.mainDock=DockArea(self,parent)
         self.vblayout.addWidget(self.mainDock)
@@ -98,10 +114,20 @@ class XAnoS_Collector(QWidget):
                 ans=QMessageBox.question(self,'Shutter status','The shutter is open. Do you want to close the shutter to proceed further?',QMessageBox.No,QMessageBox.Yes)
                 if ans==QMessageBox.Yes:
                     self.shutter_OFF()
+
+
         #self.undulatorStatusLabel.setPalette(self.palette)
         #self.monochromatorStatusLabel.setPalette(self.palette)
         
 
+    def connect_Pump_Controller(self):
+        self.targetVolume=PV("15IDD:PHDUltra:TargetVolume_RBV")
+        self.targetVolume.get()
+        tvconnect=self.targetVolume.connect()
+        if tvconnect:
+            self.pumpControl=True
+        else:
+            self.pumpControl=False
 
 
         
@@ -604,10 +630,10 @@ class XAnoS_Collector(QWidget):
         self.autoShutterCheckBox.setTristate(False)
         self.autoShutterCheckBox.setChecked(True)
         pumpVolLabel=QLabel('Pump Vol (uL)')
-        try:
-            self.pumpVolLineEdit=QLineEdit(str(caget('15IDD:PHDUltra:TargetVolume_RBV')))
-        except:
-            self.pumpVolLineEdit=QLineEdit('Pump not Connected')
+        if self.pumpControl:
+            self.pumpVolLineEdit=QLineEdit(str(self.targetVolume.get()))
+        else:
+            self.pumpVolLineEdit=QLineEdit('0.0')
         self.pumpVolLineEdit.returnPressed.connect(self.targetVolumeChanged)
         self.autoPumpCheckBox=QCheckBox('Auto Pump')
         self.autoPumpCheckBox.setTristate(False)
@@ -724,7 +750,7 @@ class XAnoS_Collector(QWidget):
         try:
             vol=float(self.pumpVolLineEdit.text())
             try:
-                caput('15IDD:PHDUltra:TargetVolume',vol,wait=True)
+                self.targetVolume.put(vol,wait=True)
             except:
                 QMessageBox.warning(self,'Pump error','Please check the pump in connected',QMessageBox.Ok)
         except:
@@ -1695,6 +1721,15 @@ class XAnoS_Collector(QWidget):
             self.counting=True or self.counting
         else:
             self.counting=False
+
+    def connect_Temperature_Controller(self):
+        self.temperaturePV=PV("15IDC:LS330:TC1:Sample")
+        self.temperaturePV.get()
+        tpvconnect=self.temperaturePV.connect()
+        if tpvconnect:
+            self.tempControl=True
+        else:
+            self.tempControl=False
         
         
     def post_count(self):
@@ -1767,7 +1802,8 @@ class XAnoS_Collector(QWidget):
                 '15IDD:bpm2:sens_unit.VAL', as_string=True)
             file.header['Transmission'] = self.transmission_value
             file.header['xcradle'] = 0.0
-            file.header['Temperature']=caget(self.scalers['monitor_diode']['PV'])*1.414e-4/self.count_time+20.402
+            if self.tempControl:
+                file.header['Temperature']=self.temperaturePV.get()-7.5
             for key in self.motors.keys():
                 if key != 'Energy' and key != 'Undulator_ID15Energy' and key != 'Undulator_Energy':
                     file.header[key]=caget(self.motors[key]['PV']+'.RBV')
@@ -1786,7 +1822,7 @@ class XAnoS_Collector(QWidget):
             self.sampleImgCounterLabel.setText(str(self.sampleCounter))
 
     def pump_solution(self):
-        caput('15IDD:PHDUltra:TargetVolume', float(self.pumpVolLineEdit.text()), wait=True)
+        self.targetVolume.put(float(self.pumpVolLineEdit.text()), wait=True)
         caput('15IDD:PHDUltra:Infuse', 1, wait=True)
         self.palette.setColor(QPalette.Foreground, Qt.red)
         self.instrumentStatus.setPalette(self.palette)
