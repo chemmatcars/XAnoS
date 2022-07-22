@@ -1541,11 +1541,18 @@ class XAnoS_Components(QWidget):
             self.stopPushButton.setDisabled(True)
             self.XMatrix = np.array(self.XMatrix)
             self.XMatrixErr = np.array(self.XMatrixErr)
-            Ndata=self.XMatrix.shape[0]
-            qintp=np.delete(self.qintp[0:Ndata],i_ignore,axis=None)
-            XMatrix=np.delete(self.XMatrix,i_ignore,axis=0)
-            XMatrixErr=np.delete(self.XMatrixErr,i_ignore,axis=0)
-            data=np.delete(self.data[self.fnames[0]]['yintp'][0:Ndata],i_ignore,axis=None)
+            Ndata = self.XMatrix.shape[0]
+            ans=QMessageBox.question(self,'Data spike filter','Do you like to remove data spikes?',QMessageBox.Yes,QMessageBox.No)
+            if ans==QMessageBox.Yes:
+                qintp=np.delete(self.qintp[0:Ndata],i_ignore,axis=None)
+                XMatrix=np.delete(self.XMatrix,i_ignore,axis=0)
+                XMatrixErr=np.delete(self.XMatrixErr,i_ignore,axis=0)
+                data=np.delete(self.data[self.fnames[0]]['yintp'][0:Ndata],i_ignore,axis=None)
+            else:
+                qintp=self.qintp[0:Ndata]
+                data=self.data[self.fnames[0]]['yintp'][0:Ndata]
+                XMatrix=self.XMatrix
+                XMatrixErr=self.XMatrixErr
             self.directComponentPlotWidget.add_data(qintp, XMatrix[:, 0], yerr=XMatrixErr[:, 0], name='SAXS-term')
             self.directComponentPlotWidget.add_data(qintp, XMatrix[:, 2], yerr=XMatrixErr[:, 2], name='Resonant-term')
             tot = np.sum(np.dot([self.AMatrix[0,:]], XMatrix.T), axis=0)
