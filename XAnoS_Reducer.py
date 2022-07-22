@@ -671,12 +671,12 @@ class XAnoS_Reducer(QWidget):
             self.progressBar.setValue(i)
             self.statusLabel.setText('<font color="red">Busy</font>')
             for file in self.dataFiles:
-                self.dataFile=file
-                QApplication.processEvents()
-                self.reduceData()
-                i=i+1
-                self.progressBar.setValue(i)
-                QApplication.processEvents()
+	            self.dataFile=file
+	            QApplication.processEvents()
+	            self.reduceData()
+	            i=i+1
+	            self.progressBar.setValue(i)
+	            QApplication.processEvents()
             self.statusLabel.setText('<font color="green">Idle</font>')
             self.progressBar.setValue(0)
         except:

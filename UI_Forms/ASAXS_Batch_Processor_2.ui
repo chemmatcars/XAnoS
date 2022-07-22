@@ -197,7 +197,7 @@
         <number>1</number>
        </property>
        <property name="maximum">
-        <number>100</number>
+        <number>1000</number>
        </property>
        <property name="value">
         <number>20</number>
@@ -325,7 +325,7 @@
        </sizepolicy>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QTextEdit" name="infoTextEdit"/>
