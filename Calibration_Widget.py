@@ -185,6 +185,7 @@ class CalibrationWidget(QWidget):
         nlist=measure.find_contours(self.q,self.cal_qvals[ring_num])
         pen=pg.mkPen(color=self.calRingColorButton.color(),width=int(self.calRingWidthLineEdit.text()))
         if nlist!=[]:
+            nlist[0][:, [0, 1]] = nlist[0][:, [1, 0]]
             #tlist=np.vstack(nlist[:len(nlist)//2])
             # x=tlist[:,0]-self.beamPosX
             # y=tlist[:,1]-self.beamPosY
