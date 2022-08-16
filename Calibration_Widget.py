@@ -13,11 +13,12 @@ import numpy as np
 import os
 from lmfit import Parameters, minimize, report_fit
 #from matplotlib import _cntr as cntr
-import legacycontour._cntr as cntr 
+# import legacycontour._cntr as cntr
 from Image_Widget import Image_Widget
 CWD=os.getcwd()
 #CWD=sys.path[0]
 CALIBRANT_FOLDER=os.path.join(CWD,'calibrants')
+from skimage import measure
 
 #try:
 #    sys.path.append(os.path.abspath(os.path.join(CWD,'Fortran_routines')))
@@ -179,21 +180,25 @@ class CalibrationWidget(QWidget):
         Show the calibration ring corresponding to the ring number using matploblib's _cntr methods which is known to be two orders of magnitude faster
         """
         #bins=self.binSize
-        c=cntr.Cntr(self.X,self.Y,self.q)
-        nlist=c.trace(self.cal_qvals[ring_num])
+        # c=cntr.Cntr(self.X,self.Y,self.q)
+        # nlist=c.trace(self.cal_qvals[ring_num])
+        nlist=measure.find_contours(self.q,self.cal_qvals[ring_num])
         pen=pg.mkPen(color=self.calRingColorButton.color(),width=int(self.calRingWidthLineEdit.text()))
         if nlist!=[]:
-            tlist=np.vstack(nlist[:len(nlist)//2])
-            x=tlist[:,0]-self.beamPosX
-            y=tlist[:,1]-self.beamPosY
-            r=np.sqrt(x**2+y**2)
-            phi=(np.pi+np.sign(y)*(np.arccos(x/r)-np.pi))*180/np.pi
-            sortedargs=np.argsort(phi)
-            tlist=tlist[sortedargs[1:-1],:]
+            #tlist=np.vstack(nlist[:len(nlist)//2])
+            # x=tlist[:,0]-self.beamPosX
+            # y=tlist[:,1]-self.beamPosY
+            # x=nlist[0][:,1]
+            # y=nlist[0][:,0]
+            # r=np.sqrt(x**2+y**2)
+            # phi=(np.pi+np.sign(y)*(np.arccos(x/r)-np.pi))*180/np.pi
+            # sortedargs=np.argsort(phi)
+            #tlist=tlist[sortedargs[1:-1],:]
+            #tlist=nlist[0][sortedargs[1:-1],:]
             try:
-                self.rings[ring_num].setData(tlist)
+                self.rings[ring_num].setData(nlist[0])
             except:
-                self.rings[ring_num]=pg.PlotDataItem(tlist,pen=pen,connect='pairs')
+                self.rings[ring_num]=pg.PlotDataItem(nlist[0],pen=pen,connect='pairs')
                 #self.rawImageWidget.imageView.getView().addItem(self.rings[ring_num])
                 self.rawImageWidget.imageView.getView().addItem(self.rings[ring_num])
 
@@ -575,7 +580,7 @@ class CalibrationWidget(QWidget):
         self.pointTreeWidget=QTreeWidget()
         self.pointTreeWidget.setSelectionMode(QAbstractItemView.ContiguousSelection)
         self.pointTreeWidget.setColumnCount(2)
-        self.pointTreeWidget.header().setResizeMode(pg.QtGui.QHeaderView.ResizeToContents)
+        self.pointTreeWidget.header().setResizeMode(QHeaderView.ResizeToContents)
         self.pointTreeWidget.header().setStretchLastSection(False)
         self.calibratePushButton=QPushButton('Calibrate')
         self.calibratePushButton.clicked.connect(self.calibrate)
