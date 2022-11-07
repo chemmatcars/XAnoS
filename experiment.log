@@ -1,9 +1,10 @@
-##Experiment started on: Sat Jul 16 16:21:13 2022
-#X-ray Energy : 8.97836 keV
-#X-ray Wavelength : 1.38092 Angs
+##Experiment started on: Thu Nov  3 09:05:04 2022
+#X-ray Energy : 9.24400 keV
+#X-ray Wavelength : 1.34123 Angs
 #Beamsize-Horizontal : 0.200 mm
 #Beamsize-Vertical : 0.200 mm
-#Collimator-Horizontal : 0.500 mm
-#Collimator-Vertical : 0.500 mm
-##Detector Added on: Sat Jul 16 16:21:13 2022
+#Collimator-Horizontal : 1.000 mm
+#Collimator-Vertical : 1.000 mm
+##Detector Added on: Thu Nov  3 09:05:04 2022
 #Detectors : ['Pilatus_300K']
+##Sample folder added/accessed test
