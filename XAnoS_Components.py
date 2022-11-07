@@ -579,16 +579,27 @@ class XAnoS_Components(QWidget):
         Saves the data with currently processed settings
         """
         if len(self.fnames)>0:
+            files=''
             for fname in self.fnames:
-                pfname=os.path.splitext(fname)[0]+'_proc'+os.path.splitext(fname)[1]
+                if self.xrfBkgCheckBox.isChecked():
+                    pfname=os.path.splitext(fname)[0]+'_flb_sub'+os.path.splitext(fname)[1]
+                else:
+                    pfname = os.path.splitext(fname)[0] + '_proc' + os.path.splitext(fname)[1]
                 header='Processed data on %s\n'%time.asctime()
-                header='Original file=%s\n'%fname
+                header=header+'Original file=%s\n'%fname
                 for key in self.data[fname].keys():
                     if key!='x' and key!='y' and key!='yerr' and key!='xintp' and key!='yintp' and key!='yintperr' and key!='y-flb':
                         header=header+'%s=%s\n'%(key,self.data[fname][key])
                 header=header+'Q (A^-1)\tIntensity\tIntensity_error\n'
-                np.savetxt(pfname,np.vstack((self.data[fname]['x'],self.data[fname]['y'],self.data[fname]['yerr'])).T,comments='#',header=header)
+                np.savetxt(pfname,np.vstack((self.data[fname]['x'],self.data[fname]['y-flb'],self.data[fname]['yerr'])).T,comments='#',header=header)
+                files+=pfname+'\n'
             QMessageBox.information(self,'Saving info','The selected processed file/s is/are saved in the same folder as the selected data.',QMessageBox.Ok)
+            macrofile = QFileDialog.getSaveFileName(self, caption='Save Macro File as:', filter='Macro Files (*.macro)',
+                                                    directory=self.dataDir)[0]
+            macrofile = os.path.splitext(macrofile)[0] + '.macro'
+            mh=open(macrofile,'w')
+            mh.writelines(files)
+            mh.close()
         else:
             QMessageBox.warning(self,'Selection error','No data selected to save',QMessageBox.Ok)
         
@@ -643,7 +654,8 @@ class XAnoS_Components(QWidget):
                 #self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['y-flb'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
             else:
                 self.data[fname]['xrf_bkg']=0.0
-            self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['y']/self.data[fname]['Thickness']-self.data[fname]['xrf_bkg'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
+            self.data[fname]['y-flb']=(self.data[fname]['CF']*self.data[fname]['y']/self.data[fname]['Thickness']-self.data[fname]['xrf_bkg'])*self.data[fname]['Thickness']/self.data[fname]['CF']
+            self.dataPlotWidget.add_data(self.data[fname]['x'],self.data[fname]['CF']*self.data[fname]['y-flb']/self.data[fname]['Thickness'],yerr=self.data[fname]['CF']*self.data[fname]['yerr']/self.data[fname]['Thickness'],name=self.datanames[i])
         self.metaData['x']=np.array(self.metaData['x'])
         self.metaData['y']=np.array(self.metaData['y'])
         self.metaData['norm']=np.array(self.metaData['norm'])
