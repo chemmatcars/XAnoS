@@ -182,10 +182,13 @@ class CalibrationWidget(QWidget):
         #bins=self.binSize
         # c=cntr.Cntr(self.X,self.Y,self.q)
         # nlist=c.trace(self.cal_qvals[ring_num])
-        nlist=measure.find_contours(self.q,self.cal_qvals[ring_num])
+        nlist=measure.find_contours(self.q,self.cal_qvals[ring_num],fully_connected='low',positive_orientation='low')
         pen=pg.mkPen(color=self.calRingColorButton.color(),width=int(self.calRingWidthLineEdit.text()))
-        if nlist!=[]:
-            nlist[0][:, [0, 1]] = nlist[0][:, [1, 0]]
+        if len(nlist)>0:
+            tlist=nlist[0]
+            for i in range(1,len(nlist)):
+                tlist=np.concatenate((tlist,nlist[i]),axis=0)
+            tlist[:, [0, 1]] = tlist[:, [1, 0]]
             #tlist=np.vstack(nlist[:len(nlist)//2])
             # x=tlist[:,0]-self.beamPosX
             # y=tlist[:,1]-self.beamPosY
@@ -197,9 +200,9 @@ class CalibrationWidget(QWidget):
             #tlist=tlist[sortedargs[1:-1],:]
             #tlist=nlist[0][sortedargs[1:-1],:]
             try:
-                self.rings[ring_num].setData(nlist[0])
+                self.rings[ring_num].setData(tlist)
             except:
-                self.rings[ring_num]=pg.PlotDataItem(nlist[0],pen=pen,connect='pairs')
+                self.rings[ring_num]=pg.PlotDataItem(tlist,pen=pen,connect='pairs')
                 #self.rawImageWidget.imageView.getView().addItem(self.rings[ring_num])
                 self.rawImageWidget.imageView.getView().addItem(self.rings[ring_num])
 
@@ -623,7 +626,6 @@ class CalibrationWidget(QWidget):
         xmax=qr[-1]
         ymin=phir[0]
         ymax=phir[-1]
-        print(qr.min(),qr.max(),phir.min(),phir.max())
         self.cakedImageWidget.setImage(cakedArray,xmin=xmin,xmax=xmax,ymin=ymin,ymax=ymax,transpose=True)
         self.cakedImageWidget.imageView.view.setAspectLocked(False)
         i=0
@@ -975,8 +977,8 @@ if __name__=='__main__':
     # create application
     app = QApplication(sys.argv)
     app.setApplicationName('Calibration Widget')
-    pixel1=80.0
-    pixel2=80.0
+    pixel1=172.0
+    pixel2=172.0
     dist=1.0
     # create widget
     if len(sys.argv)>1:

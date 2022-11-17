@@ -292,8 +292,8 @@ class Data_Reducer(QWidget):
         fname=str(QFileDialog.getOpenFileName(self,'Select calibration image',directory=self.curDir, filter='Calibration image (*.edf *.tif)')[0])
         if fname is not None:
             img=fb.open(fname).data
-            pixel1=79.0
-            pixel2=79.0
+            pixel1=172.0
+            pixel2=172.0
             self.calWidget=CalibrationWidget(img,pixel1,pixel2)
             self.calWidget.saveCalibrationPushButton.clicked.disconnect()
             self.calWidget.saveCalibrationPushButton.clicked.connect(self.save_calibration)

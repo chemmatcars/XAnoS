@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/2022-07/Charles/AgBh_Short_tube.poni", "maskFile": "/mnt/ChemData/Data/Asax/2022-03/Rohan/mask_20keV.msk"}
+{"poniFile": "/Volumes/Data-1/Asax/2022-11/Chong/SiO2_WAXS_new.poni", "maskFile": "/Volumes/Data-1/Asax/2022-11/Chong/mask_waxs.msk"}
