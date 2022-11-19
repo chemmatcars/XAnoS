@@ -126,7 +126,10 @@ class XAnoS_Reducer(QWidget):
         self.extractedFolderPushButton.clicked.connect(self.openFolder)
         self.extractedFolderLineEdit.textChanged.connect(self.extractedFolderChanged)
         self.polCorrComboBox.currentIndexChanged.connect(self.polarizationChanged)
+        self.polFactorLineEdit.returnPressed.connect(self.polarizationChanged)
         self.polarizationChanged()
+        self.solidAngleCorrComboBox.currentIndexChanged.connect(self.solidAngleCorrChanged)
+        self.solidAngleCorrChanged()
         self.radialPointsLineEdit.returnPressed.connect(self.nptChanged)
         self.azimuthalRangeLineEdit.returnPressed.connect(self.azimuthalRangeChanged)
         self.azimuthalRangeChanged()
@@ -153,6 +156,13 @@ class XAnoS_Reducer(QWidget):
         
         self.startServerPushButton.clicked.connect(self.startServer)
         self.stopServerPushButton.clicked.connect(self.stopServer)
+
+    def solidAngleCorrChanged(self):
+        if self.solidAngleCorrComboBox.currentText()=='True':
+            self.solidAngleCorr=True
+        else:
+            self.solidAngleCorr=False
+
         
     def startServer(self):
         serverAddr=self.serverAddressLineEdit.text()
@@ -270,13 +280,25 @@ class XAnoS_Reducer(QWidget):
        
     def polarizationChanged(self):
         if self.polCorrComboBox.currentText()=='Horizontal':
-            self.polarization_factor=1
+            self.polFactorLineEdit.setText('1.0')
         elif self.polCorrComboBox.currentText()=='Vertical':
-            self.polarization_factor=-1
+            self.polFactorLineEdit.setText('-1.0')
         elif self.polCorrComboBox.currentText()=='Circular':
-            self.polarization_factor=0
+            self.polFactorLineEdit.setText('0.0')
+        elif self.polCorrComboBox.currentText()=='None':
+            self.polFactorLineEdit.setText('None')
         else:
-            self.polarization_factor=None
+            pass
+        try:
+            self.polarization_factor=eval(self.polFactorLineEdit.text())
+            if abs(self.polarization_factor)>1:
+                QMessageBox.warning(self, 'Value Error', 'Please supply floating point values between -1.0 and 1.0',
+                                    QMessageBox.Ok)
+                self.polFactorLineEdit.setText('0.95')
+                self.polCorrComboBox.setCurrentIndex(0)
+        except:
+            QMessageBox.warning(self,'Value Error','Please supply floating point values between -1.0 and 1.0',QMessageBox.Ok)
+
             
     def createMask(self):
         """
@@ -330,16 +352,12 @@ class XAnoS_Reducer(QWidget):
         if fname is not None:
             img=fb.open(fname).data
             if self.maskFile is not None:
-                try:
-                    mask=fb.open(self.maskFile).data
-                except:
-                    QMessageBox.warning(self,'Mask File Error','Cannot open %s.\n No masking will be done.'%self.maskFile)
-                    mask=None
+                mask=self.maskFile
             else:
                 mask=None
             pixel1=172.0
             pixel2=172.0
-            self.calWidget=CalibrationWidget(img,pixel1,pixel2,mask=mask)
+            self.calWidget=CalibrationWidget(fname,pixel1,pixel2,maskFile=mask)
             self.calWidget.saveCalibrationPushButton.clicked.disconnect()
             self.calWidget.saveCalibrationPushButton.clicked.connect(self.save_calibration)
             self.calWidget.show()
@@ -540,25 +558,25 @@ class XAnoS_Reducer(QWidget):
         
     def openFolder(self):
         """
-        Select the folder to save the reduce data
+        Select the folder to save the reduced data
         """
-        oldfolder=self.extractedBaseFolder.text()
+        oldfolder=self.extractedBaseFolderLineEdit.text()
         folder=QFileDialog.getExistingDirectory(self,'Select extracted directory',directory=self.curDir)
         if folder!='':
             self.extractedBaseFolder=folder
             self.extractedBaseFolderLineEdit.setText(folder)
             self.extractedFolder=os.path.join(folder,self.extractedFolderLineEdit.text())
-            self.set_externally=True
+            #self.set_externally=True
         else:
             self.extractedBaseFolder=oldfolder
             self.extractedBaseFolderLineEdit.setText(oldfolder)
             self.extractedFolder = os.path.join(oldfolder, self.extractedFolderLineEdit.text())
-            self.set_externally = True
+            #self.set_externally = True
 
 
     def extractedFolderChanged(self,txt):
         self.extractedFolder=os.path.join(self.extractedBaseFolder,txt)
-        self.set_externally=True
+        #self.set_externally=True
 
         
         
@@ -624,13 +642,14 @@ class XAnoS_Reducer(QWidget):
                     imageMask=None
 #                QApplication.processEvents()
                 #print(self.azimuthalRange)
-                self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',
+                self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',correctSolidAngle=self.solidAngleCorr,
                                                              mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=1.0,azimuth_range=self.azimuthalRange,polarization_factor=self.polarization_factor)
                 self.Ierr=self.I*sqrt(self.Ierr**2/self.I**2+1/norm_factor)/norm_factor
                 self.I=self.I/norm_factor
                 self.plotWidget.add_data(self.q,self.I,yerr=self.Ierr,name='Reduced data')
+                print(self.set_externally)
                 if not self.set_externally:
-                    cakedI,qr,phir=self.ai.integrate2d(imageData.data,self.npt,mask=imageMask,dark=imageDark,
+                    cakedI,qr,phir=self.ai.integrate2d(imageData.data,self.npt,mask=imageMask,dark=imageDark,correctSolidAngle=self.solidAngleCorr,
                                                         unit='q_A^-1',normalization_factor=norm_factor,polarization_factor=self.polarization_factor)
                     self.cakedImageWidget.setImage(cakedI,xmin=qr[0],xmax=qr[-1],ymin=phir[0],ymax=phir[-1],transpose=True,xlabel='Q ', ylabel='phi ',unit=['&#8491;<sup>-1</sup>','degree'])
                     self.cakedImageWidget.imageView.view.setAspectLocked(False)
@@ -657,7 +676,7 @@ class XAnoS_Reducer(QWidget):
         minp,maxp=self.azimuthalRegion.getRegion()
         self.azimuthalRangeLineEdit.setText('%.1f:%.1f'%(minp,maxp))
         self.azimuthalRange=[minp,maxp]
-        self.set_externally=True
+        #self.set_externally=True
         
         
             

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>751</width>
-    <height>508</height>
+    <width>929</width>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -196,7 +196,7 @@
          <item>
           <widget class="QLabel" name="transCorrLabel">
            <property name="text">
-            <string>Transmission Correction</string>
+            <string>Trans. Corr.</string>
            </property>
           </widget>
          </item>
@@ -230,14 +230,32 @@
           </widget>
          </item>
          <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QLabel" name="polCorrLabel">
            <property name="text">
-            <string>Polarization Correction</string>
+            <string>Pol. Corr.</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QComboBox" name="polCorrComboBox">
+           <item>
+            <property name="text">
+             <string>Custom</string>
+            </property>
+           </item>
            <item>
             <property name="text">
              <string>Horizontal</string>
@@ -260,10 +278,64 @@
            </item>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="polFactorLabel">
+           <property name="text">
+            <string>Pol. Factor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="polFactorLineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>0.95</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QLabel" name="solidAngleCorrLabel">
+           <property name="text">
+            <string>Solid Angle Corr.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="solidAngleCorrComboBox">
+           <item>
+            <property name="text">
+             <string>True</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>False</string>
+            </property>
+           </item>
+          </widget>
+         </item>
          <item>
           <widget class="QLabel" name="radialPointsLabel">
            <property name="text">

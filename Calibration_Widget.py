@@ -19,6 +19,8 @@ CWD=os.getcwd()
 #CWD=sys.path[0]
 CALIBRANT_FOLDER=os.path.join(CWD,'calibrants')
 from skimage import measure
+import time
+from findpeaks import findpeaks
 
 #try:
 #    sys.path.append(os.path.abspath(os.path.join(CWD,'Fortran_routines')))
@@ -41,13 +43,23 @@ class CalibrationWidget(QWidget):
     """
     Class to perform all calibration related task for XRTools. This class is heavily dependent on some of the major classes of pyFAI.
     """
-    def __init__(self,img,pixel1,pixel2,mask=None,cal=None,dist=1.0,rot1=0.0,rot2=0.0,rot3=0.0,wavelength=1.0,splineFile=None,parent=None):
+    def __init__(self,imgFile,pixel1,pixel2,maskFile=None,cal=None,dist=1.0,rot1=0.0,rot2=0.0,rot3=0.0,wavelength=1.0,splineFile=None,parent=None):
         """
         (pixel1, pixel2)= pixel dimensions along y and x-axis respectively in microns
         dist= sample to detector distance in meters
         (rot1,rot2,rot3)=rotations in radians
         """
         QWidget.__init__(self,parent)
+        self.imgFile=imgFile
+        self.maskFile=maskFile
+        if imgFile is not None:
+            img=fb.open(imgFile).data
+        else:
+            img=np.random.random((1000,1000))
+        if maskFile is not None:
+            mask=fb.open(maskFile).data
+        else:
+            mask=None
         self.floatFmt='%.5f'
         self.intFmt='%d'
         self.read_data(img,pixel1,pixel2,mask=mask)            
@@ -111,6 +123,7 @@ class CalibrationWidget(QWidget):
         self.create_calibrantDock()
         self.create_calibrationDock()
         self.create_cakedImageDock()
+        self.fp=findpeaks(method='topology')
 
 #        self.solid_angle_plot()
     
@@ -621,19 +634,28 @@ class CalibrationWidget(QWidget):
         After calibration is done performs caking of the calibrant image to check the goodness of calibration
         """
         ai=AzimuthalIntegrator(dist=self.dist,poni1=self.poni1,poni2=self.poni2,rot1=self.rot1,rot2=self.rot2,rot3=self.rot3,pixel1=self.pixel1,pixel2=self.pixel2,wavelength=self.wavelength*1e-10,splineFile=self.splineFile)
-        cakedArray,qr,phir=ai.integrate2d(self.imgData,1000,error_model='poisson',mask=self.maskData,dark=None,unit='q_A^-1')
+        res=ai.integrate2d(self.imgData, 1000, error_model='poisson', mask=self.maskData, dark=None, unit='q_A^-1')
+        try:
+            cakedArray,qr,phir,err=res
+        except:
+            cakedArray,qr,phir=res
         xmin=qr[0]
         xmax=qr[-1]
         ymin=phir[0]
         ymax=phir[-1]
-        self.cakedImageWidget.setImage(cakedArray,xmin=xmin,xmax=xmax,ymin=ymin,ymax=ymax,transpose=True)
+        try: # Remove all the lines if they exist
+            for key in self.lines.keys():
+                self.cakedImageWidget.imageView.removeItem(self.lines[key])
+        except:
+            pass
+        self.cakedImageWidget.setImage(cakedArray, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, transpose=True)
         self.cakedImageWidget.imageView.view.setAspectLocked(False)
         i=0
         pen=pg.mkPen(color=self.calRingColorButton.color(),width=int(self.calRingWidthLineEdit.text()))
-        line={}
-        while self.cal_qvals[i]<xmax:
-            line[i]=pg.InfiniteLine(pos=self.cal_qvals[i],angle=90,movable=False,pen=pen)
-            self.cakedImageWidget.imageView.getView().addItem(line[i])
+        self.lines={}
+        while i in self.cal_qvals.keys():# and self.cal_qvals[i]<xmax:
+            self.lines[i]=pg.InfiniteLine(pos=self.cal_qvals[i],angle=90,movable=False,pen=pen)
+            self.cakedImageWidget.imageView.addItem(self.lines[i])
             i+=1
         self.mainDock.moveDock(self.cakedImageDock,'above',self.rawImageDock)
         
@@ -704,8 +726,10 @@ class CalibrationWidget(QWidget):
         elif method=='Nearest-Max':
             x,y=np.int(x),np.int(y)
             chunk=self.imgData.T[np.max([x-self.win,0]):np.min([x+self.win,Nx-1]),np.max([y-self.win,0]):np.min([y+self.win,Ny])]
-            i,j=np.unravel_index(chunk.argmax(),chunk.shape)
-            return np.max([x-self.win,0])+i,np.max([y-self.win,0])+j
+            res=self.fp.fit(chunk)
+            i,j=res['groups0'][0][0]
+            #i,j=np.unravel_index(chunk.argmax(),chunk.shape)
+            return np.max([x-self.win,0])+i+0.5,np.max([y-self.win,0])+j+0.5
         elif method=='Cen-of-Mass':
             x,y=np.int(x),np.int(y)
             chunk=self.imgData.T[np.max([x-self.win,0]):np.min([x+self.win,Nx-1]),np.max([y-self.win,0]):np.min([y+self.win,Ny])]
@@ -842,9 +866,24 @@ class CalibrationWidget(QWidget):
         fname=str(QFileDialog.getSaveFileName(self,'Calibration file',directory=CWD,filter='Clibration files (*.poni)')[0])
         tfname=os.path.splitext(fname)[0]+'.poni'
         self.applyPyFAI()
-        self.geo.save(tfname)      
+        #self.geo.save(tfname)
         self.poniFile=tfname
-        
+        if self.imgFile is not None:
+            txt='#Calibration done on %s\n'%(time.asctime())
+            txt+='#Image_File: %s\n'%self.imgFile
+            txt+='Distance: %1.6f\n'%self.geo.dist
+            txt+='PixelSize1: %1.6f\n'%self.geo.pixel1
+            txt+='PixelSize2: %1.6f\n'%self.geo.pixel2
+            txt+='Poni1: %1.6f\n'%self.geo.poni1
+            txt+='Poni2: %1.6f\n'%self.geo.poni2
+            txt+='Rot1: %1.6f\n'%self.geo.rot1
+            txt+='Rot2: %1.6f\n'%self.geo.rot2
+            txt+='Rot3: %1.6f\n'%self.geo.rot3
+            txt+='Wavelength: %1.6e'%self.geo.wavelength
+        fh=open(self.poniFile,'w')
+        fh.writelines(txt)
+        fh.close()
+
     def wavelengthToEnergy(self):
         """
         Calculates energy corresponding to a wavelength
@@ -982,14 +1021,14 @@ if __name__=='__main__':
     dist=1.0
     # create widget
     if len(sys.argv)>1:
-        img=fb.open(sys.argv[1]).data
+        imgFile=sys.argv[1]
     else:
-        img=np.random.random(size=(1000,1000))
+        imgFile=None
     if len(sys.argv)>2:
-        mask=fb.open(sys.argv[2]).data
+        maskFile=sys.argv[2]
     else:
-        mask=None
-    w = CalibrationWidget(img,pixel1,pixel2,mask=mask,dist=dist)
+        maskFile=None
+    w = CalibrationWidget(imgFile,pixel1,pixel2,maskFile=maskFile,dist=dist)
     #w.setWindowState(Qt.WindowMaximized)
     w.setWindowTitle('Calibration Widget')
     screen=QDesktopWidget().screenGeometry()
