@@ -126,7 +126,7 @@ class XAnoS_Reducer(QWidget):
         self.extractedFolderPushButton.clicked.connect(self.openFolder)
         self.extractedFolderLineEdit.textChanged.connect(self.extractedFolderChanged)
         self.polCorrComboBox.currentIndexChanged.connect(self.polarizationChanged)
-        self.polFactorLineEdit.returnPressed.connect(self.polarizationChanged)
+        self.polFactorLineEdit.returnPressed.connect(self.customPolarizationChanged)
         self.polarizationChanged()
         self.solidAngleCorrComboBox.currentIndexChanged.connect(self.solidAngleCorrChanged)
         self.solidAngleCorrChanged()
@@ -288,16 +288,19 @@ class XAnoS_Reducer(QWidget):
         elif self.polCorrComboBox.currentText()=='None':
             self.polFactorLineEdit.setText('None')
         else:
-            pass
+            self.polFactorLineEdit.setText('0.95')
         try:
-            self.polarization_factor=eval(self.polFactorLineEdit.text())
-            if abs(self.polarization_factor)>1:
-                QMessageBox.warning(self, 'Value Error', 'Please supply floating point values between -1.0 and 1.0',
-                                    QMessageBox.Ok)
-                self.polFactorLineEdit.setText('0.95')
-                self.polCorrComboBox.setCurrentIndex(0)
+            self.customPolarizationChanged()
         except:
             QMessageBox.warning(self,'Value Error','Please supply floating point values between -1.0 and 1.0',QMessageBox.Ok)
+
+    def customPolarizationChanged(self):
+        self.polarization_factor = eval(self.polFactorLineEdit.text())
+        if abs(self.polarization_factor) > 1:
+            QMessageBox.warning(self, 'Value Error', 'Please supply floating point values between -1.0 and 1.0',
+                                QMessageBox.Ok)
+            self.polFactorLineEdit.setText('0.95')
+            self.polCorrComboBox.setCurrentIndex(0)
 
             
     def createMask(self):
