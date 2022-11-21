@@ -290,7 +290,7 @@ class XAnoS_Reducer(QWidget):
         else:
             self.polFactorLineEdit.setText('0.95')
         try:
-            self.customPolarizationChanged()
+            self.polarization_factor = eval(self.polFactorLineEdit.text())
         except:
             QMessageBox.warning(self,'Value Error','Please supply floating point values between -1.0 and 1.0',QMessageBox.Ok)
 
