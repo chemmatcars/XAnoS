@@ -9,6 +9,7 @@ import sys
 import pyqtgraph as pg
 from pyqtgraph.dockarea import DockArea, Dock
 #from epics import caput, caget, camonitor
+from scipy.interpolate import griddata
 from Setup import Setup
 from multiprocessing import Process
 from PlotWidget import PlotWidget
@@ -542,23 +543,23 @@ class XAnoS_Reducer(QWidget):
         """
         Select the folder to save the reduce data
         """
-        oldfolder=self.extractedBaseFolder.text()
+        oldfolder=self.extractedBaseFolder
         folder=QFileDialog.getExistingDirectory(self,'Select extracted directory',directory=self.curDir)
         if folder!='':
             self.extractedBaseFolder=folder
             self.extractedBaseFolderLineEdit.setText(folder)
             self.extractedFolder=os.path.join(folder,self.extractedFolderLineEdit.text())
-            self.set_externally=True
+            # self.set_externally=True
         else:
             self.extractedBaseFolder=oldfolder
             self.extractedBaseFolderLineEdit.setText(oldfolder)
             self.extractedFolder = os.path.join(oldfolder, self.extractedFolderLineEdit.text())
-            self.set_externally = True
+            # self.set_externally = True
 
 
     def extractedFolderChanged(self,txt):
         self.extractedFolder=os.path.join(self.extractedBaseFolder,txt)
-        self.set_externally=True
+        # self.set_externally=True
 
         
         
@@ -632,8 +633,30 @@ class XAnoS_Reducer(QWidget):
                 if not self.set_externally:
                     cakedI,qr,phir=self.ai.integrate2d(imageData.data,self.npt,mask=imageMask,dark=imageDark,
                                                         unit='q_A^-1',normalization_factor=norm_factor,polarization_factor=self.polarization_factor)
-                    self.cakedImageWidget.setImage(cakedI,xmin=qr[0],xmax=qr[-1],ymin=phir[0],ymax=phir[-1],transpose=True,xlabel='Q ', ylabel='phi ',unit=['&#8491;<sup>-1</sup>','degree'])
+                    self.cakedImageWidget.setImage(cakedI,xmin=qr[0],xmax=qr[-1],ymin=phir[0],ymax=phir[-1],transpose=True, xlabel='Q ', ylabel='phi ',unit=['&#8491;<sup>-1</sup>','degree'])
                     self.cakedImageWidget.imageView.view.setAspectLocked(False)
+                    flatimage=cakedI.flatten()
+                    qvals=[]
+                    rqvals=[]
+                    cakedMask=where(cakedI>0,1,0)
+                    for i, phi in enumerate(phir):
+                        for j, q in enumerate(qr):
+                            x,y=q*cos(phi*pi/180), q*sin(phi*pi/180)
+                            qvals.append([x,y])
+                            rqvals.append([x*cakedMask[i,j],y*cakedMask[i,j]])
+                    qarray=array(qvals)
+                    rqarray=array(rqvals)
+                    imshape=imageData.shape
+                    qxmin, qxmax =min(rqarray[:,0]), max(rqarray[:,0])
+                    qymin, qymax =min(rqarray[:, 1]), max(rqarray[:, 1])
+                    print(qxmin,qxmax)
+                    print(qymin,qymax)
+                    grid_qx, grid_qy=mgrid[qxmin:qxmax:imshape[1]*1j,
+                                     qymin:qymax:imshape[0]*1j]
+                    qCakedI=griddata(qarray,flatimage,(grid_qx,grid_qy),fill_value=0.0, method='nearest')
+                    self.imageWidget.setImage(qCakedI*(1+self.mask2d.T)/2.0, xmin=qxmin,xmax=qxmax,ymin=qymin,ymax=qymax,
+                                              xlabel= 'Q_x',ylabel='Q_y',unit=['&#8491;<sup>-1</sup>','&#8491;<sup>-1</sup>'])
+
                     try:
                         self.azimuthalRegion.setRegion(self.azimuthalRange)
                     except:
@@ -657,7 +680,7 @@ class XAnoS_Reducer(QWidget):
         minp,maxp=self.azimuthalRegion.getRegion()
         self.azimuthalRangeLineEdit.setText('%.1f:%.1f'%(minp,maxp))
         self.azimuthalRange=[minp,maxp]
-        self.set_externally=True
+        # self.set_externally=True
         
         
             
@@ -665,22 +688,22 @@ class XAnoS_Reducer(QWidget):
         """
         Reduce multiple files
         """
-        try:
-            i=0
-            self.progressBar.setRange(0,len(self.dataFiles))
+        # try:
+        i=0
+        self.progressBar.setRange(0,len(self.dataFiles))
+        self.progressBar.setValue(i)
+        self.statusLabel.setText('<font color="red">Busy</font>')
+        for file in self.dataFiles:
+            self.dataFile=file
+            QApplication.processEvents()
+            self.reduceData()
+            i=i+1
             self.progressBar.setValue(i)
-            self.statusLabel.setText('<font color="red">Busy</font>')
-            for file in self.dataFiles:
-	            self.dataFile=file
-	            QApplication.processEvents()
-	            self.reduceData()
-	            i=i+1
-	            self.progressBar.setValue(i)
-	            QApplication.processEvents()
-            self.statusLabel.setText('<font color="green">Idle</font>')
-            self.progressBar.setValue(0)
-        except:
-            QMessageBox.warning(self,'File error','No data files to reduce',QMessageBox.Ok)
+            QApplication.processEvents()
+        self.statusLabel.setText('<font color="green">Idle</font>')
+        self.progressBar.setValue(0)
+        # except:
+        #     QMessageBox.warning(self,'File error','No data files to reduce',QMessageBox.Ok)
         
     def saveData(self):
         """
