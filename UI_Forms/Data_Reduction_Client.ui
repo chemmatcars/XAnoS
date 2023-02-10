@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>751</width>
-    <height>508</height>
+    <width>837</width>
+    <height>662</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -265,6 +265,27 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
+          <widget class="QLabel" name="ROILabel">
+           <property name="text">
+            <string>Region of Interests</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addROIPushButton">
+           <property name="text">
+            <string>Add ROI</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeROIPushButton">
+           <property name="text">
+            <string>Remove ROI</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="radialPointsLabel">
            <property name="text">
             <string>Radial Points</string>
@@ -293,6 +314,35 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="ROITableWidget">
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Type</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Min</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Max</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Steps</string>
+          </property>
+         </column>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer">
