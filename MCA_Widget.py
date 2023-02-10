@@ -37,7 +37,7 @@ class MCA_Widget(QWidget):
         self.plotColIndex = {}
         self.mcaFnames=[]
         self.mca_MEDM_running = False
-        self.stopMEDMPushButton.setEnabled(False)
+        # self.stopMEDMPushButton.setEnabled(False)
 
 
 
@@ -50,12 +50,19 @@ class MCA_Widget(QWidget):
             self.medm.close()
 
     def init_pv(self):
-        self.realTimeLineEdit.setPV(self.medm_P + 'mca1.PRTM')
+        ret=self.realTimeLineEdit.setPV(self.medm_P + 'mca1.PRTM')
+        if not ret:
+            self.currentStatusLabel.setText('Not Connected')
+            return
         self.liveTimeLineEdit.setPV(self.medm_P + 'mca1.PLTM')
         self.modeComboBox.setPV(self.medm_P+self.medm_D+'PresetMode')
         self.currentStatusLabel.setPV(self.medm_P+'mca1.ACQG',type='str')
         self.readRealTimeLabel.setPV(self.medm_P+'mca1.ERTM')
         self.readLiveTimeLabel.setPV(self.medm_P+'mca1.ELTM')
+        # self.stopPushButton.setPV(self.medm_P+'mca1Stop')
+        # self.offsetLineEdit.setPV(self.medm_P+'mca1.CALO')
+        # self.linearLineEdit.setPV(self.medm_P+'mca1.CALS')
+        # self.quadraticLineEdit.setPV(self.medm_P+'mca1.CALQ')
 
 
 
@@ -76,6 +83,7 @@ class MCA_Widget(QWidget):
         self.readMCAPushButton.clicked.connect(self.readMCA)
         self.saveMCAPushButton.clicked.connect(lambda x: self.saveMCA(fname=None))
         self.countPushButton.clicked.connect(self.startstopCountMCA)
+        # self.liveTimeLineEdit.pvChanged.connect(lambda x: self.liveTimeLineEdit.setText())
 
         #Signals from MCA Calibration setup
         self.overrideMCACalibCheckBox.stateChanged.connect(self.overrideEpicsCalib)
@@ -337,6 +345,7 @@ class MCA_Widget(QWidget):
             self.mcaStatusPV=epics.PV(BYTES2STR(self.medm_P + self.medm_M+'.ACQG'))
         self.monitorIndex=self.mcaStatusPV.add_callback(self.mcaChanging)
         self.mcaUpdating.connect(self.mcaAutoUpdate)
+        self.show()
         self.init_pv()
 
     def mcaChanging(self,**kwargs):
@@ -353,7 +362,7 @@ class MCA_Widget(QWidget):
             epics.caput(BYTES2STR(self.medm_P+'mca1EraseStart'),1)
             self.countPushButton.setText('Stop')
         else:
-            epics.caput(BYTES2STR(self.medm_P + 'Stop'), 1)
+            epics.caput(BYTES2STR(self.medm_P + 'mca1Stop'), 1)
             self.countPushButton.setText('Count')
 
 

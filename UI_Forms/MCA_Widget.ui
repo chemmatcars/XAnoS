@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1401</width>
-    <height>703</height>
+    <width>1291</width>
+    <height>744</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,7 +88,7 @@
             <item>
              <widget class="QLineEdit" name="medm_P_LineEdit">
               <property name="text">
-               <string>dp_vortex_xrd77:</string>
+               <string>dp_vortex_xrd76:</string>
               </property>
              </widget>
             </item>
@@ -195,7 +195,7 @@
             <item>
              <widget class="PVLineEdit" name="realTimeLineEdit">
               <property name="text">
-               <string>1.00000</string>
+               <string>0.00000</string>
               </property>
              </widget>
             </item>
@@ -265,7 +265,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Done</string>
+               <string>Not Connected</string>
               </property>
              </widget>
             </item>
@@ -319,7 +319,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="offsetLineEdit">
+               <widget class="PVLineEdit" name="offsetLineEdit">
                 <property name="text">
                  <string>0.0</string>
                 </property>
@@ -337,7 +337,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="linearLineEdit">
+               <widget class="PVLineEdit" name="linearLineEdit">
                 <property name="text">
                  <string>1.0</string>
                 </property>
@@ -355,7 +355,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="quadraticLineEdit">
+               <widget class="PVLineEdit" name="quadraticLineEdit">
                 <property name="text">
                  <string>0.0</string>
                 </property>
@@ -433,7 +433,7 @@
   <customwidget>
    <class>PlotWidget</class>
    <extends>QWidget</extends>
-   <header location="global">PlotWidget</header>
+   <header>PlotWidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
