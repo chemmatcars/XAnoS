@@ -402,7 +402,7 @@
               <item>
                <widget class="QLineEdit" name="xmaxLineEdit">
                 <property name="text">
-                 <string>1</string>
+                 <string>1000</string>
                 </property>
                </widget>
               </item>

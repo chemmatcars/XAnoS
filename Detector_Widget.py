@@ -442,6 +442,7 @@ class Detector_Widget(QWidget):
             Nx=caget(self.detPV+'MaxSizeX_RBV')
         elif 'Mar' in self.currentDetector:
             Ny = caget(self.detPV + 'ArraySizeY_RBV')
+            Ny = caget(self.detPV + 'ArraySizeY_RBV')
             Nx = caget(self.detPV + 'ArraySizeX_RBV')
         self.imgData=data.reshape(Ny,Nx)
         #self.imgData = np.rot90(data.reshape(self.detPV+'MaxSizeY_RBV', self.detPV+'MaxSizeX_RBV'), k=1, axes=(0, 1))

@@ -68,7 +68,8 @@ class XAnoS_Reducer(QWidget):
     """
     This widget is developed to reduce on the fly 2D SAXS data to azimuthally averaged 1D SAXS data
     """
-    def __init__(self,poniFile=None,dataFile=None, darkFile=None, maskFile=None,extractedFolder='/tmp', npt=1000, azimuthalRange=(-180.0,180.0), parent=None):
+    def __init__(self,poniFile=None,dataFile=None, darkFile=None, maskFile=None,fluoFile=None, extractedFolder='/tmp',
+                 npt=1000, azimuthalRange=(-180.0,180.0), parent=None):
         """
         poniFile is the calibration file obtained after Q-calibration
         """
@@ -89,9 +90,12 @@ class XAnoS_Reducer(QWidget):
         else:
             self.darkFile=darkFile
             self.dark_corrected=True
-       
+        self.fluoFile=fluoFile
+        if self.fluoFile is not None and os.path.exists(self.fluoFile):
+            self.fluoDir=os.path.dirname(self.fluoFile)
+        else:
+            self.fluoDir=None
         self.curDir=os.getcwd()
-        
         self.extractedBaseFolder=extractedFolder
         self.npt=npt
         self.set_externally=False
@@ -131,6 +135,10 @@ class XAnoS_Reducer(QWidget):
         self.radialPointsLineEdit.returnPressed.connect(self.nptChanged)
         self.azimuthalRangeLineEdit.returnPressed.connect(self.azimuthalRangeChanged)
         self.azimuthalRangeChanged()
+        if self.fluoDir is not None:
+            self.flDataFolderLineEdit.setText(self.fluoDir)
+        if self.fluoFile is not None:
+            self.flDataFileLineEdit.setText(self.fluoFile)
         #self.statusLabel.setStyleSheet("color:rgba(0,1,0,0)")
         self.imageWidget=Image_Widget(zeros((100,100)))
         self.cakedImageWidget=Image_Widget(zeros((100,100)))

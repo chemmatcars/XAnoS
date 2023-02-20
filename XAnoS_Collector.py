@@ -17,6 +17,7 @@ from scanner import Scanner
 import zmq
 from Energy_Widget import Energy_Widget
 import traceback
+from MCA_Widget import MCA_Widget
 #from Data_Reducer import Data_Reducer
 
 
@@ -122,9 +123,9 @@ class XAnoS_Collector(QWidget):
 
     def connect_Pump_Controller(self):
         self.targetVolume=PV("15IDD:PHDUltra:TargetVolume_RBV")
-        self.targetVolume.get()
-        tvconnect=self.targetVolume.connect()
-        if tvconnect:
+        self.targetVolume.wait_for_connection(timeout=1.0)
+        # tvconnect=self.targetVolume.connect()
+        if self.targetVolume.connected:
             self.pumpControl=True
         else:
             self.pumpControl=False
@@ -734,7 +735,6 @@ class XAnoS_Collector(QWidget):
         self.sampleNums=list(map(int,self.sampleNumLineEdit.text().split(',')))
         if self.positionerTable.rowCount()>0:
             self.create_measurementList()
-            print(self.sampleIndex)
 
         
     def loopSleepTimeChanged(self):
@@ -953,43 +953,52 @@ class XAnoS_Collector(QWidget):
         """
         if detname is None:
             detname=str(self.detectorComboBox.currentText())
+        dettype=self.detectors[detname]['det_type']
         if detname not in self.usedDetectors:
-            self.detectorWidgets[detname]=Detector_Widget(imgFName='img_'+detname)
-            # if self.experimentFolder is not None:
-            #     self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
-            #     #self.detectorWidgets[detname].carsImgFolder=self.experimentFolder
-            # else:
-            #     QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
-            #     return
-            #
-            self.detectorWidgets[detname].detectorComboBox.setCurrentIndex(self.detectorWidgets[detname].detectorComboBox.findText(detname))
-            if self.experimentFolder is not None:
-                self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
+            if dettype=='area_detector':
+                self.detectorWidgets[detname]=Detector_Widget(imgFName='img_'+detname)
+                # if self.experimentFolder is not None:
+                #     self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
+                #     #self.detectorWidgets[detname].carsImgFolder=self.experimentFolder
+                # else:
+                #     QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
+                #     return
+                #
+                self.detectorWidgets[detname].detectorComboBox.setCurrentIndex(self.detectorWidgets[detname].detectorComboBox.findText(detname))
+                if self.experimentFolder is not None:
+                    self.detectorWidgets[detname].carsImgFolderChanged(imgFolder=self.experimentFolder)
+                else:
+                    QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
+                    return
+            elif dettype=='mca_detector':
+                self.detectorWidgets[detname] = MCA_Widget(parent=self)
+                self.detectorWidgets[detname].addMCAScanPushButton.setEnabled(False)
+                self.detectorWidgets[detname].removeMCAScanPushButton.setEnabled(False)
             else:
-                QMessageBox.warning(self,'File Error','Please add an experiment folder first!',QMessageBox.Ok)
-                return
+                pass
             self.detectorComboBox.setCurrentIndex(self.detectorComboBox.findText(detname))
             if self.detectorWidgets[detname].connection:
-                self.detectorDialogs[detname]=QDialog(self)
-                vbLayout=QVBoxLayout(self.detectorDialogs[detname])
+                self.detectorDialogs[detname] = QDialog(self)
+                vbLayout = QVBoxLayout(self.detectorDialogs[detname])
                 vbLayout.addWidget(self.detectorWidgets[detname])
                 self.detectorDialogs[detname].setWindowTitle(detname)
-                self.detectorDialogs[detname].setGeometry(810,0,800,1600)
+                if dettype=='area_detector':
+                    self.detectorDialogs[detname].setGeometry(810, 0, 800, 1600)
                 self.detectorDialogs[detname].show()
                 self.detectorListWidget.addItem(self.detectorComboBox.currentText())
                 self.usedDetectors.append(detname)
-                self.experimentLogHandle.write('##Detector Added on: '+time.asctime()+'\n')
-                self.experimentLogHandle.write('#Detectors : '+str(self.usedDetectors)+'\n')
+                self.experimentLogHandle.write('##Detector Added on: ' + time.asctime() + '\n')
+                self.experimentLogHandle.write('#Detectors : ' + str(self.usedDetectors) + '\n')
                 self.experimentLogHandle.close()
-                self.experimentLogHandle=open(self.experimentLogFile,'a')
-                self.experimentIsSet=True
+                self.experimentLogHandle = open(self.experimentLogFile, 'a')
+                self.experimentIsSet = True
                 self.expTimeChanged()
             else:
                 del self.detectorWidgets[detname]
-            if str(self.sampleNameLineEdit.text())!='':
+            if str(self.sampleNameLineEdit.text()) != '':
                 self.sampleNameChanged()
         else:
-            QMessageBox.warning(self,'Detector Error',detname+'  already in use.',QMessageBox.Ok)
+            QMessageBox.warning(self,'Detector Warning',detname+'  already in use.',QMessageBox.Ok)
             
     def showDetector(self):
         """
@@ -1053,7 +1062,9 @@ class XAnoS_Collector(QWidget):
         if expFolder is not None:
             self.experimentFolder=expFolder
         else:
-            self.experimentFolder=str(QFileDialog.getExistingDirectory(self,caption='Open existing experiment folder',directory='/home/epics/CARS5/Data/chemmat/Data/saxs'))
+            self.experimentFolder=str(QFileDialog.getExistingDirectory(self,caption='Open existing experiment '
+                                                                                    'folder',
+                                                                       directory='/mnt/ChemData/Data/Asax'))
             self.experimentFolderLineEdit.setText(self.experimentFolder)
         self.experimentLogFile=os.path.join(self.experimentFolder,'experiment.log')
         
@@ -1075,11 +1086,12 @@ class XAnoS_Collector(QWidget):
         self.experimentLogHandle=open(self.experimentLogFile,'a')
         for line in lines:
             if '#Detectors :' in line:
-                detnames=line.split(':')[1].strip().lstrip('[').rstrip(']').split(',')
+                detnames=line.split(':')[1].strip().lstrip('[').rstrip(']').split(', ')
                 
         try:
             for detname in detnames:
-                self.addDetector(detname=detname.lstrip('\'').rstrip('\''))
+                name=detname.lstrip('\'').rstrip('\'')
+                self.addDetector(detname=name)
             self.experimentLogHandle.close()        
             #This is to open the old file to append the log file with new experimental information
             self.experimentLogHandle=open(self.experimentLogFile,'a')
@@ -1123,7 +1135,10 @@ class XAnoS_Collector(QWidget):
         try:
             self.expTime=float(self.expTimeLineEdit.text())
             for detname in self.usedDetectors:
-                self.detectorWidgets[detname].expTimeLineEdit.setText(str(self.expTime))
+                if self.detectors[detname]['det_type']=='area_detector':
+                    self.detectorWidgets[detname].expTimeLineEdit.setText(str(self.expTime))
+                elif self.detectors[detname]['det_type']=='mca_detector':
+                    self.detectorWidgets[detname].realTimeLineEdit.setText(str(self.expTime))
         except:
             QMessageBox.warning(self,'Value Error','Please input numbers only.\n Setting Exposure time to 1.0 s.',QMessageBox.Ok)
             self.expTime=1.0
@@ -1380,9 +1395,10 @@ class XAnoS_Collector(QWidget):
                             first_det_energy={}
                             thresh_diff={}
                             for detname in self.usedDetectors:
-                                first_det_energy[detname]=caget(self.detectors[detname]['PV']+'Energy')
-                                first_det_thresh[detname]=caget(self.detectors[detname]['PV']+'ThresholdEnergy')
-                                thresh_diff[detname]=firstPosition[motorname]-first_det_thresh[detname]
+                                if self.detectors[detname]['det_type']=='area_detector':
+                                    first_det_energy[detname]=caget(self.detectors[detname]['PV']+'Energy')
+                                    first_det_thresh[detname]=caget(self.detectors[detname]['PV']+'ThresholdEnergy')
+                                    thresh_diff[detname]=firstPosition[motorname]-first_det_thresh[detname]
                         elif motorname=='Undulator_ID15Energy':
                             firstPosition[motorname]=caget(self.motors['Undulator_Energy']['PV'])
                         else:
@@ -1418,19 +1434,20 @@ class XAnoS_Collector(QWidget):
                                         caput('15IDA:m10.BDST',0.1,wait=True)
 
                                     for detname in self.usedDetectors:
-                                        if round(self.measurementList[motorname][i],3) != caget(self.detectors[
-                                                                                           detname][
-                                                                                           'PV']+'Energy_RBV'):
-                                            self.instrumentStatus.setText(
-                                                '<font color="Red">Setting the Energy and Threshhold of Pilatus 300K. '
-                                                'Please '
-                                                'wait...</font>')
+                                        if self.detectors[detname]['det_type']=='area_detector':
+                                            if round(self.measurementList[motorname][i],3) != caget(self.detectors[
+                                                                                               detname][
+                                                                                               'PV']+'Energy_RBV'):
+                                                self.instrumentStatus.setText(
+                                                    '<font color="Red">Setting the Energy and Threshhold of Pilatus 300K. '
+                                                    'Please '
+                                                    'wait...</font>')
 
-                                            caput(self.detectors[detname]['PV']+'Energy',round(self.measurementList[
-                                                motorname][i],3),wait=False) #Changing the energy of the detectors
-                                            caput(self.detectors[detname]['PV']+'ThresholdEnergy',\
-                                                              round(self.measurementList[motorname][
-                                                i]-thresh_diff[detname],3),wait=False) #Changing the threshold energy of
+                                                caput(self.detectors[detname]['PV']+'Energy',round(self.measurementList[
+                                                    motorname][i],3),wait=False) #Changing the energy of the detectors
+                                                caput(self.detectors[detname]['PV']+'ThresholdEnergy',\
+                                                                  round(self.measurementList[motorname][
+                                                    i]-thresh_diff[detname],3),wait=False) #Changing the threshold energy of
                                         # the detectors
                                 elif motorname=='Undulator_ID15Energy':
                                     caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
@@ -1485,12 +1502,13 @@ class XAnoS_Collector(QWidget):
                         if motorname=='Energy':
                             caput(self.motors[motorname]['PV']+'AO.VAL',firstPosition[motorname],wait=False)
                             for detname in self.usedDetectors:
-                                caput(self.detectors[detname]['PV'] + 'Energy', round(first_det_energy[detname], 3),
-                                      wait=False) #Changing the energy of the detectors back to the starting point
-                                caput(self.detectors[detname]['PV'] + 'ThresholdEnergy', \
-                                      round(first_det_thresh[detname], 3),
-                                      wait=False)  # Changing the threshold energy of the detectors back to the starting
-                                # point
+                                if self.detectors[detname]['det_type']=='area_detector':
+                                    caput(self.detectors[detname]['PV'] + 'Energy', round(first_det_energy[detname], 3),
+                                          wait=False) #Changing the energy of the detectors back to the starting point
+                                    caput(self.detectors[detname]['PV'] + 'ThresholdEnergy', \
+                                          round(first_det_thresh[detname], 3),
+                                          wait=False)  # Changing the threshold energy of the detectors back to the starting
+                                    # point
 
 
                         elif motorname=='Undulator_ID15Energy':
@@ -1616,8 +1634,11 @@ class XAnoS_Collector(QWidget):
         caput(self.scalers['15IDC_scaler_count_time']['PV'], self.expTime, wait=True)
         caput(self.scalers['15IDD_scaler_count_time']['PV'], self.expTime, wait=True)
         for detname in self.usedDetectors:
-            caput(self.detectors[detname]['PV']+'AcquireTime', self.expTime, wait=True)
-            caput(self.detectors[detname]['PV'] +'AcquirePeriod', self.expTime + 0.1, wait=True)
+            if self.detectors[detname]['det_type']=='area_detector':
+                caput(self.detectors[detname]['PV']+'AcquireTime', self.expTime, wait=True)
+                caput(self.detectors[detname]['PV'] +'AcquirePeriod', self.expTime + 0.1, wait=True)
+            elif self.detectors[detname]['det_type']=='mca_detector':
+                self.detectorWidgets[detname].realTimeLineEdit.setText(str(self.expTime))
             self.detectorWidgets[detname].imageFlag=0
         if self.collectTransmissionCheckBox.isChecked() and not self.darkImage:
             #self.bringPDIn()
@@ -1668,7 +1689,10 @@ class XAnoS_Collector(QWidget):
         #self.counting=Truecamonitor(self.scalers['15IDD_scaler_start']['PV']
         stime=time.time()
         for detname in self.usedDetectors:
-            caput(self.detectors[detname]['PV'] + 'Acquire', 1)
+            if self.detectors[detname]['det_type']=='area_detector':
+                caput(self.detectors[detname]['PV'] + 'Acquire', 1)
+            elif self.detectors[detname]['det_type']=='mca_detector':
+                self.detectorWidgets[detname].startstopCountMCA()
         caput(self.scalers['15IDD_scaler_start']['PV'], 1)
         caput(self.scalers['15IDC_scaler_start']['PV'], 1)
         self.counting = True
@@ -1678,13 +1702,15 @@ class XAnoS_Collector(QWidget):
                 break
             timeElapsed = time.time() - stime
             for detname in self.usedDetectors:
-                self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
+                if self.detectors[detname]['det_type']=='area_detector':
+                    self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
             pg.QtGui.QApplication.processEvents()
             QtTest.QTest.qWait(10)
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()
         QtTest.QTest.qWait(10)
-        while any([self.detectorWidgets[detname].imageFlag==0 for detname in self.usedDetectors]):
+        while any([self.detectorWidgets[detname].imageFlag==0 for detname in self.usedDetectors if self.detectors[
+            detname]['det_type']=='area_detector']):
             if self.abort:
                 break
             #while any([self.detectorWidgets[detname].detState!='Idle' for detname in self.usedDetectors]):
@@ -1692,7 +1718,8 @@ class XAnoS_Collector(QWidget):
             #        break
             timeElapsed = time.time() - stime
             for detname in self.usedDetectors:
-                self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
+                if self.detectors[detname]['det_type'] == 'area_detector':
+                    self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
             pg.QtGui.QApplication.processEvents()
             QtTest.QTest.qWait(10)
         self.counting=False
@@ -1724,9 +1751,9 @@ class XAnoS_Collector(QWidget):
 
     def connect_Temperature_Controller(self):
         self.temperaturePV=PV("15IDC:LS330:TC1:Sample")
-        self.temperaturePV.get()
-        tpvconnect=self.temperaturePV.connect()
-        if tpvconnect:
+        self.temperaturePV.wait_for_connection(timeout=1.0)
+        # tpvconnect=self.temperaturePV.connect()
+        if self.temperaturePV.connected:
             self.tempControl=True
         else:
             self.tempControl=False
@@ -1739,36 +1766,43 @@ class XAnoS_Collector(QWidget):
             2) Reads the images and put all the necessary information together to generate an EDF file to store in correct locations
             3) Advance the image counter by 1
         """
+        self.mcaFilename=None
         camonitor_clear(self.scalers['15IDC_scaler_start']['PV'])
         camonitor_clear(self.scalers['15IDD_scaler_start']['PV'])
         #self.palette.setColor(QPalette.Foreground,Qt.red)
         #self.instrumentStatus.setPalette(self.palette)
         for detname in self.usedDetectors:
-            #if detname=='PhotonII':
-            #    imgFile=caget('13PII_1:TIFF1:FullFileName_RBV',as_string=True)
-            #else:
-            #    imgFile=caget(self.detectors[detname]['PV'].split(':')[0]+':TIFF1:FullFileName_RBV',as_string=True)
-            if self.darkImage:
-                self.serverFileOut=os.path.join(self.detectorFolders[detname],'%s_%04d_dark.edf'%(self.sampleName,self.sampleCounter))
-#                self.dataReducer.darkFile=fileout
-#                self.dataReducer.darkFileLineEdit.setText(fileout)
-            else:
-                self.serverFileOut=os.path.join(self.detectorFolders[detname],'%s_%04d.edf'%(self.sampleName,self.sampleCounter))
-#                self.dataReducer.dataFiles=[fileout]
-#                self.dataReducer.dataFileLineEdit.setText('[\''+fileout+'\']')
-#            self.dataReducer.extractedFolder=os.path.join(self.detectorFolders[detname],'extracted_pyFAI')
-#            if not os.path.exists(self.dataReducer.extractedFolder):
-#                os.makedirs(self.dataReducer.extractedFolder)
-#            self.dataReducer.extractedFolderLineEdit.setText(self.dataReducer.extractedFolder)
-            self.instrumentStatus.setText('<font color="Red">Saving file</font>')
-            #cars_imgFile=imgFile.replace(self.detectors[detname]['det_folder'],self.detectors[detname]['cars_folder'])
-            cars_imgFile=self.serverFileOut
-            #print(cars_imgFile)
-            #QtTest.QTest.qWait(2*1000)
-            #img=fb.open(cars_imgFile)
-            file=fb.edfimage.EdfImage(data=None)
-            #file.data=img.data
-            file.data=self.detectorWidgets[detname].imgData
+            if self.detectors[detname]['det_type'] == 'area_detector':
+                #if detname=='PhotonII':
+                #    imgFile=caget('13PII_1:TIFF1:FullFileName_RBV',as_string=True)
+                #else:
+                #    imgFile=caget(self.detectors[detname]['PV'].split(':')[0]+':TIFF1:FullFileName_RBV',as_string=True)
+                if self.darkImage:
+                    self.serverFileOut=os.path.join(self.detectorFolders[detname],'%s_%04d_dark.edf'%(self.sampleName,self.sampleCounter))
+    #                self.dataReducer.darkFile=fileout
+    #                self.dataReducer.darkFileLineEdit.setText(fileout)
+                else:
+                    self.serverFileOut=os.path.join(self.detectorFolders[detname],'%s_%04d.edf'%(self.sampleName,self.sampleCounter))
+    #                self.dataReducer.dataFiles=[fileout]
+    #                self.dataReducer.dataFileLineEdit.setText('[\''+fileout+'\']')
+    #            self.dataReducer.extractedFolder=os.path.join(self.detectorFolders[detname],'extracted_pyFAI')
+    #            if not os.path.exists(self.dataReducer.extractedFolder):
+    #                os.makedirs(self.dataReducer.extractedFolder)
+    #            self.dataReducer.extractedFolderLineEdit.setText(self.dataReducer.extractedFolder)
+                self.instrumentStatus.setText('<font color="Red">Saving file</font>')
+                #cars_imgFile=imgFile.replace(self.detectors[detname]['det_folder'],self.detectors[detname]['cars_folder'])
+                cars_imgFile=self.serverFileOut
+                #print(cars_imgFile)
+                #QtTest.QTest.qWait(2*1000)
+                #img=fb.open(cars_imgFile)
+                file=fb.edfimage.EdfImage(data=None)
+                #file.data=img.data
+                file.data=self.detectorWidgets[detname].imgData
+            elif self.detectors[detname]['det_type']=='mca_detector':
+                self.mcaFilename=os.path.join(self.detectorFolders[detname],'%s_%04d.txt'%(self.sampleName,
+                                                                                         self.sampleCounter))
+                self.detectorWidgets[detname].saveMCA(fname=self.mcaFilename, add_to_table=False)
+
             #file.header=img.header
             #file.data=random.random((100,100))
             self.monB_counts = caget(self.scalers['monitorB']['PV'])
@@ -1810,6 +1844,8 @@ class XAnoS_Collector(QWidget):
             file.header['Wavelength']=self.wavelength
             self.energy = caget(self.BLParams['Energy']['PV'] + 'RdbkAO')
             file.header['Energy']=self.energy
+            if self.mcaFilename is not None:
+                file.header['Fluorescence_File']=self.mcaFilename
             #file.header['UndulatorEnergy']=self.energyWidget.undulatorEnergyLabel.pv.value
             file.write(self.serverFileOut)
             self.BSTransmissionLabel.setText('%.5f'%(self.BSdiode_counts/self.monitor_counts))

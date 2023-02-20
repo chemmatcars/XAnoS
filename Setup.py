@@ -24,8 +24,9 @@ class Setup(QObject):
         for line in lines:
             if (line[0]!='#') and (line[0]!='\n'):
                 name,info=line.split('@')
-                pv,det_folder,cars_folder=info.strip()[1:-1].split(',')
-                self.detectors[name]={'PV':pv.split('=')[1],'det_folder':det_folder.split('=')[1],'cars_folder':cars_folder.split('=')[1]}
+                det_type,pv,det_folder,cars_folder=info.strip()[1:-1].split(',')
+                self.detectors[name]={'det_type':det_type.split('=')[1], 'PV':pv.split('=')[1],
+                                      'det_folder':det_folder.split('=')[1],'cars_folder':cars_folder.split('=')[1]}
                 
     def scalerSetup(self):
         """

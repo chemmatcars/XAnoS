@@ -56,7 +56,7 @@ class Data_Dialog(QDialog):
         self.plotWidget=PlotWidget(parent=self,matplotlib=matplotlib)
         self.plotTab=self.tabWidget.addTab(self.plotWidget,'Plots')
         self.tabWidget.setCurrentIndex(0)
-        self.show()
+        #self.show()
         self.fileWatcher=QFileSystemWatcher()
         self.fileWatcher.fileChanged.connect(self.fileUpdated)
         self.cwd=None
@@ -757,5 +757,6 @@ if __name__=='__main__':
     #data={'meta':{'a':1,'b':2},'data':pd.DataFrame({'x':arange(1000),'y':arange(1000),'y_err':arange(1000)})}
     w=Data_Dialog(fname=fname,data=None,matplotlib=False)
     w.resize(600,400)
+    w.show()
 #    w.showFullScreen()
     sys.exit(app.exec_())

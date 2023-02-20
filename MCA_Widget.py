@@ -23,6 +23,7 @@ class MCA_Widget(QWidget):
     def __init__(self,parent = None):
         QWidget.__init__(self, parent)
         self.mcaDir='/tmp'
+        self.connection=False
         self.init_UI()
         self.init_validation()
         self.init_signals()
@@ -53,12 +54,14 @@ class MCA_Widget(QWidget):
         ret=self.realTimeLineEdit.setPV(self.medm_P + 'mca1.PRTM')
         if not ret:
             self.currentStatusLabel.setText('Not Connected')
+            self.connection=False
             return
         self.liveTimeLineEdit.setPV(self.medm_P + 'mca1.PLTM')
         self.modeComboBox.setPV(self.medm_P+self.medm_D+'PresetMode')
         self.currentStatusLabel.setPV(self.medm_P+'mca1.ACQG',type='str')
         self.readRealTimeLabel.setPV(self.medm_P+'mca1.ERTM')
         self.readLiveTimeLabel.setPV(self.medm_P+'mca1.ELTM')
+        self.connection=True
         # self.stopPushButton.setPV(self.medm_P+'mca1Stop')
         # self.offsetLineEdit.setPV(self.medm_P+'mca1.CALO')
         # self.linearLineEdit.setPV(self.medm_P+'mca1.CALS')
@@ -186,7 +189,6 @@ class MCA_Widget(QWidget):
                                              yerr=self.data[fname][key]['yerr'],
                                              name='%s' % (fname),
                                              color=self.plotColors[fname][key])
-                    print(self.plotColors[fname][key])
 
     def launch_MEDM(self):
         self.medm=QProcess()
@@ -282,7 +284,7 @@ class MCA_Widget(QWidget):
             pass
 
 
-    def saveMCA(self,fname=None):
+    def saveMCA(self,fname=None, add_to_table=True):
         if self.mca_y is None:
             self.readMCA()
         if fname is None:
@@ -301,7 +303,8 @@ class MCA_Widget(QWidget):
         header+='corr_sum_err=%.4f\n'%self.corr_sum_err#self.data['corr_sum_err']
         header+='col_names=["Channel","Counts","Err_Counts"]'
         np.savetxt(fname,data,header=header)
-        self.add_mca_scans(fnames=[fname])
+        if add_to_table:
+            self.add_mca_scans(fnames=[fname])
 
     def get_mca_manual_calib(self):
         """
@@ -352,6 +355,7 @@ class MCA_Widget(QWidget):
         value=kwargs['value']
         if value==0:
             self.mcaUpdating.emit(value)
+
 
     def mcaAutoUpdate(self,value):
         self.readMCA()
