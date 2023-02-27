@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>837</width>
-    <height>662</height>
+    <height>701</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -281,10 +281,6 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_15">
          <item>
           <widget class="QLabel" name="flDataFileLabel">
            <property name="text">
@@ -294,6 +290,24 @@
          </item>
          <item>
           <widget class="QLineEdit" name="flDataFileLineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_15">
+         <item>
+          <widget class="QLabel" name="flIntegRangeLabel">
+           <property name="text">
+            <string>Fluo Integ. Range</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="flIntegRangeLineEdit">
+           <property name="text">
+            <string>0:1000</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="flScaleFactorLabel">
@@ -310,7 +324,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox">
+          <widget class="QCheckBox" name="subFlCheckBox">
            <property name="text">
             <string>Subtract Fluo</string>
            </property>

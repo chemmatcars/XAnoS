@@ -204,7 +204,7 @@ class ImageCutWidget(QWidget):
         self.verCutPlot.addLegend()
         
         self.init_signals()
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         
     
         
@@ -279,7 +279,7 @@ class ImageCutWidget(QWidget):
             self.imageView.setImage(np.log10(np.where(self.img_array<=0.0,1e-12,self.img_array)),levels=(np.log10(min),np.log10(max)),pos=self.img_pos,scale=self.img_scale)
         else:
             self.imageView.setImage(self.img_array,levels=(min,max),pos=self.img_pos,scale=self.img_scale)
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         
     def cakedImageLogLinear(self):
         """
@@ -292,7 +292,7 @@ class ImageCutWidget(QWidget):
         else:
             self.cakedImageView.setImage(self.caked_img_array,levels=(min,max),pos=self.pos,scale=self.scale)
         self.cakedImageView.view.setAspectLocked(False)
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         
         
     def cakedImage_mouseMoved(self,pos):
@@ -400,7 +400,7 @@ class ImageCutWidget(QWidget):
             if self.cutInfoTableWidget.item(row,5).checkState()>0:
                 self.plot_cut_data(key)
         self.auto_save_cuts()
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
             
         
         

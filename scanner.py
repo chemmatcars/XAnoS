@@ -746,7 +746,7 @@ class Scanner(QWidget):
             self.slitStatus=True
             caput(self.slitParams[motorname]['PV']+'.VAL',pos,wait=False)
             while self.slitStatus and not self.abort:
-                pg.QtGui.QApplication.processEvents()
+                QApplication.processEvents()
                 QtTest.QTest.qWait(10)                    
             if self.abort:
                 self.initiat_abort()
@@ -833,7 +833,7 @@ class Scanner(QWidget):
             caput(self.motors[motorname]['PV']+'.VAL',pos,wait=False)
             QtTest.QTest.qWait(10)
             while self.motorDone!=1 and not self.abort:
-                pg.QtGui.QApplication.processEvents()
+                QApplication.processEvents()
                 QtTest.QTest.qWait(10)
             if self.abort:
                 self.initiat_abort()

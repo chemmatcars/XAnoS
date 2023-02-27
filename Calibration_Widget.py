@@ -587,7 +587,7 @@ class CalibrationWidget(QWidget):
         self.pointTreeWidget = QTreeWidget()
         self.pointTreeWidget.setSelectionMode(QAbstractItemView.ContiguousSelection)
         self.pointTreeWidget.setColumnCount(2)
-        self.pointTreeWidget.header().setResizeMode(QHeaderView.ResizeToContents)
+        self.pointTreeWidget.header().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.pointTreeWidget.header().setStretchLastSection(False)
         self.calibratePushButton = QPushButton('Calibrate')
         self.calibratePushButton.clicked.connect(self.calibrate)

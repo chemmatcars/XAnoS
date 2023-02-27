@@ -83,7 +83,7 @@ class PVLineEdit(QLineEdit):
             self.cb_index = self.pv.add_callback(self.onPVChange)
             self.pvChanged.connect(self.updatePV)
             self.returnPressed.connect(self.onReturn)
-            self.textChanged.connect(self.onReturn)
+            #self.textChanged.connect(self.onReturn)
             self.setToolTip('PV: %s'%self.pvname)
             if self.type==float:
                 self.validator=QDoubleValidator()

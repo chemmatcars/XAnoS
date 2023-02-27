@@ -77,7 +77,7 @@ class Detector_Widget(QWidget):
         self.imgWidget.setImage(self.imgData,transpose=False)
         self.imgWidget.scaleChanged()
         self.imgWidget.imageView.getView().setTitle(self.imgFile.replace(self.detectors[self.currentDetector]['det_folder'],self.detectors[self.currentDetector]['cars_folder']))
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         self.monitor_counts=caget(self.scalers['monitor']['PV'])
         self.count_time=caget(self.scalers['15IDD_scaler_count_time']['PV'])
         self.diode_counts=caget(self.scalers['diode']['PV'])
@@ -281,7 +281,7 @@ class Detector_Widget(QWidget):
                 while self.detStatus==1:
                     timeElapsed=time.time()-stime
                     self.timeElapsedLabel.setText('%.3f'%timeElapsed)
-                    pg.QtGui.QApplication.processEvents()
+                    QApplication.processEvents()
             else:
                 caput(self.detPV+'Acquire',0)
                 caput(self.scalers['15IDD_scaler_start']['PV'],0)
@@ -447,7 +447,7 @@ class Detector_Widget(QWidget):
         self.imgData=data.reshape(Ny,Nx)
         #self.imgData = np.rot90(data.reshape(self.detPV+'MaxSizeY_RBV', self.detPV+'MaxSizeX_RBV'), k=1, axes=(0, 1))
         self.imgWidget.setImage(self.imgData+0.001*np.random.random(size=self.imgData.shape), transpose=True)
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         self.monitor_counts = caget(self.scalers['monitor']['PV'])
         self.count_time = caget(self.scalers['15IDD_scaler_count_time']['PV'])
         #self.diode_counts = caget(self.scalers['diode']['PV'])

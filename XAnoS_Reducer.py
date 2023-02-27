@@ -149,11 +149,13 @@ class XAnoS_Reducer(QWidget):
         self.imageWidget.imageLayout.addWidget(self.imgNumberSpinBox,row=2,col=2)
         self.imageView=self.imageWidget.imageView.getView()
         self.plotWidget=PlotWidget()
+        self.mcaPlotWidget=PlotWidget()
         self.plotWidget.setXLabel('Q, &#8491;<sup>-1</sup>',fontsize=5)
         self.plotWidget.setYLabel('Intensity',fontsize=5)
         self.tabWidget.addTab(self.plotWidget,'Reduced 1D-data')
         self.tabWidget.addTab(self.imageWidget,'Masked 2D-data')
         self.tabWidget.addTab(self.cakedImageWidget,'Reduced Caked Data')
+        self.tabWidget.addTab(self.mcaPlotWidget,'MCA data')
         
         self.serverAddress=self.serverAddressLineEdit.text()
         self.startClientPushButton.clicked.connect(self.startClient)
@@ -631,6 +633,21 @@ class XAnoS_Reducer(QWidget):
                     imageMask=fb.open(self.maskFile).data
                 else:
                     imageMask=None
+                if self.subFlCheckBox.isChecked():
+                    print('I m here')
+                    if self.header['Fluorescence_File']!='None' and os.path.exists(self.header['Fluorescence_File']):
+                        print('I m here 2')
+                        fl_data=loadtxt(self.header['Fluorescence_File'],comments='#')
+                        if fl_data.shape[1]==3:
+                            self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2])
+                            fl_emin,fl_emax=list(map(float, self.flIntegRangeLineEdit.text().split(':')))
+                            fl_imin=argwhere(fl_data[:,0]>fl_emin)[0][0]
+                            fl_imax=argwhere(fl_data[:,0]<fl_emax)[-1][0]
+                            fl_bg=sum(fl_data[fl_imin:fl_imax+1])
+                            fl_scale=float(self.flScaleFactorLineEdit.text())
+                            imageData.data=imageData.data-fl_scale*fl_bg
+                            print("Fluorescence background subtracted")
+
 #                QApplication.processEvents()
                 #print(self.azimuthalRange)
                 self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',
@@ -704,6 +721,7 @@ class XAnoS_Reducer(QWidget):
         for file in self.dataFiles:
             self.dataFile=file
             QApplication.processEvents()
+            self.set_externally=True
             self.reduceData()
             i=i+1
             self.progressBar.setValue(i)

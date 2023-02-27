@@ -289,7 +289,7 @@ class Image_Widget(QWidget):
         self.imageView.ui.histogram.autoHistogramRange()
         self.imageView.getView().setLabels(bottom=(self.xlabel,self.unit[0]),left=(self.ylabel,self.unit[1]))
         #self.imageView.view.setRange(xRange=(self.xmin,self.xmax),yRange=(self.ymin,self.ymax))
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         
 if __name__=='__main__':
     # create application

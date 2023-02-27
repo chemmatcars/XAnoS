@@ -138,7 +138,7 @@ class XAnoS_Collector(QWidget):
         monitors the changes in abosorber and accordingly updates the absorber spinbox in the gui
         """
         value=kwargs['value']
-        self.absSpinBox.setValue(value)
+        self.absSpinBox.setValue(int(value))
         
     def monitorShutter(self,**kwargs):
         """
@@ -314,7 +314,7 @@ class XAnoS_Collector(QWidget):
             self.monochromatorStatus='<font color="Green">Idle</font>'
         self.monochromatorStatusLabel.setText(self.monochromatorStatus)
         #self.monochromatorStatusLabel.setPalette(self.palette)
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         
         
     def undulatorIDStatusCheck(self,**kwargs):
@@ -775,7 +775,7 @@ class XAnoS_Collector(QWidget):
             self.pdInPositionLineEdit.setDisabled(False)
         else:
             self.pdInPositionLineEdit.setDisabled(True)
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
             
     def beamInPositionStateChanged(self):
         """
@@ -784,7 +784,7 @@ class XAnoS_Collector(QWidget):
             self.beamInPositionLineEdit.setDisabled(False)
         else:
             self.beamInPositionLineEdit.setDisabled(True)
-        pg.QtGui.QApplication.processEvents()    
+        QApplication.processEvents()
             
     def mirrorInPositionStateChanged(self):
         """
@@ -793,7 +793,7 @@ class XAnoS_Collector(QWidget):
             self.mirrorInPositionLineEdit.setDisabled(False)
         else:
             self.mirrorInPositionLineEdit.setDisabled(True)
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
     
     def openPositionerFile(self,fname=None):
         """
@@ -1250,7 +1250,7 @@ class XAnoS_Collector(QWidget):
         QtTest.QTest.qWait(1000)
         caput(self.scalers['15IDD_scaler_start']['PV'], 1, wait=False)  # Starts counting.
         while caget(self.scalers['15IDD_scaler_start']['PV']) != 0:
-            pg.QtGui.QApplication.processEvents()
+            QApplication.processEvents()
         self.shutter_OFF()
         caput('pd_state',0)
         QtTest.QTest.qWait(1000)
@@ -1264,7 +1264,7 @@ class XAnoS_Collector(QWidget):
         #self.palette.setColor(QPalette.Foreground,Qt.green)
         #self.instrumentStatus.setPalette(self.palette)
         self.instrumentStatus.setText('<font color="Green">Done</font>')
-        pg.QtGui.QApplication.processEvents()
+        QApplication.processEvents()
         
         
         
@@ -1368,6 +1368,9 @@ class XAnoS_Collector(QWidget):
         self.frameCount=int(self.frameCountLineEdit.text())
         self.sleepTime=float(self.sleepTimeLineEdit.text())
         self.loopSleepTime=float(self.loopSleepTimeLineEdit.text())
+        for detname in self.usedDetectors: # Setting the Auto ThresholdApply to 0
+            if self.detectors[detname]['det_type'] == 'area_detector':
+                caput(self.detectors[detname]['PV'] + 'ThresholdAutoApply', 0, wait=True)
         if str(self.dynamicCollectButton.text())!='Abort':
             self.abort=False
             self.create_measurementList()
@@ -1444,11 +1447,12 @@ class XAnoS_Collector(QWidget):
                                                     'wait...</font>')
 
                                                 caput(self.detectors[detname]['PV']+'Energy',round(self.measurementList[
-                                                    motorname][i],3),wait=False) #Changing the energy of the detectors
+                                                    motorname][i],3),wait=False) #Setting the energy of the detectors
                                                 caput(self.detectors[detname]['PV']+'ThresholdEnergy',\
                                                                   round(self.measurementList[motorname][
                                                     i]-thresh_diff[detname],3),wait=False) #Changing the threshold energy of
                                         # the detectors
+                                                caput(self.detectors[detname]['PV'] + 'ThresholdApply', 1, wait=True)
                                 elif motorname=='Undulator_ID15Energy':
                                     caput(self.motors[motorname]['PV'],self.measurementList[motorname][i],wait=False)
                                 else:
@@ -1509,6 +1513,7 @@ class XAnoS_Collector(QWidget):
                                           round(first_det_thresh[detname], 3),
                                           wait=False)  # Changing the threshold energy of the detectors back to the starting
                                     # point
+                                    caput(self.detectors[detname]['PV'] + 'ThresholdApply', 1, wait=True)
 
 
                         elif motorname=='Undulator_ID15Energy':
@@ -1576,7 +1581,7 @@ class XAnoS_Collector(QWidget):
         #print('I m here')
         caput(self.motors['cmir']['PV'],self.pdInPosition,wait=False)           
         while caget(self.motors['cmir']['PV']+'.DMOV')==0:
-            pg.QtGui.QApplication.processEvents()           
+            QApplication.processEvents()
         #self.palette.setColor(QPalette.Foreground,Qt.green)
         self.instrumentStatus.setText('<font color="Green">Done</font>')
         #self.instrumentStatus.setPalette(self.palette)
@@ -1592,7 +1597,7 @@ class XAnoS_Collector(QWidget):
         self.instrumentStatus.setText('<font color="Red">Bringing beam in. Please wait...</font>')
         caput(self.motors['cmir']['PV'],self.beamInPosition,wait=False)
         while caget(self.motors['cmir']['PV']+'.DMOV')==0:
-            pg.QtGui.QApplication.processEvents()
+            QApplication.processEvents()
         #self.palette.setColor(QPalette.Foreground,Qt.green)
         self.instrumentStatus.setText('<font color="Green">Done</font>')       
         #self.instrumentStatus.setPalette(self.palette)
@@ -1608,7 +1613,7 @@ class XAnoS_Collector(QWidget):
         self.instrumentStatus.setText('<font color="Red">Bringing Mirror in. Please wait...</font>')
         caput(self.motors['cmir']['PV'],self.mirrorInPosition,wait=False)
         while caget(self.motors['cmir']['PV']+'.DMOV')==0:
-           pg.QtGui.QApplication.processEvents()            
+           QApplication.processEvents()
         #self.palette.setColor(QPalette.Foreground,Qt.green)
         self.instrumentStatus.setText('<font color="Green">Done</font>')       
         #self.instrumentStatus.setPalette(self.palette)
@@ -1638,7 +1643,7 @@ class XAnoS_Collector(QWidget):
                 caput(self.detectors[detname]['PV']+'AcquireTime', self.expTime, wait=True)
                 caput(self.detectors[detname]['PV'] +'AcquirePeriod', self.expTime + 0.1, wait=True)
             elif self.detectors[detname]['det_type']=='mca_detector':
-                self.detectorWidgets[detname].realTimeLineEdit.setText(str(self.expTime))
+                caput(self.detectors[detname]['PV']+'.PRTM', self.expTime, wait=True)
             self.detectorWidgets[detname].imageFlag=0
         if self.collectTransmissionCheckBox.isChecked() and not self.darkImage:
             #self.bringPDIn()
@@ -1704,7 +1709,7 @@ class XAnoS_Collector(QWidget):
             for detname in self.usedDetectors:
                 if self.detectors[detname]['det_type']=='area_detector':
                     self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
-            pg.QtGui.QApplication.processEvents()
+            QApplication.processEvents()
             QtTest.QTest.qWait(10)
         if self.autoShutterCheckBox.checkState()>0:
             self.shutter_OFF()
@@ -1720,7 +1725,7 @@ class XAnoS_Collector(QWidget):
             for detname in self.usedDetectors:
                 if self.detectors[detname]['det_type'] == 'area_detector':
                     self.detectorWidgets[detname].timeElapsedLabel.setText('%.3f' % timeElapsed)
-            pg.QtGui.QApplication.processEvents()
+            QApplication.processEvents()
             QtTest.QTest.qWait(10)
         self.counting=False
         #self.palette.setColor(QPalette.Foreground,Qt.green)
