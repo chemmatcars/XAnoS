@@ -9,6 +9,8 @@ from calc_cf import calc_cf
 import os
 from xraydb import XrayDB
 from XAnoS_Components import XAnoS_Components
+import pyqtgraph as pg
+import copy
 
 class XAnoS_Batch_Processor_2(QWidget):
     """
@@ -16,6 +18,7 @@ class XAnoS_Batch_Processor_2(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self, parent = None)
         loadUi('UI_Forms/ASAXS_Batch_Processor_2.ui',self)
+        self.xdb = XrayDB()
         self.initUI()
         self.init_signals()
         try:
@@ -38,6 +41,9 @@ class XAnoS_Batch_Processor_2(QWidget):
         self.bkgNumChanged()
         self.stdNumChanged()
         #self.sampleThicknessLineEdit.setValidator(self.doubleValidator)
+        self.elements = self.xdb.atomic_symbols
+        self.resonantElementComboBox.addItems(
+            [str(self.xdb.atomic_number(element)) + ': ' + element for element in self.elements])
         self.bkgThicknessLineEdit.setValidator(self.doubleValidator)
         self.stdThicknessLineEdit.setValidator(self.doubleValidator)
         self.sampleThickness = float(self.sampleThicknessLineEdit.text())
@@ -45,13 +51,13 @@ class XAnoS_Batch_Processor_2(QWidget):
         self.energyNpts = self.energyNptsSpinBox.value()
         self.repeatNpts = self.repeatSpinBox.value()
         self.normStd = self.normStdSampleComboBox.currentText()
+        self.normFitDeg = self.normFitDegSpinBox.value()
         self.stdThickness = float(self.stdThicknessLineEdit.text())
         self.xMinMaxText = self.xMinMaxLineEdit.text()
         self.xMin, self.xMax = list(map(float, self.xMinMaxText.split(':')))
         self.interpType = self.interpComboBox.currentText()
         self.progressBar.setMinimum(0)
         self.progressBar.setValue(0)
-        self.xdb=XrayDB()
 
     def init_signals(self):
         """
@@ -75,6 +81,8 @@ class XAnoS_Batch_Processor_2(QWidget):
         self.energyNptsSpinBox.valueChanged.connect(self.energyNptsChanged)
         self.repeatSpinBox.valueChanged.connect(self.repeatNptsChanged)
         self.normStdSampleComboBox.currentIndexChanged.connect(self.normStdChanged)
+        self.normFitDegSpinBox.valueChanged.connect(self.normFitDegChanged)
+        self.applyNewCFPushButton.clicked.connect(self.applyNewCF)
         self.xMinMaxLineEdit.returnPressed.connect(self.xMinMaxChanged)
         self.interpComboBox.currentIndexChanged.connect(self.interpTypeChanged)
         self.processPushButton.clicked.connect(self.process)
@@ -111,7 +119,7 @@ class XAnoS_Batch_Processor_2(QWidget):
                 self.progressBar.setMinimum(0)
                 self.progressBar.setValue(0)
 
-                outputNames=[]
+                self.outputNames=[]
                 self.outputFnames=[]
                 for j in range(0, self.energyNpts):
                     if self.stop:
@@ -175,6 +183,9 @@ class XAnoS_Batch_Processor_2(QWidget):
                     if air_num!=0:
                         data[bsgfname]['CF'] = cf
                         bsub_data[bsgfname]=data[bsgfname]
+                    else:
+                        data[ogname]['CF'] = cf
+                        bsub_data[ogname] = data[ogname]
                     if air_num!=0 and mt_num!=0:
                         data[bsmfname]['CF'] = cf
                         bsub_data[bsmfname] = data[bsmfname]
@@ -201,27 +212,29 @@ class XAnoS_Batch_Processor_2(QWidget):
                                                      bg_factor = bg_factor, norm=1.0, data=data,textEdit=self.infoTextEdit)
                         self.plotWidget.add_data(x=data[bsfname]['x'],y=data[bsfname]['CF']*data[bsfname]['y']/data[bsfname]['Thickness'],\
                                                  yerr=data[bsfname]['CF']*data[bsfname]['yerr']/data[bsfname]['Thickness'],name=str(fnum[0])+'_bsub')
-                        bsub_data[bsfname]=data[bsfname]
+                        bsub_data[bsfname]=copy.copy(data[bsfname])
                         #self.plotWidget.Plot([str(fnum[0])+'_bsub'])
-                        outputNames.append(str(fnum[0])+'_bsub')
+                        self.outputNames.append(str(fnum[0])+'_bsub')
                         self.outputFnames.append(bsfname)
                         self.progressBar.setValue(j)
-                        self.plotWidget.Plot(outputNames)
+                        self.plotWidget.Plot(self.outputNames)
                         QApplication.processEvents()
                         t+=1
-
-                self.data=data
+                self.data = data
+                self.bsub_data=copy.copy(bsub_data)
+                # self.interpolate_cf()
+                output_dir, output_fnames=self.applyNewCF()
                 #fdir,fnames=write1DSAXS(bsub_data,textEdit=self.infoTextEdit)
                 self.save_settings()
                 self.infoTextEdit.append('Batch processing completed successfully!')
                 self.infoTextEdit.moveCursor(QTextCursor.End)
                 QApplication.processEvents()
-                datadir = os.path.dirname(self.outputFnames[0])
+                #datadir = os.path.dirname(self.outputFnames[0])
                 macrofile = QFileDialog.getSaveFileName(self, caption='Save Macro File as:', filter='Macro Files (*.macro)',
-                                            directory=datadir)[0]
+                                            directory=output_dir)[0]
                 macrofile=os.path.splitext(macrofile)[0]+'.macro'
-                fh = open(os.path.join(datadir, macrofile), 'w')
-                for tfname in self.outputFnames:
+                fh = open(os.path.join(output_dir, macrofile), 'w')
+                for tfname in output_fnames:
                     fh.write(tfname + '\n')
                 fh.close()
                 reply=QMessageBox.question(self,'Component Splitting','Do you like to get component splitting from the files?'
@@ -230,20 +243,45 @@ class XAnoS_Batch_Processor_2(QWidget):
 
                 if reply == QMessageBox.Yes:
                     curdir = os.getcwd()
-                    QProcess.startDetached("python",[os.path.join(curdir,"XAnoS_Components.py")]+self.outputFnames)
-                    # w=XAnoS_Components()
-                    # resolution = QDesktopWidget().screenGeometry()
-                    # w.setGeometry(0, 0, resolution.width() - 100, resolution.height() - 100)
-                    # w.move(int(resolution.width() / 2) - int(w.frameSize().width() / 2),
-                    # int(resolution.height() / 2) - int(w.frameSize().height() / 2))
-                    # w.setWindowTitle('XAnoS_Components')
-                    # w.import_data(dataFiles=self.outputFnames)
-                    # w.show()
-
+                    QProcess.startDetached("python",[os.path.join(curdir,"XAnoS_Components.py")]+output_fnames)
             else:
                 QMessageBox.warning(self,'File Error','Please select first sample file',QMessageBox.Ok)
         else:
             QMessageBox.warning(self,'Error','It seems you are using same file number for two different category of samples. Please check!',QMessageBox.Ok)
+
+
+    def interpolate_cf(self):
+        element=self.resonantElementComboBox.currentText().split(': ')[1]
+        self.raw_cf = np.array(
+            [[self.xdb.f1_chantler(element=element, energy=self.data[fname]['Energy']*1e3), self.data[fname]['CF']] for fname in self.outputFnames])
+        polypar = np.polyfit(self.raw_cf[:, 0], self.raw_cf[:, 1], deg=self.normFitDeg)
+        self.cffun = np.poly1d(polypar)
+        self.cfPlotWidget.add_data(x=self.raw_cf[:, 0], y=self.raw_cf[:, 1], name='CF', color=pg.mkColor('r'))
+        self.cfPlotWidget.add_data(x=self.raw_cf[:, 0], y=self.cffun(self.raw_cf[:, 0]), fit=True, color=pg.mkColor('b'),
+                                   name='Fit')
+        self.cfPlotWidget.Plot(['CF', 'Fit'])
+        eqn='%.3e'%polypar[0]
+        for i, p in enumerate(polypar[1:]):
+            if p>0:
+                eqn+='+%.3ex^%d'%(p,i+1)
+            else:
+                eqn+='%.3ex^%d'%(p,i+1)
+        self.cfFitEqnLineEdit.setText(eqn)
+
+    def applyNewCF(self):
+        self.interpolate_cf()
+        bsubdata={}
+        for i, fname in enumerate(self.outputFnames):
+            self.bsub_data[fname]['CF'] = self.cffun(self.raw_cf[i, 0])
+            self.plotWidget.add_data(x=self.bsub_data[fname]['x'],
+                                     y=self.bsub_data[fname]['CF'] * self.bsub_data[fname]['y'] / self.bsub_data[fname][
+                                         'Thickness'], \
+                                     yerr=self.bsub_data[fname]['CF'] * self.bsub_data[fname]['yerr'] / self.bsub_data[fname][
+                                         'Thickness'], name=self.outputNames[i])
+            bsubdata[fname]=self.bsub_data[fname]
+        ddir=str(QFileDialog.getExistingDirectory(self, "Select directory for saving processed files of samples", os.path.dirname(self.outputFnames[0])))
+        fdir, fnames = write1DSAXS(bsubdata, fdir=ddir, textEdit=self.infoTextEdit, progressBar=self.progressBar)
+        return fdir, fnames
 
     def openSampleFname(self):
         fname=QFileDialog.getOpenFileName(caption='Select sample file name',filter="Sample Files (*.txt)")[0]
@@ -375,6 +413,10 @@ class XAnoS_Batch_Processor_2(QWidget):
     def interpTypeChanged(self):
         self.interpType=self.interpTypeComboBox.currentText()
         #self.save_settings()
+
+    def normFitDegChanged(self):
+        self.normFitDeg=self.normFitDegSpinBox.value()
+        self.interpolate_cf()
 
     def save_settings(self):
         fh=open('./batch_settings.txt','w+')

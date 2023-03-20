@@ -702,7 +702,7 @@ def combineFiles(fnames=None,ofname=None, Npt=1000,kind='linear'):
 
 
         
-def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt'):
+def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt',progressBar=None):
     """
     Writes the data dictionary in the filename provided with full path by 'fname'
     """
@@ -712,7 +712,11 @@ def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt'):
     if not os.path.exists(fdir):
         os.makedirs(fdir)
     fnames=[]
-    for fname in data.keys():
+    if progressBar is not None:
+        progressBar.setMaximum(len(data.keys())-1)
+        progressBar.setMinimum(0)
+        progressBar.setValue(0)
+    for i, fname in enumerate(data.keys()):
         pfname=os.path.join(fdir,os.path.splitext(os.path.basename(fname))[0]+fterminator)
         header='Processed data on %s\n'%time.asctime()
         #header='Original file=%s\n'%fname
@@ -728,6 +732,8 @@ def write1DSAXS(data,textEdit=None,fdir=None,fterminator='_bkg_sub_norm.txt'):
             textEdit.moveCursor(QTextCursor.End)
             QApplication.processEvents()
         fnames.append(pfname)
+        if progressBar is not None:
+            progressBar.setValue(i)
     return fdir, fnames
             
         
