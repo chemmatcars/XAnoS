@@ -9,7 +9,7 @@ import sys
 import fabio as fb
 
 class ImageCutWidget(QWidget):
-    def __init__ ( self,parent=None):
+    def __init__ ( self,parent=None, data_dir=None):
         """
         A QWidget class to show a 2D image along with capabilities of generating and plotting several vertical and horizontal cuts image. The widget is using the libraries from pyqtgraph extensively
         """
@@ -17,6 +17,7 @@ class ImageCutWidget(QWidget):
         self.vblayout=QVBoxLayout(self)
         self.intDock=DockArea(self,parent)
         self.vblayout.addWidget(self.intDock)
+        self.data_dir=data_dir
         
         #Parameters fro Geographical colormap motivated by Fit2D#
         self.colorPos=np.array([0.0,0.17,0.26,0.34,0.51,0.68,0.85,1.0])
@@ -866,12 +867,13 @@ class ImageCutWidget(QWidget):
         """
         Save all the 1D cuts extracted from the data
         """
+        if self.caked_image_fname is None:
+            tfname=QFileDialog.getSaveFileName(self,'Provide File Prefix')[0]
+        else:
+            tfname=self.caked_image_fname
         for row in range(self.cutInfoTableWidget.rowCount()):
             key=str(self.cutInfoTableWidget.item(row,0).text())
-            if self.caked_image_fname is not None:
-                fname=self.caked_image_fname+'_'+key+'_cut.txt'
-            else:
-                fname='unnamed_'+key+'_cut.txt'
+            fname=tfname+'_'+key+'_cut.txt'
             fh=open(fname,'w')
             fh.write(self.cut_data[key]['info'])
             if self.caked_image_header is not None:

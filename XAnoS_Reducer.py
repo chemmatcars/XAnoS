@@ -131,6 +131,7 @@ class XAnoS_Reducer(QWidget):
         self.extractedFolderPushButton.clicked.connect(self.openFolder)
         self.extractedFolderLineEdit.textChanged.connect(self.extractedFolderChanged)
         self.polCorrComboBox.currentIndexChanged.connect(self.polarizationChanged)
+        self.polFacLineEdit.returnPressed.connect(self.polFacChanged)
         self.polarizationChanged()
         self.radialPointsLineEdit.returnPressed.connect(self.nptChanged)
         self.azimuthalRangeLineEdit.returnPressed.connect(self.azimuthalRangeChanged)
@@ -280,14 +281,36 @@ class XAnoS_Reducer(QWidget):
         event.accept()
        
     def polarizationChanged(self):
+        self.polFacLineEdit.setEnabled(False)
         if self.polCorrComboBox.currentText()=='Horizontal':
+            self.polFacLineEdit.setText('1')
             self.polarization_factor=1
         elif self.polCorrComboBox.currentText()=='Vertical':
+            self.polFacLineEdit.setText('-1')
             self.polarization_factor=-1
         elif self.polCorrComboBox.currentText()=='Circular':
+            self.polFacLineEdit.setText('0')
             self.polarization_factor=0
+        elif self.polCorrComboBox.currentText()=='Custom':
+            self.polFacLineEdit.setEnabled(True)
+            self.polarization_factor=float(self.polFacLineEdit.text())
         else:
+            self.polFacLineEdit.setText('None')
             self.polarization_factor=None
+
+    def polFacChanged(self):
+        try:
+            val=float(self.polFacLineEdit.text())
+            if -1<=val<=1:
+                self.polarization_factor = val
+            else:
+                QMessageBox.warning(self,'Value Error', 'Please float value between -1 and 1', QMessageBox.Ok)
+                return
+        except:
+            QMessageBox.warning(self,'Value Error','Please float value between -1 and 1', QMessageBox.Ok)
+            return
+
+
             
     def createMask(self):
         """
@@ -479,6 +502,16 @@ class XAnoS_Reducer(QWidget):
             self.imgNumberSpinBox.setMaximum(len(self.dataFiles)-1)
             self.dataFileLineEdit.setText(str(self.dataFiles))
             self.curDir=os.path.dirname(self.dataFiles[0])
+            ## Looking for Fluorescence data
+            flDir=os.path.join(os.path.dirname(self.curDir),'vortex_mca')
+            flFile=os.path.join(flDir,os.path.splitext(os.path.basename(self.dataFiles[0]))[0]+'.txt')
+            if os.path.exists(flDir):
+                self.flDataFolderLineEdit.setText(flDir)
+            if os.path.exists(flFile):
+                self.flDataFileLineEdit.setText(flFile)
+                fl_data = loadtxt(os.path.join(flDir,flFile), comments='#')
+                print(fl_data.shape)
+                self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2],name=flFile)
             self.extractedBaseFolder=self.curDir
             self.extractedFolder=os.path.abspath(os.path.join(self.extractedBaseFolder,self.extractedFolderLineEdit.text()))
             if not os.path.exists(self.extractedFolder):
@@ -620,23 +653,32 @@ class XAnoS_Reducer(QWidget):
                 if str(self.normComboBox.currentText())=='BSDiode':
                     norm_factor=self.header['BSDiode_corr']#/self.header['Monitor_corr']#float(self.header[
                     # 'count_time'])
+                    self.header['Normalized_by'] = 'BSDiode'
                 elif str(self.normComboBox.currentText())=='TransDiode':
                     norm_factor=self.header['Transmission']*self.header['Monitor_corr']
+                    self.header['Normalized_by'] = 'TransDiode'
                 elif str(self.normComboBox.currentText())=='Monitor':
                     norm_factor=self.header['Monitor_corr']
+                    self.header['Normalized_by'] = 'Monitor'
                 elif str(self.normComboBox.currentText())=='Image Sum':
                     norm_factor=sum(imageData.data)
+                    self.header['Normalized_by'] = 'Image Sum'
                 else:
                     norm_factor=1.0
+                    self.header['Normalized_by'] = 'None'
                     
                 if self.maskFile is not None:
                     imageMask=fb.open(self.maskFile).data
                 else:
                     imageMask=None
+
+
+                self.header['Flourescence_Corrected'] = 'No'
                 if self.subFlCheckBox.isChecked():
-                    print('I m here')
                     if self.header['Fluorescence_File']!='None' and os.path.exists(self.header['Fluorescence_File']):
-                        print('I m here 2')
+                        flDir, flFile=os.path.split(self.header['Fluorescence_File'])
+                        self.flDataFolderLineEdit.setText(flDir)
+                        self.flDataFileLineEdit.setText(flFile)
                         fl_data=loadtxt(self.header['Fluorescence_File'],comments='#')
                         if fl_data.shape[1]==3:
                             self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2])
@@ -647,9 +689,12 @@ class XAnoS_Reducer(QWidget):
                             fl_scale=float(self.flScaleFactorLineEdit.text())
                             imageData.data=imageData.data-fl_scale*fl_bg
                             print("Fluorescence background subtracted")
+                            self.header['Flourescence_Corrected'] = 'Yes'
+
 
 #                QApplication.processEvents()
                 #print(self.azimuthalRange)
+                self.header['Polarization']=self.polarization_factor
                 self.q,self.I,self.Ierr=self.ai.integrate1d(imageData.data,self.npt,error_model='poisson',
                                                              mask=imageMask,dark=imageDark,unit='q_A^-1',normalization_factor=1.0,azimuth_range=self.azimuthalRange,polarization_factor=self.polarization_factor)
                 self.Ierr=self.I*sqrt(self.Ierr**2/self.I**2+1/norm_factor)/norm_factor
@@ -674,12 +719,10 @@ class XAnoS_Reducer(QWidget):
                     imshape=imageData.shape
                     qxmin, qxmax =min(rqarray[:,0]), max(rqarray[:,0])
                     qymin, qymax =min(rqarray[:, 1]), max(rqarray[:, 1])
-                    print(qxmin,qxmax)
-                    print(qymin,qymax)
                     grid_qx, grid_qy=mgrid[qxmin:qxmax:imshape[1]*1j,
                                      qymin:qymax:imshape[0]*1j]
                     qCakedI=griddata(qarray,flatimage,(grid_qx,grid_qy),fill_value=0.0, method='nearest')
-                    self.imageWidget.setImage(qCakedI*(1+self.mask2d.T)/2.0, xmin=qxmin,xmax=qxmax,ymin=qymin,ymax=qymax,
+                    self.imageWidget.setImage(qCakedI*(1+ones_like(self.mask2d.T))/2.0, xmin=qxmin,xmax=qxmax,ymin=qymin,ymax=qymax,
                                               xlabel= 'Q_x',ylabel='Q_y',unit=['&#8491;<sup>-1</sup>','&#8491;<sup>-1</sup>'])
 
                     try:
@@ -721,7 +764,6 @@ class XAnoS_Reducer(QWidget):
         for file in self.dataFiles:
             self.dataFile=file
             QApplication.processEvents()
-            self.set_externally=True
             self.reduceData()
             i=i+1
             self.progressBar.setValue(i)

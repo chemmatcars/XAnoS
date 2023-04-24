@@ -1,11 +1,11 @@
 samNums=[18]
 bkgNum=4
-stdNum=4
+stdNum=3
 mtNum=0
 airNum=0
 sampleThickness=[0.08]
 bkgThickness=0.08
-stdThickness=0.1055
+stdThickness=0.08
 normStd=Water
 xMinMax=0.05:0.1
 interpType=linear

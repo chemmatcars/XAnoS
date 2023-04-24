@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>837</width>
-    <height>701</height>
+    <width>867</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -196,7 +196,7 @@
          <item>
           <widget class="QLabel" name="transCorrLabel">
            <property name="text">
-            <string>Transmission Correction</string>
+            <string>Trans Corr</string>
            </property>
           </widget>
          </item>
@@ -255,9 +255,31 @@
            </item>
            <item>
             <property name="text">
+             <string>Custom</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>None</string>
             </property>
            </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="polFacLabel">
+           <property name="text">
+            <string>Pol. Fac.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="polFacLineEdit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>1.0</string>
+           </property>
           </widget>
          </item>
         </layout>

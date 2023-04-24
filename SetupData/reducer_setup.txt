@@ -1,1 +1,1 @@
-{"poniFile": "/mnt/ChemData/Data/Asax/2023-02/Elisa/WAXS_CeO2.poni", "maskFile": "/mnt/ChemData/Data/Asax/2023-02/Elisa/mask_short_tube.msk"}
+{"poniFile": "/Volumes/Data/Asax/2023-02/Elisa/WAXS_CeO2.poni", "maskFile": "/Volumes/Data/Asax/2023-02/Elisa/waxs_mask.msk"}
