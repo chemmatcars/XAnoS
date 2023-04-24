@@ -17,11 +17,11 @@ Follow the following instructions for installation:
 2) Open a Anaconda terminal the run these two commands::
 
     conda install git pyqt pyqtgraph sqlalchemy scipy six matplotlib pandas
-    pip install lmfit pyfai pylint periodictable mendeleev corner emcee tabulate
+    pip install sqlalchemy xraydb lmfit fabio pyfai scikit-image findpeaks zmq periodictable
 
 3) The installation can be done by running the following commands in a terminal (linux/MacOS) or Anaconda Terminal (windows) in a folder where you wish the software to be installed::
 
-        git clone https://github.com/nayanbera/XAnoS.git
+        git clone https://github.com/chemmatcars/XAnoS.git
 
    The command create a folder named XAnoS. In order to upgrade the software at any time just go to the folder named **XAnoS** and run the following command in the terminal::
 

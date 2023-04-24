@@ -1,18 +1,17 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>XAnoS_Batch_Processor &#8212; XAnoS 0.11 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="XAnoS_Components" href="XAnoS_Components.html" />
@@ -41,8 +40,8 @@
           <div class="body" role="main">
             
   <section id="xanos-batch-processor">
-<span id="id1"></span><h1><a class="toc-backref" href="#id8">XAnoS_Batch_Processor</a><a class="headerlink" href="#xanos-batch-processor" title="Permalink to this headline">¶</a></h1>
-<div class="contents topic" id="table-of-contents">
+<span id="id1"></span><h1><a class="toc-backref" href="#id8" role="doc-backlink">XAnoS_Batch_Processor</a><a class="headerlink" href="#xanos-batch-processor" title="Permalink to this heading">¶</a></h1>
+<nav class="contents" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#xanos-batch-processor" id="id8">XAnoS_Batch_Processor</a></p>
@@ -52,14 +51,14 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <p>ASAXS data collection involves measurements of SAXS data at several energies below the energy edge of the element of interest from the sample, background, standard samples (Glassy Carbon (GC), Water etc). Sometimes SAXS data are also collected from empty container holding the sample and air background. After the data collection one needs to perform necessary background subtractions and absolute intensity normalizations for all the data. For this purpose, depending upon the sequence of data collection two batch processing widgets are developed:</p>
 <ol class="arabic simple">
 <li><p><a class="reference internal" href="#xanos-batch-processor-1"><span class="std std-ref">XAnoS_Batch_Processor_1</span></a></p></li>
 <li><p><a class="reference internal" href="#xanos-batch-processor-2"><span class="std std-ref">XAnoS_Batch_Processor_2</span></a></p></li>
 </ol>
 <section id="xanos-batch-processor-1">
-<span id="id2"></span><h2><a class="toc-backref" href="#id9">XAnoS_Batch_Processor_1</a><a class="headerlink" href="#xanos-batch-processor-1" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2><a class="toc-backref" href="#id9" role="doc-backlink">XAnoS_Batch_Processor_1</a><a class="headerlink" href="#xanos-batch-processor-1" title="Permalink to this heading">¶</a></h2>
 <p>This batch processor is designed to process (background subtraction and absolute intensity normalization) the SAXS data is collected <strong>Serial mode</strong> from the system of interest, the background, the intensity standard (GC or Water), the empty container and the air background. <strong>Serial mode</strong> means SAXS data will be collected at all the energies of interest for a sample before moving to the next sample. Visually the data is collected in the fashion shown below.</p>
 <figure class="align-default" id="id4" style="width: 50%">
 <img alt="_images/Serial_mode.png" src="_images/Serial_mode.png" />
@@ -80,7 +79,7 @@
 </figure>
 </section>
 <section id="xanos-batch-processor-2">
-<span id="id3"></span><h2><a class="toc-backref" href="#id10">XAnoS_Batch_Processor_2</a><a class="headerlink" href="#xanos-batch-processor-2" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2><a class="toc-backref" href="#id10" role="doc-backlink">XAnoS_Batch_Processor_2</a><a class="headerlink" href="#xanos-batch-processor-2" title="Permalink to this heading">¶</a></h2>
 <p>This batch processor is designed to process (background subtraction and absolute intensity normalization) the SAXS data is collected <strong>Parallel mode</strong> from the system of interest, the background, the intensity standard (GC or Water), the empty container and the air background. <strong>Parallel mode</strong> means SAXS data will be collected for all the samples at a same energy and then change to different energies. Visually the data is collected in the fashion shown below.</p>
 <figure class="align-default" id="id6" style="width: 50%">
 <img alt="_images/Parallel_mode.png" src="_images/Parallel_mode.png" />
@@ -129,22 +128,26 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="XAnoS_Reducer.html"
-                        title="previous chapter">XAnoS_Reducer</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="XAnoS_Components.html"
-                        title="next chapter">XAnoS_Components</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="XAnoS_Reducer.html"
+                          title="previous chapter">XAnoS_Reducer</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="XAnoS_Components.html"
+                          title="next chapter">XAnoS_Components</a></p>
+  </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -167,7 +170,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Mrinal Kanti Bera@NSF&#39;s ChemMatCARS.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.0.
     </div>
   </body>
 </html>

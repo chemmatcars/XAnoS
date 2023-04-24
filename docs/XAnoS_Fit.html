@@ -1,18 +1,17 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>XAnoS_Fit &#8212; XAnoS 0.11 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -42,8 +41,8 @@
           <div class="body" role="main">
             
   <section id="xanos-fit">
-<span id="id1"></span><h1><a class="toc-backref" href="#id39">XAnoS_Fit</a><a class="headerlink" href="#xanos-fit" title="Permalink to this headline">¶</a></h1>
-<div class="contents topic" id="table-of-contents">
+<span id="id1"></span><h1><a class="toc-backref" href="#id39" role="doc-backlink">XAnoS_Fit</a><a class="headerlink" href="#xanos-fit" title="Permalink to this heading">¶</a></h1>
+<nav class="contents" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#xanos-fit" id="id39">XAnoS_Fit</a></p>
@@ -55,7 +54,7 @@
 </ul>
 </li>
 </ul>
-</div>
+</nav>
 <p><a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a> provides a platform to simulate and fit a model to 1D data. It uses <a class="reference external" href="https://lmfit.github.io/lmfit-py/">LMFIT</a> python library for fitting.
 Some of the commonly used functions are provided under different categories and the users can develop their own
 categories and fitting functions by using an easy to use template within a <a class="reference internal" href="#function-editor"><span class="std std-ref">Function Editor</span></a></p>
@@ -84,7 +83,7 @@ categories and fitting functions by using an easy to use template within a <a cl
 </figcaption>
 </figure>
 <section id="brief-tutorial">
-<span id="id2"></span><h2><a class="toc-backref" href="#id40">Brief Tutorial</a><a class="headerlink" href="#brief-tutorial" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2><a class="toc-backref" href="#id40" role="doc-backlink">Brief Tutorial</a><a class="headerlink" href="#brief-tutorial" title="Permalink to this heading">¶</a></h2>
 <p>This tutorial is focused on showing a beginner how to use the <a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a> to:</p>
 <ol class="arabic simple">
 <li><p>Simulate an already available function</p></li>
@@ -92,7 +91,7 @@ categories and fitting functions by using an easy to use template within a <a cl
 <li><p>Write your own model/function using the <a class="reference internal" href="#function-editor"><span class="std std-ref">Function Editor</span></a></p></li>
 </ol>
 <section id="simulate-an-already-available-function">
-<h3>Simulate an already available function<a class="headerlink" href="#simulate-an-already-available-function" title="Permalink to this headline">¶</a></h3>
+<h3>Simulate an already available function<a class="headerlink" href="#simulate-an-already-available-function" title="Permalink to this heading">¶</a></h3>
 <p>The available functions can be simulated by following these steps:</p>
 <ol class="arabic simple">
 <li><p>In the <a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a> window go to a <strong>Function</strong> tab</p></li>
@@ -103,7 +102,7 @@ categories and fitting functions by using an easy to use template within a <a cl
 </ol>
 </section>
 <section id="data-importing-and-fitting">
-<h3>Data Importing and Fitting<a class="headerlink" href="#data-importing-and-fitting" title="Permalink to this headline">¶</a></h3>
+<h3>Data Importing and Fitting<a class="headerlink" href="#data-importing-and-fitting" title="Permalink to this heading">¶</a></h3>
 <p>The main objective of <a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a> is to provide a user to fit a model/function to a data. Please follow these to perform a data fitting using <a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a>:</p>
 <ol class="arabic simple">
 <li><p>Click the <strong>Data</strong> tab.</p></li>
@@ -148,7 +147,7 @@ categories and fitting functions by using an easy to use template within a <a cl
 </section>
 </section>
 <section id="categories-and-functions">
-<h2><a class="toc-backref" href="#id41">Categories and Functions</a><a class="headerlink" href="#categories-and-functions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id41" role="doc-backlink">Categories and Functions</a><a class="headerlink" href="#categories-and-functions" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a> provides some of the useful functions/models which are categorized into several categories. Users can add their own categories and functions as per their requirements. The categories and functions/models are provided for the users to either use directly in their data analysis or learn from them to create their own.</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -204,17 +203,13 @@ categories and fitting functions by using an easy to use template within a <a cl
 </li>
 </ul>
 <section id="backgrounds">
-<span id="id3"></span><h3>Backgrounds<a class="headerlink" href="#backgrounds" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3>Backgrounds<a class="headerlink" href="#backgrounds" title="Permalink to this heading">¶</a></h3>
 <p>This category includes smooth functions which are generally used as background models/functions for other functions.</p>
 <section id="powerlaw">
-<span id="id4"></span><h4>PowerLaw<a class="headerlink" href="#powerlaw" title="Permalink to this headline">¶</a></h4>
+<span id="id4"></span><h4>PowerLaw<a class="headerlink" href="#powerlaw" title="Permalink to this heading">¶</a></h4>
 <p>The power law function is <span class="math notranslate nohighlight">\(y=Ax^n\)</span> .</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -236,17 +231,13 @@ categories and fitting functions by using an easy to use template within a <a cl
 </section>
 </section>
 <section id="dls">
-<span id="id5"></span><h3>DLS<a class="headerlink" href="#dls" title="Permalink to this headline">¶</a></h3>
+<span id="id5"></span><h3>DLS<a class="headerlink" href="#dls" title="Permalink to this heading">¶</a></h3>
 <p>This category includes functions related to analyze Dynamic Light Scattering data.</p>
 <section id="firstcumulant">
-<span id="id6"></span><h4>FirstCumulant<a class="headerlink" href="#firstcumulant" title="Permalink to this headline">¶</a></h4>
+<span id="id6"></span><h4>FirstCumulant<a class="headerlink" href="#firstcumulant" title="Permalink to this heading">¶</a></h4>
 <p>Calculates auto-correlation function for DLS measurements in water as a solvent</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -280,17 +271,13 @@ categories and fitting functions by using an easy to use template within a <a cl
 </section>
 </section>
 <section id="formfactors">
-<span id="id7"></span><h3>FormFactors<a class="headerlink" href="#formfactors" title="Permalink to this headline">¶</a></h3>
+<span id="id7"></span><h3>FormFactors<a class="headerlink" href="#formfactors" title="Permalink to this heading">¶</a></h3>
 <p>This category includes Form Factors for Small Angle X-ray Scattering (SAXS) data.</p>
 <section id="continuoussphere">
-<span id="id8"></span><h4>ContinuousSphere<a class="headerlink" href="#continuoussphere" title="Permalink to this headline">¶</a></h4>
+<span id="id8"></span><h4>ContinuousSphere<a class="headerlink" href="#continuoussphere" title="Permalink to this heading">¶</a></h4>
 <p>This calculates the form factor of a sphere with continuous electron density gradient along the radial direction</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -326,14 +313,10 @@ categories and fitting functions by using an easy to use template within a <a cl
 </div></blockquote>
 </section>
 <section id="coreshellsphere">
-<span id="id9"></span><h4>CoreShellSphere<a class="headerlink" href="#coreshellsphere" title="Permalink to this headline">¶</a></h4>
+<span id="id9"></span><h4>CoreShellSphere<a class="headerlink" href="#coreshellsphere" title="Permalink to this heading">¶</a></h4>
 <p>This calculates the form factor of a spherical core-shell structure with size and shell thickness distribution</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -375,14 +358,10 @@ categories and fitting functions by using an easy to use template within a <a cl
 </div></blockquote>
 </section>
 <section id="ellipsoid">
-<span id="id10"></span><h4>Ellipsoid<a class="headerlink" href="#ellipsoid" title="Permalink to this headline">¶</a></h4>
+<span id="id10"></span><h4>Ellipsoid<a class="headerlink" href="#ellipsoid" title="Permalink to this heading">¶</a></h4>
 <p>Calculates the form factor of an ellipsoid</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -415,14 +394,10 @@ categories and fitting functions by using an easy to use template within a <a cl
 </div></blockquote>
 </section>
 <section id="formol">
-<span id="id11"></span><h4>Formol<a class="headerlink" href="#formol" title="Permalink to this headline">¶</a></h4>
+<span id="id11"></span><h4>Formol<a class="headerlink" href="#formol" title="Permalink to this heading">¶</a></h4>
 <p>This calculates the form factor for two different kinds of  molecules in cm^-1 for which the XYZ coordinates of the all the atoms composing the molecules are known</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -476,14 +451,10 @@ categories and fitting functions by using an easy to use template within a <a cl
 </div></blockquote>
 </section>
 <section id="sphere">
-<span id="id12"></span><h4>Sphere<a class="headerlink" href="#sphere" title="Permalink to this headline">¶</a></h4>
+<span id="id12"></span><h4>Sphere<a class="headerlink" href="#sphere" title="Permalink to this heading">¶</a></h4>
 <p>Calculates the form factor of a solid sphere with size distribution</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -516,14 +487,10 @@ categories and fitting functions by using an easy to use template within a <a cl
 </div></blockquote>
 </section>
 <section id="sphericalshell-expdecay">
-<span id="id13"></span><h4>SphericalShell_expDecay<a class="headerlink" href="#sphericalshell-expdecay" title="Permalink to this headline">¶</a></h4>
+<span id="id13"></span><h4>SphericalShell_expDecay<a class="headerlink" href="#sphericalshell-expdecay" title="Permalink to this heading">¶</a></h4>
 <p>Calculates the form factor of exponentially decaying ion distribution around a spherical particle</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -563,17 +530,13 @@ categories and fitting functions by using an easy to use template within a <a cl
 </section>
 </section>
 <section id="gisaxs">
-<span id="id14"></span><h3>GISAXS<a class="headerlink" href="#gisaxs" title="Permalink to this headline">¶</a></h3>
+<span id="id14"></span><h3>GISAXS<a class="headerlink" href="#gisaxs" title="Permalink to this heading">¶</a></h3>
 <p>This category includes functions which deals with X-ray scattering patterns in Grazing incidence university.</p>
 <section id="rod-sphere">
-<span id="id15"></span><h4>Rod_Sphere<a class="headerlink" href="#rod-sphere" title="Permalink to this headline">¶</a></h4>
+<span id="id15"></span><h4>Rod_Sphere<a class="headerlink" href="#rod-sphere" title="Permalink to this heading">¶</a></h4>
 <p>This Provides rod scan from spherical objects dispersed on a substrate</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -613,17 +576,13 @@ categories and fitting functions by using an easy to use template within a <a cl
 </section>
 </section>
 <section id="peakfunctions">
-<span id="id16"></span><h3>PeakFunctions<a class="headerlink" href="#peakfunctions" title="Permalink to this headline">¶</a></h3>
+<span id="id16"></span><h3>PeakFunctions<a class="headerlink" href="#peakfunctions" title="Permalink to this heading">¶</a></h3>
 <p>This category includes peak related functions</p>
 <section id="gaussian">
-<span id="id17"></span><h4>Gaussian<a class="headerlink" href="#gaussian" title="Permalink to this headline">¶</a></h4>
+<span id="id17"></span><h4>Gaussian<a class="headerlink" href="#gaussian" title="Permalink to this heading">¶</a></h4>
 <p>Provides Gaussian function`</p>
 <blockquote>
 <div><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -650,13 +609,9 @@ categories and fitting functions by using an easy to use template within a <a cl
 </div></blockquote>
 </section>
 <section id="lognormal">
-<span id="id18"></span><h4>LogNormal<a class="headerlink" href="#lognormal" title="Permalink to this headline">¶</a></h4>
+<span id="id18"></span><h4>LogNormal<a class="headerlink" href="#lognormal" title="Permalink to this heading">¶</a></h4>
 <dl>
 <dt>Provides log-normal function <span class="math notranslate nohighlight">\(y=norm\exp{\left[\frac{-(\log{x}-\log{pos})^2}{2wid^2}\right]/\sqrt{2\pi}}/wid/x+bkg\)</span></dt><dd><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -684,13 +639,9 @@ categories and fitting functions by using an easy to use template within a <a cl
 </dl>
 </section>
 <section id="multipeaks">
-<span id="id19"></span><h4>MultiPeaks<a class="headerlink" href="#multipeaks" title="Permalink to this headline">¶</a></h4>
+<span id="id19"></span><h4>MultiPeaks<a class="headerlink" href="#multipeaks" title="Permalink to this heading">¶</a></h4>
 <dl>
 <dt>Provides multipeak function with different background function</dt><dd><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -737,16 +688,12 @@ categories and fitting functions by using an easy to use template within a <a cl
 </section>
 </section>
 <section id="xrr">
-<span id="id20"></span><h3>XRR<a class="headerlink" href="#xrr" title="Permalink to this headline">¶</a></h3>
+<span id="id20"></span><h3>XRR<a class="headerlink" href="#xrr" title="Permalink to this heading">¶</a></h3>
 <p>This category includes X-ray Reflectivity (XRR) related functions</p>
 <section id="multisphereatinterface">
-<span id="id21"></span><h4>MultiSphereAtInterface<a class="headerlink" href="#multisphereatinterface" title="Permalink to this headline">¶</a></h4>
+<span id="id21"></span><h4>MultiSphereAtInterface<a class="headerlink" href="#multisphereatinterface" title="Permalink to this heading">¶</a></h4>
 <dl>
 <dt>Calculates X-ray reflectivity from multilayers of core-shell spherical nanoparticles assembled near an interface</dt><dd><table class="docutils align-default">
-<colgroup>
-<col style="width: 5%" />
-<col style="width: 95%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -804,13 +751,9 @@ categories and fitting functions by using an easy to use template within a <a cl
 </dl>
 </section>
 <section id="parratt">
-<span id="id22"></span><h4>Parratt<a class="headerlink" href="#parratt" title="Permalink to this headline">¶</a></h4>
+<span id="id22"></span><h4>Parratt<a class="headerlink" href="#parratt" title="Permalink to this heading">¶</a></h4>
 <dl>
 <dt>Calculates X-ray reflectivity from a system of multiple layers using Parratt formalism</dt><dd><table class="docutils align-default">
-<colgroup>
-<col style="width: 3%" />
-<col style="width: 97%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -841,13 +784,9 @@ categories and fitting functions by using an easy to use template within a <a cl
 </dl>
 </section>
 <section id="sphereatinterface">
-<span id="id23"></span><h4>SphereAtInterface<a class="headerlink" href="#sphereatinterface" title="Permalink to this headline">¶</a></h4>
+<span id="id23"></span><h4>SphereAtInterface<a class="headerlink" href="#sphereatinterface" title="Permalink to this heading">¶</a></h4>
 <dl>
 <dt>Calculates X-ray reflectivity from a system of nanoparticle at an interface between two media</dt><dd><table class="docutils align-default">
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 91%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameters</p></th>
 <th class="head"><p>Description</p></th>
@@ -910,7 +849,7 @@ categories and fitting functions by using an easy to use template within a <a cl
 </section>
 </section>
 <section id="data-dialog">
-<span id="id24"></span><h2><a class="toc-backref" href="#id42">Data Dialog</a><a class="headerlink" href="#data-dialog" title="Permalink to this headline">¶</a></h2>
+<span id="id24"></span><h2><a class="toc-backref" href="#id42" role="doc-backlink">Data Dialog</a><a class="headerlink" href="#data-dialog" title="Permalink to this heading">¶</a></h2>
 <p>The dialog provides an interface to import and manipulate data for the <a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a>.</p>
 <figure class="align-default" id="id32" style="width: 70%">
 <img alt="_images/Data_Dialog.png" src="_images/Data_Dialog.png" />
@@ -974,7 +913,7 @@ categories and fitting functions by using an easy to use template within a <a cl
 </figcaption>
 </figure>
 <section id="data-file-format">
-<span id="id25"></span><h3>Data File Format<a class="headerlink" href="#data-file-format" title="Permalink to this headline">¶</a></h3>
+<span id="id25"></span><h3>Data File Format<a class="headerlink" href="#data-file-format" title="Permalink to this heading">¶</a></h3>
 <p>The data file must be written in the format as shown below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Any text about explaining the data</span>
 <span class="c1">#parameter1_name=parameter1_value</span>
@@ -995,7 +934,7 @@ follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. Whe
 </figure>
 </section>
 <section id="data-manipulation">
-<span id="id26"></span><h3>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this headline">¶</a></h3>
+<span id="id26"></span><h3>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this heading">¶</a></h3>
 <p>In the <a class="reference internal" href="#data-dialog"><span class="std std-ref">Data Dialog</span></a> both the meta-data and data can be added/removed and edited with the following conditions:</p>
 <ol class="arabic simple">
 <li><p>If a file is imported with <strong>col_names</strong> as one of the meta-data, you can edit the values of the <strong>col_names</strong> but cannot remove it.</p></li>
@@ -1004,7 +943,7 @@ follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. Whe
 <li><p>When the <a class="reference internal" href="#data-dialog"><span class="std std-ref">Data Dialog</span></a> is used within any other widgets, one can delete all the columns except the remaining two.</p></li>
 </ol>
 <section id="add-new-data-column">
-<h4>Add New Data Column<a class="headerlink" href="#add-new-data-column" title="Permalink to this headline">¶</a></h4>
+<h4>Add New Data Column<a class="headerlink" href="#add-new-data-column" title="Permalink to this heading">¶</a></h4>
 <p>You can add new columns by clicking <strong>Add Column</strong> which will open up a <a class="reference internal" href="#data-column-dialog-i"><span class="std std-ref">Data Column Dialog with numpy expression involving i</span></a>. Then the column values can be either:</p>
 <ol class="arabic">
 <li><p>An expression of <strong>i</strong> which can take integer values from a minimum value (default=0) to a maximum value (default=100). The expression can be any numpy expression like:</p>
@@ -1044,7 +983,7 @@ follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. Whe
 </figure>
 </section>
 <section id="remove-data-columns">
-<h4>Remove Data Columns<a class="headerlink" href="#remove-data-columns" title="Permalink to this headline">¶</a></h4>
+<h4>Remove Data Columns<a class="headerlink" href="#remove-data-columns" title="Permalink to this heading">¶</a></h4>
 <p>The columns can be removed by:</p>
 <ol class="arabic simple">
 <li><p>Selecting the entire column either by:</p>
@@ -1058,20 +997,20 @@ follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. Whe
 </ol>
 </section>
 <section id="add-new-data-rows">
-<h4>Add New Data Rows<a class="headerlink" href="#add-new-data-rows" title="Permalink to this headline">¶</a></h4>
+<h4>Add New Data Rows<a class="headerlink" href="#add-new-data-rows" title="Permalink to this heading">¶</a></h4>
 <p>A new row can be added by selecting a row where you want to add a row and click <strong>Add Row</strong></p>
 </section>
 <section id="remove-data-rows">
-<h4>Remove Data Rows<a class="headerlink" href="#remove-data-rows" title="Permalink to this headline">¶</a></h4>
+<h4>Remove Data Rows<a class="headerlink" href="#remove-data-rows" title="Permalink to this heading">¶</a></h4>
 <p>Multiple rows can be removed by selecting multiple rows and click <strong>Remove Rows</strong></p>
 </section>
 <section id="change-data-column-names">
-<h4>Change Data Column Names<a class="headerlink" href="#change-data-column-names" title="Permalink to this headline">¶</a></h4>
+<h4>Change Data Column Names<a class="headerlink" href="#change-data-column-names" title="Permalink to this heading">¶</a></h4>
 <p>The column names of the Data can be changed by changing the meta-data <strong>col_names</strong>.</p>
 </section>
 </section>
 <section id="plotting-with-data-dialog">
-<span id="id27"></span><h3>Plotting with Data Dialog<a class="headerlink" href="#plotting-with-data-dialog" title="Permalink to this headline">¶</a></h3>
+<span id="id27"></span><h3>Plotting with Data Dialog<a class="headerlink" href="#plotting-with-data-dialog" title="Permalink to this heading">¶</a></h3>
 <p><a class="reference internal" href="#data-dialog">Data_Dialog</a> can also be used for visualizing (within the Data Dialog) and selecting the data (for other widgets) to create 1D plots with errorbars. In order to plot the data needs to be at least a two column data. Once a two-column data is opened, in order to to visualize/select the data for plotting one needs to do the following:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -1106,7 +1045,7 @@ follow the syntax as shown above as ‘#parameter1_name=parameter1_value’. Whe
 </section>
 </section>
 <section id="function-editor">
-<span id="id28"></span><h2><a class="toc-backref" href="#id43">Function Editor</a><a class="headerlink" href="#function-editor" title="Permalink to this headline">¶</a></h2>
+<span id="id28"></span><h2><a class="toc-backref" href="#id43" role="doc-backlink">Function Editor</a><a class="headerlink" href="#function-editor" title="Permalink to this heading">¶</a></h2>
 <p>The editor provides an interface to write new functions to be included
 in the <a class="reference internal" href="#xanos-fit"><span class="std std-ref">XAnoS_Fit</span></a>. The editor is enabled with python syntax highlighting.</p>
 <figure class="align-default" id="id38" style="width: 100%">
@@ -1132,7 +1071,7 @@ in the <a class="reference internal" href="#xanos-fit"><span class="std std-ref"
 
 <span class="k">class</span> <span class="nc">FunctionName</span><span class="p">:</span> <span class="c1">#Please put the class name same as the function name</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">mpar</span><span class="o">=</span><span class="p">{}):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Documentation</span>
 <span class="sd">        x           : independent variable in ter form of a scalar or an array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1145,14 +1084,14 @@ in the <a class="reference internal" href="#xanos-fit"><span class="std std-ref"
         <span class="bp">self</span><span class="o">.</span><span class="n">init_params</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Define all the fitting parameters like</span>
 <span class="sd">        self.param.add(&#39;sig&#39;,value = 0, vary = 0, min = -np.inf, max = np.inf, expr = None, brute_step = None)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">=</span><span class="n">Parameters</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Define the function in terms of x to return some value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_params</span><span class="o">=</span><span class="p">{}</span>
@@ -1187,22 +1126,26 @@ in the <a class="reference internal" href="#xanos-fit"><span class="std std-ref"
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="XAnoS_Components.html"
-                        title="previous chapter">XAnoS_Components</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="License.html"
-                        title="next chapter">License</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="XAnoS_Components.html"
+                          title="previous chapter">XAnoS_Components</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="License.html"
+                          title="next chapter">License</a></p>
+  </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -1225,7 +1168,7 @@ in the <a class="reference internal" href="#xanos-fit"><span class="std std-ref"
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Mrinal Kanti Bera@NSF&#39;s ChemMatCARS.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.0.
     </div>
   </body>
 </html>

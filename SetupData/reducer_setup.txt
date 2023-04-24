@@ -1,1 +1,1 @@
-{"poniFile": "/Volumes/Data-1/Asax/2022-11/Elisa/SiO2_WAXS.poni", "maskFile": "/Volumes/Data-1/Asax/2022-11/Elisa/mask_WAXS.msk"}
+{"poniFile": "/Volumes/Data-1/Asax/2022-11/Elisa/SiO2_WAXS.poni", "maskFile": "/Volumes/Data/Asax/2023-02/Elisa/mask_short_tube.msk"}
