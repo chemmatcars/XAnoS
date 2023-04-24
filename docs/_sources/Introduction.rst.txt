@@ -16,12 +16,12 @@ Follow the following instructions for installation:
 1) Install Anaconda python (Python 3.6 and higher) for your operating system from: 'https://www.anaconda.com/download/'
 2) Open a Anaconda terminal the run these two commands::
 
-    conda install git pyqt pyqtgraph sqlalchemy scipy six matplotlib pandas
-    pip install lmfit pyfai pylint periodictable mendeleev corner emcee tabulate
+    conda install git pyqt pyqtgraph scipy six matplotlib pandas
+    pip install xraydb sqlalchemy lmfit fabio pyfai periodictable mendeleev
 
 3) The installation can be done by running the following commands in a terminal (linux/MacOS) or Anaconda Terminal (windows) in a folder where you wish the software to be installed::
 
-        git clone https://github.com/nayanbera/XAnoS.git
+        git clone https://github.com/chemmatcars/XAnoS.git
 
    The command create a folder named XAnoS. In order to upgrade the software at any time just go to the folder named **XAnoS** and run the following command in the terminal::
 
@@ -38,5 +38,5 @@ Follow the following instructions for installation:
 
     iii) Data viewer and analysis package::
 
-            python XAnoS_Components.py
+                python XAnoS_Components.py
 

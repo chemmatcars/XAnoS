@@ -14,7 +14,6 @@ Welcome to XAnoS documentation!
    XAnoS_Reducer
    XAnoS_Batch_Processor
    XAnoS_Components
-   XAnoS_Fit
    License
    Acknowledgements
 
