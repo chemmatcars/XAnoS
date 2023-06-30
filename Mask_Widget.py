@@ -39,7 +39,7 @@ class MaskWidget(QWidget):
         
     def init_signals(self):
         self.drawShapePushButton.clicked.connect(self.draw_shape)
-        #self.ui.shape_ListWidget.itemChanged.connect()
+        self.shape_ListWidget.currentTextChanged.connect(self.shape_changed)
         self.removeShapePushButton.clicked.connect(self.remove_shape)
         self.openShapesPushButton.clicked.connect(self.open_shape_file)
         self.createMaskPushButton.clicked.connect(self.create_all_masks)
@@ -133,6 +133,7 @@ class MaskWidget(QWidget):
             self.mask={}
             self.mask_number=0
             self.mask_val={}
+            self.mask_list=[]
         centerx=self.imageData.shape[0]/2#(self.image_xmax+self.image_xmin)/2.0
         centery=self.imageData.shape[1]/2#(self.image_ymax+self.image_ymin)/2.0
         lenx=self.imageData.shape[0]#(self.image_xmax-self.image_xmin)
@@ -144,12 +145,20 @@ class MaskWidget(QWidget):
             self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             self.mask_val[self.mask_number]=1
             self.threshold[self.mask_number],_=QInputDialog.getDouble(self,'Upper-threshold','Upper-threshld value:',value=1e6)
-            self.shape_ListWidget.addItem(str(self.mask_number)+':upper-threshold: val=%.e'%(self.threshold[self.mask_number]))
+            txt=str(self.mask_number)+':upper-threshold: val=%.e'%(self.threshold[self.mask_number])
+            self.shape_ListWidget.addItem(txt)
+            item=self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            self.mask_list.append(txt)
         elif str(self.maskShapeComboBox.currentText())=='lower-threshold':
             self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             self.mask_val[self.mask_number]=1
             self.threshold[self.mask_number],_=QInputDialog.getDouble(self,'Lower-threshold value','Lower-threshld value:',value=0)
-            self.shape_ListWidget.addItem(str(self.mask_number)+':lower-threshold: val=%.e'%(self.threshold[self.mask_number]))
+            txt=str(self.mask_number)+':lower-threshold: val=%.e'%(self.threshold[self.mask_number])
+            self.shape_ListWidget.addItem(txt)
+            item = self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            self.mask_list.append(txt)
         elif str(self.maskShapeComboBox.currentText())=='rectangle':
             self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx-0.1*lenx/2.0,centery-0.1*leny/2.0]
@@ -158,7 +167,11 @@ class MaskWidget(QWidget):
             self.mask_val[self.mask_number]=1
             #self.mask[self.mask_number].addRotateFreeHandle((0,0),(0.5,0.5))
             self.mask[self.mask_number].addScaleHandle((1,1),(0.0,0.0))
-            self.shape_ListWidget.addItem(str(self.mask_number)+':rectangle: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
+            txt=str(self.mask_number)+':rectangle: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number])
+            self.shape_ListWidget.addItem(txt)
+            item = self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            self.mask_list.append(txt)
         elif str(self.maskShapeComboBox.currentText())=='inverted-rectangle':
             self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx-0.1*lenx/2.0,centery-0.1*leny/2.0]
@@ -167,21 +180,33 @@ class MaskWidget(QWidget):
             self.mask_val[self.mask_number]=-1
             #self.mask[self.mask_number].addRotateFreeHandle((0,0),(0.5,0.5))
             self.mask[self.mask_number].addScaleHandle((1,1),(0.0,0.0))
-            self.shape_ListWidget.addItem(str(self.mask_number)+':inverted-rectangle: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
+            txt=str(self.mask_number)+':inverted-rectangle: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number])
+            self.shape_ListWidget.addItem(txt)
+            item = self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            self.mask_list.append(txt)
         elif self.maskShapeComboBox.currentText()=='ellipse':
             self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx,centery]
             size=[0.1*lenx,0.1*leny]
             self.mask[self.mask_number]=pg.EllipseROI(pos,size,pen=self.roiPen)
             self.mask_val[self.mask_number]=1
-            self.shape_ListWidget.addItem(str(self.mask_number)+':ellipse: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
+            txt=str(self.mask_number)+':ellipse: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number])
+            self.shape_ListWidget.addItem(txt)
+            item = self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            self.mask_list.append(txt)
         elif self.maskShapeComboBox.currentText()=='inverted-ellipse':
             self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             pos=[centerx,centery]
             size=[0.1*lenx,0.1*leny]
             self.mask[self.mask_number]=pg.EllipseROI(pos,size,pen=self.roiPen)
             self.mask_val[self.mask_number]=-1
-            self.shape_ListWidget.addItem(str(self.mask_number)+':inverted-ellipse: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number]))
+            txt=str(self.mask_number)+':inverted-ellipse: pos='+str(pos)+';size='+str(size)+';val='+str(self.mask_val[self.mask_number])
+            self.shape_ListWidget.addItem(txt)
+            item = self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            self.mask_list.append(txt)
         elif self.maskShapeComboBox.currentText()=='polyline':
             self.mask_type[self.mask_number]=self.maskShapeComboBox.currentText()
             self.pg_axis.scene().sigMouseClicked.connect(self.draw_polyline)
@@ -209,7 +234,7 @@ class MaskWidget(QWidget):
             self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
             self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
         self.mask_number=self.mask_number+1
-        
+        print(self.mask_list)
     def updateROI(self):
         """
         Updates the ROI depending upon the changes made in pointsize, linewidth and color
@@ -240,6 +265,9 @@ class MaskWidget(QWidget):
             else:
                 self.mask_val[self.mask_number]=-1
             self.shape_ListWidget.addItem(str(self.mask_number)+':polyline: pos='+str(self.new_pos[:-1])+';val='+str(self.mask_val[self.mask_number]))
+            item = self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            self.mask_list[self.mask_number]=item.text()
             self.pg_axis.addItem(self.mask[self.mask_number])
             self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
             self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
@@ -285,6 +313,7 @@ class MaskWidget(QWidget):
             if mask_number in self.mask:
                 del self.mask[mask_number]
             del self.mask_type[mask_number]
+            self.mask_list.pop(mask_number)
         if self.shape_ListWidget.count()>0:           
             self.create_all_masks()
         else:
@@ -301,7 +330,6 @@ class MaskWidget(QWidget):
             self.mask_data[mask_number]=np.where(self.imageData>self.threshold[mask_number],self.mask_val[mask_number],0)
         elif self.mask_type[mask_number]=='lower-threshold':
             self.mask_data[mask_number]=np.where(self.imageData<self.threshold[mask_number],self.mask_val[mask_number],0)
-            print('I m here')
         else:
             cols,rows=self.imageData.shape
             m=np.mgrid[:cols,:rows]
@@ -340,6 +368,59 @@ class MaskWidget(QWidget):
         self.imageWidget.imageLogLinear()
         self.imageData=copy.copy(tmp)
 
+    def shape_changed(self,currentItemText):
+        s_line = currentItemText.strip().split(':')
+        mask_number = int(s_line[0])
+        print(mask_number, self.shape_ListWidget.currentRow())
+        if mask_number != self.shape_ListWidget.currentRow():
+            QMessageBox.warning(self, 'Change not allowed', 'The change of mask number is not allowed')
+            item.setText(self.mask_list[mask_number])
+            return
+        mask_type = s_line[1]
+        print(mask_type, self.mask_list[mask_number])
+        if mask_type!=self.mask_list[mask_number].split(':')[1]:
+            QMessageBox.warning(self, 'Change not allowed', 'The change of mask type is not allowed')
+            item.setText(self.mask_list[mask_number])
+            return
+        self.mask_type[mask_number] = mask_type
+        if mask_type == 'upper-threshold':
+            val = eval(s_line[2].split('=')[1])
+            self.mask_val[mask_number] = 1
+            self.threshold[mask_number] = val
+        elif mask_type == 'lower-threshold':
+            val = eval(s_line[2].split('=')[1])
+            self.mask_val[mask_number] = 1
+            self.threshold[mask_number] = val
+        elif (mask_type == 'rectangle') or (mask_type == 'inverted-rectangle'):
+            size_pos = s_line[2].split(';')
+            pos = eval(size_pos[0].split('=')[1])
+            size = eval(size_pos[1].split('=')[1])
+            val = eval(size_pos[2].split('=')[1])
+            self.mask[mask_number].setPos(pos)
+            self.mask[mask_number].setSize(size)
+            self.mask_val[mask_number] = val
+            print(pos, self.mask[mask_number].pos())
+            # self.mask[self.mask_number].addRotateFreeHandle((0,0),(0.5,0.5))
+            #self.mask[mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
+        elif (mask_type == 'ellipse') or (mask_type == 'inverted-ellipse'):
+            size_pos = s_line[2].split(';')
+            pos = eval(size_pos[0].split('=')[1])
+            size = eval(size_pos[1].split('=')[1])
+            val = eval(size_pos[2].split('=')[1])
+            self.mask[mask_number].setPos(pos)
+            self.mask[mask_number].setSize(size)
+            self.mask_val[mask_number] = val
+            #self.mask[mask_number].sigRegionChangeFinished.connect(self.update_shape)
+            #self.mask[mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
+        else:
+            pos_val = s_line[2].split(';')
+            pos = eval(pos_val[0].split('=')[1])
+            val = eval(pos_val[1].split('=')[1])
+            self.mask[self.mask_number].setPoints(pos)
+            self.mask_val[self.mask_number] = val
+            # self.mask[self.mask_number].sigRegionChangeFinished.connect(self.update_shape)
+            # self.mask[self.mask_number].sigHoverEvent.connect(self.shape_selected_in_image)
+            # self.pg_axis.addItem(self.mask[self.mask_number])
         
     def update_shape(self,mask):
         """
@@ -360,9 +441,13 @@ class MaskWidget(QWidget):
         oldval=str(self.shape_ListWidget.item(item_number).text())
         shape_name=oldval.split(':')[1]
         if (shape_name=='rectangle') or (shape_name=='inverted-rectangle') or (shape_name=='ellipse') or (shape_name=='inverted-ellipse'):
-            self.shape_ListWidget.item(item_number).setText(str(mask_number)+':'+shape_name+': pos='+str([pos.x(),pos.y()])+';size='+str([size.x(),size.y()])+';val='+str(self.mask_val[mask_number]))
+            txt=str(mask_number)+':'+shape_name+': pos='+str([pos.x(),pos.y()])+';size='+str([size.x(),size.y()])+';val='+str(self.mask_val[mask_number])
+            self.shape_ListWidget.item(item_number).setText(txt)
+            self.mask_list[item_number]=txt
         else:
-            self.shape_ListWidget.item(item_number).setText(str(mask_number)+':'+shape_name+': pos='+str(handles)+';val='+str(self.mask_val[mask_number]))
+            txt=str(mask_number)+':'+shape_name+': pos='+str(handles)+';val='+str(self.mask_val[mask_number])
+            self.shape_ListWidget.item(item_number).setText(txt)
+            self.mask_list[item_number] = txt
         #self.create_all_masks()
         
     def move_shape(self,mask):
@@ -413,8 +498,12 @@ class MaskWidget(QWidget):
         fh=open(fname,'r')
         lines=fh.readlines()
         #self.shape_ListWidget.addItems(lines)
+        self.mask_list=[]
         for line in lines:
             self.shape_ListWidget.addItem(line.strip())
+            self.mask_list.append(line.strip)
+            item = self.shape_ListWidget.item(self.shape_ListWidget.count()-1)
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
             s_line=line.strip().split(':')
             self.mask_number=int(s_line[0])
             mask_type=s_line[1]

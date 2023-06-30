@@ -173,6 +173,7 @@ class XAnoS_Components(QWidget):
         self.dataDockLayout.addWidget(XRFLabel,row=row,col=col)
         col+=1
         self.xrfBkgLineEdit=QLineEdit('0.0')
+        self.xrfBkgLineEdit.returnPressed.connect(self.xrfBkgChanged)
         self.dataDockLayout.addWidget(self.xrfBkgLineEdit,row=row,col=col)
         col+=1
         self.xrfBkgCalcPushButton=QPushButton('Calc XRF-Bkg')
@@ -541,7 +542,15 @@ class XAnoS_Components(QWidget):
             self.xrfBkgLineEdit.setText('%.3e'%self.xrf_base)
         else:
             QMessageBox.warning(self,'Selection Error','Please select only one data set.',QMessageBox.Ok)
-        
+
+    def xrfBkgChanged(self):
+        try:
+            self.xrf_base=float(self.xrfBkgLineEdit.text())
+        except:
+            QMessageBox.warning('Value Error','Please enter numbers only', QMessageBox.Ok)
+            self.xrf_base=0.0
+            self.xrfBkgLineEdit.setText('0.0')
+
     def read_data(self,item):
         """
         Reads the data while importing the files in the listWidget

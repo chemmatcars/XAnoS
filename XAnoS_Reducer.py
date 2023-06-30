@@ -24,6 +24,7 @@ import json
 from zmqClient import ZeroMQ_Listener
 from zmqServer import ZeroMQ_Server
 import zmq
+from lmfit import Parameters, minimize
 #from pyFAI.integrate_widget import AIWidget
 
 
@@ -508,8 +509,8 @@ class XAnoS_Reducer(QWidget):
             if os.path.exists(flDir):
                 self.flDataFolderLineEdit.setText(flDir)
             if os.path.exists(flFile):
-                self.flDataFileLineEdit.setText(flFile)
-                fl_data = loadtxt(os.path.join(flDir,flFile), comments='#')
+                self.flDataFileLineEdit.setText(os.path.basename(flFile))
+                fl_data = loadtxt(os.path.join(flFile), comments='#')
                 print(fl_data.shape)
                 self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2],name=flFile)
             self.extractedBaseFolder=self.curDir
@@ -604,8 +605,20 @@ class XAnoS_Reducer(QWidget):
         self.extractedFolder=os.path.join(self.extractedBaseFolder,txt)
         # self.set_externally=True
 
-        
-        
+    def residual(self, par, x, y):
+        norm, x0, sig, a, b = [par[key].value for key in ['norm', 'x0', 'sig', 'a', 'b']]
+        return y - (norm * exp(-(x - x0) ** 2 / 2 / sig ** 2) + a * x + b)
+
+    def fit(self, x, y, norm, x0, sig, a, b):
+        par = Parameters()
+        par.add('norm', value=norm, min=0.0, vary=True)
+        par.add('x0', value=x0, min=0.0, vary=False)
+        par.add('sig', value=sig, min=10, max=100, vary=False)
+        par.add('a', value=a, min=0.0, vary=True)
+        par.add('b', value=b, vary=True)
+        result = minimize(self.residual, par, args=(x, y))
+        return result
+
     def reduceData(self):
         """
         Reduces the 2d data to 1d data
@@ -675,21 +688,37 @@ class XAnoS_Reducer(QWidget):
 
                 self.header['Flourescence_Corrected'] = 'No'
                 if self.subFlCheckBox.isChecked():
-                    if self.header['Fluorescence_File']!='None' and os.path.exists(self.header['Fluorescence_File']):
-                        flDir, flFile=os.path.split(self.header['Fluorescence_File'])
-                        self.flDataFolderLineEdit.setText(flDir)
-                        self.flDataFileLineEdit.setText(flFile)
-                        fl_data=loadtxt(self.header['Fluorescence_File'],comments='#')
+                    flDir=os.path.join(os.path.dirname(os.path.dirname(self.dataFile)),'vortex_mca')
+                    flFile=os.path.join(flDir,os.path.splitext(os.path.basename(self.dataFile))[0]+'.txt')
+                    print(flFile)
+                    if os.path.exists(flFile):
+                        self.flDataFolderLineEdit.setText(flFile)
+                        self.flDataFileLineEdit.setText(os.path.basename(flFile))
+                        fl_data=loadtxt(flFile,comments='#')
                         if fl_data.shape[1]==3:
-                            self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2])
+                            self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2],name='fl_data')
                             fl_emin,fl_emax=list(map(float, self.flIntegRangeLineEdit.text().split(':')))
                             fl_imin=argwhere(fl_data[:,0]>fl_emin)[0][0]
                             fl_imax=argwhere(fl_data[:,0]<fl_emax)[-1][0]
-                            fl_bg=sum(fl_data[fl_imin:fl_imax+1])
+                            # fl_bg=sum(fl_data[fl_imin:fl_imax+1,1])
+                            fl_peak=float(self.flPeakPosLineEdit.text())
+                            fl_wid=float(self.flPeakWidLineEdit.text())/2.355 #sig=fwhm/2.355
+                            fl_slope=float(self.flLinearSlopeLineEdit.text())
+                            fl_const=float(self.flLinearConstLineEdit.text())
+                            result = self.fit(fl_data[fl_imin:fl_imax, 0], fl_data[fl_imin:fl_imax, 1]
+                                         /float(imageData.header['count_time']), 1.0, fl_peak, fl_wid,
+                                         fl_slope, fl_const)
+                            fl_bg=sqrt(2*pi)*result.params['sig']*result.params['norm']
+                            print(imageData.header['Energy'], fl_imin, fl_imax, fl_bg)
+                            self.flLinearSlopeLineEdit.setText('%3e'%(result.params['a'].value))
+                            self.flLinearConstLineEdit.setText('%3e' % (result.params['b'].value))
+                            self.mcaPlotWidget.add_data(fl_data[fl_imin:fl_imax, 0],-result.residual+fl_data[fl_imin:fl_imax, 1],fit=True,name='fl_fit')
+                            self.mcaPlotWidget.Plot(['fl_data','fl_fit'])
                             fl_scale=float(self.flScaleFactorLineEdit.text())
                             imageData.data=imageData.data-fl_scale*fl_bg
                             print("Fluorescence background subtracted")
-                            self.header['Flourescence_Corrected'] = 'Yes'
+                            self.header['Fluorescence_File']=flFile
+                            self.header['Fluorescence_Corrected'] = 'Yes'
 
 
 #                QApplication.processEvents()

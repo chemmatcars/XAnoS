@@ -27,7 +27,7 @@ def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None,in
         if standard=='GC':
             std_dat=np.loadtxt('./SetupData/glassy_carbon_saxs_std.txt')
         elif standard=='Water':
-            qst=np.linspace(0.003,1.0,1000)
+            qst=np.linspace(0.003,5.0,1000)
             std_dat=np.vstack((qst,np.ones_like(qst)*1.68e-2)).T
         tmp_dat=np.loadtxt(fname)
         fh=open(fname,'r')
@@ -51,6 +51,7 @@ def calc_cf(fname, standard='GC',thickness=1.0,plot=False,xmin=None,xmax=None,in
             xmin=np.max([np.min(std_dat[:,0]),np.min(exp_dat[:,0])])
         if xmax is None:
             xmax=np.min([np.max(std_dat[:,0]),np.max(exp_dat[:,0])])
+        print(std_dat[:,0])
         istdmin=np.argwhere(std_dat[:,0]>=xmin)[0][0]
         istdmax=np.argwhere(std_dat[:,0]<=xmax)[-1][0]
         expdmin=np.argwhere(exp_dat[:,0]>=xmin)[0][0]

@@ -1,1 +1,1 @@
-{"poniFile": "/Volumes/Data/Asax/2023-02/Elisa/WAXS_CeO2.poni", "maskFile": "/Volumes/Data/Asax/2023-02/Elisa/waxs_mask.msk"}
+{"poniFile": "/Volumes/Data/Asax/2023-02/Ray/Tensiometer/AgBh_9_244keV.poni", "maskFile": "/Volumes/Data/Asax/2023-02/Ray/Tensiometer/mask.msk"}
