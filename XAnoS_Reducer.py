@@ -142,6 +142,8 @@ class XAnoS_Reducer(QWidget):
         if self.fluoFile is not None:
             self.flDataFileLineEdit.setText(self.fluoFile)
         #self.statusLabel.setStyleSheet("color:rgba(0,1,0,0)")
+        self.subFlCheckBox.stateChanged.connect(self.subFlCheckBoxChanged)
+        self.manualFlSubCheckBox.stateChanged.connect(self.manualFlSubChanged)
         self.imageWidget=Image_Widget(zeros((100,100)))
         self.cakedImageWidget=Image_Widget(zeros((100,100)))
         imgNumberLabel=QLabel('Image number')
@@ -179,6 +181,13 @@ class XAnoS_Reducer(QWidget):
         self.zeromq_server.messageEmitted.connect(self.updateServerMessage)
         self.zeromq_server.folderFinished.connect(self.serverDone)
         QTimer.singleShot(0,self.serverThread.start)
+
+    def subFlCheckBoxChanged(self):
+        if self.subFlCheckBox.isChecked():
+            self.manualFlSubCheckBox.setCheckState(Qt.Unchecked)
+    def manualFlSubChanged(self):
+        if self.manualFlSubCheckBox.isChecked():
+            self.subFlCheckBox.setCheckState(Qt.Unchecked)
 
     
     def updateServerMessage(self,mesg):
@@ -511,7 +520,7 @@ class XAnoS_Reducer(QWidget):
             if os.path.exists(flFile):
                 self.flDataFileLineEdit.setText(os.path.basename(flFile))
                 fl_data = loadtxt(os.path.join(flFile), comments='#')
-                print(fl_data.shape)
+                #print(fl_data.shape)
                 self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2],name=flFile)
             self.extractedBaseFolder=self.curDir
             self.extractedFolder=os.path.abspath(os.path.join(self.extractedBaseFolder,self.extractedFolderLineEdit.text()))
@@ -686,7 +695,7 @@ class XAnoS_Reducer(QWidget):
                     imageMask=None
 
 
-                self.header['Flourescence_Corrected'] = 'No'
+                self.header['Fluorescence_Corrected'] = 'No'
                 if self.subFlCheckBox.isChecked():
                     flDir=os.path.join(os.path.dirname(os.path.dirname(self.dataFile)),'vortex_mca')
                     flFile=os.path.join(flDir,os.path.splitext(os.path.basename(self.dataFile))[0]+'.txt')
@@ -696,7 +705,8 @@ class XAnoS_Reducer(QWidget):
                         self.flDataFileLineEdit.setText(os.path.basename(flFile))
                         fl_data=loadtxt(flFile,comments='#')
                         if fl_data.shape[1]==3:
-                            self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1],yerr=fl_data[:,2],name='fl_data')
+                            self.mcaPlotWidget.add_data(fl_data[:,0],fl_data[:,1]/float(imageData.header['count_time']),
+                                                        yerr=fl_data[:,2]/float(imageData.header['count_time']),name='fl_data')
                             fl_emin,fl_emax=list(map(float, self.flIntegRangeLineEdit.text().split(':')))
                             fl_imin=argwhere(fl_data[:,0]>fl_emin)[0][0]
                             fl_imax=argwhere(fl_data[:,0]<fl_emax)[-1][0]
@@ -705,20 +715,35 @@ class XAnoS_Reducer(QWidget):
                             fl_wid=float(self.flPeakWidLineEdit.text())/2.355 #sig=fwhm/2.355
                             fl_slope=float(self.flLinearSlopeLineEdit.text())
                             fl_const=float(self.flLinearConstLineEdit.text())
-                            result = self.fit(fl_data[fl_imin:fl_imax, 0], fl_data[fl_imin:fl_imax, 1]
-                                         /float(imageData.header['count_time']), 1.0, fl_peak, fl_wid,
+                            fit_data=fl_data[fl_imin:fl_imax, 1]/float(imageData.header['count_time'])
+                            result = self.fit(fl_data[fl_imin:fl_imax, 0], fit_data, 1.0, fl_peak, fl_wid,
                                          fl_slope, fl_const)
                             fl_bg=sqrt(2*pi)*result.params['sig']*result.params['norm']
                             print(imageData.header['Energy'], fl_imin, fl_imax, fl_bg)
                             self.flLinearSlopeLineEdit.setText('%3e'%(result.params['a'].value))
                             self.flLinearConstLineEdit.setText('%3e' % (result.params['b'].value))
-                            self.mcaPlotWidget.add_data(fl_data[fl_imin:fl_imax, 0],-result.residual+fl_data[fl_imin:fl_imax, 1],fit=True,name='fl_fit')
+                            self.mcaPlotWidget.add_data(fl_data[fl_imin:fl_imax, 0],-result.residual+fit_data,fit=True,name='fl_fit')
                             self.mcaPlotWidget.Plot(['fl_data','fl_fit'])
                             fl_scale=float(self.flScaleFactorLineEdit.text())
                             imageData.data=imageData.data-fl_scale*fl_bg
                             print("Fluorescence background subtracted")
                             self.header['Fluorescence_File']=flFile
+                            self.header['Fluo_bkg']=fl_bg
+                            self.header['Flue_norm']=fl_scale
                             self.header['Fluorescence_Corrected'] = 'Yes'
+
+
+                self.header['Fluorescence_Corrected_Manually'] = 'No'
+                if self.manualFlSubCheckBox.isChecked():
+                    try:
+                        fl_bg=float(self.manualFlValueLineEdit.text())
+                    except:
+                        QMessageBox.warning(self,'Value error', 'Please input floating point value only',QMessageBox.Ok)
+                        return
+                    imageData.data=imageData.data-fl_bg
+                    print('Manual Fluorescence background subtracted')
+                    self.header['Fluo_value']=fl_bg
+                    self.header['Fluorescence_Corrected_Manually']='Yes'
 
 
 #                QApplication.processEvents()
