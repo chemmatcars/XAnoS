@@ -17,6 +17,7 @@ import fabio as fb
 import time
 from numpy import *
 from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
+from pyFAI.geometry import Geometry
 from Mask_Widget import MaskWidget
 from Image_Widget import Image_Widget
 from Calibration_Widget import CalibrationWidget
@@ -25,6 +26,7 @@ from zmqClient import ZeroMQ_Listener
 from zmqServer import ZeroMQ_Server
 import zmq
 from lmfit import Parameters, minimize
+from Tools.Calculators import Den_Calc, X_Calc
 #from pyFAI.integrate_widget import AIWidget
 
 
@@ -102,6 +104,8 @@ class XAnoS_Reducer(QWidget):
         self.set_externally=False
         #ai=AIWidget()
         #self.layout.addWidget(ai)
+        self.sumdata=empty((0,2))
+        self.bgdata=empty((0,2))
         self.azimuthalRange=azimuthalRange
         self.create_UI()
         if os.path.exists(self.poniFile):
@@ -142,8 +146,14 @@ class XAnoS_Reducer(QWidget):
         if self.fluoFile is not None:
             self.flDataFileLineEdit.setText(self.fluoFile)
         #self.statusLabel.setStyleSheet("color:rgba(0,1,0,0)")
-        self.subFlCheckBox.stateChanged.connect(self.subFlCheckBoxChanged)
-        self.manualFlSubCheckBox.stateChanged.connect(self.manualFlSubChanged)
+        # self.subFlCheckBox.stateChanged.connect(self.subFlCheckBoxChanged)
+        self.calcFormulaPushButton.clicked.connect(self.calculateFormula)
+        self.chemFormulaLineEdit.returnPressed.connect(self.calculate_mu_f)
+        self.fluoEnergyLineEdit.returnPressed.connect(self.calculate_mu_f)
+        self.massDensityLineEdit.returnPressed.connect(self.calculate_mu_f)
+        self.calculate_mu_f()
+        self.flScaleFactorLineEdit.returnPressed.connect(self.plotFluoDataBkg)
+        self.flBaselineLineEdit.returnPressed.connect(self.plotFluoDataBkg)
         self.imageWidget=Image_Widget(zeros((100,100)))
         self.cakedImageWidget=Image_Widget(zeros((100,100)))
         imgNumberLabel=QLabel('Image number')
@@ -154,12 +164,14 @@ class XAnoS_Reducer(QWidget):
         self.imageView=self.imageWidget.imageView.getView()
         self.plotWidget=PlotWidget()
         self.mcaPlotWidget=PlotWidget()
+        self.fluoBkgPlotWidget=PlotWidget()
         self.plotWidget.setXLabel('Q, &#8491;<sup>-1</sup>',fontsize=5)
         self.plotWidget.setYLabel('Intensity',fontsize=5)
         self.tabWidget.addTab(self.plotWidget,'Reduced 1D-data')
         self.tabWidget.addTab(self.imageWidget,'Masked 2D-data')
         self.tabWidget.addTab(self.cakedImageWidget,'Reduced Caked Data')
         self.tabWidget.addTab(self.mcaPlotWidget,'MCA data')
+        self.tabWidget.addTab(self.fluoBkgPlotWidget, 'Fluo Bkg Data')
         
         self.serverAddress=self.serverAddressLineEdit.text()
         self.startClientPushButton.clicked.connect(self.startClient)
@@ -168,7 +180,53 @@ class XAnoS_Reducer(QWidget):
         
         self.startServerPushButton.clicked.connect(self.startServer)
         self.stopServerPushButton.clicked.connect(self.stopServer)
-        
+
+    def calculateFormula(self):
+        self.denCalc=Den_Calc.Den_Calc(parent=self)
+        self.denCalc.show()
+
+    def calculate_mu_f(self):
+        chemical_formula=self.chemFormulaLineEdit.text()
+        try:
+            energy=float(self.fluoEnergyLineEdit.text())
+        except:
+            QMessageBox.warning(self, 'Value Error', 'Please enter floating point numbers', QMessageBox.Ok)
+            self.fluoEnergyLineEdit.setText('10.0')
+            self.calculate_mu_f()
+        try:
+            density=float(self.massDensityLineEdit.text())
+        except:
+            QMessageBox.warning(self, 'Value Error', 'Please enter floating point numbers', QMessageBox.Ok)
+            self.massDensityLineEdit.setText('1.0')
+            self.calculate_mu_f()
+        xcalc=X_Calc.X_Calc(formula=chemical_formula, density=density, energy=energy)
+        try:
+            mu=xcalc.updateCal()
+            self.mu_f_LineEdit.setText("%.3f"%mu)
+            self.mu_f = mu
+        except:
+            QMessageBox.warning(self, 'Value Error', 'The formula you entered is not correct.', QMessageBox.Ok)
+            self.chemFormulaLineEdit.setText('H2O')
+            self.calculate_mu_f()
+    def calculate_mu_i(self):
+        chemical_formula=self.chemFormulaLineEdit.text()
+        energy=float(self.xrayEnergyLineEdit.text())
+        try:
+            density=float(self.massDensityLineEdit.text())
+        except:
+            QMessageBox.warning(self, 'Value Error', 'Please enter floating point numbers', QMessageBox.Ok)
+            self.massDensityLineEdit.setText('1.0')
+            self.calculate_mu_i()
+        xcalc=X_Calc.X_Calc(formula=chemical_formula, density=density, energy=energy)
+        try:
+            mu=xcalc.updateCal()
+            self.mu_i_LineEdit.setText("%.3f"%mu)
+            self.mu_i = mu
+        except:
+            QMessageBox.warning(self, 'Value Error', 'The formula you entered is not correct.', QMessageBox.Ok)
+            self.chemFormulaLineEdit.setText('H2O')
+            self.calculate_mu_i()
+
     def startServer(self):
         serverAddr=self.serverAddressLineEdit.text()
         dataDir=QFileDialog.getExistingDirectory(self,'Select data folder',options=QFileDialog.ShowDirsOnly)
@@ -182,12 +240,12 @@ class XAnoS_Reducer(QWidget):
         self.zeromq_server.folderFinished.connect(self.serverDone)
         QTimer.singleShot(0,self.serverThread.start)
 
-    def subFlCheckBoxChanged(self):
-        if self.subFlCheckBox.isChecked():
-            self.manualFlSubCheckBox.setCheckState(Qt.Unchecked)
-    def manualFlSubChanged(self):
-        if self.manualFlSubCheckBox.isChecked():
-            self.subFlCheckBox.setCheckState(Qt.Unchecked)
+    # def subFlCheckBoxChanged(self):
+    #     if self.subFlCheckBox.isChecked():
+    #         self.manualFlSubCheckBox.setCheckState(Qt.Unchecked)
+    # def manualFlSubChanged(self):
+    #     if self.manualFlSubCheckBox.isChecked():
+    #         self.subFlCheckBox.setCheckState(Qt.Unchecked)
 
     
     def updateServerMessage(self,mesg):
@@ -449,6 +507,7 @@ class XAnoS_Reducer(QWidget):
             self.rot2=self.calib_data['Rot2']
             self.rot3=self.calib_data['Rot3']
             self.wavelength=self.calib_data['Wavelength']
+            self.geo=Geometry(dist=self.dist,poni1=self.poni1,poni2=self.poni2,pixel1=self.pixel1,pixel2=self.pixel2,rot1=self.rot1,rot2=self.rot2,rot3=self.rot3,wavelength=self.wavelength)
             self.ai=AzimuthalIntegrator(dist=self.dist,poni1=self.poni1,poni2=self.poni2,pixel1=self.pixel1,pixel2=self.pixel2,rot1=self.rot1,rot2=self.rot2,rot3=self.rot3,wavelength=self.wavelength)
             #pos=[self.poni2/self.pixel2,self.poni1/self.pixel1]
             #self.roi=cake(pos,movable=False)
@@ -529,9 +588,15 @@ class XAnoS_Reducer(QWidget):
             self.extractedBaseFolderLineEdit.setText(self.extractedBaseFolder)
             self.imgNumberSpinBox.setValue(0)
             self.imageChanged()
+            energy = float(self.imagedata.header['Energy'])
+            self.xrayEnergyLineEdit.setText('%.4f'%energy)
+            self.calculate_mu_i()
+            self.calculate_mu_f()
+
             
     def imageChanged(self):
-        self.data2d=fb.open(self.dataFiles[self.imgNumberSpinBox.value()]).data
+        self.imagedata=fb.open(self.dataFiles[self.imgNumberSpinBox.value()])
+        self.data2d=self.imagedata.data
         if self.darkFile is not None:
             self.applyDark()
         if self.maskFile is not None:
@@ -622,11 +687,21 @@ class XAnoS_Reducer(QWidget):
         par = Parameters()
         par.add('norm', value=norm, min=0.0, vary=True)
         par.add('x0', value=x0, min=0.0, vary=False)
-        par.add('sig', value=sig, min=10, max=100, vary=False)
+        par.add('sig', value=sig, min=10, max=500, vary=True)
         par.add('a', value=a, min=0.0, vary=True)
         par.add('b', value=b, vary=True)
         result = minimize(self.residual, par, args=(x, y))
         return result
+
+    def calc_abs(self, tth, mu_i=1.0, mu_f=1.0, D=1.0):
+        fac=(mu_i*cos(tth)-mu_f)/cos(tth)
+        if mu_i!=mu_f:
+            norm=(exp(-mu_f*D)-exp(-mu_i*D))/(mu_i-mu_f)
+        else:
+            norm=exp(-mu_i*D)
+        fluo_abs = exp(-mu_f * D / cos(tth)) * (1.0 - exp(-D * fac)) / fac
+        return fluo_abs/norm
+
 
     def reduceData(self):
         """
@@ -644,6 +719,8 @@ class XAnoS_Reducer(QWidget):
                 #self.tabWidget.setCurrentWidget(self.imageWidget)
                 
                 self.header=imageData.header
+                energy = float(imageData.header['Energy'])
+                monitor = float(imageData.header['Monitor'])
                 try:
                     self.ai.set_wavelength(float(self.header['Wavelength'])*1e-10)
                 except:
@@ -694,8 +771,26 @@ class XAnoS_Reducer(QWidget):
                 else:
                     imageMask=None
 
+                fluo_abs=ones(imageData.data.shape)
+                if self.calcFluoBackCheckBox.isChecked():
+                    self.xrayEnergyLineEdit.setText('%.4f' % energy)
+                    D=float(self.thicknessLineEdit.text())
+                    self.calculate_mu_i()
+                    self.calculate_mu_f()
+                    tth=self.geo.twoThetaArray(imageData.data.shape)
+                    fluo_abs=self.calc_abs(tth,mu_i=self.mu_i,mu_f=self.mu_f,D=D)
 
-                self.header['Fluorescence_Corrected'] = 'No'
+                x_abs=ones(imageData.data.shape)
+                if self.applyXAbsCheckBox.isChecked():
+                    self.xrayEnergyLineEdit.setText('%.4f' % energy)
+                    D = float(self.thicknessLineEdit.text())
+                    self.calculate_mu_i()
+                    self.calculate_mu_f()
+                    tth = self.geo.twoThetaArray(imageData.data.shape)
+                    x_abs = self.calc_abs(tth, mu_i=self.mu_i, mu_f=self.mu_i, D=D)
+
+
+                self.header['Fluorescence_Corrected_Automatically'] = 'No'
                 if self.subFlCheckBox.isChecked():
                     flDir=os.path.join(os.path.dirname(os.path.dirname(self.dataFile)),'vortex_mca')
                     flFile=os.path.join(flDir,os.path.splitext(os.path.basename(self.dataFile))[0]+'.txt')
@@ -715,35 +810,47 @@ class XAnoS_Reducer(QWidget):
                             fl_wid=float(self.flPeakWidLineEdit.text())/2.355 #sig=fwhm/2.355
                             fl_slope=float(self.flLinearSlopeLineEdit.text())
                             fl_const=float(self.flLinearConstLineEdit.text())
+                            # mu=float(self.muLineEdit.text())
+                            # thick=float(self.thicknessLineEdit.text())
                             fit_data=fl_data[fl_imin:fl_imax, 1]/float(imageData.header['count_time'])
                             result = self.fit(fl_data[fl_imin:fl_imax, 0], fit_data, 1.0, fl_peak, fl_wid,
                                          fl_slope, fl_const)
                             fl_bg=sqrt(2*pi)*result.params['sig']*result.params['norm']
-                            print(imageData.header['Energy'], fl_imin, fl_imax, fl_bg)
-                            self.flLinearSlopeLineEdit.setText('%3e'%(result.params['a'].value))
-                            self.flLinearConstLineEdit.setText('%3e' % (result.params['b'].value))
+                            self.flBkgLineEdit.setText('%.1e'%fl_bg)
+                            [[imymin,imymax],[imxmin,imxmax]]=[list(map(int, tmp.split(':'))) for tmp in self.scattBkgRegionLineEdit.text().split(',')]
+                            self.flLinearSlopeLineEdit.setText('%.1e'%(result.params['a'].value))
+                            self.flLinearConstLineEdit.setText('%.1e' % (result.params['b'].value))
+                            self.flPeakWidLineEdit.setText('%.1e' % (result.params['sig'].value))
                             self.mcaPlotWidget.add_data(fl_data[fl_imin:fl_imax, 0],-result.residual+fit_data,fit=True,name='fl_fit')
                             self.mcaPlotWidget.Plot(['fl_data','fl_fit'])
                             fl_scale=float(self.flScaleFactorLineEdit.text())
-                            imageData.data=imageData.data-fl_scale*fl_bg
+                            fl_baseline=float(self.flBaselineLineEdit.text())
+                            self.sumdata = append(self.sumdata,
+                                                     [[energy, sum(imageData.data[imymin:imymax, imxmin:imxmax])/float(imageData.header['count_time'])]],
+                                                     axis=0)
+                            self.bgdata = append(self.bgdata,
+                                                    [[energy, sum(fluo_abs[imymin:imymax, imxmin:imxmax])*fl_bg]], axis=0)
+
+                            imageData.data=(imageData.data-fl_scale*fl_bg*fluo_abs-fl_baseline)/x_abs
                             print("Fluorescence background subtracted")
                             self.header['Fluorescence_File']=flFile
                             self.header['Fluo_bkg']=fl_bg
-                            self.header['Flue_norm']=fl_scale
-                            self.header['Fluorescence_Corrected'] = 'Yes'
+                            self.header['Fluo_norm']=fl_scale
+                            self.header['Fluo_baseline']=fl_baseline
+                            self.header['Fluorescence_Corrected_Automatically'] = 'Yes'
 
 
-                self.header['Fluorescence_Corrected_Manually'] = 'No'
-                if self.manualFlSubCheckBox.isChecked():
-                    try:
-                        fl_bg=float(self.manualFlValueLineEdit.text())
-                    except:
-                        QMessageBox.warning(self,'Value error', 'Please input floating point value only',QMessageBox.Ok)
-                        return
-                    imageData.data=imageData.data-fl_bg
-                    print('Manual Fluorescence background subtracted')
-                    self.header['Fluo_value']=fl_bg
-                    self.header['Fluorescence_Corrected_Manually']='Yes'
+                # self.header['Fluorescence_Corrected_Manually'] = 'No'
+                # if self.manualFlSubCheckBox.isChecked():
+                #     try:
+                #         fl_bg=float(self.manualFlValueLineEdit.text())
+                #     except:
+                #         QMessageBox.warning(self,'Value error', 'Please input floating point value only',QMessageBox.Ok)
+                #         return
+                #     imageData.data=(imageData.data-fl_bg*fluo_abs)/x_abs
+                #     print('Manual Fluorescence background subtracted')
+                #     self.header['Fluo_value']=fl_bg
+                #     self.header['Fluorescence_Corrected_Manually']='Yes'
 
 
 #                QApplication.processEvents()
@@ -797,7 +904,21 @@ class XAnoS_Reducer(QWidget):
                 
         else:
             QMessageBox.warning(self,'Data File Error','No data file provided', QMessageBox.Ok)
-            
+
+    def plotFluoDataBkg(self):
+        if len(self.sumdata)!=0 and len(self.bgdata)!=0:
+            fl_scale = float(self.flScaleFactorLineEdit.text())
+            fl_baseline = float(self.flBaselineLineEdit.text())
+            data=self.sumdata[:,1]-fl_baseline
+            bg=self.bgdata[:,1]*fl_scale
+            print(data)
+            print(bg)
+            self.fluoBkgPlotWidget.add_data(x=self.sumdata[:, 0], y=data,
+                                            name='Data Bkg')
+            self.fluoBkgPlotWidget.add_data(x=self.bgdata[:, 0] , y=bg,
+                                            name='Calc Fluo Bkg')
+            self.fluoBkgPlotWidget.Plot(['Data Bkg','Calc Fluo Bkg'])
+
     def azimuthalRegionChanged(self):
         minp,maxp=self.azimuthalRegion.getRegion()
         self.azimuthalRangeLineEdit.setText('%.1f:%.1f'%(minp,maxp))
@@ -812,6 +933,8 @@ class XAnoS_Reducer(QWidget):
         """
         # try:
         i=0
+        self.sumdata=empty((0,2))
+        self.bgdata=empty((0,2))
         self.progressBar.setRange(0,len(self.dataFiles))
         self.progressBar.setValue(i)
         self.statusLabel.setText('<font color="red">Busy</font>')
@@ -823,6 +946,7 @@ class XAnoS_Reducer(QWidget):
             self.progressBar.setValue(i)
             QApplication.processEvents()
         self.statusLabel.setText('<font color="green">Idle</font>')
+        self.plotFluoDataBkg()
         self.progressBar.setValue(0)
         # except:
         #     QMessageBox.warning(self,'File error','No data files to reduce',QMessageBox.Ok)
