@@ -88,7 +88,7 @@
   <customwidget>
    <class>PlotCanvas</class>
    <extends>QWidget</extends>
-   <header>./UI_Forms/mplWidget</header>
+   <header>Tools/Calculators/UI_Forms/mplWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
