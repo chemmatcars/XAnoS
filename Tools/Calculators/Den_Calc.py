@@ -8,6 +8,7 @@ import os
 import numpy as np
 import re
 import scipy.constants
+sys.path.append(os.path.abspath('.'))
 from xraydb import XrayDB
 xdb = XrayDB()
 
@@ -43,7 +44,7 @@ class RegExpValidator(QRegExpValidator):
         return state, text, pos
 
 
-class XCalc(QMainWindow):
+class Den_Calc(QMainWindow):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -66,8 +67,10 @@ class XCalc(QMainWindow):
         self.solchemforLE.returnPressed.connect(self.updateCal)
         self.solmassdenLE.returnPressed.connect(self.updateCal)
         self.bulkconLE.returnPressed.connect(self.updateCal)
+        self.preSB.valueChanged.connect(self.updateCal)
         self.addPB.clicked.connect(self.addCom)
         self.removePB.clicked.connect(self.rmCom)
+
 
 
     def initValidator(self):
@@ -227,7 +230,8 @@ class XCalc(QMainWindow):
         for i in range(len(chemfor)):
             key=list(chemfor.keys())[i]
             if chemfor[key]>0:
-                string=string+key+str('{0:.3f}'.format(chemfor[key]).rstrip('0').rstrip('.'))
+                precision='{0:.'+str(self.preSB.value())+'f}'
+                string=string+key+str(precision.format(chemfor[key]).rstrip('0').rstrip('.'))
         return string
 
     def checkemptyinput(self):
@@ -258,7 +262,7 @@ class XCalc(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    w = XCalc()
+    w = Den_Calc()
     w.setWindowTitle('Subphase Density Calculator')
     # w.setGeometry(50,50,800,800)
 

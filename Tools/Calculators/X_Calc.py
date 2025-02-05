@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 import scipy.constants
+sys.path.append(os.path.abspath('.'))
 from xraydb import XrayDB
 xdb = XrayDB()
 
@@ -19,13 +20,17 @@ class PlotDialog(QDialog):
         loadUi('./Tools/Calculators/UI_Forms/mplPlot.ui',self)
 
 
-class XCalc(QMainWindow):
+class X_Calc(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, formula=None, density=None, energy=None):
         QWidget.__init__(self, parent)
         loadUi('./Tools/Calculators/UI_Forms/X_Calc.ui', self)
-
-
+        if formula is not None:
+            self.chemforLE.setText(formula)
+        if density is not None:
+            self.massdenLE.setText('%.3f'%density)
+        if energy is not None:
+            self.xenLE.setText('%.3f'%energy)
         #font=QFont('Monospace')
         #font.setStyleHint(QFont.TypeWriter)
         #font.setPointSize(8)
@@ -60,12 +65,13 @@ class XCalc(QMainWindow):
         self.eleraius = scipy.constants.physical_constants["classical electron radius"][0]*1e10   # in unit of \AA
         self.avoganum = scipy.constants.Avogadro
         self.etolam = scipy.constants.c*scipy.constants.Planck/scipy.constants.eV*1e7   # energy in keV, wavelength in \AA
-        self.parseFormula()
+        chemical_formula = self.chemforLE.text()
+        self.parseFormula(chemical_formula)
         #print(self.formula)
         self.massden = float(self.massdenLE.text())
         self.xrayeng = float(self.xenLE.text())
         self.plotDlg = PlotDialog(self)
-        self.updateCal()
+        #self.updateCal()
 
     def initSignals(self):
         self.chemforLE.returnPressed.connect(self.updateFormula)
@@ -91,7 +97,8 @@ class XCalc(QMainWindow):
         self.numpointLE.setValidator(intValidator)
 
     def updateFormula(self):
-        self.parseFormula()
+        chemical_formula=self.chemforLE.text()
+        self.parseFormula(chemical_formula)
         self.validateFormula()
         if self.validate==1:
             self.messageBox('Warning: Please input a valid chemical formula!\n Example:Al2O3')
@@ -102,8 +109,8 @@ class XCalc(QMainWindow):
             self.massdenLE.setText(str(self.massden))
             self.updateCal()
 
-    def parseFormula(self):
-        a = re.findall(r'[A-Z][a-z]?|[0-9]+[.][0-9]+|[0-9]+', self.chemforLE.text())
+    def parseFormula(self, chemical_formula):
+        a = re.findall(r'[A-Z][a-z]?|[0-9]+[.][0-9]+|[0-9]+', chemical_formula)
         if not a[-1].replace('.', '').isdigit():
             a.append('1')
         formula = {}
@@ -136,8 +143,9 @@ class XCalc(QMainWindow):
 
     def updateCal(self):
         self.calMolarMass()
-        self.calAbsLength(energy=self.xrayeng)
+        mu=self.calAbsLength(energy=self.xrayeng)
         self.calCriAng(energy=self.xrayeng)
+        return mu
 
     def calMolarMass(self):
         self.molarmass=np.sum([xdb.molar_mass(key)*self.formula[key] for key in self.formula.keys()])
@@ -158,8 +166,9 @@ class XCalc(QMainWindow):
         self.attfact = np.exp(float(self.attfacCB.currentText())/self.abslength)
        # print(self.abslength, self.attfact)
         if type(energy) == float:
-            self.abslenLabel.setText(format(self.abslength, '.4f'))
+            self.muLineEdit.setText(format(tot_mu*10, '.4f'))
             self.attLabel.setText(format(self.attfact, '.4f'))
+        return tot_mu*10
 
     def calCriAng(self, energy=None):
         self.molarele = np.sum([xdb.atomic_number(key)*self.formula[key] for key in self.formula.keys()])
@@ -267,7 +276,7 @@ class XCalc(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    w = XCalc()
+    w = X_Calc()
     w.setWindowTitle('X-ray Calculator')
     # w.setGeometry(50,50,800,800)
 
