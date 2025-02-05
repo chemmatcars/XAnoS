@@ -106,8 +106,11 @@ class XAnoS_Components(QWidget):
         row+=1
         col=0        
         elementLabel=QLabel('Resonant Material')
-        self.elementComboBox=QComboBox()        
-        self.elements=self.xrdb.atomic_symbols
+        self.elementComboBox=QComboBox()
+        try:
+            self.elements = [self.xrdb.symbol(i) for i in range(1,100)]
+        except: #For campatiblity with older versions
+            self.elements=self.xrdb.atomic_symbols
         self.elementComboBox.addItems([str(self.xrdb.atomic_number(element))+': '+element for element in self.elements])
         self.elementComboBox.setCurrentIndex(37)
         self.dataDockLayout.addWidget(elementLabel,row=row,col=col)
@@ -310,7 +313,7 @@ class XAnoS_Components(QWidget):
         row+=1
         col=0
         self.ASAXSCalcTypeComboBox=QComboBox()
-        self.ASAXSCalcTypeComboBox.addItems(['single-mono','single-hybrid','single-poly','single-free','multiple'])
+        self.ASAXSCalcTypeComboBox.addItems(['single-mono','single-hybrid','single-poly','single-free','multiple','new'])
         self.dataDockLayout.addWidget(self.ASAXSCalcTypeComboBox,row=row,col=col)
         col+=1
         self.ASAXSCalcMethodComboBox=QComboBox()
@@ -1305,13 +1308,15 @@ class XAnoS_Components(QWidget):
         self.ASAXSProgressBar.reset()
         if self.ASAXSCalcTypeComboBox.currentText()=='single-free':
             #self.ASAXS_split_1()
-            self.ASAXS_split_w_errbars(constraint=False,mono=False)
+            self.ASAXS_split_w_errbars(constraint=False, mono=False)
         elif self.ASAXSCalcTypeComboBox.currentText()=='single-mono':
             self.ASAXS_split_w_errbars(constraint=True, mono=True)
         elif self.ASAXSCalcTypeComboBox.currentText()=='single-poly':
             self.ASAXS_split_w_errbars(constraint=True, mono=False)
         elif self.ASAXSCalcTypeComboBox.currentText()=='single-hybrid':
-            self.ASAXS_split_w_errbars(constraint=True,hybrid=True)
+            self.ASAXS_split_w_errbars(constraint=True, hybrid=True)
+        elif self.ASAXSCalcTypeComboBox.currentText()=='new':
+            self.ASAXS_split_w_errbars(new=True)
         else:
             self.ASAXS_split_3()
             
@@ -1436,9 +1441,9 @@ class XAnoS_Components(QWidget):
         x3err = out.params['x3'].stderr
         if self.ASAXSCalcMethodComboBox.currentText()=='emcee':
             emcee_params = out.params.copy()
-            emcee_params.add('__lnsigma', value=np.log(0.1), min=np.log(0.001), max=np.log(2.0))
+            #emcee_params.add('__lnsigma', value=np.log(0.1), min=np.log(0.001), max=np.log(2.0))
             emcee_result = lmfit_minimize(self.lmfit_residual, params=emcee_params, method='emcee',args=(A,B/fac,Err,constraint),
-                                     nan_policy='omit', steps=100, burn=20, thin=2, is_weighted=False, progress=False)
+                                     nan_policy='omit', steps=100, burn=20, thin=2, is_weighted=True, progress=False)
             x1err = emcee_result.params['x1'].stderr
             x2err = emcee_result.params['x2'].stderr
             x3err = emcee_result.params['x3'].stderr
@@ -1475,7 +1480,7 @@ class XAnoS_Components(QWidget):
         x3=x2**2/np.abs(x1)
         return [np.abs(x1),x2,x3]
 
-    def ASAXS_split_w_errbars(self,constraint=False,mono=False,hybrid=False):
+    def ASAXS_split_w_errbars(self,constraint=False,mono=False,hybrid=False, new=False):
         """
         This calculates scattering compononents out
         """
@@ -1486,8 +1491,10 @@ class XAnoS_Components(QWidget):
             # ans = QMessageBox.question(self, 'Question', 'Do you like to look at each individual Q for this analysis?',
             #                            QMessageBox.Yes, QMessageBox.No)
             tot=[]
-            f1 = [self.xrdb.f1_chantler(element=str(self.elementComboBox.currentText().split(': ')[1]), energy=(energy-self.EOff) * 1e3,
-                                        smoothing=0) for energy in self.energies]
+            f1 = np.array([self.xrdb.f1_chantler(element=str(self.elementComboBox.currentText().split(': ')[1]), energy=(energy-self.EOff) * 1e3,
+                                        smoothing=0) for energy in self.energies])
+            f2 = np.array([self.xrdb.f2_chantler(element=str(self.elementComboBox.currentText().split(': ')[1]), energy=(energy-self.EOff) * 1e3,
+                                        smoothing=0) for energy in self.energies])
             self.ASAXSProgressBar.setMinimum(0)
             self.ASAXSProgressBar.setMaximum(len(self.qintp))
             self.raiseDock(self.ASAXSCheckPlotDock)
@@ -1502,7 +1509,12 @@ class XAnoS_Components(QWidget):
                     #x=[self.BMatrix[0,i],1,0.0]
                     #x, residuals, rank, s = lstsq(self.AMatrix, self.BMatrix[:, i],rcond=None)
                     if hybrid:
-                        xm1, xm1err, xm2, xm2err, xm3, xm3err, redchi1 = self.lmfit_finderrbars(x, self.AMatrix, self.BMatrix[:, i],self.ErrMatrix[:,i], constraint=constraint,mono=True)
+                        xm1, xm1err, xm2, xm2err, xm3, xm3err, redchi1 = self.lmfit_finderrbars(x,
+                                                                                                self.AMatrix,
+                                                                                                self.BMatrix[:, i],
+                                                                                                self.ErrMatrix[:,i],
+                                                                                                constraint=constraint,
+                                                                                                mono=True)
                         #x1, x1err, x2, x2err, x3, x3err, redchi2 = self.lmfit_finderrbars(x, self.AMatrix,
                                                                                           # self.BMatrix[:, i],
                                                                                           # self.ErrMatrix[:, i],
@@ -1518,12 +1530,25 @@ class XAnoS_Components(QWidget):
                         #     print('mono accepted',redchi1,redchi2)
                         # else:
                         #     print('poly accepted',redchi1,redchi2)
+                    elif new:
+                        Io, Ioerr, Ir, Irerr, alf, alferr, redchi1 = self.lmfit_finderrbars_new(x,f1,f2,self.BMatrix[:, i],
+                                                                                                self.ErrMatrix[:,i])
+                        Ic = np.sqrt(Io*Ir)*alf
+                        if Ioerr is None:
+                            Ioerr=0.1*Io
+                        if Irerr is None:
+                            Irerr=0.1*Ir
+                        if alferr is None:
+                            alferr=0.1*alf
+                        Icerr = np.sqrt(Ioerr ** 2 / Io + Irerr ** 2 / Ir + alferr**2)
+                        x1, x1err, x2, x2err, x3, x3err = Io, Ioerr, Ic, Icerr, Ir, Irerr
+                        total_new=Io+(f1**2+f2**2)*Ir+2*np.sqrt(Io*Ir)*(f1*alf+f2*np.sqrt(1-alf**2))
                     else:
                         x1, x1err, x2, x2err, x3, x3err, redchi = self.lmfit_finderrbars(x, self.AMatrix,
-                                                                                                self.BMatrix[:, i],
-                                                                                                self.ErrMatrix[:, i],
-                                                                                                constraint=constraint,
-                                                                                                mono=mono)
+                                                                                            self.BMatrix[:, i],
+                                                                                            self.ErrMatrix[:, i],
+                                                                                            constraint=constraint,
+                                                                                            mono=mono)
 
                     if constraint:
                         xn=[x1,x2,x2**2/x1+x3]
@@ -1539,7 +1564,10 @@ class XAnoS_Components(QWidget):
                     #         print(self.qintp[i],' ignored')
                     # else:
                     self.XMatrix.append(xn)
-                    tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
+                    if new:
+                        tot.append(total_new)
+                    else:
+                        tot.append(np.dot(self.AMatrix, self.XMatrix[-1]))
                     self.ASAXSCheckPlotWidget.errorbarCheckBox.setChecked(True)
                     # if ans == QMessageBox.Yes:
                     self.ASAXSCheckPlotWidget.setTitle('Point=%d, Q=%.5f' % (i,self.qintp[i]))
@@ -1625,6 +1653,19 @@ class XAnoS_Components(QWidget):
         """
         return np.sum(np.array([np.sum([A[i,j]*x[j]-B[i] for j in range(len(x))]) for i in range(A.shape[0])])**2)
             
+    def lmfit_finderrbars_new(self, x, fp, fpp, I, Ierr):
+        params=Parameters()
+        params.add('Io',value=x[0],min=1e-6,vary=True)
+        params.add('Ir',value=x[2],min=1e-10,vary=True)
+        params.add('alf',value=0.95,min=-1.0,max=1.0,vary=True)
+        result=lmfit_minimize(self.residual_new, params, args=(fp,fpp,I, Ierr))
+        rpars=result.params
+        return rpars['Io'].value, rpars['Io'].stderr, rpars['Ir'].value, rpars['Ir'].stderr, rpars['alf'].value, rpars['alf'].stderr, result.redchi
+
+    def residual_new(self, param, fp, fpp, I, Ierr):
+        Io, Ir, alf = param['Io'].value, param['Ir'].value, param['alf'].value
+        return (I-(Io+(fp**2+fpp**2)*Ir+2*np.sqrt(Io*Ir)*(fp*alf+fpp*np.sqrt(1-alf**2))))/Ierr
+
     def ASAXS_split_2(self):
         """
         This calculates the scattering components by constraining the SAXS and anomalous term to be positive
